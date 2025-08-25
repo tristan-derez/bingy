@@ -3,6 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
+        "project:setup": "bun --cwd=./apps/backend run setup-db.ts",
         "dev": "bun run db:start && concurrently -k --kill-others-on-fail -c \"blue,yellow\" -n \"server,client\" \"cd apps/backend && bun dev\" \"cd apps/frontend && bun dev\"",
         "db:start": "docker compose up -d"
     },
