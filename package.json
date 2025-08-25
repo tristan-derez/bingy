@@ -1,0 +1,19 @@
+{
+    "name": "bingy",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "bun run db:start && concurrently -k --kill-others-on-fail -c \"blue,yellow\" -n \"server,client\" \"cd apps/backend && bun dev\" \"cd apps/frontend && bun dev\"",
+        "db:start": "docker compose up -d"
+    },
+    "workspaces": [
+        "apps/*"
+    ],
+    "dependencies": {
+        "pino-pretty": "^13.1.1"
+    },
+    "devDependencies": {
+        "@biomejs/biome": "2.2.0",
+        "concurrently": "^9.2.0"
+    }
+}

@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "jsx": "react-jsx",
+        "jsxImportSource": "hono/jsx",
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "paths": {
+            "#lib/*": ["./src/lib/*"],
+            "#services/*": ["./src/services/*"],
+            "#schemas/*": ["./src/db/schemas/*"],
+            "#middlewares/*": ["./src/middlewares/*"],
+            "#repositories/*": ["./src/repositories/*"],
+            "#tasks/*": ["./src/tasks/*"],
+            "#utils/*": ["./src/utils/*"],
+            "#web/*": ["./src/web/*"]
+        }
+    }
+}
