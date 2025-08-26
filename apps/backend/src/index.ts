@@ -7,7 +7,7 @@ import { trimTrailingSlash } from "hono/trailing-slash";
 import { connection } from "#lib/database";
 import env from "#lib/env";
 import { logger } from "#lib/logger";
-import { serveInternalServerError } from "#web/controllers/responses/error";
+import { serveInternalServerError } from "#lib/responses/error";
 import users from "#web/routes/users";
 
 const app = new Hono();
