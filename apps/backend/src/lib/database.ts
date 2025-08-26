@@ -17,7 +17,7 @@ const dbLogger: drizzleLogger = {
 	},
 };
 
-const connection = postgres({
+export const connection = postgres({
 	host: env.DB_HOST,
 	username: env.DB_USER,
 	password: env.DB_PASSWORD,
