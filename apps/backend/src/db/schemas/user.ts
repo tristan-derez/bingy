@@ -1,55 +1,95 @@
-import { relations } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
-	bigint,
 	boolean,
+	index,
 	pgTable,
 	text,
 	timestamp,
 	uniqueIndex,
+	uuid,
 	varchar,
 } from "drizzle-orm/pg-core";
 import { timestamps } from "./column.helper";
 
 export const users = pgTable("users", {
-	id: bigint({ mode: "bigint" }).primaryKey().generatedAlwaysAsIdentity(),
+	id: uuid("id").primaryKey().default(sql`uuidv7()`),
 	name: varchar("name", { length: 256 }),
 	email: varchar("email", { length: 256 }).unique().notNull(),
-	password: text(),
-	avatar_url: text(),
-	email_verified: boolean(),
-	email_verified_at: timestamp(),
-	two_factor_method: varchar({ length: 25 }),
-	two_factor_enabled_at: timestamp(),
-	last_login_at: timestamp(),
+	avatarUrl: text("avatar_url"),
+	emailVerified: boolean("email_verified").default(false).notNull(),
+	emailVerifiedAt: timestamp("email_verified_at"),
+	twoFactorEnabled: boolean("two_factor_enabled").default(false).notNull(),
 	...timestamps,
 });
 
-export const oauthAccounts = pgTable(
-	"oauth_accounts",
+export const accounts = pgTable(
+	"accounts",
 	{
-		id: bigint({ mode: "bigint" }).primaryKey().generatedAlwaysAsIdentity(),
-		user_id: bigint({ mode: "bigint" })
+		id: uuid("id").primaryKey().default(sql`uuidv7()`),
+		userId: uuid("user_id")
 			.notNull()
 			.references(() => users.id, { onDelete: "cascade" }),
-		provider: varchar({ length: 50 }).notNull(),
-		provider_account_id: varchar({ length: 255 }).notNull(),
-		access_token: text(),
-		refresh_token: text(),
-		scope: varchar({ length: 255 }),
+		accountId: text("account_id").notNull(),
+		providerId: text("provider_id").notNull(),
+		accessToken: text("access_token"),
+		refreshToken: text("refresh_token"),
+		accessTokenExpiresAt: timestamp("access_token_expires_at"),
+		refreshTokenExpiresAt: timestamp("refresh_token_expires_at"),
+		scope: text(),
+		idToken: text("id_token"),
+		passwordHash: text("password_hash"),
 		...timestamps,
 	},
 	(table) => [
-		uniqueIndex("unique_user_provider").on(table.user_id, table.provider),
+		uniqueIndex("unique_user_provider").on(table.userId, table.providerId),
+		uniqueIndex("unique_provider_account").on(
+			table.providerId,
+			table.accountId,
+		),
+		index("idx_accounts_provider").on(table.providerId),
 	],
 );
 
+export const two_factor = pgTable("two_factor", {
+	id: uuid("id").primaryKey().default(sql`uuidv7()`),
+	userId: uuid("user_id")
+		.notNull()
+		.references(() => users.id, { onDelete: "cascade" }),
+	secret: text(),
+	backupCodes: text("backup_codes"),
+});
+
+export const sessions = pgTable(
+	"sessions",
+	{
+		id: uuid("id").primaryKey().default(sql`uuidv7()`),
+		userId: uuid("user_id")
+			.notNull()
+			.references(() => users.id, { onDelete: "cascade" }),
+		token: text().notNull(),
+		expiresAt: timestamp("expires_at").notNull(),
+		ipAddress: text("ip_address"),
+		userAgent: text("user_agent"),
+		...timestamps,
+	},
+	(table) => [uniqueIndex("unique_session_token").on(table.token)],
+);
+
+export const verifications = pgTable("verifications", {
+	id: uuid("id").primaryKey().default(sql`uuidv7()`),
+	identifier: text(),
+	value: text(),
+	expiresAt: timestamp("expires_at").notNull(),
+	...timestamps,
+});
+
 export const userRelations = relations(users, ({ many }) => ({
-	oauthAccount: many(oauthAccounts),
+	accounts: many(accounts),
 }));
 
-export const oauthAccountsRelations = relations(oauthAccounts, ({ one }) => ({
+export const accountsRelations = relations(accounts, ({ one }) => ({
 	user: one(users, {
-		fields: [oauthAccounts.user_id],
+		fields: [accounts.userId],
 		references: [users.id],
 	}),
 }));
