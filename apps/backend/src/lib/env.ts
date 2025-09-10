@@ -24,4 +24,4 @@ const envSchema = z.object({
 	FRONT_URL_PROD: z.string(),
 });
 
-export default envSchema.parse(Bun.env);
+export default envSchema.parse(process.env);
