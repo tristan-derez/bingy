@@ -1,4 +1,9 @@
-import { relations, sql } from "drizzle-orm";
+import {
+	type InferInsertModel,
+	type InferSelectModel,
+	relations,
+	sql,
+} from "drizzle-orm";
 import {
 	boolean,
 	index,
@@ -93,3 +98,8 @@ export const accountsRelations = relations(accounts, ({ one }) => ({
 		references: [users.id],
 	}),
 }));
+
+export type User = InferSelectModel<typeof users>;
+export type NewUser = InferInsertModel<typeof users>;
+export type Account = InferSelectModel<typeof accounts>;
+export type NewAccount = InferInsertModel<typeof accounts>;
