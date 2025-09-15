@@ -1,0 +1,11 @@
+{
+	"extends": ["./common.json"],
+	"assist": {
+		"enabled": true,
+		"actions": {
+			"source": {
+				"organizeImports": "on"
+			}
+		}
+	}
+}
