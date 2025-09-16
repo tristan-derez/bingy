@@ -1,5 +1,6 @@
 import {
 	Body,
+	Button,
 	Container,
 	Head,
 	Hr,
@@ -13,7 +14,7 @@ import {
 import type React from "react";
 
 interface OTPEmailProps {
-	otpCode: string;
+	url: string;
 	expirationMinutes: number;
 	userName: string;
 }
@@ -49,31 +50,10 @@ const text = {
 	margin: "24px 0",
 };
 
-const verifyText = {
-	...text,
-	margin: 0,
-	fontWeight: "bold",
-	textAlign: "center" as const,
-};
-
-const codeText = {
-	...text,
-	fontWeight: "bold",
-	fontSize: "36px",
-	margin: "10px 0",
-	textAlign: "center" as const,
-};
-
 const validityText = {
 	...text,
 	margin: "0px",
 	textAlign: "center" as const,
-};
-
-const verificationSection = {
-	width: "100%",
-	textAlign: "center" as const,
-	margin: "30px 0",
 };
 
 const paragraph = {
@@ -81,8 +61,23 @@ const paragraph = {
 	lineHeight: "26px",
 };
 
+const btnContainer = {
+	textAlign: "center" as const,
+};
+
+const button = {
+	backgroundColor: "#5F51E8",
+	borderRadius: "3px",
+	color: "#fff",
+	fontSize: "16px",
+	textDecoration: "none",
+	textAlign: "center" as const,
+	display: "block",
+	padding: "12px",
+};
+
 const OTPEmail: React.FC<OTPEmailProps> = ({
-	otpCode = "123456",
+	url = "#",
 	expirationMinutes = 10,
 	userName = "John",
 }) => {
@@ -106,18 +101,17 @@ const OTPEmail: React.FC<OTPEmailProps> = ({
 					<Text style={paragraph}>Hi {userName},</Text>
 					<Text style={paragraph}>
 						Welcome to BingyTrack, the entertainment platform that helps you
-						keep track of your favorite media. Please enter the following
-						verification code when prompted.
+						keep track of your favorite media. Click the button below to verify
+						your email.
 					</Text>
-					<Section style={verificationSection}>
-						<Text style={verifyText}>Verification code</Text>
-
-						<Text style={codeText}>{otpCode}</Text>
+					<Section style={btnContainer}>
+						<Button style={button} href={url}>
+							Verify email
+						</Button>
 						<Text style={validityText}>
-							(This code is valid for {expirationMinutes} minutes)
+							(This link expires in {expirationMinutes} minutes)
 						</Text>
 					</Section>
-
 					<Text style={text}>
 						If you didn't request this email, there's nothing to worry about -
 						you can safely ignore it.

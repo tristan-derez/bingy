@@ -7,7 +7,7 @@ const resend = new Resend(env.RESEND_API_KEY);
 
 export interface SendOTPEmailParams {
 	to: string;
-	otpCode: string;
+	url: string;
 	fromEmail: string;
 	fromName: string;
 	subject?: string;
@@ -23,7 +23,7 @@ export interface EmailResponse {
 
 export const sendOTPEmail = async ({
 	to,
-	otpCode,
+	url,
 	fromEmail,
 	fromName,
 	subject = "Verify your email",
@@ -37,7 +37,7 @@ export const sendOTPEmail = async ({
 			subject: subject,
 			react: (
 				<OTPEmail
-					otpCode={otpCode}
+					url={url}
 					expirationMinutes={expirationMinutes}
 					userName={userName}
 				/>
