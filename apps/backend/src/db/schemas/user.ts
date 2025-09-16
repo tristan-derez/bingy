@@ -88,19 +88,6 @@ export const verifications = pgTable("verifications", {
 	...timestamps,
 });
 
-export const codes = pgTable(
-	"codes",
-	{
-		userId: uuid("user_id")
-			.notNull()
-			.references(() => users.id, { onDelete: "cascade" }),
-		code: varchar("code", { length: 6 }).notNull(),
-		expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
-		...timestamps,
-	},
-	(table) => [uniqueIndex("unique_code_user").on(table.userId)],
-);
-
 export const userRelations = relations(users, ({ many }) => ({
 	accounts: many(accounts),
 }));
@@ -108,13 +95,6 @@ export const userRelations = relations(users, ({ many }) => ({
 export const accountsRelations = relations(accounts, ({ one }) => ({
 	user: one(users, {
 		fields: [accounts.userId],
-		references: [users.id],
-	}),
-}));
-
-export const codesRelations = relations(codes, ({ one }) => ({
-	user: one(users, {
-		fields: [codes.userId],
 		references: [users.id],
 	}),
 }));
