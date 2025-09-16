@@ -1,6 +1,7 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { twoFactor } from "better-auth/plugins";
+import { sendOTPEmail } from "#emails/index";
 import { db } from "#lib/database";
 import * as schema from "#schemas/user";
 import env from "./env";
@@ -36,6 +37,21 @@ export const auth = betterAuth({
 	},
 	emailAndPassword: {
 		enabled: true,
+	},
+	emailVerification: {
+		sendVerificationEmail: async ({ user, url }) => {
+			await sendOTPEmail({
+				to: user.email,
+				url: url,
+				fromEmail: env.TRANSACTIONAL_EMAIL,
+				fromName: env.APP_NAME,
+				subject: "Verify your email",
+				expirationMinutes: 10,
+				userName: user.name,
+			});
+		},
+		sendOnSignUp: true,
+		expiresIn: 600,
 	},
 	socialProviders: {
 		google: {
