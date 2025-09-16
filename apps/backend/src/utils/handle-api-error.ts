@@ -1,7 +1,7 @@
 const errorMappings = [
 	{ keywords: ["already exists", "User already exists"], statusCode: 409 },
 	{ keywords: ["Invalid email", "invalid email"], statusCode: 400 },
-	{ keywords: ["Password", "weak"], statusCode: 400, requireAll: true }, // Requires both keywords
+	{ keywords: ["Password", "weak"], statusCode: 400, requireAll: true },
 	{ keywords: ["validation", "required"], statusCode: 400 },
 	{ keywords: ["rate limit", "too many"], statusCode: 429 },
 	{ keywords: ["forbidden", "not allowed"], statusCode: 403 },
