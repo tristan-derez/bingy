@@ -19,6 +19,7 @@
         "http-status-codes": "^2.3.0",
         "pino": "^9.9.0",
         "postgres": "^3.4.7",
+        "resend": "^6.1.0",
         "zod": "^4.0.17"
     },
     "devDependencies": {
