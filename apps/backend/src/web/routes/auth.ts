@@ -1,13 +1,8 @@
 import { zValidator } from "@hono/zod-validator";
 import { type Context, Hono } from "hono";
 import type { ContentfulStatusCode } from "hono/utils/http-status";
-import { sendOTPEmail } from "#emails/index";
 import { auth } from "#lib/auth";
-import { db } from "#lib/database";
-import env from "#lib/env";
 import { logger } from "#lib/logger";
-import { generateOtpWithExpiration } from "#lib/otp";
-import { codes } from "#schemas/user";
 import { handleApiError } from "#utils/handle-api-error";
 import { signUpSchema } from "#web/validator/auth";
 
@@ -25,33 +20,6 @@ authRoutes.post(
 			const result = await auth.api.signUpEmail({
 				body: { email, password, name, image, callbackURL },
 			});
-
-			const userId = result.user.id;
-			if (userId) {
-				const newOtp = generateOtpWithExpiration();
-
-				await db
-					.insert(codes)
-					.values({
-						userId: result.user.id,
-						code: newOtp.code,
-						expiresAt: newOtp.expiresAt,
-					})
-					.onConflictDoUpdate({
-						target: codes.userId,
-						set: { code: newOtp.code, expiresAt: newOtp.expiresAt },
-					});
-
-				await sendOTPEmail({
-					to: result.user.email,
-					otpCode: newOtp.code,
-					fromEmail: env.TRANSACTIONAL_EMAIL,
-					fromName: env.APP_NAME,
-					subject: "Verify your email",
-					expirationMinutes: newOtp.expirationMinutes,
-					userName: result.user.name,
-				});
-			}
 
 			return c.json(result, 200);
 		} catch (error: unknown) {
