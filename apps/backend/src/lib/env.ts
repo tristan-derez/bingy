@@ -22,6 +22,9 @@ const envSchema = z.object({
 	API_VERSION: z.string(),
 	FRONT_URL_DEV: z.string(),
 	FRONT_URL_PROD: z.string(),
+	RESEND_API_KEY: z.string(),
+	TRANSACTIONAL_EMAIL: z.string(),
+	APP_NAME: z.string(),
 });
 
 export default envSchema.parse(process.env);
