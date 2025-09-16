@@ -1,4 +1,3 @@
-// emails/otp-verification.tsx
 import {
 	Body,
 	Container,
