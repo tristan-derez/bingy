@@ -1,10 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
 import React, { useId } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { FaCircleInfo } from "react-icons/fa6";
 import { FcGoogle } from "react-icons/fc";
+import { toast } from "sonner";
 import type { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -35,20 +36,11 @@ import {
 import { authClient } from "@/lib/auth";
 import { signUpFormSchema } from "@/schemas/signup-form-schema";
 import { getRandomAvatarUrl } from "@/utils/avatar-generator";
-import { AppError } from "@/errors/custom-errors";
-
-type ApiErrorPayload = {
-    error?: string;
-    message?: string;
-    status: number;
-    statusText: string;
-};
-
 
 export function SignUpForm() {
 	const [isSubmitting, setIsSubmitting] = React.useState(false);
 	const isLoading = useRouterState({ select: (s) => s.isLoading });
-
+	const navigate = useNavigate();
 	const id = useId();
 
 	const form = useForm<z.infer<typeof signUpFormSchema>>({
@@ -61,42 +53,30 @@ export function SignUpForm() {
 	});
 
 	const onFormSubmit: SubmitHandler<z.infer<typeof signUpFormSchema>> = async (
-		data,
+		formData,
 	) => {
-		setIsSubmitting(true);
 		try {
-			const signUpData = {
-				...data,
-			};
+			setIsSubmitting(true);
 
-			const result = await authClient.signUp.email({
-				email: signUpData.email,
-				password: signUpData.password,
-				name: signUpData.name,
+			const { data, error } = await authClient.signUp.email({
+				email: formData.email,
+				password: formData.password,
+				name: formData.name,
 				image: getRandomAvatarUrl(),
 				callbackURL: "http://localhost:5173/welcome",
 			});
 
-			if (result.error) {
-				const errorPayload = result.error as ApiErrorPayload;
-				throw new AppError(errorPayload.error || "The API returned an unspecified error")
+			console.log("signup result: ", { data, error });
+
+			if (error) {
+				toast.error(error.message || "Oops! Request failed, try again.");
+			} else if (data?.user) {
+				toast.success(`Please verify your email at ${data.user.email}`);
+				navigate({ to: "/welcome" });
 			}
-
-			console.log("Sign-up request successful, pending verification:", result);
-		} catch (err: unknown) {
-			let message: string;
-
-			if (err instanceof Error && err.message.includes("Failed to fetch")) {
-				message = "Could not connect to the server. Please check your connection and try again.";
-			} else if (err instanceof AppError) {
-				message = err.message;
-			} else {
-				message = "An unexpected error occured. Please try again";
-				console.error("Caught an unknown error: ", err);
-			}
-
-			console.error("Sign-up failed: ", message)
-			//todo: add toast
+		} catch (err) {
+			console.error("Sign up error:", err);
+			toast.error("Something went wrong. Please try again.");
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -104,15 +84,19 @@ export function SignUpForm() {
 
 	const handleOAuthRegister = async (provider: "google") => {
 		try {
+			toast.loading("Redirecting to Google...", { id: "oauth" });
 			await authClient.signIn.social({
 				provider,
-				callbackURL: "http:///localhost:5173/welcome",
+				callbackURL: "http://localhost:5173/",
+				errorCallbackURL: "http://localhost:5173/signup",
+				newUserCallbackURL: "http://localhost:5173/welcome",
 			});
 		} catch (err: unknown) {
 			const message =
 				err instanceof Error
 					? err.message
-					: "Something went sideways with Google sign-in. Give it another go!";
+					: "Something went wrong with Google sign-in. Please try again!";
+			toast.error(message, { id: "oauth" });
 			console.error("OAuth sign up error:", message);
 		}
 	};
@@ -226,7 +210,7 @@ export function SignUpForm() {
 												id={`${id}-password`}
 												type="password"
 												autoComplete="new-password"
-												min-length="8"
+												minLength={8}
 												required
 												{...field}
 											/>
