@@ -3,15 +3,17 @@ import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import "@/styles/app.css";
 import { ThemeProvider } from "./components/theme/theme-provider.tsx";
-import * as TanStackQueryProvider from "./integrations/tanstack-query/root-provider.tsx";
+import {
+	queryClient,
+	Provider as TanStackQueryProvider,
+} from "./integrations/tanstack-query/root-provider.tsx";
 import reportWebVitals from "./reportWebVitals.ts";
 import { routeTree } from "./routeTree.gen";
 
-const TanStackQueryProviderContext = TanStackQueryProvider.getContext();
 const router = createRouter({
 	routeTree,
 	context: {
-		...TanStackQueryProviderContext,
+		queryClient,
 	},
 	defaultPreload: "intent",
 	scrollRestoration: true,
@@ -31,16 +33,14 @@ if (rootElement && !rootElement.innerHTML) {
 	const root = ReactDOM.createRoot(rootElement);
 	root.render(
 		<StrictMode>
-			<TanStackQueryProvider.Provider {...TanStackQueryProviderContext}>
+			<TanStackQueryProvider>
+				{" "}
 				<ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
 					<RouterProvider router={router} />
 				</ThemeProvider>
-			</TanStackQueryProvider.Provider>
+			</TanStackQueryProvider>
 		</StrictMode>,
 	);
 }
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
