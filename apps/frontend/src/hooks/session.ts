@@ -1,4 +1,3 @@
-// lib/session.ts
 import { useQuery } from "@tanstack/react-query";
 import { authClient } from "@/lib/auth-client";
 
@@ -6,6 +5,6 @@ export function useSession() {
 	return useQuery({
 		queryKey: ["session"],
 		queryFn: () => authClient.getSession().then((res) => res.data),
-		staleTime: 0,
+		staleTime: 10 * 60 * 1000,
 	});
 }
