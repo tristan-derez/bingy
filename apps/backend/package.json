@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"dev": "bun run --hot --no-clear-screen src/index.ts",
-		"dev:drizzle": "drizzle-kit studio --config=./drizzle.config.ts",
+		"db:studio": "drizzle-kit studio --config=./drizzle.config.ts",
 		"db:generate": "drizzle-kit generate",
 		"db:migrate": "drizzle-kit migrate",
 		"db:push": "drizzle-kit push",
