@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, useRouter } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
 import React, { useId } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
@@ -29,16 +29,10 @@ import {
 	FormMessage,
 } from "./ui/form";
 
-interface SigninFormProps {
-	search: { redirect?: string };
-}
-
-const fallback = "/dashboard";
-
-export function SignInForm({ search }: SigninFormProps) {
-	const router = useRouter();
+export function SignInForm() {
 	const [isSubmitting, setIsSubmitting] = React.useState(false);
 	const id = useId();
+	const navigate = useNavigate();
 
 	const form = useForm<z.infer<typeof signinFormSchema>>({
 		resolver: zodResolver(signinFormSchema),
@@ -49,16 +43,25 @@ export function SignInForm({ search }: SigninFormProps) {
 	});
 
 	const onFormSubmit: SubmitHandler<z.infer<typeof signinFormSchema>> = async (
-		data,
+		formData,
 	) => {
 		setIsSubmitting(true);
 		try {
-			await authClient.signIn.email({
-				email: data.email,
-				password: data.password,
+			const { data, error } = await authClient.signIn.email({
+				email: formData.email,
+				password: formData.password,
 			});
 
-			router.navigate({ to: search.redirect || fallback });
+			if (error) {
+				toast.error(error.message || "Oops! Request failed, try again.");
+			}
+
+			if (data?.user.emailVerified === false) {
+				toast.success(`Please verify your email at ${data.user.email}`);
+				navigate({ to: "/welcome" });
+			} else if (data?.user.emailVerified) {
+				navigate({ to: "/dashboard" });
+			}
 		} catch (err) {
 			const message =
 				err instanceof Error
@@ -95,17 +98,10 @@ export function SignInForm({ search }: SigninFormProps) {
 			<CardHeader>
 				<CardTitle className="text-2xl">Sign in</CardTitle>
 				<CardDescription>
-					{search.redirect ? (
-						<p className="text-red-500">
-							Hold up! Sign in to access this page and get back to your
-							favorites.
-						</p>
-					) : (
-						<p>
-							Welcome back! Your entertainment hub is waiting. <br />
-							Just sign in to get going.
-						</p>
-					)}
+					<p>
+						Welcome back! Your entertainment hub is waiting. <br />
+						Just sign in to get going.
+					</p>
 				</CardDescription>
 			</CardHeader>
 			<CardContent className="grid gap-4">

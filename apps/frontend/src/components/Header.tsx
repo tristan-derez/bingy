@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { ChevronsUpDown, LogOut } from "lucide-react";
 import { FaGithub, FaUser } from "react-icons/fa6";
@@ -28,12 +29,14 @@ import {
 
 export default function Header() {
 	const navigate = useNavigate();
+	const queryClient = useQueryClient();
 	const { data: session } = useSession();
 	const logout = async () => {
 		if (session) {
 			await authClient.revokeSession({
 				token: session.session.token,
 			});
+			queryClient.invalidateQueries({ queryKey: ["session"] });
 			navigate({ to: "/" });
 		}
 	};
