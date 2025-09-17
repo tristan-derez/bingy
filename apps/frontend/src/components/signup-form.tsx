@@ -104,7 +104,7 @@ export function SignUpForm() {
 	const isRegistering = isLoading || isSubmitting;
 
 	return (
-		<Card className="mx-auto max-w-sm min-w-[420px] bg-transparent">
+		<Card className="mx-auto max-w-sm min-w-[420px]">
 			<CardHeader>
 				<CardTitle className="text-2xl">Create an account</CardTitle>
 				<CardDescription>
@@ -249,7 +249,7 @@ export function SignUpForm() {
 				</div>
 				<div className="mt-4 text-center text-sm">
 					Already have an account?{" "}
-					<Link to="/login" className="underline">
+					<Link to="/signin" className="underline">
 						Sign in
 					</Link>
 				</div>
