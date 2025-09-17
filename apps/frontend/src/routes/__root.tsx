@@ -48,7 +48,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 					TanStackQueryDevtools,
 				]}
 			/>
-			<Toaster />
+			<Toaster richColors position="bottom-center" />
 		</div>
 	),
 });
