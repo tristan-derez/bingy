@@ -66,8 +66,6 @@ export function SignUpForm() {
 				callbackURL: "http://localhost:5173/welcome",
 			});
 
-			console.log("signup result: ", { data, error });
-
 			if (error) {
 				toast.error(error.message || "Oops! Request failed, try again.");
 			} else if (data?.user) {
