@@ -53,6 +53,10 @@ export const auth = betterAuth({
 		sendOnSignUp: true,
 		expiresIn: 600,
 	},
+	session: {
+		expiresIn: 604800, // 7 days
+		updateAge: 86400, // 1 day
+	},
 	socialProviders: {
 		google: {
 			clientId: env.GOOGLE_CLIENT_ID,
