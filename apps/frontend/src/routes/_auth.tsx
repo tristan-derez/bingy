@@ -10,12 +10,7 @@ export const Route = createFileRoute("/_auth")({
 		});
 
 		if (!session?.user) {
-			throw redirect({ to: "/login" });
+			throw redirect({ to: "/signin" });
 		}
 	},
-	component: AuthLayout,
 });
-
-function AuthLayout() {
-	return <div>Hello "/_auth"!</div>;
-}
