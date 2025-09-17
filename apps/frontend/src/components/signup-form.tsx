@@ -33,7 +33,7 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { authClient } from "@/lib/auth";
+import { authClient } from "@/lib/auth-client";
 import { signUpFormSchema } from "@/schemas/signup-form-schema";
 import { getRandomAvatarUrl } from "@/utils/avatar-generator";
 
