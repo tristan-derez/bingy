@@ -21,7 +21,7 @@ function OAuthButton({ icon: Icon, label, text, onClick }: OAuthButtonProps) {
 				<TooltipTrigger className="w-full" asChild>
 					<Button
 						variant="outline"
-						className="w-full"
+						className="w-full hover:cursor-pointer"
 						aria-label={`${label}`}
 						onClick={onClick}
 					>

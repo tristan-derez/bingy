@@ -6,27 +6,12 @@
 		"useIgnoreFile": false
 	},
 	"files": {
-		"ignoreUnknown": true,
-		"experimentalScannerIgnores": ["node_modules", "dist", ".git", ".vscode"],
-		"includes": [
-			"**/*.js",
-			"**/*.jsx",
-			"**/*.ts",
-			"**/*.tsx",
-			"**/*.json",
-			"**/*.jsonc",
-			"!**/node_modules/**",
-			"!**/dist/**",
-			"!**/coverage/**",
-			"!**/*.gen.ts",
-			"!**/*.d.ts",
-			"!**/bun.lockb",
-			"!**/package.json"
-		]
+		"ignoreUnknown": false,
+		"experimentalScannerIgnores": ["node_modules", "dist", ".git", ".vscode"]
 	},
 	"formatter": {
 		"enabled": true,
-		"formatWithErrors": false,
+		"formatWithErrors": true,
 		"attributePosition": "auto",
 		"indentStyle": "tab",
 		"indentWidth": 2,

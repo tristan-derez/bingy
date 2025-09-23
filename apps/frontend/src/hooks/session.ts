@@ -5,6 +5,5 @@ export function useSession() {
 	return useQuery({
 		queryKey: ["session"],
 		queryFn: () => authClient.getSession().then((res) => res.data),
-		staleTime: 10 * 60 * 1000,
 	});
 }

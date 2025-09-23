@@ -1,4 +1,3 @@
-import { useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { ChevronsUpDown, LogOut } from "lucide-react";
 import { FaGithub, FaUser } from "react-icons/fa6";
@@ -13,7 +12,6 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useSession } from "@/hooks/session";
 import { authClient } from "@/lib/auth-client";
 import { ModeToggle } from "./theme-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -29,19 +27,15 @@ import {
 
 export default function Header() {
 	const navigate = useNavigate();
-	const queryClient = useQueryClient();
-	const { data: session } = useSession();
+	const { data: session } = authClient.useSession();
+
 	const logout = async () => {
-		if (session) {
-			await authClient.revokeSession({
-				token: session.session.token,
-			});
-			queryClient.invalidateQueries({ queryKey: ["session"] });
-			navigate({ to: "/" });
-		}
+		await authClient.signOut();
+		navigate({ to: "/" });
 	};
+
 	return (
-		<div className="p-4 flex justify-between w-full fixed items-center backdrop-blur-md border-b border-border/40 shadow-sm bg-transparent">
+		<div className="p-4 flex justify-between w-full fixed items-center backdrop-blur-sm border-b border-border/40 shadow-md bg-transparent">
 			<nav>
 				<ul className="flex gap-4">
 					<li>
@@ -51,7 +45,7 @@ export default function Header() {
 					</li>
 					{session && (
 						<li>
-							<Link to="/" className="[&.active]:font-bold">
+							<Link to="/dashboard" className="[&.active]:font-bold">
 								Dashboard
 							</Link>
 						</li>
