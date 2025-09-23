@@ -55,16 +55,17 @@ export default function Header() {
 			<nav>
 				<ul className="flex gap-2 items-center">
 					{!session && (
-						<li>
-							<Link
-								to="/signin"
-								className={
-									location.pathname === "/signin" ? "[&.active]:font-bold" : ""
-								}
+						<>
+							<Button
+								variant="ghost"
+								onClick={() => navigate({ to: "/signin" })}
 							>
 								Sign In
-							</Link>
-						</li>
+							</Button>
+							<Button onClick={() => navigate({ to: "/signup" })}>
+								Get Started
+							</Button>
+						</>
 					)}
 					{session && (
 						<DropdownMenu>
