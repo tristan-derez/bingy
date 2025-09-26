@@ -94,15 +94,15 @@ const OTPEmail: React.FC<OTPEmailProps> = ({
 						src={`https://i.imgur.com/iwCy2SB.png`}
 						width="42"
 						height="42"
-						alt="BingyTrack"
+						alt="Bingy"
 						style={logo}
 					/>
 					<br />
 					<Text style={paragraph}>Hi {userName},</Text>
 					<Text style={paragraph}>
-						Welcome to BingyTrack, the entertainment platform that helps you
-						keep track of your favorite media. Click the button below to verify
-						your email.
+						Welcome to Bingy, the entertainment platform that helps you keep
+						track of your favorite media. Click the button below to verify your
+						email.
 					</Text>
 					<Section style={btnContainer}>
 						<Button style={button} href={url}>
@@ -119,7 +119,7 @@ const OTPEmail: React.FC<OTPEmailProps> = ({
 					<Text style={paragraph}>
 						Best,
 						<br />
-						The BingyTrack team
+						The Bingy team
 					</Text>
 					<Hr style={hr} />
 				</Container>
