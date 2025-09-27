@@ -5,7 +5,6 @@ const envSchema = z.object({
 	LOG_LEVEL: z.string().default("info"),
 	NODE_ENV: z.enum(["development", "production"]).default("development"),
 	JWT_SECRET_KEY: z.string(),
-	PEPPER_KEY: z.string(),
 	DB_HOST: z.string().default("localhost"),
 	DB_USER: z.string(),
 	DB_PASSWORD: z.string(),
