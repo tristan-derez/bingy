@@ -38,6 +38,8 @@ export const auth = betterAuth({
 	},
 	emailAndPassword: {
 		enabled: true,
+		minPasswordLength: 8,
+		maxPasswordLength: 256,
 		sendResetPassword: async ({ user, url }) => {
 			await sendResetPasswordEmail({
 				to: user.email,
@@ -52,6 +54,7 @@ export const auth = betterAuth({
 		onPasswordReset: async ({ user }) => {
 			logger.info(`Password for ${user.email} has been reset`);
 		},
+		resetPasswordTokenExpiresIn: 900, // 15 min
 	},
 	emailVerification: {
 		sendVerificationEmail: async ({ user, url }) => {
@@ -66,7 +69,7 @@ export const auth = betterAuth({
 			});
 		},
 		sendOnSignUp: true,
-		expiresIn: 600,
+		expiresIn: 900, // 15 min
 	},
 	session: {
 		expiresIn: 604800, // 7 days
