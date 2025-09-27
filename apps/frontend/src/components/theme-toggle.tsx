@@ -25,6 +25,13 @@ export function ModeToggle() {
 				"Going incognito from the sun!",
 			];
 			toast.success(messages[Math.floor(Math.random() * messages.length)]);
+		} else if (newTheme === "system") {
+			const messages = [
+				"Following your system's lead!",
+				"Passing the buck to your OS... classic move!",
+				"I'm just here for the ride, your OS is driving",
+			];
+			toast.success(messages[Math.floor(Math.random() * messages.length)]);
 		}
 	};
 

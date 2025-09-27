@@ -13,7 +13,7 @@ import {
 
 import type React from "react";
 
-interface OTPEmailProps {
+interface ResetPasswordEmailProps {
 	url: string;
 	expirationMinutes: number;
 	userName: string;
@@ -76,19 +76,16 @@ const button = {
 	padding: "12px",
 };
 
-const OTPEmail: React.FC<OTPEmailProps> = ({
+const ResetPasswordEmail: React.FC<ResetPasswordEmailProps> = ({
 	url,
-	expirationMinutes = 15,
+	expirationMinutes,
 	userName,
 }) => {
 	return (
 		<Html>
 			<Head />
 			<Body style={main}>
-				<Preview>
-					The entertainment platform that helps you keep tracks of your
-					favorites medias
-				</Preview>
+				<Preview>Reset your password for your Bingy account</Preview>
 				<Container style={container}>
 					<Img
 						src={`https://i.imgur.com/iwCy2SB.png`}
@@ -100,21 +97,20 @@ const OTPEmail: React.FC<OTPEmailProps> = ({
 					<br />
 					<Text style={paragraph}>Hi {userName},</Text>
 					<Text style={paragraph}>
-						Welcome to Bingy, the entertainment platform that helps you keep
-						track of your favorite media. Click the button below to verify your
-						email.
+						We received a request to reset your password for your Bingy account.
+						Click the button below to create a new password.
 					</Text>
 					<Section style={btnContainer}>
 						<Button style={button} href={url}>
-							Verify email
+							Reset Password
 						</Button>
 						<Text style={validityText}>
 							(This link expires in {expirationMinutes} minutes)
 						</Text>
 					</Section>
 					<Text style={text}>
-						If you didn't request this email, there's nothing to worry about -
-						you can safely ignore it.
+						If you didn't request this password reset, please ignore this email.
+						Your password will remain unchanged.
 					</Text>
 					<Text style={paragraph}>
 						Best,
@@ -128,4 +124,4 @@ const OTPEmail: React.FC<OTPEmailProps> = ({
 	);
 };
 
-export default OTPEmail;
+export default ResetPasswordEmail;

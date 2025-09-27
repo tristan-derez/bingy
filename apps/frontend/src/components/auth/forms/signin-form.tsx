@@ -14,12 +14,6 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { OAuthButton } from "@/components/ui/oauth-button";
-import { SeparatorWithText } from "@/components/ui/separator-text";
-import { authClient } from "@/lib/auth-client";
-import { signinFormSchema } from "@/schemas/signin-form-schema";
 import {
 	Form,
 	FormControl,
@@ -27,7 +21,13 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from "./ui/form";
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { OAuthButton } from "@/components/ui/oauth-button";
+import { SeparatorWithText } from "@/components/ui/separator-text";
+import { authClient } from "@/lib/auth-client";
+import { signinFormSchema } from "@/schemas/signin-form-schema";
 
 export function SignInForm() {
 	const [isSubmitting, setIsSubmitting] = React.useState(false);
@@ -41,6 +41,8 @@ export function SignInForm() {
 			password: "",
 		},
 	});
+
+	const watchedEmail = form.watch("email");
 
 	const onFormSubmit: SubmitHandler<z.infer<typeof signinFormSchema>> = async (
 		formData,
@@ -139,9 +141,11 @@ export function SignInForm() {
 										<FormItem className="grid gap-2">
 											<div className="flex items-center">
 												<Label htmlFor="password">Password</Label>
-												{/* todo: create forgot password page */}
 												<Link
-													to="/"
+													to={"/forgot-password"}
+													search={
+														watchedEmail ? { email: watchedEmail } : undefined
+													}
 													className="ml-auto inline-block text-xs underline"
 												>
 													Forgot your password?

@@ -1,10 +1,11 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { twoFactor } from "better-auth/plugins";
-import { sendOTPEmail } from "#emails/index";
+import { sendOTPEmail, sendResetPasswordEmail } from "#emails/index";
 import { db } from "#lib/database";
 import * as schema from "#schemas/user";
 import env from "./env";
+import { logger } from "./logger";
 
 export const auth = betterAuth({
 	appName: "bingy",
@@ -37,6 +38,20 @@ export const auth = betterAuth({
 	},
 	emailAndPassword: {
 		enabled: true,
+		sendResetPassword: async ({ user, url }) => {
+			await sendResetPasswordEmail({
+				to: user.email,
+				url: url,
+				fromEmail: env.TRANSACTIONAL_EMAIL,
+				fromName: env.APP_NAME,
+				subject: "Reset your password",
+				expirationMinutes: 15,
+				userName: user.name,
+			});
+		},
+		onPasswordReset: async ({ user }) => {
+			logger.info(`Password for ${user.email} has been reset`);
+		},
 	},
 	emailVerification: {
 		sendVerificationEmail: async ({ user, url }) => {
@@ -46,7 +61,7 @@ export const auth = betterAuth({
 				fromEmail: env.TRANSACTIONAL_EMAIL,
 				fromName: env.APP_NAME,
 				subject: "Verify your email",
-				expirationMinutes: 10,
+				expirationMinutes: 15,
 				userName: user.name,
 			});
 		},

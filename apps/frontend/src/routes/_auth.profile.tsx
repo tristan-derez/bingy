@@ -5,5 +5,9 @@ export const Route = createFileRoute("/_auth/profile")({
 });
 
 function RouteComponent() {
-	return <div>Hello "/_auth/profile"!</div>;
+	return (
+		<div className="min-h-screen flex flex-col items-center justify-center">
+			<p>Hello "/_auth/profile"!</p>
+		</div>
+	);
 }

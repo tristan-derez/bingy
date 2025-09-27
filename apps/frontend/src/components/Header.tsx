@@ -1,8 +1,13 @@
-import { Link, useNavigate } from "@tanstack/react-router";
-import { ChevronsUpDown, LogOut } from "lucide-react";
-import { FaGithub, FaUser } from "react-icons/fa6";
-import { IoMdSettings } from "react-icons/io";
-import { MdOutlineSupport } from "react-icons/md";
+import { Link, useNavigate, useRouter } from "@tanstack/react-router";
+import { ChevronsUpDown } from "lucide-react";
+import { FaGithub } from "react-icons/fa";
+import { IoLogOutSharp } from "react-icons/io5";
+import { MdSupport } from "react-icons/md";
+import { PiUserFill } from "react-icons/pi";
+import { toast } from "sonner";
+import { SettingsDialog } from "@/components/settings-dialog";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -13,25 +18,19 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { authClient } from "@/lib/auth-client";
-import { ModeToggle } from "./theme-toggle";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Button } from "./ui/button";
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-} from "./ui/dialog";
+import { AccountDialog } from "./account-dialog";
 
 export default function Header() {
+	const router = useRouter();
 	const navigate = useNavigate();
 	const { data: session } = authClient.useSession();
 
 	const logout = async () => {
+		toast.success("You have been successfully logged out. Come back soon!");
 		await authClient.signOut();
-		navigate({ to: "/" });
+		router.invalidate().finally(() => {
+			navigate({ to: "/" });
+		});
 	};
 
 	return (
@@ -124,45 +123,30 @@ export default function Header() {
 								<DropdownMenuSeparator />
 								<DropdownMenuGroup>
 									<DropdownMenuItem asChild>
-										<Link to="/">
-											<FaUser />
+										<Link to="/profile">
+											<PiUserFill />
 											Profile
 										</Link>
 									</DropdownMenuItem>
 									<DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-										<Dialog>
-											<DialogTrigger asChild>
-												<div className="flex items-center w-full">
-													<IoMdSettings className="mr-2" />
-													<span>Settings</span>
-												</div>
-											</DialogTrigger>
-											<DialogContent>
-												<DialogHeader>
-													<DialogTitle>Change Theme</DialogTitle>
-													<DialogDescription>
-														Select your preferred theme
-													</DialogDescription>
-												</DialogHeader>
-												<div className="flex py-4">
-													<ModeToggle />
-												</div>
-											</DialogContent>
-										</Dialog>
+										<AccountDialog />
+									</DropdownMenuItem>
+									<DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+										<SettingsDialog />
 									</DropdownMenuItem>
 								</DropdownMenuGroup>
 								<DropdownMenuSeparator />
 								<DropdownMenuItem>
 									<FaGithub />
-									GitHub
+									<a href="https://github.com/tristan-derez/bingy">GitHub</a>
 								</DropdownMenuItem>
 								<DropdownMenuItem>
-									<MdOutlineSupport />
+									<MdSupport />
 									Support
 								</DropdownMenuItem>
 								<DropdownMenuSeparator />
 								<DropdownMenuItem onSelect={logout}>
-									<LogOut />
+									<IoLogOutSharp />
 									Log out
 								</DropdownMenuItem>
 							</DropdownMenuContent>
