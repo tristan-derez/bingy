@@ -1,11 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
 import React, { useId } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
 import { Button } from "@/components/ui/button";
+import { DialogClose } from "@/components/ui/dialog";
 import {
 	Form,
 	FormControl,
@@ -21,7 +21,6 @@ import { updatePasswordFormSchema } from "@/schemas/password/update-password";
 export function UpdatePasswordForm() {
 	const [isSubmitting, setIsSubmitting] = React.useState(false);
 	const id = useId();
-	const navigate = useNavigate();
 
 	const form = useForm<z.infer<typeof updatePasswordFormSchema>>({
 		resolver: zodResolver(updatePasswordFormSchema),
@@ -48,7 +47,6 @@ export function UpdatePasswordForm() {
 
 			if (data) {
 				toast.success("Password reset successfully!");
-				navigate({ to: "/signin" });
 			}
 		} catch (err) {
 			const message =
@@ -117,19 +115,21 @@ export function UpdatePasswordForm() {
 								</FormItem>
 							)}
 						/>
-						<Button
-							type="submit"
-							className="w-full mt-4 disabled:bg-gray-300 disabled:text-gray-500 hover:cursor-pointer"
-						>
-							{isSubmitting ? (
-								<span className="flex items-center justify-center gap-2">
-									<Loader2 className="animate-spin h-4 w-4" />
-									Updating password
-								</span>
-							) : (
-								"Reset Password"
-							)}
-						</Button>
+						<DialogClose asChild>
+							<Button
+								type="submit"
+								className="w-full mt-4 disabled:bg-gray-300 disabled:text-gray-500 hover:cursor-pointer"
+							>
+								{isSubmitting ? (
+									<span className="flex items-center justify-center gap-2">
+										<Loader2 className="animate-spin h-4 w-4" />
+										Updating password
+									</span>
+								) : (
+									"Reset Password"
+								)}
+							</Button>
+						</DialogClose>
 					</fieldset>
 				</form>
 			</Form>
