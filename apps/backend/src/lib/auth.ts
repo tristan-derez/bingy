@@ -1,6 +1,7 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { twoFactor } from "better-auth/plugins";
+import { redis } from "bun";
 import { sendOTPEmail, sendResetPasswordEmail } from "#emails/index";
 import { db } from "#lib/database";
 import * as schema from "#schemas/user";
@@ -37,6 +38,20 @@ export const auth = betterAuth({
 		window: 10,
 		max: 20,
 		storage: "memory",
+	},
+	secondaryStorage: {
+		get: async (key) => {
+			return await redis.get(key);
+		},
+		set: async (key, value, ttl) => {
+			await redis.set(key, value);
+			if (ttl) {
+				await redis.expire(key, ttl);
+			}
+		},
+		delete: async (key) => {
+			await redis.del(key);
+		},
 	},
 	user: {
 		fields: {
@@ -86,6 +101,10 @@ export const auth = betterAuth({
 	session: {
 		expiresIn: 604800, // 7 days
 		updateAge: 86400, // 1 day
+		cookieCache: {
+			enabled: true,
+			maxAge: 10 * 60,
+		},
 	},
 	socialProviders: {
 		google: {
