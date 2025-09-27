@@ -53,17 +53,11 @@ export function Welcome() {
 		});
 	}
 
-	if (!session) return <p>No session</p>;
-
-	if (!session.user.emailVerified) {
-	}
-
 	return (
 		<div className="min-h-svh flex flex-col items-center justify-center px-4 space-y-6">
-			<h1 className="text-3xl font-bold mt-2">Welcome {session.user.name}!</h1>
+			<h1 className="text-3xl font-bold mt-2">Welcome {session?.user.name}!</h1>
 
 			<Card className="max-w-lg mx-auto p-6">
-				{/* Email verification alert - only for unverified users */}
 				{session?.user && !session.user.emailVerified && (
 					<Alert className="mb-6">
 						<AlertTitle>Email verification required</AlertTitle>
