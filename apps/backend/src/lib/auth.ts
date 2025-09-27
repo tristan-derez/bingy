@@ -25,6 +25,18 @@ export const auth = betterAuth({
 		database: {
 			generateId: false,
 		},
+		ipAddress: {
+			ipAddressHeaders: ["x-client-ip", "x-forwarded-for"],
+			disableIpTracking: false,
+		},
+		useSecureCookies: env.NODE_ENV === "production",
+		cookiePrefix: env.APP_NAME,
+	},
+	rateLimit: {
+		enabled: env.NODE_ENV === "production",
+		window: 10,
+		max: 20,
+		storage: "memory",
 	},
 	user: {
 		fields: {
