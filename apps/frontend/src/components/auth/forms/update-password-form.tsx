@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
-import React, { useId } from "react";
+import React, { useId, useRef } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
@@ -20,7 +20,9 @@ import { updatePasswordFormSchema } from "@/schemas/password/update-password";
 
 export function UpdatePasswordForm() {
 	const [isSubmitting, setIsSubmitting] = React.useState(false);
+	const [_, setIsSuccess] = React.useState(false);
 	const id = useId();
+	const closeButtonRef = useRef<HTMLButtonElement>(null);
 
 	const form = useForm<z.infer<typeof updatePasswordFormSchema>>({
 		resolver: zodResolver(updatePasswordFormSchema),
@@ -43,10 +45,13 @@ export function UpdatePasswordForm() {
 
 			if (error) {
 				toast.error(error.message || "Failed to reset password. Try again.");
+				return;
 			}
 
 			if (data) {
 				toast.success("Password reset successfully!");
+				setIsSuccess(true);
+				closeButtonRef.current?.click();
 			}
 		} catch (err) {
 			const message =
@@ -115,24 +120,24 @@ export function UpdatePasswordForm() {
 								</FormItem>
 							)}
 						/>
-						<DialogClose asChild>
-							<Button
-								type="submit"
-								className="w-full mt-4 disabled:bg-gray-300 disabled:text-gray-500 hover:cursor-pointer"
-							>
-								{isSubmitting ? (
-									<span className="flex items-center justify-center gap-2">
-										<Loader2 className="animate-spin h-4 w-4" />
-										Updating password
-									</span>
-								) : (
-									"Reset Password"
-								)}
-							</Button>
-						</DialogClose>
+						<Button
+							type="submit"
+							className="w-full mt-4 disabled:bg-gray-300 disabled:text-gray-500 hover:cursor-pointer"
+						>
+							{isSubmitting ? (
+								<span className="flex items-center justify-center gap-2">
+									<Loader2 className="animate-spin h-4 w-4" />
+									Updating password
+								</span>
+							) : (
+								"Reset Password"
+							)}
+						</Button>
 					</fieldset>
 				</form>
 			</Form>
+
+			<DialogClose ref={closeButtonRef} style={{ display: "none" }} />
 		</div>
 	);
 }
