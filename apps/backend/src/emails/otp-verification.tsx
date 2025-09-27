@@ -86,8 +86,8 @@ const OTPEmail: React.FC<OTPEmailProps> = ({
 			<Head />
 			<Body style={main}>
 				<Preview>
-					The entertainment platform that helps you keep tracks of your
-					favorites medias
+					The entertainment platform that helps you keep track of your favorite
+					films, TV shows, video games, books, and manga
 				</Preview>
 				<Container style={container}>
 					<Img
@@ -101,8 +101,8 @@ const OTPEmail: React.FC<OTPEmailProps> = ({
 					<Text style={paragraph}>Hi {userName},</Text>
 					<Text style={paragraph}>
 						Welcome to Bingy, the entertainment platform that helps you keep
-						track of your favorite media. Click the button below to verify your
-						email.
+						track of your favorite movies, shows, games, books, and manga. Click
+						the button below to verify your email.
 					</Text>
 					<Section style={btnContainer}>
 						<Button style={button} href={url}>
