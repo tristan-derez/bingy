@@ -2,6 +2,7 @@ import type { ReactElement } from "react";
 import { Resend } from "resend";
 import env from "../lib/env";
 import { logger } from "../lib/logger";
+import AccountDeletedEmail from "./account-deleted";
 import DeleteAccountEmail from "./delete-account";
 import OTPEmail from "./otp-verification";
 import ResetPasswordEmail from "./reset-password";
@@ -12,22 +13,31 @@ type EmailType =
 	| {
 			type: "otp";
 			subject?: string;
+			expirationMinutes: number;
+			url: string;
 	  }
 	| {
 			type: "reset-password";
 			subject?: string;
+			expirationMinutes: number;
+			url: string;
 	  }
 	| {
 			type: "account-deletion";
 			subject?: string;
+			expirationMinutes: number;
+			url: string;
+	  }
+	| {
+			type: "account-deleted";
+			subject?: string;
+			date: string;
 	  };
 
 interface BaseEmailParams {
 	to: string;
-	url: string;
 	fromEmail: string;
 	fromName: string;
-	expirationMinutes?: number;
 	userName: string;
 }
 
@@ -41,34 +51,39 @@ export interface EmailResponse {
 
 const getEmailComponent = (
 	type: EmailType["type"],
-	url: string,
-	expirationMinutes: number,
 	userName: string,
+	url?: string,
+	expirationMinutes?: number,
+	date?: string,
 ): ReactElement => {
 	switch (type) {
 		case "otp":
 			return (
 				<OTPEmail
-					url={url}
-					expirationMinutes={expirationMinutes}
+					url={url ?? ""}
+					expirationMinutes={expirationMinutes ?? 0}
 					userName={userName}
 				/>
 			);
 		case "reset-password":
 			return (
 				<ResetPasswordEmail
-					url={url}
-					expirationMinutes={expirationMinutes}
+					url={url ?? ""}
+					expirationMinutes={expirationMinutes ?? 0}
 					userName={userName}
 				/>
 			);
 		case "account-deletion":
 			return (
 				<DeleteAccountEmail
-					url={url}
-					expirationMinutes={expirationMinutes}
+					url={url ?? ""}
+					expirationMinutes={expirationMinutes ?? 0}
 					userName={userName}
 				/>
+			);
+		case "account-deleted":
+			return (
+				<AccountDeletedEmail userName={userName} deletionDate={date ?? ""} />
 			);
 	}
 };
@@ -81,14 +96,19 @@ const getDefaultSubject = (type: EmailType["type"]): string => {
 			return "Reset your password";
 		case "account-deletion":
 			return "Confirm the deletion of your account";
+		case "account-deleted":
+			return "Your account has been deleted";
 	}
 };
 
 export const sendEmail = async (
 	params: SendEmailParams,
 ): Promise<EmailResponse> => {
-	const { to, fromEmail, fromName, url, expirationMinutes, userName, type } =
-		params;
+	const { to, fromEmail, fromName, userName, type } = params;
+	const url = "url" in params ? params.url : undefined;
+	const expirationMinutes =
+		"expirationMinutes" in params ? params.expirationMinutes : undefined;
+	const date = "date" in params ? params.date : undefined;
 	const subject = params.subject ?? getDefaultSubject(type);
 
 	try {
@@ -96,7 +116,7 @@ export const sendEmail = async (
 			from: `${fromName} <${fromEmail}>`,
 			to: [to],
 			subject,
-			react: getEmailComponent(type, url, expirationMinutes ?? 0, userName),
+			react: getEmailComponent(type, userName, url, expirationMinutes, date),
 		});
 
 		if (error) {
