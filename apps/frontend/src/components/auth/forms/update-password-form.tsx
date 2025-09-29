@@ -71,7 +71,7 @@ export function UpdatePasswordForm() {
 		<div className="grid gap-2">
 			<div>
 				<p className="text-md font-semibold leading-none tracking-tight">
-					Password:
+					Password
 				</p>
 				<p className="text-sm text-muted-foreground mt-1.5">
 					If you created your account with the Google provider, please request a
