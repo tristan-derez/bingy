@@ -7,19 +7,17 @@ export function notFoundComponent() {
 	return (
 		<div className="min-h-screen flex flex-col items-center justify-center">
 			<div className="grid gap-6">
-				<h1 className="text-4xl font-bold text-gray-800 dark:text-gray-100 text-center">
-					Oops!
-				</h1>
+				<h1 className="text-4xl font-bold text-center">Oops!</h1>
 				<img
 					src={notFound}
 					alt="Not found illustration"
 					className="h-64 mx-auto"
 				/>
 				<div className="space-y-2">
-					<p className="text-lg text-gray-600 dark:text-gray-300 text-center">
+					<p className="text-lg text-center text-muted-foreground">
 						The page you're looking for doesn't exist or has been moved.
 					</p>
-					<div className="text-lg text-gay-600 dark:text-gray-300 text-center">
+					<div className="text-lg text-center">
 						<Button onClick={() => navigate({ to: "/" })}>Go home</Button>
 					</div>
 				</div>

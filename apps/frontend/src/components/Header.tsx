@@ -6,7 +6,7 @@ import { MdSupport } from "react-icons/md";
 import { PiUserFill } from "react-icons/pi";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { toast } from "sonner";
-import { SettingsDialog } from "@/components/settings-dialog";
+import { SettingsDialog } from "@/components/auth/settings-dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {

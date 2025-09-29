@@ -2,7 +2,7 @@ import { FaMoon, FaSun } from "react-icons/fa";
 import { GrSystem } from "react-icons/gr";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { useTheme } from "./theme/use-theme";
+import { useTheme } from "./use-theme";
 
 export function ModeToggle() {
 	const { theme, setTheme } = useTheme();
@@ -10,29 +10,27 @@ export function ModeToggle() {
 	const handleThemeChange = (newTheme: "light" | "dark" | "system") => {
 		setTheme(newTheme);
 
-		if (newTheme === "light") {
-			const messages = [
+		const messages: Record<typeof newTheme, string[]> = {
+			light: [
 				"Let light shine out of darkness",
 				"Welcome to the bright side! Don't forget your sunglasses 😎",
 				"Let there be light!",
 				"The darkness always passes, and the light comes back",
-			];
-			toast.success(messages[Math.floor(Math.random() * messages.length)]);
-		} else if (newTheme === "dark") {
-			const messages = [
+			],
+			dark: [
 				"Welcome to the dark side!",
 				"So the darkness shall be the light",
 				"Going incognito from the sun!",
-			];
-			toast.success(messages[Math.floor(Math.random() * messages.length)]);
-		} else if (newTheme === "system") {
-			const messages = [
+			],
+			system: [
 				"Following your system's lead!",
 				"Passing the buck to your OS... classic move!",
 				"I'm just here for the ride, your OS is driving",
-			];
-			toast.success(messages[Math.floor(Math.random() * messages.length)]);
-		}
+			],
+		};
+
+		const choices = messages[newTheme];
+		toast.success(choices[Math.floor(Math.random() * choices.length)]);
 	};
 
 	return (

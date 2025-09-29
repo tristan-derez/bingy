@@ -73,7 +73,9 @@ export function DeleteAccountTrigger() {
 
 			<AlertDialog open={open} onOpenChange={setOpen}>
 				<AlertDialogTrigger asChild>
-					<Button variant="outline">Delete account</Button>
+					<Button variant="destructive" className="mt-2">
+						Delete account
+					</Button>
 				</AlertDialogTrigger>
 
 				<AlertDialogContent>

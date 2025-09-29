@@ -3,7 +3,7 @@ import type { ThemeProviderState } from "./types";
 
 const initialState: ThemeProviderState = {
 	theme: "system",
-	setTheme: () => null,
+	setTheme: () => undefined,
 };
 
 export const ThemeProviderContext =

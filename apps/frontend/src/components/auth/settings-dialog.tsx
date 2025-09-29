@@ -1,5 +1,5 @@
 import { IoSettingsSharp } from "react-icons/io5";
-import { ModeToggle } from "@/components/theme-toggle";
+import { ModeToggle } from "@/components/theme/theme-toggle";
 import {
 	Dialog,
 	DialogContent,
