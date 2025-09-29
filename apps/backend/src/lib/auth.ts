@@ -7,6 +7,7 @@ import { db } from "#lib/database";
 import * as schema from "#schemas/user";
 import env from "./env";
 import { logger } from "./logger";
+import { hash, verify } from "./password-processing";
 
 export const auth = betterAuth({
 	appName: "bingy",
@@ -67,6 +68,10 @@ export const auth = betterAuth({
 		enabled: true,
 		minPasswordLength: 8,
 		maxPasswordLength: 256,
+		password: {
+			hash: hash,
+			verify: verify,
+		},
 		sendResetPassword: async ({ user, url }) => {
 			await sendResetPasswordEmail({
 				to: user.email,
