@@ -20,7 +20,6 @@ interface OTPEmailProps {
 }
 
 const main = {
-	backgroundColor: "#ffffff",
 	color: "#212121",
 	fontFamily:
 		'-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
@@ -34,12 +33,11 @@ const logo = {
 const container = {
 	padding: "20px",
 	margin: "0 auto",
-	backgroundColor: "#eee",
 };
 
 const hr = {
 	borderColor: "#cccccc",
-	margin: "20px 0",
+	margin: "12px 0",
 };
 
 const text = {
@@ -47,7 +45,7 @@ const text = {
 	fontFamily:
 		"-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
 	fontSize: "14px",
-	margin: "24px 0",
+	margin: "12px 0",
 };
 
 const validityText = {
@@ -98,7 +96,7 @@ const OTPEmail: React.FC<OTPEmailProps> = ({
 						style={logo}
 					/>
 					<br />
-					<Text style={paragraph}>Hi {userName},</Text>
+					<Text style={paragraph}>{userName ? `Hi ${userName},` : `Hi,`}</Text>
 					<Text style={paragraph}>
 						Welcome to Bingy, the entertainment platform that helps you keep
 						track of your favorite movies, shows, games, books, and manga. Click

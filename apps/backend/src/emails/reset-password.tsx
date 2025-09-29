@@ -20,7 +20,6 @@ interface ResetPasswordEmailProps {
 }
 
 const main = {
-	backgroundColor: "#ffffff",
 	color: "#212121",
 	fontFamily:
 		'-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
@@ -34,12 +33,11 @@ const logo = {
 const container = {
 	padding: "20px",
 	margin: "0 auto",
-	backgroundColor: "#eee",
 };
 
 const hr = {
 	borderColor: "#cccccc",
-	margin: "20px 0",
+	margin: "12px 0",
 };
 
 const text = {
@@ -47,7 +45,7 @@ const text = {
 	fontFamily:
 		"-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
 	fontSize: "14px",
-	margin: "24px 0",
+	margin: "12px 0",
 };
 
 const validityText = {
@@ -78,7 +76,7 @@ const button = {
 
 const ResetPasswordEmail: React.FC<ResetPasswordEmailProps> = ({
 	url,
-	expirationMinutes,
+	expirationMinutes = 15,
 	userName,
 }) => {
 	return (
@@ -95,7 +93,7 @@ const ResetPasswordEmail: React.FC<ResetPasswordEmailProps> = ({
 						style={logo}
 					/>
 					<br />
-					<Text style={paragraph}>Hi {userName},</Text>
+					<Text style={paragraph}>{userName ? `Hi ${userName},` : `Hi,`}</Text>
 					<Text style={paragraph}>
 						We received a request to reset your password for your Bingy account.
 						Click the button below to create a new password.
