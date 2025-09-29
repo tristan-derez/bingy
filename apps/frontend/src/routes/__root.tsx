@@ -3,6 +3,7 @@ import type { QueryClient } from "@tanstack/react-query";
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import Header from "@/components/Header";
+import { notFoundComponent } from "@/components/not-found";
 import appCss from "@/styles/app.css?url";
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
 
@@ -49,4 +50,5 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 			/>
 		</div>
 	),
+	notFoundComponent: notFoundComponent,
 });
