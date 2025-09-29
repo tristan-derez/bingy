@@ -5,7 +5,6 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { DialogClose } from "@/components/ui/dialog";
 import {
 	Form,
 	FormControl,
@@ -136,8 +135,6 @@ export function UpdatePasswordForm() {
 					</fieldset>
 				</form>
 			</Form>
-
-			<DialogClose ref={closeButtonRef} style={{ display: "none" }} />
 		</div>
 	);
 }

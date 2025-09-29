@@ -4,6 +4,7 @@ import { FaGithub } from "react-icons/fa";
 import { IoLogOutSharp } from "react-icons/io5";
 import { MdSupport } from "react-icons/md";
 import { PiUserFill } from "react-icons/pi";
+import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { toast } from "sonner";
 import { SettingsDialog } from "@/components/settings-dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -18,7 +19,6 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { authClient } from "@/lib/auth-client";
-import { AccountDialog } from "./account-dialog";
 
 export default function Header() {
 	const router = useRouter();
@@ -128,8 +128,11 @@ export default function Header() {
 											Profile
 										</Link>
 									</DropdownMenuItem>
-									<DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-										<AccountDialog />
+									<DropdownMenuItem asChild>
+										<Link to="/settings">
+											<RiVerifiedBadgeFill />
+											Account
+										</Link>
 									</DropdownMenuItem>
 									<DropdownMenuItem onSelect={(e) => e.preventDefault()}>
 										<SettingsDialog />
