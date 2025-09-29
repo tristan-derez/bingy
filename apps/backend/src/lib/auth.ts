@@ -2,7 +2,7 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { twoFactor } from "better-auth/plugins";
 import { redis } from "bun";
-import { sendOTPEmail, sendResetPasswordEmail } from "#emails/index";
+import { sendEmail } from "#emails/index";
 import { db } from "#lib/database";
 import * as schema from "#schemas/user";
 import env from "./env";
@@ -58,6 +58,38 @@ export const auth = betterAuth({
 		fields: {
 			image: "avatarUrl",
 		},
+		deleteUser: {
+			enabled: true,
+			sendDeleteAccountVerification: async ({ user, url }) => {
+				await sendEmail({
+					type: "account-deletion",
+					to: user.email,
+					url,
+					fromEmail: env.TRANSACTIONAL_EMAIL,
+					fromName: env.APP_NAME,
+					subject: "Account deletion",
+					expirationMinutes: 15,
+					userName: user.name,
+				});
+			},
+			deleteTokenExpiresIn: 900, // 15 min
+			afterDelete: async (user) => {
+				const deletionDate = new Date().toLocaleDateString("en-US", {
+					year: "numeric",
+					month: "long",
+					day: "numeric",
+				});
+
+				await sendEmail({
+					type: "account-deleted",
+					to: user.email,
+					fromEmail: env.TRANSACTIONAL_EMAIL,
+					fromName: env.APP_NAME,
+					userName: user.name,
+					date: deletionDate,
+				});
+			},
+		},
 	},
 	account: {
 		fields: {
@@ -73,7 +105,8 @@ export const auth = betterAuth({
 			verify: verify,
 		},
 		sendResetPassword: async ({ user, url }) => {
-			await sendResetPasswordEmail({
+			await sendEmail({
+				type: "reset-password",
 				to: user.email,
 				url: url,
 				fromEmail: env.TRANSACTIONAL_EMAIL,
@@ -90,7 +123,8 @@ export const auth = betterAuth({
 	},
 	emailVerification: {
 		sendVerificationEmail: async ({ user, url }) => {
-			await sendOTPEmail({
+			await sendEmail({
+				type: "otp",
 				to: user.email,
 				url: url,
 				fromEmail: env.TRANSACTIONAL_EMAIL,
