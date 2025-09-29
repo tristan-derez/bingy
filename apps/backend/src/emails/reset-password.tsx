@@ -93,6 +93,7 @@ const ResetPasswordEmail: React.FC<ResetPasswordEmailProps> = ({
 						style={logo}
 					/>
 					<br />
+					<Hr style={hr} />
 					<Text style={paragraph}>{userName ? `Hi ${userName},` : `Hi,`}</Text>
 					<Text style={paragraph}>
 						We received a request to reset your password for your Bingy account.

@@ -96,6 +96,7 @@ const OTPEmail: React.FC<OTPEmailProps> = ({
 						style={logo}
 					/>
 					<br />
+					<Hr style={hr} />
 					<Text style={paragraph}>{userName ? `Hi ${userName},` : `Hi,`}</Text>
 					<Text style={paragraph}>
 						Welcome to Bingy, the entertainment platform that helps you keep
