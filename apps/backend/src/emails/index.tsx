@@ -4,6 +4,7 @@ import env from "../lib/env";
 import { logger } from "../lib/logger";
 import AccountDeletedEmail from "./account-deleted";
 import DeleteAccountEmail from "./delete-account";
+import EmailChangeEmail from "./email-change";
 import OTPEmail from "./otp-verification";
 import ResetPasswordEmail from "./reset-password";
 
@@ -32,6 +33,13 @@ type EmailType =
 			type: "account-deleted";
 			subject?: string;
 			date: string;
+	  }
+	| {
+			type: "email-change";
+			subject?: string;
+			expirationInMinutes: number;
+			url: string;
+			newEmail: string;
 	  };
 
 interface BaseEmailParams {
@@ -55,6 +63,7 @@ const getEmailComponent = (
 	url?: string,
 	expirationMinutes?: number,
 	date?: string,
+	newEmail?: string,
 ): ReactElement => {
 	switch (type) {
 		case "otp":
@@ -83,7 +92,16 @@ const getEmailComponent = (
 			);
 		case "account-deleted":
 			return (
-				<AccountDeletedEmail userName={userName} deletionDate={date ?? ""} />
+				<AccountDeletedEmail deletionDate={date ?? ""} userName={userName} />
+			);
+		case "email-change":
+			return (
+				<EmailChangeEmail
+					url={url ?? ""}
+					expirationMinutes={expirationMinutes ?? 0}
+					userName={userName}
+					newEmail={newEmail ?? ""}
+				/>
 			);
 	}
 };
@@ -98,6 +116,8 @@ const getDefaultSubject = (type: EmailType["type"]): string => {
 			return "Confirm the deletion of your account";
 		case "account-deleted":
 			return "Your account has been deleted";
+		case "email-change":
+			return "Confirm email change";
 	}
 };
 
