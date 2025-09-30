@@ -62,7 +62,7 @@ export const auth = betterAuth({
 			enabled: true,
 			sendChangeEmailVerification: async ({ user, newEmail, url }) => {
 				await sendEmail({
-					type: "email-change",
+					type: "update-email",
 					to: user.email,
 					url,
 					fromEmail: env.TRANSACTIONAL_EMAIL,
@@ -77,7 +77,7 @@ export const auth = betterAuth({
 			enabled: true,
 			sendDeleteAccountVerification: async ({ user, url }) => {
 				await sendEmail({
-					type: "account-deletion",
+					type: "delete-account",
 					to: user.email,
 					url,
 					fromEmail: env.TRANSACTIONAL_EMAIL,
@@ -96,7 +96,7 @@ export const auth = betterAuth({
 				});
 
 				await sendEmail({
-					type: "account-deleted",
+					type: "deleted-account",
 					to: user.email,
 					fromEmail: env.TRANSACTIONAL_EMAIL,
 					fromName: env.APP_NAME,
@@ -139,7 +139,7 @@ export const auth = betterAuth({
 	emailVerification: {
 		sendVerificationEmail: async ({ user, url }) => {
 			await sendEmail({
-				type: "otp",
+				type: "verification-email",
 				to: user.email,
 				url: url,
 				fromEmail: env.TRANSACTIONAL_EMAIL,

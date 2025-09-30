@@ -42,7 +42,7 @@ const paragraph = {
 	lineHeight: "26px",
 };
 
-const AccountDeletedEmail: React.FC<AccountDeletedEmailProps> = ({
+const DeletedAccountEmail: React.FC<AccountDeletedEmailProps> = ({
 	userName,
 	deletionDate = "September 29, 2025",
 }) => {
@@ -86,4 +86,4 @@ const AccountDeletedEmail: React.FC<AccountDeletedEmailProps> = ({
 	);
 };
 
-export default AccountDeletedEmail;
+export default DeletedAccountEmail;

@@ -75,7 +75,7 @@ const button = {
 	padding: "12px",
 };
 
-const EmailChangeEmail: React.FC<EmailChangeEmailProps> = ({
+const UpdateEmailEmail: React.FC<EmailChangeEmailProps> = ({
 	url,
 	expirationMinutes = 15,
 	userName,
@@ -126,4 +126,4 @@ const EmailChangeEmail: React.FC<EmailChangeEmailProps> = ({
 	);
 };
 
-export default EmailChangeEmail;
+export default UpdateEmailEmail;

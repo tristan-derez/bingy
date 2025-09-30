@@ -13,7 +13,7 @@ import {
 
 import type React from "react";
 
-interface OTPEmailProps {
+interface VerificationEmailProps {
 	url: string;
 	expirationMinutes: number;
 	userName: string;
@@ -74,7 +74,7 @@ const button = {
 	padding: "12px",
 };
 
-const OTPEmail: React.FC<OTPEmailProps> = ({
+const VerificationEmail: React.FC<VerificationEmailProps> = ({
 	url,
 	expirationMinutes = 15,
 	userName,
@@ -127,4 +127,4 @@ const OTPEmail: React.FC<OTPEmailProps> = ({
 	);
 };
 
-export default OTPEmail;
+export default VerificationEmail;

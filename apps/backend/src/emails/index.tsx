@@ -2,17 +2,17 @@ import type { ReactElement } from "react";
 import { Resend } from "resend";
 import env from "../lib/env";
 import { logger } from "../lib/logger";
-import AccountDeletedEmail from "./account-deleted";
 import DeleteAccountEmail from "./delete-account";
-import EmailChangeEmail from "./email-change";
-import OTPEmail from "./otp-verification";
+import DeletedAccountEmail from "./deleted-account";
 import ResetPasswordEmail from "./reset-password";
+import UpdateEmailEmail from "./update-email";
+import VerificationEmail from "./verification-email";
 
 const resend = new Resend(env.RESEND_API_KEY);
 
 type EmailType =
 	| {
-			type: "otp";
+			type: "verification-email";
 			subject?: string;
 			expirationMinutes: number;
 			url: string;
@@ -24,18 +24,18 @@ type EmailType =
 			url: string;
 	  }
 	| {
-			type: "account-deletion";
+			type: "delete-account";
 			subject?: string;
 			expirationMinutes: number;
 			url: string;
 	  }
 	| {
-			type: "account-deleted";
+			type: "deleted-account";
 			subject?: string;
 			date: string;
 	  }
 	| {
-			type: "email-change";
+			type: "update-email";
 			subject?: string;
 			expirationInMinutes: number;
 			url: string;
@@ -66,9 +66,9 @@ const getEmailComponent = (
 	newEmail?: string,
 ): ReactElement => {
 	switch (type) {
-		case "otp":
+		case "verification-email":
 			return (
-				<OTPEmail
+				<VerificationEmail
 					url={url ?? ""}
 					expirationMinutes={expirationMinutes ?? 0}
 					userName={userName}
@@ -82,7 +82,7 @@ const getEmailComponent = (
 					userName={userName}
 				/>
 			);
-		case "account-deletion":
+		case "delete-account":
 			return (
 				<DeleteAccountEmail
 					url={url ?? ""}
@@ -90,13 +90,13 @@ const getEmailComponent = (
 					userName={userName}
 				/>
 			);
-		case "account-deleted":
+		case "deleted-account":
 			return (
-				<AccountDeletedEmail deletionDate={date ?? ""} userName={userName} />
+				<DeletedAccountEmail deletionDate={date ?? ""} userName={userName} />
 			);
-		case "email-change":
+		case "update-email":
 			return (
-				<EmailChangeEmail
+				<UpdateEmailEmail
 					url={url ?? ""}
 					expirationMinutes={expirationMinutes ?? 0}
 					userName={userName}
@@ -108,15 +108,15 @@ const getEmailComponent = (
 
 const getDefaultSubject = (type: EmailType["type"]): string => {
 	switch (type) {
-		case "otp":
+		case "verification-email":
 			return "Verify your email";
 		case "reset-password":
 			return "Reset your password";
-		case "account-deletion":
+		case "delete-account":
 			return "Confirm the deletion of your account";
-		case "account-deleted":
+		case "deleted-account":
 			return "Your account has been deleted";
-		case "email-change":
+		case "update-email":
 			return "Confirm email change";
 	}
 };
