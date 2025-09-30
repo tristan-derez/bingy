@@ -4,7 +4,6 @@ const envSchema = z.object({
 	PORT: z.string().default("3000"),
 	LOG_LEVEL: z.string().default("info"),
 	NODE_ENV: z.enum(["development", "production"]).default("development"),
-	JWT_SECRET_KEY: z.string(),
 	PEPPER_KEY: z.string(),
 	DB_HOST: z.string().default("localhost"),
 	DB_USER: z.string(),
@@ -14,6 +13,8 @@ const envSchema = z.object({
 	DB_URL: z.string(),
 	REDIS_HOST: z.string().default("localhost"),
 	REDIS_PORT: z.string().default("6379"),
+	REDIS_PASSWORD: z.string(),
+	REDIS_URL: z.string().default("redis:/localhost:6379"),
 	GOOGLE_CLIENT_ID: z.string(),
 	GOOGLE_CLIENT_SECRET: z.string(),
 	DISCORD_CLIENT_ID: z.string(),
@@ -22,6 +23,9 @@ const envSchema = z.object({
 	API_VERSION: z.string(),
 	FRONT_URL_DEV: z.string(),
 	FRONT_URL_PROD: z.string(),
+	RESEND_API_KEY: z.string(),
+	TRANSACTIONAL_EMAIL: z.string(),
+	APP_NAME: z.string(),
 });
 
-export default envSchema.parse(Bun.env);
+export default envSchema.parse(process.env);

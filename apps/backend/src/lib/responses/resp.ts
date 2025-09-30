@@ -5,7 +5,7 @@ const serveData = <T>(c: Context, data: T) => {
 	return c.json({ data });
 };
 
-const serve = <T>(c: Context, status: ContentfulStatusCode, data: T) => {
+const serve = <T>(c: Context, data: T, status: ContentfulStatusCode) => {
 	return c.json({ data }, status);
 };
 

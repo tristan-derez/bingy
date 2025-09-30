@@ -7,15 +7,11 @@
 	},
 	"files": {
 		"ignoreUnknown": false,
-		"includes": [
-			"**",
-			"!**/*.gen.ts",
-			"!**/package.json"
-		]
+		"experimentalScannerIgnores": ["node_modules", "dist", ".git", ".vscode"]
 	},
 	"formatter": {
 		"enabled": true,
-		"formatWithErrors": false,
+		"formatWithErrors": true,
 		"attributePosition": "auto",
 		"indentStyle": "tab",
 		"indentWidth": 2,
@@ -42,14 +38,6 @@
 	"json": {
 		"formatter": {
 			"trailingCommas": "none"
-		}
-	},
-	"assist": {
-		"enabled": true,
-		"actions": {
-			"source": {
-				"organizeImports": "on"
-			}
 		}
 	}
 }

@@ -1,15 +1,9 @@
 import type { Logger as drizzleLogger } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-import type { users } from "#schemas/user";
 import * as schema from "#schemas/user";
 import env from "./env";
 import { logger } from "./logger";
-
-export type User = typeof users.$inferSelect;
-export type NewUser = typeof users.$inferInsert;
-export type OauthAccount = typeof schema.oauthAccounts.$inferSelect;
-export type NewOauthAccount = typeof schema.oauthAccounts.$inferInsert;
 
 const dbLogger: drizzleLogger = {
 	logQuery(query: string, params: unknown[]): void {
