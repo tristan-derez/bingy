@@ -111,8 +111,9 @@ const UpdateEmailEmail: React.FC<EmailChangeEmailProps> = ({
 						</Text>
 					</Section>
 					<Text style={text}>
-						If you didn't request this email change, please ignore this email.
-						Your email address will remain unchanged.
+						If you didn't request this email change, your account may be
+						compromised. Please <strong>immediately</strong> secure your account
+						by changing your password.
 					</Text>
 					<Text style={paragraph}>
 						Best,
