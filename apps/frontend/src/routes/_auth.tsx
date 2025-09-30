@@ -10,5 +10,7 @@ export const Route = createFileRoute("/_auth")({
 		if (!session?.data?.user) {
 			throw redirect({ to: "/signin" });
 		}
+
+		return { user: session.data.user };
 	},
 });

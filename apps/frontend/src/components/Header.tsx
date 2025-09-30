@@ -129,7 +129,7 @@ export default function Header() {
 										</Link>
 									</DropdownMenuItem>
 									<DropdownMenuItem asChild>
-										<Link to="/settings">
+										<Link to="/account">
 											<RiVerifiedBadgeFill />
 											Account
 										</Link>

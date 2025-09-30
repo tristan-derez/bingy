@@ -183,7 +183,7 @@ export function SignInForm() {
 				<div className="flex gap-2">
 					<OAuthButton
 						icon={FcGoogle}
-						label="Sign In with Google"
+						label="Sign in with Google"
 						text="Google"
 						onClick={() => handleOAuthSignIn("google")}
 					/>

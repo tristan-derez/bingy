@@ -76,7 +76,7 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
 	return (
 		<Card className="mx-auto max-w-sm min-w-[420px]">
 			<CardHeader>
-				<CardTitle className="text-2xl">Reset Password</CardTitle>
+				<CardTitle className="text-2xl">Reset password</CardTitle>
 				<CardDescription>
 					<p>Enter your new password below.</p>
 				</CardDescription>
@@ -93,7 +93,7 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
 								name="newPassword"
 								render={({ field }) => (
 									<FormItem className="grid gap-2">
-										<FormLabel htmlFor="newPassword">New Password</FormLabel>
+										<FormLabel htmlFor="newPassword">New password</FormLabel>
 										<FormControl>
 											<Input
 												id={`${id}-newPassword`}
@@ -114,10 +114,10 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
 								{isSubmitting ? (
 									<span className="flex items-center justify-center gap-2">
 										<Loader2 className="animate-spin h-4 w-4" />
-										Resetting Password
+										Resetting password...
 									</span>
 								) : (
-									"Reset Password"
+									"Reset password"
 								)}
 							</Button>
 						</fieldset>

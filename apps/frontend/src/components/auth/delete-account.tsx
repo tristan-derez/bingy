@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
 import React, { useId } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -74,7 +75,7 @@ export function DeleteAccountTrigger() {
 			<AlertDialog open={open} onOpenChange={setOpen}>
 				<AlertDialogTrigger asChild>
 					<Button variant="destructive" className="mt-2">
-						Delete account
+						Delete Account
 					</Button>
 				</AlertDialogTrigger>
 
@@ -115,7 +116,14 @@ export function DeleteAccountTrigger() {
 							<AlertDialogFooter>
 								<AlertDialogCancel>Cancel</AlertDialogCancel>
 								<Button type="submit" disabled={isSubmitting}>
-									{isSubmitting ? "Deleting…" : "Continue"}
+									{isSubmitting ? (
+										<span className="flex items-center justify-center gap-2">
+											<Loader2 className="animate-spin h-4 w-4" />
+											Sending confirmation email
+										</span>
+									) : (
+										"Delete Account"
+									)}
 								</Button>
 							</AlertDialogFooter>
 						</form>

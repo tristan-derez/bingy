@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouteContext } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
 import React, { useId } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
@@ -15,40 +16,43 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
-import { updatePasswordFormSchema } from "@/schemas/password/update-password";
+import { updateEmailSchema } from "@/schemas/update-email-schema";
 
-export function UpdatePasswordForm() {
+export function UpdateEmailForm() {
 	const [isSubmitting, setIsSubmitting] = React.useState(false);
-	const [_, setIsSuccess] = React.useState(false);
 	const id = useId();
+	const { user } = useRouteContext({ from: "/_auth" });
 
-	const form = useForm<z.infer<typeof updatePasswordFormSchema>>({
-		resolver: zodResolver(updatePasswordFormSchema),
+	const form = useForm<z.infer<typeof updateEmailSchema>>({
+		resolver: zodResolver(updateEmailSchema),
 		defaultValues: {
-			newPassword: "",
-			currentPassword: "",
+			newEmail: "",
 		},
 	});
 
-	const onFormSubmit: SubmitHandler<
-		z.infer<typeof updatePasswordFormSchema>
-	> = async (formData) => {
+	const onFormSubmit: SubmitHandler<z.infer<typeof updateEmailSchema>> = async (
+		formData,
+	) => {
 		setIsSubmitting(true);
 		try {
-			const { data, error } = await authClient.changePassword({
-				newPassword: formData.newPassword,
-				currentPassword: formData.currentPassword,
-				revokeOtherSessions: true,
+			const { data, error } = await authClient.changeEmail({
+				newEmail: formData.newEmail,
+				callbackURL: "http://localhost:5173/account",
 			});
 
 			if (error) {
-				toast.error(error.message || "Failed to reset password. Try again.");
+				toast.error(error.message || "Failed to change your email");
 				return;
 			}
 
 			if (data) {
-				toast.success("Password reset successfully!");
-				setIsSuccess(true);
+				if (data.status) {
+					toast.success(
+						`Verification email sent to ${formData.newEmail}. Please check your inbox.`,
+					);
+				} else {
+					toast.success("Email changed successfully.");
+				}
 			}
 		} catch (err) {
 			const message =
@@ -63,52 +67,47 @@ export function UpdatePasswordForm() {
 			setIsSubmitting(false);
 		}
 	};
-
 	return (
 		<div className="grid gap-2">
 			<div>
 				<p className="text-md font-semibold leading-none tracking-tight">
-					Password
+					Email
 				</p>
 				<p className="text-sm text-muted-foreground mt-1.5">
-					If you created your account with the Google provider, please request a
-					new password in the sign-in form
+					{user.emailVerified
+						? "A verification email will be sent to your current email to approve the change."
+						: "Your email will be updated immediately as your current email isn't verified."}
 				</p>
 			</div>
 
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onFormSubmit)}>
 					<fieldset disabled={isSubmitting} className="grid gap-2">
+						<FormItem className="grid gap-2">
+							<FormLabel htmlFor={`${id}-currentEmail`}>
+								Current email
+							</FormLabel>
+							<FormControl>
+								<Input
+									id={`${id}-currentEmail`}
+									type="email"
+									value={user.email}
+									disabled
+									className="bg-muted"
+								/>
+							</FormControl>
+						</FormItem>
 						<FormField
 							control={form.control}
-							name="currentPassword"
+							name="newEmail"
 							render={({ field }) => (
 								<FormItem className="grid gap-2">
-									<FormLabel htmlFor="newPassword">Current password</FormLabel>
+									<FormLabel htmlFor="newPassword">New email</FormLabel>
 									<FormControl>
 										<Input
-											id={`${id}-currentPassword`}
-											type="password"
-											autoComplete="current-password"
-											required
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name="newPassword"
-							render={({ field }) => (
-								<FormItem className="grid gap-2">
-									<FormLabel htmlFor="newPassword">New password</FormLabel>
-									<FormControl>
-										<Input
-											id={`${id}-newPassword`}
-											type="password"
-											autoComplete="new-password"
+											id={`${id}-newEmail`}
+											type="email"
+											autoComplete="email"
 											required
 											{...field}
 										/>
@@ -124,10 +123,10 @@ export function UpdatePasswordForm() {
 							{isSubmitting ? (
 								<span className="flex items-center justify-center gap-2">
 									<Loader2 className="animate-spin h-4 w-4" />
-									Updating password
+									Updating email...
 								</span>
 							) : (
-								"Reset password"
+								"Update email"
 							)}
 						</Button>
 					</fieldset>

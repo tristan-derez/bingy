@@ -17,9 +17,9 @@ import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthWelcomeRouteImport } from './routes/_auth.welcome'
-import { Route as AuthSettingsRouteImport } from './routes/_auth.settings'
 import { Route as AuthProfileRouteImport } from './routes/_auth.profile'
 import { Route as AuthDashboardRouteImport } from './routes/_auth.dashboard'
+import { Route as AuthAccountRouteImport } from './routes/_auth.account'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -60,11 +60,6 @@ const AuthWelcomeRoute = AuthWelcomeRouteImport.update({
   path: '/welcome',
   getParentRoute: () => AuthRoute,
 } as any)
-const AuthSettingsRoute = AuthSettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
-  getParentRoute: () => AuthRoute,
-} as any)
 const AuthProfileRoute = AuthProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
@@ -75,6 +70,11 @@ const AuthDashboardRoute = AuthDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthAccountRoute = AuthAccountRouteImport.update({
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => AuthRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -83,9 +83,9 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/account': typeof AuthAccountRoute
   '/dashboard': typeof AuthDashboardRoute
   '/profile': typeof AuthProfileRoute
-  '/settings': typeof AuthSettingsRoute
   '/welcome': typeof AuthWelcomeRoute
 }
 export interface FileRoutesByTo {
@@ -95,9 +95,9 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/account': typeof AuthAccountRoute
   '/dashboard': typeof AuthDashboardRoute
   '/profile': typeof AuthProfileRoute
-  '/settings': typeof AuthSettingsRoute
   '/welcome': typeof AuthWelcomeRoute
 }
 export interface FileRoutesById {
@@ -109,9 +109,9 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/_auth/account': typeof AuthAccountRoute
   '/_auth/dashboard': typeof AuthDashboardRoute
   '/_auth/profile': typeof AuthProfileRoute
-  '/_auth/settings': typeof AuthSettingsRoute
   '/_auth/welcome': typeof AuthWelcomeRoute
 }
 export interface FileRouteTypes {
@@ -123,9 +123,9 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/signin'
     | '/signup'
+    | '/account'
     | '/dashboard'
     | '/profile'
-    | '/settings'
     | '/welcome'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -135,9 +135,9 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/signin'
     | '/signup'
+    | '/account'
     | '/dashboard'
     | '/profile'
-    | '/settings'
     | '/welcome'
   id:
     | '__root__'
@@ -148,9 +148,9 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/signin'
     | '/signup'
+    | '/_auth/account'
     | '/_auth/dashboard'
     | '/_auth/profile'
-    | '/_auth/settings'
     | '/_auth/welcome'
   fileRoutesById: FileRoutesById
 }
@@ -222,13 +222,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthWelcomeRouteImport
       parentRoute: typeof AuthRoute
     }
-    '/_auth/settings': {
-      id: '/_auth/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof AuthSettingsRouteImport
-      parentRoute: typeof AuthRoute
-    }
     '/_auth/profile': {
       id: '/_auth/profile'
       path: '/profile'
@@ -243,20 +236,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthDashboardRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/account': {
+      id: '/_auth/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AuthAccountRouteImport
+      parentRoute: typeof AuthRoute
+    }
   }
 }
 
 interface AuthRouteChildren {
+  AuthAccountRoute: typeof AuthAccountRoute
   AuthDashboardRoute: typeof AuthDashboardRoute
   AuthProfileRoute: typeof AuthProfileRoute
-  AuthSettingsRoute: typeof AuthSettingsRoute
   AuthWelcomeRoute: typeof AuthWelcomeRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
+  AuthAccountRoute: AuthAccountRoute,
   AuthDashboardRoute: AuthDashboardRoute,
   AuthProfileRoute: AuthProfileRoute,
-  AuthSettingsRoute: AuthSettingsRoute,
   AuthWelcomeRoute: AuthWelcomeRoute,
 }
 

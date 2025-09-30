@@ -78,7 +78,7 @@ export function ForgotPasswordForm({ email }: ForgotPasswordFormProps) {
 	return (
 		<Card className="mx-auto max-w-sm min-w-[420px]">
 			<CardHeader>
-				<CardTitle className="text-2xl">Reset Password</CardTitle>
+				<CardTitle className="text-2xl">Reset password</CardTitle>
 				<CardDescription>
 					<p>Enter your email below.</p>
 				</CardDescription>
