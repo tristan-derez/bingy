@@ -110,6 +110,9 @@ export const auth = betterAuth({
 		fields: {
 			password: "passwordHash",
 		},
+		accountLinking: {
+			enabled: true,
+		},
 	},
 	emailAndPassword: {
 		enabled: true,
