@@ -12,9 +12,16 @@ interface OAuthButtonProps {
 	label: string;
 	text: string;
 	onClick: () => void;
+	disabled?: boolean;
 }
 
-function OAuthButton({ icon: Icon, label, text, onClick }: OAuthButtonProps) {
+function OAuthButton({
+	icon: Icon,
+	label,
+	text,
+	onClick,
+	disabled,
+}: OAuthButtonProps) {
 	return (
 		<TooltipProvider>
 			<Tooltip>
@@ -24,6 +31,7 @@ function OAuthButton({ icon: Icon, label, text, onClick }: OAuthButtonProps) {
 						className="w-full hover:cursor-pointer"
 						aria-label={`${label}`}
 						onClick={onClick}
+						disabled={disabled}
 					>
 						<Icon className="h-5 w-5" />
 						<p>{text}</p>

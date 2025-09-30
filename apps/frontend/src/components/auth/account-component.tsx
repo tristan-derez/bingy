@@ -3,6 +3,7 @@ import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { DeleteAccountTrigger } from "./delete-account";
 import { UpdateEmailForm } from "./forms/update-email-form";
+import { LinkAccountComponent } from "./link-account";
 
 export function AccountComponent() {
 	return (
@@ -11,6 +12,8 @@ export function AccountComponent() {
 			<CardDescription>
 				Make changes to your account informations here.
 			</CardDescription>
+			<Separator />
+			<LinkAccountComponent />
 			<Separator />
 			<UpdateEmailForm />
 			<Separator />
