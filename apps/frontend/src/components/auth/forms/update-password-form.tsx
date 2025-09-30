@@ -21,7 +21,6 @@ export function UpdatePasswordForm() {
 	const [isSubmitting, setIsSubmitting] = React.useState(false);
 	const [_, setIsSuccess] = React.useState(false);
 	const id = useId();
-	const closeButtonRef = useRef<HTMLButtonElement>(null);
 
 	const form = useForm<z.infer<typeof updatePasswordFormSchema>>({
 		resolver: zodResolver(updatePasswordFormSchema),
@@ -50,7 +49,6 @@ export function UpdatePasswordForm() {
 			if (data) {
 				toast.success("Password reset successfully!");
 				setIsSuccess(true);
-				closeButtonRef.current?.click();
 			}
 		} catch (err) {
 			const message =
