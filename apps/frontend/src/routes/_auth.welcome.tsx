@@ -1,10 +1,14 @@
-import { createFileRoute, useRouter, useSearch } from "@tanstack/react-router";
+import {
+	createFileRoute,
+	useRouteContext,
+	useRouter,
+	useSearch,
+} from "@tanstack/react-router";
 import { toast } from "sonner";
 import z from "zod";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { useSession } from "@/hooks/session";
 import { authClient } from "@/lib/auth-client";
 
 const welcomeSearchSchema = z.object({
@@ -17,8 +21,8 @@ export const Route = createFileRoute("/_auth/welcome")({
 });
 
 export function Welcome() {
+	const { user } = useRouteContext({ from: "/_auth" });
 	const router = useRouter();
-	const { data: session, isPending } = useSession();
 	const error = useSearch({
 		from: "/_auth/welcome",
 		select: (search) => search.error,
@@ -26,9 +30,9 @@ export function Welcome() {
 
 	const handleResendEmail = async () => {
 		try {
-			if (session?.user) {
+			if (user) {
 				await authClient.sendVerificationEmail({
-					email: session.user.email,
+					email: user.email,
 					callbackURL: `http://localhost:5173/welcome`,
 				});
 				toast.success("Verification email sent!", {
@@ -45,7 +49,7 @@ export function Welcome() {
 		}
 	};
 
-	if (error === "token_expired" && session?.user.emailVerified === false) {
+	if (error === "token_expired" && user.emailVerified === false) {
 		toast.error("Link expired", {
 			id: "token-expired-toast",
 			duration: Infinity,
@@ -55,10 +59,10 @@ export function Welcome() {
 
 	return (
 		<div className="min-h-svh flex flex-col items-center justify-center px-4 space-y-6">
-			<h1 className="text-3xl font-bold mt-2">Welcome {session?.user.name}!</h1>
+			<h1 className="text-3xl font-bold mt-2">Welcome {user.name}!</h1>
 
 			<Card className="max-w-lg mx-auto p-6">
-				{session?.user && !session.user.emailVerified && (
+				{user && !user.emailVerified && (
 					<Alert className="mb-6">
 						<AlertTitle>Email verification required</AlertTitle>
 						<AlertDescription>
@@ -70,10 +74,9 @@ export function Welcome() {
 								variant="outline"
 								size="sm"
 								onClick={handleResendEmail}
-								disabled={isPending}
 								className="mt-2"
 							>
-								{isPending ? "Sending..." : "Resend Email"}
+								Resend Email
 							</Button>
 						</AlertDescription>
 					</Alert>
@@ -81,12 +84,12 @@ export function Welcome() {
 
 				<div className="text-center">
 					<p className="text-lg font-medium mb-4">
-						{session?.user?.emailVerified
+						{user?.emailVerified
 							? "You're all set! 🎉"
 							: "You're almost ready! 🚀"}
 					</p>
 
-					{session?.user?.emailVerified ? (
+					{user?.emailVerified ? (
 						<div>
 							<p className="mb-4">Ready to start building your collection?</p>
 							<Button className="w-full mb-3">Add Your First Movie</Button>
