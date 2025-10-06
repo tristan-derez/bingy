@@ -114,6 +114,7 @@ export const auth = betterAuth({
 			enabled: true,
 			allowDifferentEmails: true,
 		},
+		encryptOAuthTokens: true,
 	},
 	emailAndPassword: {
 		enabled: true,
