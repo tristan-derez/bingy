@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
+import { config } from "@/lib/env";
 import { deleteAccountSchema } from "@/schemas/delete-account-schema";
 import {
 	Form,
@@ -44,7 +45,7 @@ export function DeleteAccountTrigger() {
 		try {
 			const { data, error } = await authClient.deleteUser({
 				password: formData.password,
-				callbackURL: "http://localhost:5173/goodbye",
+				callbackURL: `${config.appUrl}/goodbye`,
 			});
 
 			if (data) {

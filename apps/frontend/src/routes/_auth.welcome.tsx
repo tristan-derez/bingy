@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useSession } from "@/hooks/session";
 import { authClient } from "@/lib/auth-client";
+import { config } from "@/lib/env";
 
 const welcomeSearchSchema = z.object({
 	error: z.string().optional(),
@@ -29,7 +30,7 @@ export function Welcome() {
 			if (session?.user) {
 				await authClient.sendVerificationEmail({
 					email: session.user.email,
-					callbackURL: `http://localhost:5173/welcome`,
+					callbackURL: `${config.appUrl}/welcome`,
 				});
 				toast.success("Verification email sent!", {
 					description: "Please check your inbox.",

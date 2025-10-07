@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
+import { config } from "@/lib/env";
 import { forgotPasswordFormSchema } from "@/schemas/password/forgot-password-form-schema";
 
 interface ForgotPasswordFormProps {
@@ -48,7 +49,7 @@ export function ForgotPasswordForm({ email }: ForgotPasswordFormProps) {
 		try {
 			const { data, error } = await authClient.requestPasswordReset({
 				email: formData.email,
-				redirectTo: "http://localhost:5173/reset-password",
+				redirectTo: `${config.appUrl}/reset-password`,
 			});
 
 			if (error) {

@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
+import { config } from "@/lib/env";
 import { updateEmailSchema } from "@/schemas/update-email-schema";
 
 export function UpdateEmailForm() {
@@ -37,7 +38,7 @@ export function UpdateEmailForm() {
 		try {
 			const { data, error } = await authClient.changeEmail({
 				newEmail: formData.newEmail,
-				callbackURL: "http://localhost:5173/account",
+				callbackURL: `${config.appUrl}/account`,
 			});
 
 			if (error) {

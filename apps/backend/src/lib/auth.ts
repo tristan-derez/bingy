@@ -22,7 +22,7 @@ export const auth = betterAuth({
 		},
 		usePlural: true,
 	}),
-	trustedOrigins: ["http://localhost:5173"],
+	trustedOrigins: [env.FRONT_URL],
 	advanced: {
 		database: {
 			generateId: false,

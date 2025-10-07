@@ -34,6 +34,7 @@ import {
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { authClient } from "@/lib/auth-client";
+import { config } from "@/lib/env";
 import { signUpFormSchema } from "@/schemas/signup-form-schema";
 import { getRandomAvatarUrl } from "@/utils/avatar-generator";
 
@@ -63,7 +64,7 @@ export function SignUpForm() {
 				password: formData.password,
 				name: formData.name,
 				image: getRandomAvatarUrl(),
-				callbackURL: "http://localhost:5173/welcome",
+				callbackURL: `${config.appUrl}/welcome`,
 			});
 
 			if (error) {
@@ -85,9 +86,9 @@ export function SignUpForm() {
 			toast.loading("Redirecting to Google...", { id: "oauth" });
 			await authClient.signIn.social({
 				provider,
-				callbackURL: "http://localhost:5173/",
-				errorCallbackURL: "http://localhost:5173/signup",
-				newUserCallbackURL: "http://localhost:5173/welcome",
+				callbackURL: `${config.appUrl}/dashboard`,
+				errorCallbackURL: `${config.appUrl}/signup`,
+				newUserCallbackURL: `${config.appUrl}/welcome`,
 			});
 		} catch (err: unknown) {
 			const message =

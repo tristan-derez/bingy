@@ -4,6 +4,13 @@ dist
 dist-ssr
 
 .env
+.env.local
+.env.development
+.env.development.local
+.env.staging.local
+.env.production.local
+.env.*.local
+.env.production
 *.local
 count.txt
 
