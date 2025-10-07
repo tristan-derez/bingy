@@ -3,6 +3,7 @@ import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
+import { config } from "@/lib/env";
 import { OAuthButton } from "../ui/oauth-button";
 
 export function LinkAccountComponent() {
@@ -37,8 +38,8 @@ export function LinkAccountComponent() {
 			} else {
 				await authClient.linkSocial({
 					provider,
-					callbackURL: "http://localhost:5173/account",
-					errorCallbackURL: "http://localhost:5173/account",
+					callbackURL: `${config.appUrl}/account`,
+					errorCallbackURL: `${config.appUrl}/account`,
 				});
 			}
 		} catch (err) {

@@ -27,6 +27,7 @@ import { Label } from "@/components/ui/label";
 import { OAuthButton } from "@/components/ui/oauth-button";
 import { SeparatorWithText } from "@/components/ui/separator-text";
 import { authClient } from "@/lib/auth-client";
+import { config } from "@/lib/env";
 import { signinFormSchema } from "@/schemas/signin-form-schema";
 
 export function SignInForm() {
@@ -82,7 +83,7 @@ export function SignInForm() {
 		try {
 			await authClient.signIn.social({
 				provider,
-				callbackURL: "http://localhost:5173/welcome",
+				callbackURL: `${config.appUrl}/welcome`,
 			});
 		} catch (err) {
 			toast.error(
