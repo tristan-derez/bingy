@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: postgres:18rc1
+    image: postgres:18
     restart: unless-stopped
     ports:
       - "5432:5432"
