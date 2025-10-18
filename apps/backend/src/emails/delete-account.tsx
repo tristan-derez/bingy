@@ -11,23 +11,18 @@ import {
 	Text,
 } from "@react-email/components";
 import type React from "react";
-import { EMAIL_ASSETS } from "#utils/email-assets";
 
 interface DeleteAccountEmailProps {
 	url: string;
 	expirationMinutes: number;
 	userName: string;
+	logoUrl: string;
 }
 
 const main = {
 	color: "#212121",
 	fontFamily:
 		'-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
-};
-
-const logo = {
-	width: 200,
-	height: 60,
 };
 
 const container = {
@@ -80,6 +75,7 @@ const DeleteAccountEmail: React.FC<DeleteAccountEmailProps> = ({
 	url,
 	expirationMinutes = 15,
 	userName,
+	logoUrl,
 }) => {
 	return (
 		<Html>
@@ -87,7 +83,7 @@ const DeleteAccountEmail: React.FC<DeleteAccountEmailProps> = ({
 			<Body style={main}>
 				<Preview>Confirm account deletion for your Bingy account</Preview>
 				<Container style={container}>
-					<Img src={EMAIL_ASSETS.logo_text} alt="Bingy" style={logo} />
+					<Img src={logoUrl || "/static/bingy-icon_text.png"} alt="Bingy" />
 					<br />
 					<Hr style={hr} />
 					<Text style={paragraph}>{userName ? `Hi ${userName},` : `Hi,`}</Text>

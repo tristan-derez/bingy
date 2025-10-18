@@ -37,7 +37,7 @@ type EmailType =
 	| {
 			type: "update-email";
 			subject?: string;
-			expirationInMinutes: number;
+			expirationMinutes: number;
 			url: string;
 			newEmail: string;
 	  };
@@ -65,6 +65,10 @@ const getEmailComponent = (
 	date?: string,
 	newEmail?: string,
 ): ReactElement => {
+	const logoUrl =
+		env.NODE_ENV === "production"
+			? `${env.API_URL}/assets/icons/bingy-icon_text.png`
+			: `${env.BUCKET_URL}/bingy-icon_text.png`;
 	switch (type) {
 		case "verification-email":
 			return (
@@ -72,6 +76,7 @@ const getEmailComponent = (
 					url={url ?? ""}
 					expirationMinutes={expirationMinutes ?? 0}
 					userName={userName}
+					logoUrl={logoUrl}
 				/>
 			);
 		case "reset-password":
@@ -80,6 +85,7 @@ const getEmailComponent = (
 					url={url ?? ""}
 					expirationMinutes={expirationMinutes ?? 0}
 					userName={userName}
+					logoUrl={logoUrl}
 				/>
 			);
 		case "delete-account":
@@ -88,11 +94,16 @@ const getEmailComponent = (
 					url={url ?? ""}
 					expirationMinutes={expirationMinutes ?? 0}
 					userName={userName}
+					logoUrl={logoUrl}
 				/>
 			);
 		case "deleted-account":
 			return (
-				<DeletedAccountEmail deletionDate={date ?? ""} userName={userName} />
+				<DeletedAccountEmail
+					deletionDate={date ?? ""}
+					userName={userName}
+					logoUrl={logoUrl}
+				/>
 			);
 		case "update-email":
 			return (
@@ -101,6 +112,7 @@ const getEmailComponent = (
 					expirationMinutes={expirationMinutes ?? 0}
 					userName={userName}
 					newEmail={newEmail ?? ""}
+					logoUrl={logoUrl}
 				/>
 			);
 	}
