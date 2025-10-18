@@ -11,24 +11,19 @@ import {
 	Text,
 } from "@react-email/components";
 import type React from "react";
-import { EMAIL_ASSETS } from "#utils/email-assets";
 
 interface EmailChangeEmailProps {
 	url: string;
 	expirationMinutes: number;
 	userName: string;
 	newEmail: string;
+	logoUrl?: string;
 }
 
 const main = {
 	color: "#212121",
 	fontFamily:
 		'-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
-};
-
-const logo = {
-	width: 200,
-	height: 60,
 };
 
 const container = {
@@ -82,6 +77,7 @@ const UpdateEmailEmail: React.FC<EmailChangeEmailProps> = ({
 	expirationMinutes = 15,
 	userName,
 	newEmail = "john.doe@example.com",
+	logoUrl,
 }) => {
 	return (
 		<Html>
@@ -89,7 +85,7 @@ const UpdateEmailEmail: React.FC<EmailChangeEmailProps> = ({
 			<Body style={main}>
 				<Preview>Confirm your email change for your Bingy account</Preview>
 				<Container style={container}>
-					<Img src={EMAIL_ASSETS.logo_text} alt="Bingy" style={logo} />
+					<Img src={logoUrl || "/static/bingy-icon_text.png"} alt="Bingy" />
 					<br />
 					<Hr style={hr} />
 					<Text style={paragraph}>{userName ? `Hi ${userName},` : `Hi,`}</Text>
