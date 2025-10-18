@@ -6,6 +6,7 @@ import { MdSupport } from "react-icons/md";
 import { PiUserFill } from "react-icons/pi";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { toast } from "sonner";
+import logo from "@/assets/bingy-icon_text.svg";
 import { SettingsDialog } from "@/components/auth/settings-dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -36,7 +37,12 @@ export default function Header() {
 	return (
 		<div className="p-4 flex justify-between w-full fixed items-center backdrop-blur-sm border-b border-border/40 shadow-md bg-transparent">
 			<nav>
-				<ul className="flex gap-4">
+				<ul className="flex gap-4 items-center">
+					<li>
+						<Link to="/">
+							<img src={logo} alt="Logo" className="h-6 w-auto" />
+						</Link>
+					</li>
 					<li>
 						<Link to="/" className="[&.active]:font-bold">
 							Home
