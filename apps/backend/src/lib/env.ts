@@ -26,6 +26,7 @@ const envSchema = z.object({
 	TRANSACTIONAL_EMAIL: z.string(),
 	APP_NAME: z.string(),
 	BUCKET_URL: z.string(),
+	API_URL: z.string(),
 });
 
 export default envSchema.parse(process.env);
