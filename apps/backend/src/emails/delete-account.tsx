@@ -105,8 +105,9 @@ const DeleteAccountEmail: React.FC<DeleteAccountEmailProps> = ({
 						</Text>
 					</Section>
 					<Text style={text}>
-						If you didn't request this account deletion, please ignore this
-						email. Your account will remain active and secure.
+						If you didn't request this account deletion, your account may be
+						compromised. Please <strong>immediately</strong> secure your account
+						by changing your password.
 					</Text>
 					<Text style={paragraph}>
 						Best,
