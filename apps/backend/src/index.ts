@@ -1,5 +1,6 @@
 import { serve } from "bun";
 import { Hono } from "hono";
+import { serveStatic } from "hono/bun";
 import { cors } from "hono/cors";
 import { showRoutes } from "hono/dev";
 import { logger as httpLogger } from "hono/logger";
@@ -35,6 +36,7 @@ app.use(
 const api = new Hono();
 app.use(httpLogger());
 app.use(trimTrailingSlash());
+app.use("/assets/*", serveStatic({ root: "./src" }));
 
 const pingDB = async () => {
 	try {
