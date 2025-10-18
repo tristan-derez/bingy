@@ -10,8 +10,8 @@ import {
 	Section,
 	Text,
 } from "@react-email/components";
-
 import type React from "react";
+import { EMAIL_ASSETS } from "#utils/email-assets";
 
 interface DeleteAccountEmailProps {
 	url: string;
@@ -26,8 +26,8 @@ const main = {
 };
 
 const logo = {
-	width: 42,
-	height: 42,
+	width: 200,
+	height: 60,
 };
 
 const container = {
@@ -37,7 +37,7 @@ const container = {
 
 const hr = {
 	borderColor: "#cccccc",
-	margin: "20px 0",
+	margin: "8px 0",
 };
 
 const text = {
@@ -64,14 +64,16 @@ const btnContainer = {
 };
 
 const button = {
-	backgroundColor: "#dc2626",
-	borderRadius: "3px",
+	backgroundColor: "#FF702B",
+	borderRadius: "8px",
 	color: "#fff",
 	fontSize: "16px",
+	fontWeight: "bold",
 	textDecoration: "none",
 	textAlign: "center" as const,
-	display: "block",
-	padding: "12px",
+	display: "inline-block",
+	padding: "12px 24px",
+	minWidth: "200px",
 };
 
 const DeleteAccountEmail: React.FC<DeleteAccountEmailProps> = ({
@@ -85,13 +87,7 @@ const DeleteAccountEmail: React.FC<DeleteAccountEmailProps> = ({
 			<Body style={main}>
 				<Preview>Confirm account deletion for your Bingy account</Preview>
 				<Container style={container}>
-					<Img
-						src={`https://i.imgur.com/iwCy2SB.png`}
-						width="42"
-						height="42"
-						alt="Bingy"
-						style={logo}
-					/>
+					<Img src={EMAIL_ASSETS.logo_text} alt="Bingy" style={logo} />
 					<br />
 					<Hr style={hr} />
 					<Text style={paragraph}>{userName ? `Hi ${userName},` : `Hi,`}</Text>

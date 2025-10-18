@@ -8,8 +8,8 @@ import {
 	Preview,
 	Text,
 } from "@react-email/components";
-
 import type React from "react";
+import { EMAIL_ASSETS } from "#utils/email-assets";
 
 interface AccountDeletedEmailProps {
 	userName?: string;
@@ -23,8 +23,8 @@ const main = {
 };
 
 const logo = {
-	width: 42,
-	height: 42,
+	width: 200,
+	height: 60,
 };
 
 const container = {
@@ -34,7 +34,7 @@ const container = {
 
 const hr = {
 	borderColor: "#cccccc",
-	margin: "20px 0",
+	margin: "8px 0",
 };
 
 const paragraph = {
@@ -52,13 +52,7 @@ const DeletedAccountEmail: React.FC<AccountDeletedEmailProps> = ({
 			<Body style={main}>
 				<Preview>Your Bingy account has been deleted</Preview>
 				<Container style={container}>
-					<Img
-						src={`https://i.imgur.com/iwCy2SB.png`}
-						width="42"
-						height="42"
-						alt="Bingy"
-						style={logo}
-					/>
+					<Img src={EMAIL_ASSETS.logo_text} alt="Bingy" style={logo} />
 					<br />
 					<Hr style={hr} />
 					<Text style={paragraph}>{userName ? `Hi ${userName},` : `Hi,`}</Text>
