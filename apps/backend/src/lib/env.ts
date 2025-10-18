@@ -25,6 +25,7 @@ const envSchema = z.object({
 	RESEND_API_KEY: z.string(),
 	TRANSACTIONAL_EMAIL: z.string(),
 	APP_NAME: z.string(),
+	BUCKET_URL: z.string(),
 });
 
 export default envSchema.parse(process.env);
