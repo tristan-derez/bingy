@@ -12,7 +12,6 @@ import { logger } from "#lib/logger";
 import { serveInternalServerError } from "#lib/responses/error";
 import { sessionMiddleware } from "#web/middlewares/session";
 import authRoutes from "#web/routes/auth";
-import usersRoutes from "#web/routes/users";
 
 const app = new Hono<{
 	Variables: {
@@ -50,7 +49,6 @@ const pingDB = async () => {
 pingDB();
 
 app.use("*", sessionMiddleware);
-api.route("/users", usersRoutes);
 api.route("/auth", authRoutes);
 app.route("/api", api);
 

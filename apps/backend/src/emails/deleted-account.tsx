@@ -12,7 +12,7 @@ import type React from "react";
 
 interface AccountDeletedEmailProps {
 	userName?: string;
-	deletionDate: string;
+	deletionDate?: string;
 	logoUrl?: string;
 }
 
@@ -39,9 +39,16 @@ const paragraph = {
 
 const DeletedAccountEmail: React.FC<AccountDeletedEmailProps> = ({
 	userName,
-	deletionDate = "September 29, 2025",
+	deletionDate,
 	logoUrl,
 }) => {
+	const finalDate =
+		deletionDate ||
+		new Date().toLocaleDateString("en-US", {
+			year: "numeric",
+			month: "long",
+			day: "numeric",
+		});
 	return (
 		<Html>
 			<Head />
@@ -53,9 +60,8 @@ const DeletedAccountEmail: React.FC<AccountDeletedEmailProps> = ({
 					<Hr style={hr} />
 					<Text style={paragraph}>{userName ? `Hi ${userName},` : `Hi,`}</Text>
 					<Text style={paragraph}>
-						Your Bingy account has been successfully deleted as of{" "}
-						{deletionDate}. All your personal data has been removed from our
-						systems.
+						Your Bingy account has been successfully deleted as of {finalDate}.
+						All your personal data has been removed from our systems.
 					</Text>
 					<Text style={paragraph}>
 						We're sorry to see you go. If you change your mind in the future,
