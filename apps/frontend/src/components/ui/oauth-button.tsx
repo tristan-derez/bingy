@@ -1,4 +1,5 @@
 import type { IconType } from "react-icons";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "./button";
 import {
 	Tooltip,
@@ -13,6 +14,7 @@ interface OAuthButtonProps {
 	text: string;
 	onClick: () => void;
 	disabled?: boolean;
+	lastMethod?: string;
 }
 
 function OAuthButton({
@@ -21,6 +23,7 @@ function OAuthButton({
 	text,
 	onClick,
 	disabled,
+	lastMethod,
 }: OAuthButtonProps) {
 	return (
 		<TooltipProvider>
@@ -28,13 +31,21 @@ function OAuthButton({
 				<TooltipTrigger className="w-full" asChild>
 					<Button
 						variant="outline"
-						className="w-full hover:cursor-pointer"
+						className="w-full hover:cursor-pointer justify-center relative"
 						aria-label={`${label}`}
 						onClick={onClick}
 						disabled={disabled}
 					>
 						<Icon className="h-5 w-5" />
 						<p>{text}</p>
+						{lastMethod && (
+							<Badge
+								variant="secondary"
+								className="absolute right-2 rounded-md"
+							>
+								Last used
+							</Badge>
+						)}
 					</Button>
 				</TooltipTrigger>
 				<TooltipContent>

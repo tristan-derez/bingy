@@ -24,6 +24,7 @@ export const users = pgTable("users", {
 	emailVerified: boolean("email_verified").default(false).notNull(),
 	emailVerifiedAt: timestamp("email_verified_at"),
 	twoFactorEnabled: boolean("two_factor_enabled").default(false).notNull(),
+	lastLoginMethod: text("last_login_method"),
 	...timestamps,
 });
 
