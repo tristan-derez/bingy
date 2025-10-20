@@ -1,7 +1,12 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { SignUpForm } from "@/components/auth/forms/signup-form";
 
 export const Route = createFileRoute("/signup")({
+	beforeLoad: async ({ context }) => {
+		if (context.session?.user) {
+			throw redirect({ to: "/dashboard" });
+		}
+	},
 	component: SignUpPage,
 });
 
