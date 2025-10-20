@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { z } from "zod";
 import { SignInForm } from "@/components/auth/forms/signin-form";
@@ -8,6 +8,11 @@ export const Route = createFileRoute("/signin")({
 		redirect: z.string().optional().catch(""),
 		error: z.string().optional(),
 	}),
+	beforeLoad: async ({ context }) => {
+		if (context.session?.user) {
+			throw redirect({ to: "/dashboard" });
+		}
+	},
 	component: SigninPage,
 });
 
