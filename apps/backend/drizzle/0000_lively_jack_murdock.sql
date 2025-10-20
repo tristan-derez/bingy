@@ -42,6 +42,7 @@ CREATE TABLE "users" (
 	"email_verified" boolean DEFAULT false NOT NULL,
 	"email_verified_at" timestamp,
 	"two_factor_enabled" boolean DEFAULT false NOT NULL,
+	"last_login_method" text,
 	"updated_at" timestamp,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"deleted_at" timestamp,
