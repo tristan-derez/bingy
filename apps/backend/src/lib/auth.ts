@@ -183,6 +183,8 @@ export const auth = betterAuth({
 				},
 			},
 		}),
-		lastLoginMethod(),
+		lastLoginMethod({
+			storeInDatabase: true,
+		}),
 	],
 });
