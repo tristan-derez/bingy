@@ -8,6 +8,7 @@ import * as schema from "#schemas/user";
 import env from "./env";
 import { logger } from "./logger";
 import { hash, verify } from "./password-processing";
+import { lastLoginMethod } from "better-auth/plugins";
 
 export const auth = betterAuth({
 	appName: "bingy",
@@ -182,5 +183,6 @@ export const auth = betterAuth({
 				},
 			},
 		}),
+		lastLoginMethod(),
 	],
 });
