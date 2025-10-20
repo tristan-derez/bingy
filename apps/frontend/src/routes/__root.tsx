@@ -1,17 +1,23 @@
-import { TanstackDevtools } from "@tanstack/react-devtools";
 import type { QueryClient } from "@tanstack/react-query";
+import { TanstackDevtools } from "@tanstack/react-devtools";
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import Header from "@/components/Header";
 import { notFoundComponent } from "@/components/not-found";
 import appCss from "@/styles/app.css?url";
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
+import { authClient } from "@/lib/auth-client";
 
 interface MyRouterContext {
 	queryClient: QueryClient;
+	session?: Awaited<ReturnType<typeof authClient.getSession>>["data"];
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
+	beforeLoad: async ({ context: _ }) => {
+		const session = await authClient.getSession();
+		return { session: session.data };
+	},
 	head: () => ({
 		meta: [
 			{
