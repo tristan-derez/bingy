@@ -23,7 +23,7 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+
 import { OAuthButton } from "@/components/ui/oauth-button";
 import { SeparatorWithText } from "@/components/ui/separator-text";
 import { authClient } from "@/lib/auth-client";
@@ -120,7 +120,7 @@ export function SignInForm() {
 									name="email"
 									render={({ field }) => (
 										<FormItem className="grid gap-2">
-											<FormLabel htmlFor="email">Email</FormLabel>
+											<FormLabel htmlFor={`${id}-email`}>Email</FormLabel>
 											<FormControl>
 												<Input
 													id={`${id}-email`}
@@ -141,7 +141,9 @@ export function SignInForm() {
 									render={({ field }) => (
 										<FormItem className="grid gap-2">
 											<div className="flex items-center">
-												<Label htmlFor="password">Password</Label>
+												<FormLabel htmlFor={`${id}-password`}>
+													Password
+												</FormLabel>
 												<Link
 													to={"/forgot-password"}
 													search={
