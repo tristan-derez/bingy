@@ -6,6 +6,7 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 import { toast } from "sonner";
 import type { z } from "zod";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -34,6 +35,7 @@ export function SignInForm() {
 	const [isSubmitting, setIsSubmitting] = React.useState(false);
 	const id = useId();
 	const navigate = useNavigate();
+	const lastMethod = authClient.getLastUsedLoginMethod();
 
 	const form = useForm<z.infer<typeof signinFormSchema>>({
 		resolver: zodResolver(signinFormSchema),
@@ -97,7 +99,7 @@ export function SignInForm() {
 	};
 
 	return (
-		<Card className="mx-auto max-w-sm min-w-[420px]">
+		<Card className="mx-auto max-w-sm min-w-[320px] md:min-w-[420px]">
 			<CardHeader>
 				<CardTitle className="text-2xl">Sign in</CardTitle>
 				<CardDescription>
@@ -166,7 +168,7 @@ export function SignInForm() {
 								/>
 								<Button
 									type="submit"
-									className="w-full mt-2 disabled:bg-gray-300 disabled:text-gray-500 hover:cursor-pointer"
+									className="w-full mt-2 font-bold flex justify-center relative disabled:bg-gray-300 disabled:text-gray-500 hover:cursor-pointer"
 								>
 									{isSubmitting ? (
 										<span className="flex items-center justify-center gap-2">
@@ -175,6 +177,14 @@ export function SignInForm() {
 										</span>
 									) : (
 										"Sign in"
+									)}
+									{lastMethod === "email" && (
+										<Badge
+											variant="secondary"
+											className="absolute right-2 rounded-md"
+										>
+											Last used
+										</Badge>
 									)}
 								</Button>
 							</div>
@@ -188,6 +198,7 @@ export function SignInForm() {
 						icon={FcGoogle}
 						label="Sign in with Google"
 						text="Google"
+						lastMethod={lastMethod === "google"}
 						onClick={() => handleOAuthSignIn("google")}
 					/>
 				</div>
