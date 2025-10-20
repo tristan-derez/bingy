@@ -103,7 +103,7 @@ export function SignUpForm() {
 	const isRegistering = isLoading || isSubmitting;
 
 	return (
-		<Card className="mx-auto max-w-sm min-w-[420px]">
+		<Card className="mx-auto max-w-sm min-w-[320px] md:min-w-[420px]">
 			<CardHeader>
 				<CardTitle className="text-2xl">Create an account</CardTitle>
 				<CardDescription>
