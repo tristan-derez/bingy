@@ -185,6 +185,7 @@ export const auth = betterAuth({
 		}),
 		lastLoginMethod({
 			storeInDatabase: true,
+			cookieName: "bingy.last_used_login_method",
 		}),
 	],
 });
