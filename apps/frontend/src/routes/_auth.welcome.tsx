@@ -1,10 +1,15 @@
-import { createFileRoute, useRouter, useSearch } from "@tanstack/react-router";
+import {
+	createFileRoute,
+	useRouteContext,
+	useRouter,
+	useSearch,
+} from "@tanstack/react-router";
+import { useState } from "react";
 import { toast } from "sonner";
 import z from "zod";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { useSession } from "@/hooks/session";
 import { authClient } from "@/lib/auth-client";
 import { config } from "@/lib/env";
 
@@ -18,8 +23,9 @@ export const Route = createFileRoute("/_auth/welcome")({
 });
 
 export function Welcome() {
+	const { session } = useRouteContext({ from: "__root__" });
+	const [isPending, setIsPending] = useState(false);
 	const router = useRouter();
-	const { data: session, isPending } = useSession();
 	const error = useSearch({
 		from: "/_auth/welcome",
 		select: (search) => search.error,
@@ -27,6 +33,7 @@ export function Welcome() {
 
 	const handleResendEmail = async () => {
 		try {
+			setIsPending(true);
 			if (session?.user) {
 				await authClient.sendVerificationEmail({
 					email: session.user.email,
@@ -43,6 +50,7 @@ export function Welcome() {
 		} catch (error) {
 			toast.error("Failed to resend", { description: String(error) });
 		} finally {
+			setIsPending(false);
 		}
 	};
 

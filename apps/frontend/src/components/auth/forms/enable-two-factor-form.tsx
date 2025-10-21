@@ -1,0 +1,182 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouteContext } from "@tanstack/react-router";
+import { Loader2 } from "lucide-react";
+import { useId, useState } from "react";
+import { type SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
+import type { z } from "zod";
+import { Button } from "@/components/ui/button";
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { authClient } from "@/lib/auth-client";
+import { twoFactorSchema } from "@/schemas/two-factor-schema";
+import { SetupTwoFactorDialog } from "../setup-two-factor-dialog";
+
+export function EnableTwoFactorForm() {
+	const { session } = useRouteContext({ from: "__root__" });
+	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [showDialog, setShowDialog] = useState(false);
+	const [totpUri, setTotpUri] = useState("");
+	const id = useId();
+
+	const form = useForm<z.infer<typeof twoFactorSchema>>({
+		resolver: zodResolver(twoFactorSchema),
+		defaultValues: {
+			password: "",
+		},
+	});
+
+	const onFormSubmit: SubmitHandler<z.infer<typeof twoFactorSchema>> = async (
+		formData,
+	) => {
+		setIsSubmitting(true);
+		try {
+			const { data: enableData, error: enableError } =
+				await authClient.twoFactor.enable({
+					password: formData.password,
+				});
+
+			if (enableError) {
+				toast.error(
+					enableError.message ||
+						"Failed to enable two-factor authentication. Try again.",
+				);
+				return;
+			}
+
+			if (enableData) {
+				const { data: totpData, error: totpError } =
+					await authClient.twoFactor.getTotpUri({
+						password: formData.password,
+					});
+
+				if (totpError) {
+					toast.error(totpError.message || "Failed to get QR code. Try again.");
+					return;
+				}
+
+				if (totpData?.totpURI) {
+					setTotpUri(totpData.totpURI);
+					setShowDialog(true);
+				}
+			}
+		} catch (err) {
+			const message =
+				err instanceof Error
+					? err.message.includes("Failed to fetch")
+						? "Something went wrong. Try again later."
+						: err.message
+					: "Something went wrong. Try again later.";
+
+			toast.error(message);
+		} finally {
+			setIsSubmitting(false);
+		}
+	};
+
+	const handleVerify = async (code: string) => {
+		try {
+			const { data, error } = await authClient.twoFactor.verifyTotp({
+				code,
+				trustDevice: true,
+			});
+
+			if (error?.message === "Invalid two factor cookie") {
+				toast.error("Invalid code. Try again.");
+				return;
+			} else if (error) {
+				toast.error(error.message);
+				return;
+			}
+
+			if (data) {
+				toast.success("Two-factor authentication enabled successfully!");
+				setShowDialog(false);
+				form.reset();
+			}
+		} catch (err) {
+			const message =
+				err instanceof Error
+					? err.message
+					: "Failed to verify code. Try again.";
+			toast.error(message);
+		}
+	};
+
+	return (
+		<>
+			<div className="grid gap-2">
+				<div>
+					<p className="text-md font-semibold leading-none tracking-tight">
+						Two factor authentication
+					</p>
+					<p className="text-sm text-muted-foreground mt-1.5">
+						Enable two factor authentication. This will require you to download
+						an authenticator app such as Ente Auth or Authy.
+					</p>
+				</div>
+
+				<Form {...form}>
+					<form
+						onSubmit={form.handleSubmit(onFormSubmit)}
+						className="grid gap-4"
+					>
+						<fieldset disabled={isSubmitting}>
+							<FormField
+								control={form.control}
+								name="password"
+								render={({ field }) => (
+									<FormItem className="grid gap-2">
+										<FormLabel htmlFor={`${id}-password`}>Password</FormLabel>
+										<FormControl>
+											<Input
+												id={`${id}-password`}
+												type="password"
+												autoComplete="current-password"
+												required
+												{...field}
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<Button
+								type="submit"
+								disabled={!session?.user?.emailVerified}
+								className="w-full mt-4 disabled:bg-gray-300 disabled:text-gray-500 hover:cursor-pointer"
+							>
+								{isSubmitting ? (
+									<span className="flex items-center justify-center gap-2">
+										<Loader2 className="animate-spin h-4 w-4" />
+										Enabling...
+									</span>
+								) : (
+									"Enable Two-Factor"
+								)}
+							</Button>
+							{!session?.user?.emailVerified && (
+								<p className="text-sm text-gray-500 mt-2">
+									Please verify your email first
+								</p>
+							)}
+						</fieldset>
+					</form>
+				</Form>
+			</div>
+			<SetupTwoFactorDialog
+				open={showDialog}
+				onOpenChange={setShowDialog}
+				totpUri={totpUri}
+				onVerify={handleVerify}
+			/>
+		</>
+	);
+}

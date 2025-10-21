@@ -1,4 +1,9 @@
-import { Link, useNavigate, useRouter } from "@tanstack/react-router";
+import {
+	Link,
+	useNavigate,
+	useRouteContext,
+	useRouter,
+} from "@tanstack/react-router";
 import { ChevronsUpDown } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import { IoLogOutSharp } from "react-icons/io5";
@@ -24,7 +29,7 @@ import { authClient } from "@/lib/auth-client";
 export default function Header() {
 	const router = useRouter();
 	const navigate = useNavigate();
-	const { data: session } = authClient.useSession();
+	const { session } = useRouteContext({ from: "__root__" });
 
 	const logout = async () => {
 		toast.success("You have been successfully logged out. Come back soon!");

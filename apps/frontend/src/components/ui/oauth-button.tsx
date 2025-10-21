@@ -14,7 +14,7 @@ interface OAuthButtonProps {
 	text: string;
 	onClick: () => void;
 	disabled?: boolean;
-	lastMethod?: string;
+	lastMethod?: boolean;
 }
 
 function OAuthButton({
