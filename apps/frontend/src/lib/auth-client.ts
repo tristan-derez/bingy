@@ -1,4 +1,5 @@
 import { lastLoginMethodClient } from "better-auth/client/plugins";
+import { twoFactorClient } from "better-auth/plugins/two-factor";
 import { createAuthClient } from "better-auth/react";
 import { config } from "./env";
 
@@ -8,5 +9,6 @@ export const authClient = createAuthClient({
 		lastLoginMethodClient({
 			cookieName: "bingy.last_used_login_method",
 		}),
+		twoFactorClient(),
 	],
 });
