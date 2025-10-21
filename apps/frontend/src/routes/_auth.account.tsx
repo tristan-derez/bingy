@@ -29,6 +29,7 @@ function AccountPage() {
 			duration: Infinity,
 		});
 	}
+
 	return (
 		<div className="min-h-svh flex flex-col items-center justify-center px-4 space-y-6">
 			<AccountComponent />
