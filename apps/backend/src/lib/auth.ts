@@ -1,6 +1,6 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { twoFactor } from "better-auth/plugins";
+import { lastLoginMethod, twoFactor } from "better-auth/plugins";
 import { redis } from "bun";
 import { sendEmail } from "#emails/index";
 import { db } from "#lib/database";
@@ -8,15 +8,15 @@ import * as schema from "#schemas/user";
 import env from "./env";
 import { logger } from "./logger";
 import { hash, verify } from "./password-processing";
-import { lastLoginMethod } from "better-auth/plugins";
 
 export const auth = betterAuth({
-	appName: "bingy",
+	appName: "Bingy",
 	database: drizzleAdapter(db, {
 		provider: "pg",
 		schema: {
 			...schema,
 			user: schema.users,
+			twoFactors: schema.two_factor,
 			account: schema.accounts,
 			session: schema.sessions,
 			verification: schema.verifications,
@@ -68,7 +68,7 @@ export const auth = betterAuth({
 					url,
 					fromEmail: env.TRANSACTIONAL_EMAIL,
 					fromName: env.APP_NAME,
-					expirationInMinutes: 15,
+					expirationMinutes: 15,
 					userName: user.name,
 					newEmail: newEmail,
 				});
@@ -173,16 +173,7 @@ export const auth = betterAuth({
 		},
 	},
 	plugins: [
-		twoFactor({
-			schema: {
-				user: {
-					modelName: "users",
-				},
-				twoFactor: {
-					modelName: "two_factor",
-				},
-			},
-		}),
+		twoFactor(),
 		lastLoginMethod({
 			storeInDatabase: true,
 			cookieName: "bingy.last_used_login_method",
