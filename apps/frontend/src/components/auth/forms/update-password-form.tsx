@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouteContext } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
 import React, { useId } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
@@ -18,9 +19,14 @@ import { authClient } from "@/lib/auth-client";
 import { updatePasswordFormSchema } from "@/schemas/password/update-password";
 
 export function UpdatePasswordForm() {
+	const { connections } = useRouteContext({ from: "/_auth/account" });
 	const [isSubmitting, setIsSubmitting] = React.useState(false);
 	const [_, setIsSuccess] = React.useState(false);
 	const id = useId();
+
+	const googleConnected = connections?.data?.some(
+		(c) => c.providerId === "google",
+	);
 
 	const form = useForm<z.infer<typeof updatePasswordFormSchema>>({
 		resolver: zodResolver(updatePasswordFormSchema),
@@ -71,68 +77,72 @@ export function UpdatePasswordForm() {
 					Password
 				</p>
 				<p className="text-sm text-muted-foreground mt-1.5">
-					If you created your account with the Google provider, please request a
-					new password in the sign-in form
+					{googleConnected
+						? "Google accounts require password reset via the sign-in page."
+						: "Enter your current and new password."}
 				</p>
 			</div>
-
-			<Form {...form}>
-				<form onSubmit={form.handleSubmit(onFormSubmit)}>
-					<fieldset disabled={isSubmitting} className="grid gap-2">
-						<FormField
-							control={form.control}
-							name="currentPassword"
-							render={({ field }) => (
-								<FormItem className="grid gap-2">
-									<FormLabel htmlFor="newPassword">Current password</FormLabel>
-									<FormControl>
-										<Input
-											id={`${id}-currentPassword`}
-											type="password"
-											autoComplete="current-password"
-											required
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name="newPassword"
-							render={({ field }) => (
-								<FormItem className="grid gap-2">
-									<FormLabel htmlFor="newPassword">New password</FormLabel>
-									<FormControl>
-										<Input
-											id={`${id}-newPassword`}
-											type="password"
-											autoComplete="new-password"
-											required
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<Button
-							type="submit"
-							className="w-full mt-4 disabled:bg-gray-300 disabled:text-gray-500 hover:cursor-pointer"
-						>
-							{isSubmitting ? (
-								<span className="flex items-center justify-center gap-2">
-									<Loader2 className="animate-spin h-4 w-4" />
-									Updating password
-								</span>
-							) : (
-								"Reset password"
-							)}
-						</Button>
-					</fieldset>
-				</form>
-			</Form>
+			{!googleConnected && (
+				<Form {...form}>
+					<form onSubmit={form.handleSubmit(onFormSubmit)}>
+						<fieldset disabled={isSubmitting} className="grid gap-2">
+							<FormField
+								control={form.control}
+								name="currentPassword"
+								render={({ field }) => (
+									<FormItem className="grid gap-2">
+										<FormLabel htmlFor="newPassword">
+											Current password
+										</FormLabel>
+										<FormControl>
+											<Input
+												id={`${id}-currentPassword`}
+												type="password"
+												autoComplete="current-password"
+												required
+												{...field}
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name="newPassword"
+								render={({ field }) => (
+									<FormItem className="grid gap-2">
+										<FormLabel htmlFor="newPassword">New password</FormLabel>
+										<FormControl>
+											<Input
+												id={`${id}-newPassword`}
+												type="password"
+												autoComplete="new-password"
+												required
+												{...field}
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<Button
+								type="submit"
+								className="w-full mt-4 disabled:bg-gray-300 disabled:text-gray-500 hover:cursor-pointer"
+							>
+								{isSubmitting ? (
+									<span className="flex items-center justify-center gap-2">
+										<Loader2 className="animate-spin h-4 w-4" />
+										Updating password
+									</span>
+								) : (
+									"Reset password"
+								)}
+							</Button>
+						</fieldset>
+					</form>
+				</Form>
+			)}
 		</div>
 	);
 }
