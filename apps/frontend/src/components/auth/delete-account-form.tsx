@@ -28,7 +28,7 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 
-export function DeleteAccountTrigger() {
+export function DeleteAccountForm() {
 	const [isSubmitting, setIsSubmitting] = React.useState(false);
 	const [open, setOpen] = React.useState(false); // control dialog
 	const id = useId();
