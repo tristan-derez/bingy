@@ -12,8 +12,8 @@ export function AccountComponent() {
 	const { connections } = useRouteContext({ from: "/_auth/account" });
 	const { session } = useRouteContext({ from: "__root__" });
 
-	const googleConnected = connections?.data?.some(
-		(c) => c.providerId === "google",
+	const hasPassword = connections?.data?.some(
+		(c) => c.providerId === "credential",
 	);
 
 	const twoFactorEnabled = session?.user?.twoFactorEnabled;
@@ -22,12 +22,12 @@ export function AccountComponent() {
 		<Card className="mx-auto mt-24 max-w-sm sm:min-w-[320px] md:min-w-[420px] p-4">
 			<CardTitle>Edit account</CardTitle>
 			<CardDescription>
-				Make changes to your account informations here.
+				Manage your email, password, and security settings.
 			</CardDescription>
 			<Separator />
 			<LinkAccountComponent />
 			<Separator />
-			{!googleConnected && !twoFactorEnabled && (
+			{hasPassword && !twoFactorEnabled && (
 				<>
 					<EnableTwoFactorForm />
 					<Separator />
