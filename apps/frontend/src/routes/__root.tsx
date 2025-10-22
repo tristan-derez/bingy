@@ -2,8 +2,9 @@ import { TanstackDevtools } from "@tanstack/react-devtools";
 import type { QueryClient } from "@tanstack/react-query";
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import { GlobalError } from "@/components/errors/global-error";
+import { NotFoundComponent } from "@/components/errors/not-found";
 import Header from "@/components/Header";
-import { notFoundComponent } from "@/components/not-found";
 import { authClient } from "@/lib/auth-client";
 import appCss from "@/styles/app.css?url";
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
@@ -56,5 +57,6 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 			/>
 		</div>
 	),
-	notFoundComponent: notFoundComponent,
+	notFoundComponent: NotFoundComponent,
+	errorComponent: GlobalError,
 });
