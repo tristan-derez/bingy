@@ -58,7 +58,7 @@ export function UpdateEmailForm() {
 			if (data) {
 				if (data.status) {
 					toast.success(
-						`Verification email sent to ${formData.newEmail}. Please check your inbox.`,
+						`Verification email sent to ${user.email}. Please check your inbox.`,
 					);
 				} else {
 					toast.success("Email changed successfully.");
