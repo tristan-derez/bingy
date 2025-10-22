@@ -40,7 +40,7 @@ export default function Header() {
 	};
 
 	return (
-		<div className="p-4 flex justify-between w-full fixed items-center backdrop-blur-sm border-b border-border/40 shadow-md bg-transparent">
+		<div className="p-4 flex justify-between w-full fixed items-center backdrop-blur-sm border-b border-border/40 shadow-md bg-transparent mb-8">
 			<nav>
 				<ul className="flex gap-4 items-center">
 					<li>

@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouteContext } from "@tanstack/react-router";
+import { useNavigate, useRouteContext } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
 import { useId, useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
@@ -21,6 +21,8 @@ import { SetupTwoFactorDialog } from "../setup-two-factor-dialog";
 
 export function EnableTwoFactorForm() {
 	const { session } = useRouteContext({ from: "__root__" });
+	const navigate = useNavigate();
+
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [showDialog, setShowDialog] = useState(false);
 	const [totpUri, setTotpUri] = useState("");
@@ -100,6 +102,7 @@ export function EnableTwoFactorForm() {
 				toast.success("Two-factor authentication enabled successfully!");
 				setShowDialog(false);
 				form.reset();
+				navigate({ to: "/account" });
 			}
 		} catch (err) {
 			const message =

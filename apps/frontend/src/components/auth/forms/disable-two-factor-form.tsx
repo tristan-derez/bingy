@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
 import { useId, useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
@@ -19,6 +20,7 @@ import { twoFactorSchema } from "@/schemas/two-factor-schema";
 
 export function DisableTwoFactorForm() {
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const navigate = useNavigate();
 	const id = useId();
 
 	const form = useForm<z.infer<typeof twoFactorSchema>>({
@@ -39,6 +41,7 @@ export function DisableTwoFactorForm() {
 
 			if (data) {
 				toast.success("Two factor authentication disabled successfully");
+				navigate({ to: "/account" });
 			}
 
 			if (error) {

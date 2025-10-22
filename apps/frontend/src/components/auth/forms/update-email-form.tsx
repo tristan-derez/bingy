@@ -7,6 +7,14 @@ import { toast } from "sonner";
 import type { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "@/components/ui/dialog";
+import {
 	Form,
 	FormControl,
 	FormField,
@@ -21,6 +29,7 @@ import { updateEmailSchema } from "@/schemas/update-email-schema";
 
 export function UpdateEmailForm() {
 	const [isSubmitting, setIsSubmitting] = React.useState(false);
+	const [open, setOpen] = React.useState(false);
 	const id = useId();
 	const { user } = useRouteContext({ from: "/_auth" });
 
@@ -80,59 +89,89 @@ export function UpdateEmailForm() {
 						: "Your email will be updated immediately as your current email isn't verified."}
 				</p>
 			</div>
-
-			<Form {...form}>
-				<form onSubmit={form.handleSubmit(onFormSubmit)}>
-					<fieldset disabled={isSubmitting} className="grid gap-2">
-						<FormItem className="grid gap-2">
-							<FormLabel htmlFor={`${id}-currentEmail`}>
-								Current email
-							</FormLabel>
-							<FormControl>
-								<Input
-									id={`${id}-currentEmail`}
-									type="email"
-									value={user.email}
-									disabled
-									className="bg-muted"
-								/>
-							</FormControl>
-						</FormItem>
-						<FormField
-							control={form.control}
-							name="newEmail"
-							render={({ field }) => (
+			<label
+				htmlFor={`${id}-currentEmail`}
+				className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+			>
+				Current email
+			</label>
+			<Input
+				id={`${id}-currentEmail`}
+				type="email"
+				value={user.email}
+				disabled
+				className="bg-muted"
+			/>
+			<Dialog open={open} onOpenChange={setOpen}>
+				<DialogTrigger asChild>
+					<Button variant="default" className="mt-2">
+						Update email
+					</Button>
+				</DialogTrigger>
+				<DialogContent>
+					<DialogHeader>
+						<DialogTitle>Update your email address</DialogTitle>
+						<DialogDescription>
+							Enter your new email address below.{" "}
+							{user.emailVerified
+								? "A verification link will be sent to your current email."
+								: "Your email will be updated immediately."}
+						</DialogDescription>
+					</DialogHeader>
+					<Form {...form}>
+						<form onSubmit={form.handleSubmit(onFormSubmit)}>
+							<fieldset disabled={isSubmitting} className="grid gap-2">
 								<FormItem className="grid gap-2">
-									<FormLabel htmlFor="newPassword">New email</FormLabel>
+									<FormLabel htmlFor={`${id}-currentEmail`}>
+										Current email
+									</FormLabel>
 									<FormControl>
 										<Input
-											id={`${id}-newEmail`}
+											id={`${id}-currentEmail`}
 											type="email"
-											autoComplete="email"
-											required
-											{...field}
+											value={user.email}
+											disabled
+											className="bg-muted"
 										/>
 									</FormControl>
-									<FormMessage />
 								</FormItem>
-							)}
-						/>
-						<Button
-							type="submit"
-							className="w-full mt-4 disabled:bg-gray-300 disabled:text-gray-500 hover:cursor-pointer"
-						>
-							{isSubmitting ? (
-								<span className="flex items-center justify-center gap-2">
-									<Loader2 className="animate-spin h-4 w-4" />
-									Updating email...
-								</span>
-							) : (
-								"Update email"
-							)}
-						</Button>
-					</fieldset>
-				</form>
-			</Form>
+								<FormField
+									control={form.control}
+									name="newEmail"
+									render={({ field }) => (
+										<FormItem className="grid gap-2">
+											<FormLabel htmlFor="newPassword">New email</FormLabel>
+											<FormControl>
+												<Input
+													id={`${id}-newEmail`}
+													type="email"
+													autoComplete="email"
+													required
+													{...field}
+												/>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<Button
+									type="submit"
+									className="w-full mt-4 disabled:bg-gray-300 disabled:text-gray-500 hover:cursor-pointer"
+								>
+									{isSubmitting ? (
+										<span className="flex items-center justify-center gap-2">
+											<Loader2 className="animate-spin h-4 w-4" />
+											Updating email...
+										</span>
+									) : (
+										"Update email"
+									)}
+								</Button>
+							</fieldset>
+						</form>
+					</Form>
+				</DialogContent>
+			</Dialog>
 		</div>
 	);
 }

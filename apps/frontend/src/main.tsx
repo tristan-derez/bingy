@@ -35,7 +35,6 @@ if (rootElement && !rootElement.innerHTML) {
 	root.render(
 		<StrictMode>
 			<TanStackQueryProvider>
-				{" "}
 				<ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
 					<Toaster richColors position="bottom-center" />
 					<RouterProvider router={router} />
