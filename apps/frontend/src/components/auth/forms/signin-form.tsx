@@ -95,7 +95,9 @@ export function SignInForm() {
 		try {
 			await authClient.signIn.social({
 				provider,
-				callbackURL: `${config.appUrl}/welcome`,
+				callbackURL: `${config.appUrl}/dashboard`,
+				errorCallbackURL: `${config.appUrl}/signup`,
+				newUserCallbackURL: `${config.appUrl}/welcome`,
 			});
 		} catch (err) {
 			toast.error(
