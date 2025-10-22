@@ -30,7 +30,7 @@ import { Input } from "../../ui/input";
 
 export function DeleteAccountForm() {
 	const [isSubmitting, setIsSubmitting] = React.useState(false);
-	const [open, setOpen] = React.useState(false); // control dialog
+	const [open, setOpen] = React.useState(false);
 	const id = useId();
 
 	const form = useForm<z.infer<typeof deleteAccountSchema>>({
@@ -85,7 +85,9 @@ export function DeleteAccountForm() {
 						<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
 						<AlertDialogDescription>
 							This action cannot be undone. This will permanently delete your
-							account and remove your data from our servers.
+							account and remove your data from our servers. You'll receive a
+							confirmation email with a link to complete the deletion. Your
+							account will remain active until you confirm via email.
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 
