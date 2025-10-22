@@ -25,8 +25,8 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from "../ui/form";
-import { Input } from "../ui/input";
+} from "../../ui/form";
+import { Input } from "../../ui/input";
 
 export function DeleteAccountForm() {
 	const [isSubmitting, setIsSubmitting] = React.useState(false);

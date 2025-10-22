@@ -2,7 +2,7 @@ import { useRouteContext } from "@tanstack/react-router";
 import { UpdatePasswordForm } from "@/components/auth/forms/update-password-form";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { DeleteAccountForm } from "./delete-account-form";
+import { DeleteAccountForm } from "./forms/delete-account-form";
 import { DisableTwoFactorForm } from "./forms/disable-two-factor-form";
 import { EnableTwoFactorForm } from "./forms/enable-two-factor-form";
 import { UpdateEmailForm } from "./forms/update-email-form";
