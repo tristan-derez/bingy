@@ -19,8 +19,8 @@ export const connection = postgres({
 	port: Number(env.DB_PORT),
 	ssl: env.NODE_ENV === "production",
 	max: 20,
-	idle_timeout: 20,
-	connect_timeout: 60,
+	idle_timeout: 20_000,
+	connect_timeout: 60_000,
 });
 
 export const db = drizzle(connection, {
