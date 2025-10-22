@@ -1,11 +1,8 @@
 import { TanstackDevtools } from "@tanstack/react-devtools";
 import type { QueryClient } from "@tanstack/react-query";
-import {
-	createRootRouteWithContext,
-	ErrorComponent,
-	Outlet,
-} from "@tanstack/react-router";
+import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import { GlobalError } from "@/components/errors/global-error";
 import { NotFoundComponent } from "@/components/errors/not-found";
 import Header from "@/components/Header";
 import { authClient } from "@/lib/auth-client";
@@ -61,5 +58,5 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 		</div>
 	),
 	notFoundComponent: NotFoundComponent,
-	errorComponent: ErrorComponent,
+	errorComponent: GlobalError,
 });
