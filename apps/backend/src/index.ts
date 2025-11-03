@@ -12,6 +12,11 @@ import { logger } from "#lib/logger";
 import { serveInternalServerError } from "#lib/responses/error";
 import { sessionMiddleware } from "#web/middlewares/session";
 import authRoutes from "#web/routes/auth";
+import moviesRoutes from "#web/routes/movies";
+import personRoutes from "#web/routes/person";
+import searchRoutes from "#web/routes/search";
+import trendingRoutes from "#web/routes/trending";
+import tvRoutes from "#web/routes/tv";
 
 const app = new Hono<{
 	Variables: {
@@ -50,6 +55,11 @@ pingDB();
 
 app.use("*", sessionMiddleware);
 api.route("/auth", authRoutes);
+api.route("/movies", moviesRoutes);
+api.route("/tv", tvRoutes);
+api.route("/person", personRoutes);
+api.route("/search", searchRoutes);
+api.route("/trending", trendingRoutes);
 app.route("/api", api);
 
 app.onError((err, c) => {
