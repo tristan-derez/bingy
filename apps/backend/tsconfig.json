@@ -12,7 +12,8 @@
 			"#middlewares/*": ["./src/middlewares/*"],
 			"#tasks/*": ["./src/tasks/*"],
 			"#utils/*": ["./src/utils/*"],
-			"#web/*": ["./src/web/*"]
+			"#web/*": ["./src/web/*"],
+			"#types/*": ["./src/types/*"]
 		}
 	}
 }

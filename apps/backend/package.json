@@ -38,7 +38,8 @@
 		"#web/": "./src/web/*",
 		"#schemas/": "./src/db/schemas/*",
 		"#utils/": "./src/utils/*",
-		"#emails/": "./src/emails/*"
+		"#emails/": "./src/emails/*",
+		"#types/": ".src/types/*"
 	},
 	"peerDependencies": {
 		"typescript": "^5"
