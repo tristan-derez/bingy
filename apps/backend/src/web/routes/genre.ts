@@ -10,6 +10,7 @@ const genreRoutes = new Hono();
 
 genreRoutes.get("/:id", zValidator("query", languageQuerySchema), async (c) => {
 	const { language } = c.req.valid("query");
+
 	try {
 		const results = await tmdbClient.get("/genre/movie/list", {
 			query: { language },
@@ -23,6 +24,7 @@ genreRoutes.get("/:id", zValidator("query", languageQuerySchema), async (c) => {
 
 genreRoutes.get("/:id", zValidator("query", languageQuerySchema), async (c) => {
 	const { language } = c.req.valid("query");
+
 	try {
 		const results = await tmdbClient.get("/genre/tv/list", {
 			query: { language },
