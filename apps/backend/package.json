@@ -36,7 +36,7 @@
 	},
 	"imports": {
 		"#web/": "./src/web/*",
-		"#schemas/": "./src/db/schemas/*",
+		"#db/schemas/": "./src/db/schemas/*",
 		"#utils/": "./src/utils/*",
 		"#emails/": "./src/emails/*",
 		"#types/": ".src/types/*"

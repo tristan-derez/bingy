@@ -1,7 +1,7 @@
 import type { Logger as drizzleLogger } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-import * as schema from "#schemas/user";
+import * as schema from "#db/schemas/user";
 import env from "./env";
 import { logger } from "./logger";
 

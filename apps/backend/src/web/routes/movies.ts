@@ -1,35 +1,18 @@
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
-import { z } from "zod";
 import { logger } from "#lib/logger";
 import { serveInternalServerError } from "#lib/responses/error";
 import { serveData } from "#lib/responses/resp";
 import { tmdbClient } from "#lib/tmdb/tmdb.client";
+import {
+	countryQuerySchema,
+	idParamSchema,
+	languageQuerySchema,
+	paginationQuerySchema,
+	queryParamsTrending,
+} from "#schemas/queries-params";
 
 const moviesRoutes = new Hono();
-
-const idParamSchema = z.object({
-	id: z.coerce.number(),
-});
-
-const languageQuerySchema = z.object({
-	language: z.string().default("en-US"),
-});
-
-const paginationQuerySchema = z.object({
-	language: z.string().default("en-US"),
-	page: z.coerce.number().default(1),
-});
-
-const countryQuerySchema = z.object({
-	country: z.string().default("US"),
-});
-
-const queryParamsTrending = z.object({
-	language: z.string().default("en-US"),
-	page: z.coerce.number().default(1),
-	region: z.string().default("US"),
-});
 
 moviesRoutes.get("/latest", zValidator("param", idParamSchema), async (c) => {
 	try {

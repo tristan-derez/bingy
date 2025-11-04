@@ -8,26 +8,16 @@ import {
 } from "#lib/responses/error";
 import { serveData } from "#lib/responses/resp";
 import { tmdbClient } from "#lib/tmdb/tmdb.client";
+import {
+	idWithSeasonNumberAndEpisodeNumber,
+	idWithSeasonNumberSchema,
+	tvEpisodeGroupId,
+} from "#schemas/queries-params";
 
 const tvRoutes = new Hono();
 
 const idParamSchema = z.object({
 	id: z.coerce.number(),
-});
-
-const idWithSeasonNumberSchema = z.object({
-	id: z.coerce.number(),
-	season_number: z.coerce.number(),
-});
-
-const idWithSeasonNumberAndEpisodeNumber = z.object({
-	id: z.coerce.number(),
-	season_number: z.coerce.number(),
-	episode_number: z.coerce.number(),
-});
-
-const tvEpisodeGroupId = z.object({
-	tv_episode_group_id: z.string(),
 });
 
 const languageQuerySchema = z.object({
