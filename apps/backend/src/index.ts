@@ -14,6 +14,7 @@ import { sessionMiddleware } from "#web/middlewares/session";
 import authRoutes from "#web/routes/auth";
 import certificationRoutes from "#web/routes/certification";
 import collectionRoutes from "#web/routes/collection";
+import companyRoutes from "#web/routes/company";
 import creditRoutes from "#web/routes/credit";
 import discoverRoutes from "#web/routes/discover";
 import findRoutes from "#web/routes/find";
@@ -74,6 +75,7 @@ api.route("/find", findRoutes);
 api.route("credit", creditRoutes);
 api.route("collection", collectionRoutes);
 api.route("certification", certificationRoutes);
+api.route("company", companyRoutes);
 app.route("/api", api);
 
 app.onError((err, c) => {
