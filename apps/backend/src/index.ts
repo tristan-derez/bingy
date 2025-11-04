@@ -25,6 +25,7 @@ import personRoutes from "#web/routes/person";
 import searchRoutes from "#web/routes/search";
 import trendingRoutes from "#web/routes/trending";
 import tvRoutes from "#web/routes/tv";
+import watchProvidersRoutes from "#web/routes/watch-providers";
 
 const app = new Hono<{
 	Variables: {
@@ -76,6 +77,7 @@ api.route("credit", creditRoutes);
 api.route("collection", collectionRoutes);
 api.route("certification", certificationRoutes);
 api.route("company", companyRoutes);
+api.route("watch/providers", watchProvidersRoutes);
 app.route("/api", api);
 
 app.onError((err, c) => {
