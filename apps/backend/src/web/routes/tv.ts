@@ -1,6 +1,5 @@
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
-import { z } from "zod";
 import { logger } from "#lib/logger";
 import {
 	serveBadRequest,
@@ -9,25 +8,15 @@ import {
 import { serveData } from "#lib/responses/resp";
 import { tmdbClient } from "#lib/tmdb/tmdb.client";
 import {
+	idParamSchema,
 	idWithSeasonNumberAndEpisodeNumber,
 	idWithSeasonNumberSchema,
+	languageQuerySchema,
+	paginationQuerySchema,
 	tvEpisodeGroupId,
 } from "#validators/query-param";
 
 const tvRoutes = new Hono();
-
-const idParamSchema = z.object({
-	id: z.coerce.number(),
-});
-
-const languageQuerySchema = z.object({
-	language: z.string().default("en-US"),
-});
-
-const paginationQuerySchema = z.object({
-	language: z.string().default("en-US"),
-	page: z.coerce.number().default(1),
-});
 
 tvRoutes.get("/latest", async (c) => {
 	try {
