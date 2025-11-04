@@ -10,11 +10,13 @@ export const tmdbFetch: Fetcher = async <TResponse>(
 	method: Method,
 	baseUrl: string,
 	path: EndpointPath,
+	apiKey: string,
 	parameters: EndpointParameters = {},
 ) => {
 	let finalUrl = `${baseUrl}${path}`;
 	const headers: Record<string, string> = {
 		"Content-Type": "application/json",
+		Authorization: `Bearer ${apiKey}`,
 	};
 
 	if (parameters.path) {

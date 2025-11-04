@@ -2131,6 +2131,7 @@ export type Fetcher = <TResponse>(
 	method: Method,
 	baseUrl: string,
 	path: EndpointPath,
+	apiKey: string,
 	parameters?: EndpointParameters | undefined,
 ) => Promise<TResponse>;
 
