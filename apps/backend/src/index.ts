@@ -13,6 +13,7 @@ import { serveInternalServerError } from "#lib/responses/error";
 import { sessionMiddleware } from "#web/middlewares/session";
 import authRoutes from "#web/routes/auth";
 import discoverRoutes from "#web/routes/discover";
+import genreRoutes from "#web/routes/genre";
 import movieRoutes from "#web/routes/movie";
 import networkRoutes from "#web/routes/network";
 import personRoutes from "#web/routes/person";
@@ -64,6 +65,7 @@ api.route("/search", searchRoutes);
 api.route("/trending", trendingRoutes);
 api.route("network", networkRoutes);
 api.route("/discover", discoverRoutes);
+api.route("/genre", genreRoutes);
 app.route("/api", api);
 
 app.onError((err, c) => {
