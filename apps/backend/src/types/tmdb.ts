@@ -43,7 +43,7 @@ export namespace Schemas {
 
 	// biome-ignore format: keep union type compact
 	export type ExternalId = Pretty<
-		| "imdb_id" | "facebook_id" | "instagram_id" | "tvbd_id"
+		| "imdb_id" | "facebook_id" | "instagram_id" | "tvdb_id"
 		| "tiktok_id" | "twitter_id" | "wikidata_id" | "youtube_id"
 	>
 
