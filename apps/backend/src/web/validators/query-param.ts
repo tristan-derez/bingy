@@ -4,6 +4,10 @@ export const idParamSchema = z.object({
 	id: z.coerce.number(),
 });
 
+export const externalIdParamSchema = z.object({
+	external_id: z.string(),
+});
+
 export const idWithSeasonNumberSchema = z.object({
 	id: z.coerce.number(),
 	season_number: z.coerce.number(),
@@ -145,4 +149,18 @@ export const queryParamsDiscoverTvSchema = z.object({
 	without_keywords: z.string().optional(),
 	without_watch_providers: z.string().optional(),
 	with_type: z.string().optional(),
+});
+
+export const queryParamsFindByExternalId = z.object({
+	external_source: z.enum([
+		"imdb_id",
+		"facebook_id",
+		"instagram_id",
+		"tvdb_id",
+		"tiktok_id",
+		"twitter_id",
+		"wikidata_id",
+		"youtube_id",
+	]),
+	language: z.string().default("en-US"),
 });
