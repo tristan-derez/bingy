@@ -12,6 +12,7 @@ import { logger } from "#lib/logger";
 import { serveInternalServerError } from "#lib/responses/error";
 import { sessionMiddleware } from "#web/middlewares/session";
 import authRoutes from "#web/routes/auth";
+import discoverRoutes from "#web/routes/discover";
 import moviesRoutes from "#web/routes/movies";
 import networksRoutes from "#web/routes/networks";
 import personRoutes from "#web/routes/person";
@@ -62,6 +63,7 @@ api.route("/person", personRoutes);
 api.route("/search", searchRoutes);
 api.route("/trending", trendingRoutes);
 api.route("network", networksRoutes);
+api.route("/discover", discoverRoutes);
 app.route("/api", api);
 
 app.onError((err, c) => {
