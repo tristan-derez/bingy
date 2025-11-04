@@ -373,7 +373,7 @@ movieRoutes.get(
 );
 
 movieRoutes.get(
-	"/:id/watch/providers",
+	":id/watch/providers",
 	zValidator("param", idParamSchema),
 	async (c) => {
 		const { id } = c.req.valid("param");
