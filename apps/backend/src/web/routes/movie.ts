@@ -14,7 +14,7 @@ import {
 
 const movieRoutes = new Hono();
 
-movieRoutes.get("/latest", zValidator("param", idParamSchema), async (c) => {
+movieRoutes.get("/latest", async (c) => {
 	try {
 		const movie = await tmdbClient.get("/movie/latest");
 		return serveData(c, movie);
