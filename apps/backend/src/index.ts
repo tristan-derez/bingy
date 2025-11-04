@@ -12,6 +12,7 @@ import { logger } from "#lib/logger";
 import { serveInternalServerError } from "#lib/responses/error";
 import { sessionMiddleware } from "#web/middlewares/session";
 import authRoutes from "#web/routes/auth";
+import certificationRoutes from "#web/routes/certification";
 import collectionRoutes from "#web/routes/collection";
 import creditRoutes from "#web/routes/credit";
 import discoverRoutes from "#web/routes/discover";
@@ -72,6 +73,7 @@ api.route("/genre", genreRoutes);
 api.route("/find", findRoutes);
 api.route("credit", creditRoutes);
 api.route("collection", collectionRoutes);
+api.route("certification", certificationRoutes);
 app.route("/api", api);
 
 app.onError((err, c) => {
