@@ -6,9 +6,9 @@ import { serveData } from "#lib/responses/resp";
 import { tmdbClient } from "#lib/tmdb/tmdb.client";
 import { idParamSchema } from "#web/validators/query-param";
 
-const networksRoutes = new Hono();
+const networkRoutes = new Hono();
 
-networksRoutes.get("/:id", zValidator("param", idParamSchema), async (c) => {
+networkRoutes.get("/:id", zValidator("param", idParamSchema), async (c) => {
 	const { id } = c.req.valid("param");
 
 	try {
@@ -22,7 +22,7 @@ networksRoutes.get("/:id", zValidator("param", idParamSchema), async (c) => {
 	}
 });
 
-networksRoutes.get(
+networkRoutes.get(
 	"/:id/alternative_names",
 	zValidator("param", idParamSchema),
 	async (c) => {
@@ -43,7 +43,7 @@ networksRoutes.get(
 	},
 );
 
-networksRoutes.get(
+networkRoutes.get(
 	"/:id/images",
 	zValidator("param", idParamSchema),
 	async (c) => {
@@ -61,4 +61,4 @@ networksRoutes.get(
 	},
 );
 
-export default networksRoutes;
+export default networkRoutes;

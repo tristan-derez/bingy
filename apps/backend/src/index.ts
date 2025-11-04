@@ -13,8 +13,8 @@ import { serveInternalServerError } from "#lib/responses/error";
 import { sessionMiddleware } from "#web/middlewares/session";
 import authRoutes from "#web/routes/auth";
 import discoverRoutes from "#web/routes/discover";
-import moviesRoutes from "#web/routes/movies";
-import networksRoutes from "#web/routes/networks";
+import movieRoutes from "#web/routes/movie";
+import networkRoutes from "#web/routes/network";
 import personRoutes from "#web/routes/person";
 import searchRoutes from "#web/routes/search";
 import trendingRoutes from "#web/routes/trending";
@@ -57,12 +57,12 @@ pingDB();
 
 app.use("*", sessionMiddleware);
 api.route("/auth", authRoutes);
-api.route("/movies", moviesRoutes);
+api.route("/movies", movieRoutes);
 api.route("/tv", tvRoutes);
 api.route("/person", personRoutes);
 api.route("/search", searchRoutes);
 api.route("/trending", trendingRoutes);
-api.route("network", networksRoutes);
+api.route("network", networkRoutes);
 api.route("/discover", discoverRoutes);
 app.route("/api", api);
 

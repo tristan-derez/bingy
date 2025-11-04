@@ -12,9 +12,9 @@ import {
 	queryParamsTrending,
 } from "#web/validators/query-param";
 
-const moviesRoutes = new Hono();
+const movieRoutes = new Hono();
 
-moviesRoutes.get("/latest", zValidator("param", idParamSchema), async (c) => {
+movieRoutes.get("/latest", zValidator("param", idParamSchema), async (c) => {
 	try {
 		const movie = await tmdbClient.get("/movie/latest");
 		return serveData(c, movie);
@@ -24,7 +24,7 @@ moviesRoutes.get("/latest", zValidator("param", idParamSchema), async (c) => {
 	}
 });
 
-moviesRoutes.get(
+movieRoutes.get(
 	"/now_playing",
 	zValidator("query", queryParamsTrending),
 	async (c) => {
@@ -42,7 +42,7 @@ moviesRoutes.get(
 	},
 );
 
-moviesRoutes.get(
+movieRoutes.get(
 	"/popular",
 	zValidator("query", queryParamsTrending),
 	async (c) => {
@@ -60,7 +60,7 @@ moviesRoutes.get(
 	},
 );
 
-moviesRoutes.get(
+movieRoutes.get(
 	"/top_rated",
 	zValidator("query", queryParamsTrending),
 	async (c) => {
@@ -78,7 +78,7 @@ moviesRoutes.get(
 	},
 );
 
-moviesRoutes.get(
+movieRoutes.get(
 	"/upcoming",
 	zValidator("query", queryParamsTrending),
 	async (c) => {
@@ -96,7 +96,7 @@ moviesRoutes.get(
 	},
 );
 
-moviesRoutes.get(
+movieRoutes.get(
 	"/:id",
 	zValidator("param", idParamSchema),
 	zValidator("query", languageQuerySchema),
@@ -117,7 +117,7 @@ moviesRoutes.get(
 	},
 );
 
-moviesRoutes.get(
+movieRoutes.get(
 	"/:id/alternative_titles",
 	zValidator("param", idParamSchema),
 	zValidator("query", countryQuerySchema),
@@ -141,7 +141,7 @@ moviesRoutes.get(
 	},
 );
 
-moviesRoutes.get(
+movieRoutes.get(
 	"/:id/credits",
 	zValidator("param", idParamSchema),
 	zValidator("query", languageQuerySchema),
@@ -162,7 +162,7 @@ moviesRoutes.get(
 	},
 );
 
-moviesRoutes.get(
+movieRoutes.get(
 	"/:id/external_ids",
 	zValidator("param", idParamSchema),
 	async (c) => {
@@ -183,7 +183,7 @@ moviesRoutes.get(
 	},
 );
 
-moviesRoutes.get(
+movieRoutes.get(
 	"/:id/images",
 	zValidator("param", idParamSchema),
 	zValidator("query", languageQuerySchema),
@@ -204,7 +204,7 @@ moviesRoutes.get(
 	},
 );
 
-moviesRoutes.get(
+movieRoutes.get(
 	"/:id/keywords",
 	zValidator("param", idParamSchema),
 	async (c) => {
@@ -222,7 +222,7 @@ moviesRoutes.get(
 	},
 );
 
-moviesRoutes.get(
+movieRoutes.get(
 	"/:id/lists",
 	zValidator("param", idParamSchema),
 	zValidator("query", paginationQuerySchema),
@@ -243,7 +243,7 @@ moviesRoutes.get(
 	},
 );
 
-moviesRoutes.get(
+movieRoutes.get(
 	"/:id/recommendations",
 	zValidator("param", idParamSchema),
 	zValidator("query", paginationQuerySchema),
@@ -267,7 +267,7 @@ moviesRoutes.get(
 	},
 );
 
-moviesRoutes.get(
+movieRoutes.get(
 	"/:id/release_dates",
 	zValidator("param", idParamSchema),
 	async (c) => {
@@ -288,7 +288,7 @@ moviesRoutes.get(
 	},
 );
 
-moviesRoutes.get(
+movieRoutes.get(
 	"/:id/reviews",
 	zValidator("param", idParamSchema),
 	zValidator("query", paginationQuerySchema),
@@ -309,7 +309,7 @@ moviesRoutes.get(
 	},
 );
 
-moviesRoutes.get(
+movieRoutes.get(
 	"/:id/similar",
 	zValidator("param", idParamSchema),
 	zValidator("query", paginationQuerySchema),
@@ -330,7 +330,7 @@ moviesRoutes.get(
 	},
 );
 
-moviesRoutes.get(
+movieRoutes.get(
 	"/:id/translations",
 	zValidator("param", idParamSchema),
 	async (c) => {
@@ -351,7 +351,7 @@ moviesRoutes.get(
 	},
 );
 
-moviesRoutes.get(
+movieRoutes.get(
 	"/:id/videos",
 	zValidator("param", idParamSchema),
 	zValidator("query", languageQuerySchema),
@@ -372,7 +372,7 @@ moviesRoutes.get(
 	},
 );
 
-moviesRoutes.get(
+movieRoutes.get(
 	"/:id/watch/providers",
 	zValidator("param", idParamSchema),
 	async (c) => {
@@ -393,4 +393,4 @@ moviesRoutes.get(
 	},
 );
 
-export default moviesRoutes;
+export default movieRoutes;
