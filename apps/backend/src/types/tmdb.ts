@@ -1132,7 +1132,7 @@ export namespace Endpoints {
 		path: "/collection/{collection_id}";
 		parameters: {
 			query: Partial<{ language: string }>;
-			path: Required<{ collection_id: string }>;
+			path: Required<{ collection_id: number }>;
 		};
 		response: Schemas.CollectionDetails;
 	};
@@ -1141,7 +1141,7 @@ export namespace Endpoints {
 		path: "/collection/{collection_id}/images";
 		parameters: {
 			query: Partial<{ include_image_language: string; language: string }>;
-			path: Required<{ collection_id: string }>;
+			path: Required<{ collection_id: number }>;
 		};
 		response: Schemas.CollectionsImages;
 	};
@@ -1149,7 +1149,7 @@ export namespace Endpoints {
 		method: "GET";
 		path: "/collection/{collection_id}/translations";
 		parameters: {
-			path: Required<{ collection_id: string }>;
+			path: Required<{ collection_id: number }>;
 		};
 		response: Schemas.CollectionsImages;
 	};
