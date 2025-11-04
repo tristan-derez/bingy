@@ -12,7 +12,7 @@ import {
 	idWithSeasonNumberAndEpisodeNumber,
 	idWithSeasonNumberSchema,
 	tvEpisodeGroupId,
-} from "#schemas/queries-params";
+} from "#validators/query-param";
 
 const tvRoutes = new Hono();
 
