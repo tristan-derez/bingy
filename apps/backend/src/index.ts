@@ -12,6 +12,7 @@ import { logger } from "#lib/logger";
 import { serveInternalServerError } from "#lib/responses/error";
 import { sessionMiddleware } from "#web/middlewares/session";
 import authRoutes from "#web/routes/auth";
+import creditRoutes from "#web/routes/credit";
 import discoverRoutes from "#web/routes/discover";
 import findRoutes from "#web/routes/find";
 import genreRoutes from "#web/routes/genre";
@@ -68,6 +69,7 @@ api.route("network", networkRoutes);
 api.route("/discover", discoverRoutes);
 api.route("/genre", genreRoutes);
 api.route("/find", findRoutes);
+api.route("credit", creditRoutes);
 app.route("/api", api);
 
 app.onError((err, c) => {

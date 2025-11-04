@@ -8,6 +8,10 @@ export const externalIdParamSchema = z.object({
 	external_id: z.string(),
 });
 
+export const creditIdSchemas = z.object({
+	credit_id: z.string(),
+});
+
 export const idWithSeasonNumberSchema = z.object({
 	id: z.coerce.number(),
 	season_number: z.coerce.number(),
