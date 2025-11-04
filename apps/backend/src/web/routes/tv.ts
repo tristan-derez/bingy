@@ -92,7 +92,7 @@ tvRoutes.get(
 );
 
 tvRoutes.get(
-	"/:id/alternate_titles",
+	"/:id/alternative_titles",
 	zValidator("param", idParamSchema),
 	async (c) => {
 		const { id } = c.req.valid("param");
