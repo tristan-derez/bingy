@@ -4,7 +4,7 @@ import { logger } from "#lib/logger";
 import { serveInternalServerError } from "#lib/responses/error";
 import { serveData } from "#lib/responses/resp";
 import { tmdbClient } from "#lib/tmdb/tmdb.client";
-import { idParamSchema } from "#schemas/queries-params";
+import { idParamSchema } from "#web/validators/query-param";
 
 const networksRoutes = new Hono();
 
