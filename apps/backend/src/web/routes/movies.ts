@@ -10,7 +10,7 @@ import {
 	languageQuerySchema,
 	paginationQuerySchema,
 	queryParamsTrending,
-} from "#schemas/queries-params";
+} from "#validators/queries-params";
 
 const moviesRoutes = new Hono();
 

@@ -8,7 +8,7 @@ import {
 	idParamSchema,
 	languageQuerySchema,
 	paginationQuerySchema,
-} from "#schemas/queries-params";
+} from "#validators/queries-params";
 
 const personRoutes = new Hono();
 

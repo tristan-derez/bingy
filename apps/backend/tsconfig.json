@@ -14,7 +14,7 @@
 			"#utils/*": ["./src/utils/*"],
 			"#web/*": ["./src/web/*"],
 			"#types/*": ["./src/types/*"],
-			"#schemas/*": ["./src/schemas/*"]
+			"#validators/*": ["./src/web/validators/*"]
 		}
 	}
 }
