@@ -471,7 +471,7 @@ export namespace Schemas {
 			production_company: ProductionCompany[];
 			production_countries: ProductionCountry[];
 			revenue: number;
-			runtime: number;
+			runtime: number | null;
 			spoken_languages: SpokenLanguage[];
 			status: string;
 			tagline: string;
@@ -854,7 +854,7 @@ export namespace Schemas {
 		title: string;
 		overview: string;
 		homepage: string | null;
-		runtime: number;
+		runtime: number | null;
 		tagline: string;
 	}>;
 
