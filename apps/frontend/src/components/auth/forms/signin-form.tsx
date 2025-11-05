@@ -6,6 +6,7 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 import { toast } from "sonner";
 import type { z } from "zod";
+import { useTheme } from "@/components/theme/use-theme";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -24,7 +25,7 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
+import { MagicCard } from "@/components/ui/magic-card";
 import { OAuthButton } from "@/components/ui/oauth-button";
 import { SeparatorWithText } from "@/components/ui/separator-text";
 import { authClient } from "@/lib/auth-client";
@@ -140,118 +141,127 @@ export function SignInForm() {
 		}
 	};
 
+	const { theme } = useTheme();
+
 	return (
 		<>
-			<Card className="mx-auto max-w-sm min-w-[320px] md:min-w-[420px]">
-				<CardHeader>
-					<CardTitle className="text-2xl">Sign in</CardTitle>
-					<CardDescription>
-						<p>
-							Welcome back! Your entertainment hub is waiting. <br />
-							Just sign in to get going.
-						</p>
-					</CardDescription>
-				</CardHeader>
-				<CardContent className="grid gap-4">
-					<Form {...form}>
-						<form
-							onSubmit={form.handleSubmit(onFormSubmit)}
-							className="grid gap-4"
-						>
-							<fieldset disabled={isSubmitting}>
-								<div className="grid gap-4">
-									<FormField
-										control={form.control}
-										name="email"
-										render={({ field }) => (
-											<FormItem className="grid gap-2">
-												<FormLabel htmlFor={`${id}-email`}>Email</FormLabel>
-												<FormControl>
+			<Card className="max-w-sm min-w-[320px] md:min-w-[420px] py-0 border-none shadow-transparent">
+				<MagicCard
+					gradientColor={theme === "dark" ? "#262626" : "#D9D9D955"}
+					className="p-6"
+				>
+					<CardHeader>
+						<CardTitle className="text-2xl">Sign in</CardTitle>
+						<CardDescription>
+							<p>
+								Welcome back! Your entertainment hub is waiting. <br />
+								Just sign in to get going.
+							</p>
+						</CardDescription>
+					</CardHeader>
+					<CardContent className="grid gap-4 pt-2">
+						<Form {...form}>
+							<form
+								onSubmit={form.handleSubmit(onFormSubmit)}
+								className="grid gap-4"
+							>
+								<fieldset disabled={isSubmitting}>
+									<div className="grid gap-4">
+										<FormField
+											control={form.control}
+											name="email"
+											render={({ field }) => (
+												<FormItem className="grid gap-2">
+													<FormLabel htmlFor={`${id}-email`}>Email</FormLabel>
+													<FormControl>
+														<Input
+															id={`${id}-email`}
+															type="email"
+															autoComplete="email"
+															placeholder="m@example.com"
+															required
+															{...field}
+														/>
+													</FormControl>
+													<FormMessage />
+												</FormItem>
+											)}
+										/>
+										<FormField
+											control={form.control}
+											name="password"
+											render={({ field }) => (
+												<FormItem className="grid gap-2">
+													<div className="flex items-center">
+														<FormLabel htmlFor={`${id}-password`}>
+															Password
+														</FormLabel>
+														<Link
+															to={"/forgot-password"}
+															search={
+																watchedEmail
+																	? { email: watchedEmail }
+																	: undefined
+															}
+															className="ml-auto inline-block text-xs underline"
+														>
+															Forgot your password?
+														</Link>
+													</div>
 													<Input
-														id={`${id}-email`}
-														type="email"
-														autoComplete="email"
-														placeholder="m@example.com"
-														required
+														id={`${id}-password`}
+														type="password"
+														autoComplete="current-password"
 														{...field}
 													/>
-												</FormControl>
-												<FormMessage />
-											</FormItem>
-										)}
-									/>
-									<FormField
-										control={form.control}
-										name="password"
-										render={({ field }) => (
-											<FormItem className="grid gap-2">
-												<div className="flex items-center">
-													<FormLabel htmlFor={`${id}-password`}>
-														Password
-													</FormLabel>
-													<Link
-														to={"/forgot-password"}
-														search={
-															watchedEmail ? { email: watchedEmail } : undefined
-														}
-														className="ml-auto inline-block text-xs underline"
-													>
-														Forgot your password?
-													</Link>
-												</div>
-												<Input
-													id={`${id}-password`}
-													type="password"
-													autoComplete="current-password"
-													{...field}
-												/>
-												<FormMessage />
-											</FormItem>
-										)}
-									/>
-									<Button
-										type="submit"
-										className="w-full mt-2 font-bold flex justify-center relative disabled:bg-gray-300 disabled:text-gray-500 hover:cursor-pointer"
-									>
-										{isSubmitting ? (
-											<span className="flex items-center justify-center gap-2">
-												<Loader2 className="animate-spin h-4 w-4" />
-												Signing in
-											</span>
-										) : (
-											"Sign in"
-										)}
-										{lastMethod === "email" && (
-											<Badge
-												variant="secondary"
-												className="absolute right-2 rounded-md"
-											>
-												Last used
-											</Badge>
-										)}
-									</Button>
-								</div>
-							</fieldset>
-						</form>
-					</Form>
+													<FormMessage />
+												</FormItem>
+											)}
+										/>
+										<Button
+											type="submit"
+											className="w-full mt-2 font-bold flex justify-center relative disabled:bg-gray-300 disabled:text-gray-500 hover:cursor-pointer"
+										>
+											{isSubmitting ? (
+												<span className="flex items-center justify-center gap-2">
+													<Loader2 className="animate-spin h-4 w-4" />
+													Signing in
+												</span>
+											) : (
+												"Sign in"
+											)}
+											{lastMethod === "email" && (
+												<Badge
+													variant="secondary"
+													className="absolute right-2 rounded-md"
+												>
+													Last used
+												</Badge>
+											)}
+										</Button>
+									</div>
+								</fieldset>
+							</form>
+						</Form>
 
-					<SeparatorWithText text="Or continue with" />
-					<div className="flex gap-2">
-						<OAuthButton
-							icon={FcGoogle}
-							label="Sign in with Google"
-							text="Google"
-							lastMethod={lastMethod === "google"}
-							onClick={() => handleOAuthSignIn("google")}
-						/>
-					</div>
-					<div className="mt-4 text-center text-sm">
-						Don&apos;t have an account?{" "}
-						<Link to="/signup" className="underline">
-							Sign up
-						</Link>
-					</div>
-				</CardContent>
+						<SeparatorWithText text="Or continue with" />
+						<div className="flex gap-2">
+							<OAuthButton
+								icon={FcGoogle}
+								label="Sign in with Google"
+								text="Google"
+								lastMethod={lastMethod === "google"}
+								onClick={() => handleOAuthSignIn("google")}
+							/>
+						</div>
+						<div className="mt-4 text-center text-sm">
+							Don&apos;t have an account?{" "}
+							<Link to="/signup" className="underline">
+								Sign up
+							</Link>
+						</div>
+					</CardContent>
+				</MagicCard>
 			</Card>
 			<TwoFactorDialog
 				open={showDialog}
