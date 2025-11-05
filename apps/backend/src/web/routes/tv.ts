@@ -4,9 +4,10 @@ import { logger } from "#lib/logger";
 import {
 	serveBadRequest,
 	serveInternalServerError,
+	serveNotFound,
 } from "#lib/responses/error";
 import { serveData } from "#lib/responses/resp";
-import { tmdbClient } from "#lib/tmdb/tmdb.client";
+import { TmdbError, tmdbClient } from "#lib/tmdb/tmdb.client";
 import {
 	idParamSchema,
 	idWithSeasonNumberAndEpisodeNumber,
@@ -40,6 +41,9 @@ tvRoutes.get(
 			});
 			return serveData(c, tvWatchProviders);
 		} catch (error) {
+			if (error instanceof TmdbError && error.status === 404) {
+				return serveNotFound(c, "Resource not found");
+			}
 			logger.error(error);
 			return serveInternalServerError(c, error);
 		}
@@ -61,6 +65,9 @@ tvRoutes.get(
 			});
 			return serveData(c, tv);
 		} catch (error) {
+			if (error instanceof TmdbError && error.status === 404) {
+				return serveNotFound(c, "Resource not found");
+			}
 			logger.error(error);
 			return serveInternalServerError(c, error);
 		}
@@ -85,6 +92,9 @@ tvRoutes.get(
 			);
 			return serveData(c, tvAggregateCredits);
 		} catch (error) {
+			if (error instanceof TmdbError && error.status === 404) {
+				return serveNotFound(c, "Resource not found");
+			}
 			logger.error(error);
 			return serveInternalServerError(c, error);
 		}
@@ -106,6 +116,9 @@ tvRoutes.get(
 			);
 			return serveData(c, tvAlternativeTitles);
 		} catch (error) {
+			if (error instanceof TmdbError && error.status === 404) {
+				return serveNotFound(c, "Resource not found");
+			}
 			logger.error(error);
 			return serveInternalServerError(c, error);
 		}
@@ -127,6 +140,9 @@ tvRoutes.get(
 			);
 			return serveData(c, tvContentRatings);
 		} catch (error) {
+			if (error instanceof TmdbError && error.status === 404) {
+				return serveNotFound(c, "Resource not found");
+			}
 			logger.error(error);
 			return serveInternalServerError(c, error);
 		}
@@ -150,6 +166,9 @@ tvRoutes.get(
 			});
 			return serveData(c, tvCredits);
 		} catch (error) {
+			if (error instanceof TmdbError && error.status === 404) {
+				return serveNotFound(c, "Resource not found");
+			}
 			logger.error(error);
 			return serveInternalServerError(c, error);
 		}
@@ -171,6 +190,9 @@ tvRoutes.get(
 			);
 			return serveData(c, tvEpisodeGroups);
 		} catch (error) {
+			if (error instanceof TmdbError && error.status === 404) {
+				return serveNotFound(c, "Resource not found");
+			}
 			logger.error(error);
 			return serveInternalServerError(c, error);
 		}
@@ -192,6 +214,9 @@ tvRoutes.get(
 			);
 			return serveData(c, tvExternalIds);
 		} catch (error) {
+			if (error instanceof TmdbError && error.status === 404) {
+				return serveNotFound(c, "Resource not found");
+			}
 			logger.error(error);
 			return serveInternalServerError(c, error);
 		}
@@ -212,6 +237,9 @@ tvRoutes.get(
 			});
 			return serveData(c, tvImages);
 		} catch (error) {
+			if (error instanceof TmdbError && error.status === 404) {
+				return serveNotFound(c, "Resource not found");
+			}
 			logger.error(error);
 			return serveInternalServerError(c, error);
 		}
@@ -247,6 +275,9 @@ tvRoutes.get(
 			});
 			return serveData(c, tvLists);
 		} catch (error) {
+			if (error instanceof TmdbError && error.status === 404) {
+				return serveNotFound(c, "Resource not found");
+			}
 			logger.error(error);
 			return serveInternalServerError(c, error);
 		}
@@ -271,6 +302,9 @@ tvRoutes.get(
 			);
 			return serveData(c, tvRecommendations);
 		} catch (error) {
+			if (error instanceof TmdbError && error.status === 404) {
+				return serveNotFound(c, "Resource not found");
+			}
 			logger.error(error);
 			return serveInternalServerError(c, error);
 		}
@@ -292,6 +326,9 @@ tvRoutes.get(
 			});
 			return serveData(c, tvReviews);
 		} catch (error) {
+			if (error instanceof TmdbError && error.status === 404) {
+				return serveNotFound(c, "Resource not found");
+			}
 			logger.error(error);
 			return serveInternalServerError(c, error);
 		}
@@ -313,6 +350,9 @@ tvRoutes.get(
 			);
 			return serveData(c, tvScreenTheatrically);
 		} catch (error) {
+			if (error instanceof TmdbError && error.status === 404) {
+				return serveNotFound(c, "Resource not found");
+			}
 			logger.error(error);
 			return serveInternalServerError(c, error);
 		}
@@ -334,6 +374,9 @@ tvRoutes.get(
 			});
 			return serveData(c, tvSimilar);
 		} catch (error) {
+			if (error instanceof TmdbError && error.status === 404) {
+				return serveNotFound(c, "Resource not found");
+			}
 			logger.error(error);
 			return serveInternalServerError(c, error);
 		}
@@ -355,6 +398,9 @@ tvRoutes.get(
 			);
 			return serveData(c, tvTranslations);
 		} catch (error) {
+			if (error instanceof TmdbError && error.status === 404) {
+				return serveNotFound(c, "Resource not found");
+			}
 			logger.error(error);
 			return serveInternalServerError(c, error);
 		}
@@ -376,6 +422,9 @@ tvRoutes.get(
 			});
 			return serveData(c, tvVideos);
 		} catch (error) {
+			if (error instanceof TmdbError && error.status === 404) {
+				return serveNotFound(c, "Resource not found");
+			}
 			logger.error(error);
 			return serveInternalServerError(c, error);
 		}
@@ -397,6 +446,9 @@ tvRoutes.get(
 			);
 			return serveData(c, tvWatchProviders);
 		} catch (error) {
+			if (error instanceof TmdbError && error.status === 404) {
+				return serveNotFound(c, "Resource not found");
+			}
 			logger.error(error);
 			return serveInternalServerError(c, error);
 		}
@@ -421,6 +473,9 @@ tvRoutes.get(
 			);
 			return serveData(c, tvSeasonDetails);
 		} catch (error) {
+			if (error instanceof TmdbError && error.status === 404) {
+				return serveNotFound(c, "Resource not found");
+			}
 			logger.error(error);
 			return serveInternalServerError(c, error);
 		}
@@ -445,6 +500,9 @@ tvRoutes.get(
 			);
 			return serveData(c, results);
 		} catch (error) {
+			if (error instanceof TmdbError && error.status === 404) {
+				return serveNotFound(c, "Resource not found");
+			}
 			logger.error(error);
 			return serveInternalServerError(c, error);
 		}
@@ -469,6 +527,9 @@ tvRoutes.get(
 			);
 			return serveData(c, results);
 		} catch (error) {
+			if (error instanceof TmdbError && error.status === 404) {
+				return serveNotFound(c, "Resource not found");
+			}
 			logger.error(error);
 			return serveInternalServerError(c, error);
 		}
@@ -490,6 +551,9 @@ tvRoutes.get(
 			);
 			return serveData(c, results);
 		} catch (error) {
+			if (error instanceof TmdbError && error.status === 404) {
+				return serveNotFound(c, "Resource not found");
+			}
 			logger.error(error);
 			return serveInternalServerError(c, error);
 		}
@@ -514,6 +578,9 @@ tvRoutes.get(
 			);
 			return serveData(c, results);
 		} catch (error) {
+			if (error instanceof TmdbError && error.status === 404) {
+				return serveNotFound(c, "Resource not found");
+			}
 			logger.error(error);
 			return serveInternalServerError(c, error);
 		}
@@ -535,6 +602,9 @@ tvRoutes.get(
 			);
 			return serveData(c, results);
 		} catch (error) {
+			if (error instanceof TmdbError && error.status === 404) {
+				return serveNotFound(c, "Resource not found");
+			}
 			logger.error(error);
 			return serveInternalServerError(c, error);
 		}
@@ -559,6 +629,9 @@ tvRoutes.get(
 			);
 			return serveData(c, results);
 		} catch (error) {
+			if (error instanceof TmdbError && error.status === 404) {
+				return serveNotFound(c, "Resource not found");
+			}
 			logger.error(error);
 			return serveInternalServerError(c, error);
 		}
@@ -583,6 +656,9 @@ tvRoutes.get(
 			);
 			return serveData(c, results);
 		} catch (error) {
+			if (error instanceof TmdbError && error.status === 404) {
+				return serveNotFound(c, "Resource not found");
+			}
 			logger.error(error);
 			return serveInternalServerError(c, error);
 		}
@@ -607,6 +683,9 @@ tvRoutes.get(
 			);
 			return serveData(c, results);
 		} catch (error) {
+			if (error instanceof TmdbError && error.status === 404) {
+				return serveNotFound(c, "Resource not found");
+			}
 			logger.error(error);
 			return serveInternalServerError(c, error);
 		}
@@ -631,6 +710,9 @@ tvRoutes.get(
 			);
 			return serveData(c, results);
 		} catch (error) {
+			if (error instanceof TmdbError && error.status === 404) {
+				return serveNotFound(c, "Resource not found");
+			}
 			logger.error(error);
 			return serveInternalServerError(c, error);
 		}
@@ -652,6 +734,9 @@ tvRoutes.get(
 			);
 			return serveData(c, results);
 		} catch (error) {
+			if (error instanceof TmdbError && error.status === 404) {
+				return serveNotFound(c, "Resource not found");
+			}
 			logger.error(error);
 			return serveInternalServerError(c, error);
 		}
@@ -676,6 +761,9 @@ tvRoutes.get(
 			);
 			return serveData(c, results);
 		} catch (error) {
+			if (error instanceof TmdbError && error.status === 404) {
+				return serveNotFound(c, "Resource not found");
+			}
 			logger.error(error);
 			return serveInternalServerError(c, error);
 		}
@@ -697,6 +785,9 @@ tvRoutes.get(
 			);
 			return serveData(c, results);
 		} catch (error) {
+			if (error instanceof TmdbError && error.status === 404) {
+				return serveNotFound(c, "Resource not found");
+			}
 			logger.error(error);
 			return serveInternalServerError(c, error);
 		}
@@ -721,6 +812,9 @@ tvRoutes.get(
 			);
 			return serveData(c, results);
 		} catch (error) {
+			if (error instanceof TmdbError && error.status === 404) {
+				return serveNotFound(c, "Resource not found");
+			}
 			logger.error(error);
 			return serveInternalServerError(c, error);
 		}
@@ -742,6 +836,9 @@ tvRoutes.get(
 			);
 			return serveData(c, results);
 		} catch (error) {
+			if (error instanceof TmdbError && error.status === 404) {
+				return serveNotFound(c, "Resource not found");
+			}
 			logger.error(error);
 			return serveInternalServerError(c, error);
 		}

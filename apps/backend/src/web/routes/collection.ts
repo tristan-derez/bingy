@@ -1,9 +1,9 @@
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { logger } from "#lib/logger";
-import { serveInternalServerError } from "#lib/responses/error";
+import { serveInternalServerError, serveNotFound } from "#lib/responses/error";
 import { serveData } from "#lib/responses/resp";
-import { tmdbClient } from "#lib/tmdb/tmdb.client";
+import { TmdbError, tmdbClient } from "#lib/tmdb/tmdb.client";
 import {
 	idParamSchema,
 	languageQuerySchema,
@@ -26,6 +26,9 @@ collectionRoutes.get(
 			});
 			return serveData(c, results);
 		} catch (error) {
+			if (error instanceof TmdbError && error.status === 404) {
+				return serveNotFound(c, "Resource not found");
+			}
 			logger.error(error);
 			return serveInternalServerError(c, error);
 		}
@@ -50,6 +53,9 @@ collectionRoutes.get(
 			);
 			return serveData(c, results);
 		} catch (error) {
+			if (error instanceof TmdbError && error.status === 404) {
+				return serveNotFound(c, "Resource not found");
+			}
 			logger.error(error);
 			return serveInternalServerError(c, error);
 		}
@@ -71,6 +77,9 @@ collectionRoutes.get(
 			);
 			return serveData(c, results);
 		} catch (error) {
+			if (error instanceof TmdbError && error.status === 404) {
+				return serveNotFound(c, "Resource not found");
+			}
 			logger.error(error);
 			return serveInternalServerError(c, error);
 		}

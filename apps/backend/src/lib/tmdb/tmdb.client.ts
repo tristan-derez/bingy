@@ -6,6 +6,16 @@ import type {
 } from "#types/tmdb";
 import { createApiClient } from "./tmdb";
 
+export class TmdbError extends Error {
+	constructor(
+		public status: number,
+		public statusText: string,
+	) {
+		super(`Request failed: ${status} ${statusText}`);
+		this.name = "TmdbError";
+	}
+}
+
 export const tmdbFetch: Fetcher = async <TResponse>(
 	method: Method,
 	baseUrl: string,
@@ -46,8 +56,7 @@ export const tmdbFetch: Fetcher = async <TResponse>(
 			: undefined;
 
 	const res = await fetch(finalUrl, { method, headers, body });
-	if (!res.ok)
-		throw new Error(`Request failed: ${res.status} ${res.statusText}`);
+	if (!res.ok) throw new TmdbError(res.status, res.statusText);
 	return res.json() as Promise<TResponse>;
 };
 
