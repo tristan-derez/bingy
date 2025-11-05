@@ -5,6 +5,7 @@ import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { GlobalError } from "@/components/errors/global-error";
 import { NotFoundComponent } from "@/components/errors/not-found";
 import Header from "@/components/Header";
+import { LightRays } from "@/components/ui/light-rays";
 import { authClient } from "@/lib/auth-client";
 import appCss from "@/styles/app.css?url";
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
@@ -40,7 +41,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 		],
 	}),
 	component: () => (
-		<div className="bg-purple-950/10 bg-[radial-gradient(ellipse_20%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]">
+		<div>
 			<Header />
 			<Outlet />
 			<TanstackDevtools
@@ -55,6 +56,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 					TanStackQueryDevtools,
 				]}
 			/>
+			<LightRays />
 		</div>
 	),
 	notFoundComponent: NotFoundComponent,
