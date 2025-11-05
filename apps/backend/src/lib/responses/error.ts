@@ -3,11 +3,8 @@ import { HTTPException } from "hono/http-exception";
 import type { ContentfulStatusCode } from "hono/utils/http-status";
 import { getReasonPhrase, StatusCodes } from "http-status-codes";
 
-const serveNotFound = (c: Context) => {
-	return c.json(
-		{ error: getReasonPhrase(StatusCodes.NOT_FOUND) },
-		StatusCodes.NOT_FOUND,
-	);
+const serveNotFound = (c: Context, message: string) => {
+	return c.json({ error: message }, StatusCodes.NOT_FOUND);
 };
 
 const serveBadRequest = (c: Context, message: string) => {

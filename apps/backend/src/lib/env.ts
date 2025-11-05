@@ -23,6 +23,7 @@ const envSchema = z.object({
 	API_VERSION: z.string(),
 	FRONT_URL: z.string(),
 	RESEND_API_KEY: z.string(),
+	TMDB_API_KEY: z.string(),
 	TRANSACTIONAL_EMAIL: z.string(),
 	APP_NAME: z.string(),
 	BUCKET_URL: z.string(),

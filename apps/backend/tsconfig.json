@@ -8,11 +8,13 @@
 		"paths": {
 			"#lib/*": ["./src/lib/*"],
 			"#emails/*": ["./src/emails/*"],
-			"#schemas/*": ["./src/db/schemas/*"],
+			"#db/schemas/*": ["./src/db/schemas/*"],
 			"#middlewares/*": ["./src/middlewares/*"],
 			"#tasks/*": ["./src/tasks/*"],
 			"#utils/*": ["./src/utils/*"],
-			"#web/*": ["./src/web/*"]
+			"#web/*": ["./src/web/*"],
+			"#types/*": ["./src/types/*"],
+			"#validators/*": ["./src/web/validators/*"]
 		}
 	}
 }
