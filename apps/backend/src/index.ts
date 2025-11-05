@@ -27,6 +27,10 @@ import trendingRoutes from "#web/routes/trending";
 import tvRoutes from "#web/routes/tv";
 import watchProvidersRoutes from "#web/routes/watch-providers";
 
+declare global {
+	var __routesShown: boolean | undefined;
+}
+
 const app = new Hono<{
 	Variables: {
 		user: typeof auth.$Infer.Session.user | null;
@@ -85,10 +89,12 @@ app.onError((err, c) => {
 });
 
 if (env.NODE_ENV === "development") {
-	console.log("Available routes:");
-	showRoutes(app);
+	if (!global.__routesShown) {
+		console.log("Available routes:");
+		showRoutes(app);
+		global.__routesShown = true;
+	}
 }
-
 const port = Number(env.PORT);
 logger.info(`Server is running on port ${port} and env: ${env.NODE_ENV}`);
 
