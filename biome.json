@@ -21,7 +21,10 @@
 	"linter": {
 		"enabled": true,
 		"rules": {
-			"recommended": true
+			"recommended": true,
+			"suspicious": {
+				"noUnknownAtRules": "off"
+			}
 		}
 	},
 	"javascript": {
@@ -33,6 +36,11 @@
 			"quoteProperties": "asNeeded",
 			"semicolons": "always",
 			"trailingCommas": "all"
+		}
+	},
+	"css": {
+		"parser": {
+			"cssModules": false
 		}
 	},
 	"json": {
