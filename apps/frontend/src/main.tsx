@@ -1,7 +1,6 @@
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
-import "@/styles/app.css";
 import { ThemeProvider } from "@/components/theme/theme-provider.tsx";
 import { Toaster } from "./components/ui/sonner.tsx";
 import {
@@ -10,6 +9,8 @@ import {
 } from "./integrations/tanstack-query/root-provider.tsx";
 import reportWebVitals from "./reportWebVitals.ts";
 import { routeTree } from "./routeTree.gen";
+import "@/styles/app.css";
+import "@/styles/autofill.css";
 
 const router = createRouter({
 	routeTree,
