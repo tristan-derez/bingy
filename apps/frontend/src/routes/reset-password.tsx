@@ -33,7 +33,7 @@ function ResetPasswordCallbackPage() {
 	const { token } = Route.useSearch();
 
 	return (
-		<div className="min-h-screen flex flex-col items-center justify-center">
+		<div>
 			<ResetPasswordForm token={token} />
 		</div>
 	);

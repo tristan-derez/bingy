@@ -41,7 +41,7 @@ export function DisableTwoFactorForm() {
 
 			if (data) {
 				toast.success("Two factor authentication disabled successfully");
-				navigate({ to: "/account" });
+				navigate({ to: "/settings" });
 			}
 
 			if (error) {
@@ -99,7 +99,7 @@ export function DisableTwoFactorForm() {
 						/>
 						<Button
 							type="submit"
-							className="w-full mt-4 disabled:bg-gray-300 disabled:text-gray-500 hover:cursor-pointer"
+							className="w-full mt-4 disabled:bg-gray-300 disabled:text-gray-500"
 						>
 							{isSubmitting ? (
 								<span className="flex items-center justify-center gap-2">

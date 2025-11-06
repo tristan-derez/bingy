@@ -156,7 +156,7 @@ export function UpdateEmailForm() {
 								/>
 								<Button
 									type="submit"
-									className="w-full mt-4 disabled:bg-gray-300 disabled:text-gray-500 hover:cursor-pointer"
+									className="w-full mt-4 disabled:bg-gray-300 disabled:text-gray-500"
 								>
 									{isSubmitting ? (
 										<span className="flex items-center justify-center gap-2">

@@ -5,6 +5,7 @@ import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { GlobalError } from "@/components/errors/global-error";
 import { NotFoundComponent } from "@/components/errors/not-found";
 import Header from "@/components/Header";
+import { LightRays } from "@/components/ui/light-rays";
 import { authClient } from "@/lib/auth-client";
 import appCss from "@/styles/app.css?url";
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
@@ -17,6 +18,7 @@ interface MyRouterContext {
 export const Route = createRootRouteWithContext<MyRouterContext>()({
 	beforeLoad: async ({ context: _ }) => {
 		const session = await authClient.getSession();
+
 		return { session: session.data };
 	},
 	head: () => ({
@@ -40,9 +42,11 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 		],
 	}),
 	component: () => (
-		<div className="bg-purple-950/10 bg-[radial-gradient(ellipse_20%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]">
+		<div>
 			<Header />
-			<Outlet />
+			<div className="min-h-svh flex flex-col items-center px-10 py-22 lg:py-32">
+				<Outlet />
+			</div>
 			<TanstackDevtools
 				config={{
 					position: "bottom-left",
@@ -55,6 +59,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 					TanStackQueryDevtools,
 				]}
 			/>
+			<LightRays />
 		</div>
 	),
 	notFoundComponent: NotFoundComponent,

@@ -1,25 +1,25 @@
 import { createFileRoute, useSearch } from "@tanstack/react-router";
 import { toast } from "sonner";
 import z from "zod";
-import { AccountComponent } from "@/components/auth/account-component";
+import { SettingsComponent } from "@/components/auth/settings-component";
 import { authClient } from "@/lib/auth-client";
 
-const accountPageSchema = z.object({
+const settingsPageSchema = z.object({
 	error: z.string().optional(),
 });
 
-export const Route = createFileRoute("/_auth/account")({
-	validateSearch: accountPageSchema,
-	component: AccountPage,
+export const Route = createFileRoute("/_auth/settings")({
+	validateSearch: settingsPageSchema,
+	component: SettingsPage,
 	beforeLoad: async () => {
 		const connections = await authClient.listAccounts();
 		return { connections };
 	},
 });
 
-function AccountPage() {
+function SettingsPage() {
 	const error = useSearch({
-		from: "/_auth/account",
+		from: "/_auth/settings",
 		select: (search) => search.error,
 	});
 
@@ -31,8 +31,8 @@ function AccountPage() {
 	}
 
 	return (
-		<div className="min-h-svh flex flex-col items-center justify-center px-4 space-y-6">
-			<AccountComponent />
+		<div className="flex w-full max-w-md flex-col gap-6">
+			<SettingsComponent />
 		</div>
 	);
 }

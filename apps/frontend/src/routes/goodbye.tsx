@@ -8,7 +8,7 @@ export const Route = createFileRoute("/goodbye")({
 function GoodByePage() {
 	const navigate = useNavigate();
 	return (
-		<div className="min-h-screen flex flex-col items-center justify-center">
+		<div>
 			<div className="grid gap-4 text-center">
 				<p>Hey! goodbye!</p>
 				<Button onClick={() => navigate({ to: "/" })}>Return to home</Button>

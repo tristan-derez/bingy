@@ -28,7 +28,7 @@ import { authClient } from "@/lib/auth-client";
 import { updatePasswordFormSchema } from "@/schemas/password/update-password";
 
 export function UpdatePasswordForm() {
-	const { connections } = useRouteContext({ from: "/_auth/account" });
+	const { connections } = useRouteContext({ from: "/_auth/settings" });
 	const [isSubmitting, setIsSubmitting] = React.useState(false);
 	const [open, setOpen] = React.useState(false);
 	const [_, setIsSuccess] = React.useState(false);
@@ -154,7 +154,7 @@ export function UpdatePasswordForm() {
 									/>
 									<Button
 										type="submit"
-										className="w-full mt-4 disabled:bg-gray-300 disabled:text-gray-500 hover:cursor-pointer"
+										className="w-full mt-4 disabled:bg-gray-300 disabled:text-gray-500"
 									>
 										{isSubmitting ? (
 											<span className="flex items-center justify-center gap-2">
