@@ -1,173 +1,143 @@
+import { Link, useRouteContext } from "@tanstack/react-router";
+
+import { useState } from "react";
+import { ProfileDropdown } from "./profile-dropdown";
 import {
-	Link,
-	useNavigate,
-	useRouteContext,
-	useRouter,
-} from "@tanstack/react-router";
-import { ChevronsUpDown } from "lucide-react";
-import { FaGithub } from "react-icons/fa";
-import { IoLogOutSharp } from "react-icons/io5";
-import { MdSupport } from "react-icons/md";
-import { PiUserFill } from "react-icons/pi";
-import { RiVerifiedBadgeFill } from "react-icons/ri";
-import { toast } from "sonner";
-import logo from "@/assets/bingy-icon_text.svg";
-import { SettingsDialog } from "@/components/auth/settings-dialog";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuGroup,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { authClient } from "@/lib/auth-client";
+	MobileNav,
+	MobileNavHeader,
+	MobileNavMenu,
+	MobileNavToggle,
+	NavBody,
+	Navbar,
+	NavbarButton,
+	NavbarLogo,
+	NavItems,
+} from "./ui/resizable-navbar";
+import { Separator } from "./ui/separator";
 
 export default function Header() {
-	const router = useRouter();
-	const navigate = useNavigate();
 	const { session } = useRouteContext({ from: "__root__" });
+	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-	const logout = async () => {
-		toast.success("You have been successfully logged out. Come back soon!");
-		await authClient.signOut();
-		router.invalidate().finally(() => {
-			navigate({ to: "/" });
-		});
-	};
+	const allNavItems = [
+		{
+			name: "Home",
+			link: "/",
+			requiresAuth: false,
+			hideWhenAuth: true,
+		},
+		{
+			name: "Dashboard",
+			link: "/dashboard",
+			requiresAuth: true,
+			hideWhenAuth: false,
+		},
+		{
+			name: "Features",
+			link: "/features" as const,
+			requiresAuth: false,
+			hideWhenAuth: true,
+		},
+		{
+			name: "Contact",
+			link: "/contact" as const,
+			requiresAuth: false,
+			hideWhenAuth: true,
+		},
+		{
+			name: "Movies",
+			link: "/movies" as const,
+			requiresAuth: true,
+			hideWhenAuth: false,
+		},
+		{
+			name: "TV",
+			link: "/tv" as const,
+			requiresAuth: true,
+			hideWhenAuth: false,
+		},
+	] as const;
+
+	const navItems = allNavItems.filter((item) => {
+		if (item.requiresAuth && !session) return false;
+		if (item.hideWhenAuth && session) return false;
+		return true;
+	});
 
 	return (
-		<div className="p-4 flex justify-between w-full fixed items-center backdrop-blur-sm border-b border-border/40 shadow-md bg-transparent mb-8">
-			<nav>
-				<ul className="flex gap-4 items-center">
-					<li>
-						<Link to="/">
-							<img src={logo} alt="Logo" className="h-6 w-auto" />
-						</Link>
-					</li>
-					<li>
-						<Link to="/" className="[&.active]:font-bold">
-							Home
-						</Link>
-					</li>
-					{session && (
-						<li>
-							<Link to="/dashboard" className="[&.active]:font-bold">
-								Dashboard
-							</Link>
-						</li>
-					)}
-				</ul>
-			</nav>
-			<nav>
-				<ul className="flex gap-2 items-center">
+		<Navbar>
+			<NavBody>
+				<NavbarLogo />
+				<NavItems items={navItems} />
+				<div className="flex items-center gap-4">
 					{!session && (
 						<>
-							<Button
-								variant="ghost"
-								onClick={() => navigate({ to: "/signin" })}
-							>
+							<NavbarButton variant="secondary" to="/signin">
 								Sign In
-							</Button>
-							<Button onClick={() => navigate({ to: "/signup" })}>
+							</NavbarButton>
+							<NavbarButton variant="primary" to="/signup">
 								Get Started
-							</Button>
+							</NavbarButton>
 						</>
 					)}
 					{session && (
-						<DropdownMenu>
-							<DropdownMenuTrigger asChild>
-								<Button
-									size="lg"
-									variant="ghost"
-									className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-								>
-									<Avatar className="h-8 w-8 rounded-lg">
-										<AvatarImage
-											src={session.user?.image || ""}
-											alt={session.user.name}
-										/>
-										<AvatarFallback className="rounded-lg">
-											{session.user?.name ? session.user.name[0] : "U"}
-										</AvatarFallback>
-									</Avatar>
-									<div className="grid flex-1 text-left text-sm leading-tight">
-										<span className="truncate font-medium">
-											{session.user?.name}
-										</span>
-										<span className="truncate text-xs">
-											{session.user?.email}
-										</span>
-									</div>
-									<ChevronsUpDown className="ml-auto size-4" />
-								</Button>
-							</DropdownMenuTrigger>
-							<DropdownMenuContent
-								className="w-56 rounded-lg"
-								align="end"
-								sideOffset={4}
-							>
-								<DropdownMenuLabel className="p-0 font-normal">
-									<div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-										<Avatar className="h-8 w-8 rounded-lg">
-											<AvatarImage
-												src={session.user?.image || ""}
-												alt={session.user.name}
-											/>
-											<AvatarFallback className="rounded-lg">
-												{session.user?.name ? session.user.name[0] : "U"}
-											</AvatarFallback>
-										</Avatar>
-										<div className="grid flex-1 text-left text-sm leading-tight">
-											<span className="truncate font-medium">
-												{session.user?.name}
-											</span>
-											<span className="truncate text-xs">
-												{session.user?.email}
-											</span>
-										</div>
-									</div>
-								</DropdownMenuLabel>
-								<DropdownMenuSeparator />
-								<DropdownMenuGroup>
-									<DropdownMenuItem asChild>
-										<Link to="/profile">
-											<PiUserFill />
-											Profile
-										</Link>
-									</DropdownMenuItem>
-									<DropdownMenuItem asChild>
-										<Link to="/account">
-											<RiVerifiedBadgeFill />
-											Account
-										</Link>
-									</DropdownMenuItem>
-									<DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-										<SettingsDialog />
-									</DropdownMenuItem>
-								</DropdownMenuGroup>
-								<DropdownMenuSeparator />
-								<DropdownMenuItem>
-									<FaGithub />
-									<a href="https://github.com/tristan-derez/bingy">GitHub</a>
-								</DropdownMenuItem>
-								<DropdownMenuItem>
-									<MdSupport />
-									Support
-								</DropdownMenuItem>
-								<DropdownMenuSeparator />
-								<DropdownMenuItem onSelect={logout}>
-									<IoLogOutSharp />
-									Log out
-								</DropdownMenuItem>
-							</DropdownMenuContent>
-						</DropdownMenu>
+						<ProfileDropdown
+							session={{ ...session.session, user: session.user }}
+						/>
 					)}
-				</ul>
-			</nav>
-		</div>
+				</div>
+			</NavBody>
+			<MobileNav>
+				<MobileNavHeader>
+					<NavbarLogo />
+					<MobileNavToggle
+						isOpen={isMobileMenuOpen}
+						onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+					/>
+				</MobileNavHeader>
+
+				<MobileNavMenu
+					isOpen={isMobileMenuOpen}
+					onClose={() => setIsMobileMenuOpen(false)}
+				>
+					{navItems.map((item, _idx) => (
+						<Link
+							to={item.link as "/"}
+							key={`link-${item.name}`}
+							onClick={() => setIsMobileMenuOpen(false)}
+							className="relative text-foreground"
+						>
+							<span className="block">{item.name}</span>
+						</Link>
+					))}
+					<Separator />
+					<div className="flex w-full flex-col gap-4 pt-2">
+						{!session && (
+							<>
+								<NavbarButton
+									onClick={() => setIsMobileMenuOpen(false)}
+									variant="primary"
+									className="w-full"
+								>
+									Sign In
+								</NavbarButton>
+								<NavbarButton
+									onClick={() => setIsMobileMenuOpen(false)}
+									variant="primary"
+									className="w-full"
+								>
+									Get Started
+								</NavbarButton>
+							</>
+						)}
+						{session && (
+							<ProfileDropdown
+								session={{ ...session.session, user: session.user }}
+							/>
+						)}
+					</div>
+				</MobileNavMenu>
+			</MobileNav>
+		</Navbar>
 	);
 }
