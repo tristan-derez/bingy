@@ -1,0 +1,11 @@
+input[data-com-onepassword-filled="light"] {
+	background-color: var(--background) !important;
+	color: var(--color-foreground-autofilled) !important;
+	-webkit-text-fill-color: var(--color-foreground-autofilled) !important;
+}
+
+input[data-com-onepassword-filled="dark"] {
+	background-color: var(--background) !important;
+	color: var(--color-foreground-autofilled) !important;
+	-webkit-text-fill-color: var(--color-foreground-autofilled) !important;
+}
