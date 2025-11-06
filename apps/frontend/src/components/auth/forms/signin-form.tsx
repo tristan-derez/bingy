@@ -220,7 +220,7 @@ export function SignInForm() {
 										/>
 										<Button
 											type="submit"
-											className="w-full mt-2 font-bold flex justify-center relative disabled:bg-gray-300 disabled:text-gray-500 hover:cursor-pointer"
+											className="w-full mt-2 font-bold flex justify-center relative disabled:bg-gray-300 disabled:text-gray-500"
 										>
 											{isSubmitting ? (
 												<span className="flex items-center justify-center gap-2">

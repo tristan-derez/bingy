@@ -22,7 +22,7 @@ export function GlobalError({ error }: GlobalErrorProps) {
 					<CardDescription className="text-md">{message}</CardDescription>
 					<Button
 						variant="secondary"
-						className="hover:cursor-pointer w-full"
+						className="w-full"
 						onClick={() => window.location.reload()}
 					>
 						Retry
