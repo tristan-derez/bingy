@@ -18,6 +18,7 @@ interface MyRouterContext {
 export const Route = createRootRouteWithContext<MyRouterContext>()({
 	beforeLoad: async ({ context: _ }) => {
 		const session = await authClient.getSession();
+
 		return { session: session.data };
 	},
 	head: () => ({

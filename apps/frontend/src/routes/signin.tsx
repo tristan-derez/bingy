@@ -2,6 +2,7 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { z } from "zod";
 import { SignInForm } from "@/components/auth/forms/signin-form";
+import { CenteredLayout } from "@/components/layout/centered-layout";
 
 export const Route = createFileRoute("/signin")({
 	validateSearch: z.object({
@@ -36,8 +37,8 @@ function SigninPage() {
 	}
 
 	return (
-		<div>
+		<CenteredLayout>
 			<SignInForm />
-		</div>
+		</CenteredLayout>
 	);
 }

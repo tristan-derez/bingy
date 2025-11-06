@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { CenteredLayout } from "@/components/layout/centered-layout";
 import logo from "../logo.svg";
 
 export const Route = createFileRoute("/")({
@@ -7,7 +8,7 @@ export const Route = createFileRoute("/")({
 
 function App() {
 	return (
-		<div className="text-center flex flex-col">
+		<CenteredLayout>
 			<img
 				src={logo}
 				className="h-[40vmin] pointer-events-none animate-[spin_20s_linear_infinite]"
@@ -32,6 +33,6 @@ function App() {
 			>
 				Learn TanStack
 			</a>
-		</div>
+		</CenteredLayout>
 	);
 }
