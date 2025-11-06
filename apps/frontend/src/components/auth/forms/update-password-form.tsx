@@ -28,7 +28,7 @@ import { authClient } from "@/lib/auth-client";
 import { updatePasswordFormSchema } from "@/schemas/password/update-password";
 
 export function UpdatePasswordForm() {
-	const { connections } = useRouteContext({ from: "/_auth/account" });
+	const { connections } = useRouteContext({ from: "/_auth/settings" });
 	const [isSubmitting, setIsSubmitting] = React.useState(false);
 	const [open, setOpen] = React.useState(false);
 	const [_, setIsSuccess] = React.useState(false);

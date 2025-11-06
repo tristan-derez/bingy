@@ -41,7 +41,7 @@ export function DisableTwoFactorForm() {
 
 			if (data) {
 				toast.success("Two factor authentication disabled successfully");
-				navigate({ to: "/account" });
+				navigate({ to: "/settings" });
 			}
 
 			if (error) {

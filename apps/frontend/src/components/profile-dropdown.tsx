@@ -2,14 +2,13 @@ import { Link, useNavigate, useRouter } from "@tanstack/react-router";
 import type { Session as BaseSession, User } from "better-auth";
 import { useState } from "react";
 import { FaGithub } from "react-icons/fa";
-import { IoLogOutSharp } from "react-icons/io5";
+import { IoLogOutSharp, IoSettingsSharp } from "react-icons/io5";
 import { MdSupport } from "react-icons/md";
 import { PiUserFill } from "react-icons/pi";
-import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
-import { SettingsDialog } from "./auth/settings-dialog";
+
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import {
 	DropdownMenu,
@@ -52,7 +51,7 @@ export const ProfileDropdown = ({
 						<button
 							type="button"
 							className={cn(
-								"flex items-center gap-16 p-3 rounded-2xl border transition-all duration-200 focus:outline-none",
+								"flex items-center w-full gap-16 p-3 rounded-2xl border transition-all duration-200 focus:outline-none",
 								"bg-[color:var(--card)] border-[color:var(--border)] hover:bg-[color:var(--card-foreground)/10] hover:border-[color:var(--ring)]",
 							)}
 						>
@@ -82,7 +81,6 @@ export const ProfileDropdown = ({
 						</button>
 					</DropdownMenuTrigger>
 
-					{/* Bending line indicator on the right */}
 					<div
 						className={cn(
 							"absolute -right-3 top-1/2 -translate-y-1/2 transition-all duration-200",
@@ -116,7 +114,7 @@ export const ProfileDropdown = ({
 						align="end"
 						sideOffset={4}
 						className={cn(
-							"z-[2] w-64 p-2 rounded-2xl shadow-xl shadow-[color:var(--ring)/10]",
+							"z-99 w-[300px] md:w-[250px] p-2 rounded-2xl shadow-xl shadow-[color:var(--ring)/10]",
 							"bg-[color:var(--card)/70] backdrop-blur-sm",
 							"data-[state=open]:animate-in data-[state=closed]:animate-out",
 							"data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
@@ -138,15 +136,12 @@ export const ProfileDropdown = ({
 						</DropdownMenuItem>
 						<DropdownMenuItem asChild>
 							<Link
-								to="/account"
+								to="/settings"
 								className="flex items-center gap-2 text-[color:var(--foreground)]"
 							>
-								<RiVerifiedBadgeFill />
-								Account
+								<IoSettingsSharp />
+								Settings
 							</Link>
-						</DropdownMenuItem>
-						<DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-							<SettingsDialog />
 						</DropdownMenuItem>
 						<DropdownMenuSeparator className="border-[color:var(--border)]" />
 						<DropdownMenuItem>

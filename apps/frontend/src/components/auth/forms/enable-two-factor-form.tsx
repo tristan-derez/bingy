@@ -102,7 +102,7 @@ export function EnableTwoFactorForm() {
 				toast.success("Two-factor authentication enabled successfully!");
 				setShowDialog(false);
 				form.reset();
-				navigate({ to: "/account" });
+				navigate({ to: "/settings" });
 			}
 		} catch (err) {
 			const message =

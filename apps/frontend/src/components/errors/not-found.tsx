@@ -21,7 +21,11 @@ export function NotFoundComponent() {
 	);
 
 	return (
-		<div role="alert" aria-live="polite">
+		<div
+			role="alert"
+			aria-live="polite"
+			className="flex flex-col items-center justify-center flex-1"
+		>
 			<div className="grid">
 				<img
 					src={randomImage}

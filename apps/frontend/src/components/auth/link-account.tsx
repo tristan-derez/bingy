@@ -7,7 +7,7 @@ import { config } from "@/lib/env";
 import { OAuthButton } from "../ui/oauth-button";
 
 export function LinkAccountComponent() {
-	const { connections } = useRouteContext({ from: "/_auth/account" });
+	const { connections } = useRouteContext({ from: "/_auth/settings" });
 	const navigate = useNavigate();
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -34,12 +34,12 @@ export function LinkAccountComponent() {
 
 				await authClient.unlinkAccount({ providerId: provider });
 				toast.success("Google account unlinked.");
-				navigate({ to: "/account" });
+				navigate({ to: "/settings" });
 			} else {
 				await authClient.linkSocial({
 					provider,
-					callbackURL: `${config.appUrl}/account`,
-					errorCallbackURL: `${config.appUrl}/account`,
+					callbackURL: `${config.appUrl}/settings`,
+					errorCallbackURL: `${config.appUrl}/settings`,
 				});
 			}
 		} catch (err) {
