@@ -1,4 +1,5 @@
 import { useNavigate } from "@tanstack/react-router";
+import { useMemo } from "react";
 import cat404 from "@/assets/not-found/404-cat.png";
 import cuteAnimal404 from "@/assets/not-found/404-cute-animal.png";
 import desert404 from "@/assets/not-found/404-desert.png";
@@ -14,15 +15,13 @@ const NOT_FOUND_IMAGES = [
 
 export function NotFoundComponent() {
 	const navigate = useNavigate();
-	const randomImage =
-		NOT_FOUND_IMAGES[Math.floor(Math.random() * NOT_FOUND_IMAGES.length)];
+	const randomImage = useMemo(
+		() => NOT_FOUND_IMAGES[Math.floor(Math.random() * NOT_FOUND_IMAGES.length)],
+		[],
+	);
 
 	return (
-		<div
-			className="min-h-screen flex flex-col items-center justify-center"
-			role="alert"
-			aria-live="polite"
-		>
+		<div role="alert" aria-live="polite">
 			<div className="grid">
 				<img
 					src={randomImage}

@@ -19,7 +19,7 @@ export function AccountComponent() {
 	const twoFactorEnabled = session?.user?.twoFactorEnabled;
 
 	return (
-		<Card className="mx-auto mt-24 max-w-sm sm:min-w-[320px] md:min-w-[420px] p-4">
+		<Card className="max-w-sm sm:min-w-[320px] md:min-w-[420px] p-4">
 			<CardTitle>Edit account</CardTitle>
 			<CardDescription>
 				Manage your email, password, and security settings.
