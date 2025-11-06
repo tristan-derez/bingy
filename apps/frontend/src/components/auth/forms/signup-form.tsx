@@ -7,7 +7,6 @@ import { FaCircleInfo } from "react-icons/fa6";
 import { FcGoogle } from "react-icons/fc";
 import { toast } from "sonner";
 import type { z } from "zod";
-import { useTheme } from "@/components/theme/use-theme";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -25,7 +24,6 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { MagicCard } from "@/components/ui/magic-card";
 import { OAuthButton } from "@/components/ui/oauth-button";
 import { SeparatorWithText } from "@/components/ui/separator-text";
@@ -104,13 +102,11 @@ export function SignUpForm() {
 
 	const isRegistering = isLoading || isSubmitting;
 
-	const { theme } = useTheme();
-
 	return (
-		<Card className="max-w-sm min-w-[320px] md:min-w-[420px] py-0 border-none shadow-transparent">
+		<Card className="border-none p-0">
 			<MagicCard
-				gradientColor={theme === "dark" ? "#262626" : "#D9D9D955"}
-				className="p-6"
+				gradientColor="var(--shadow-pointer)"
+				className="p-6 min-w-[320px] md:min-w-md"
 			>
 				<CardHeader>
 					<CardTitle className="text-2xl">Create an account</CardTitle>
@@ -135,7 +131,7 @@ export function SignUpForm() {
 										render={({ field }) => (
 											<FormItem className="grid gap-2">
 												<div className="flex items-center">
-													<FormLabel htmlFor="username-input">Name</FormLabel>
+													<FormLabel htmlFor={`${id}-username`}>Name</FormLabel>
 													<TooltipProvider>
 														<Tooltip>
 															<TooltipTrigger className="ml-2">
@@ -173,12 +169,12 @@ export function SignUpForm() {
 										name="email"
 										render={({ field }) => (
 											<FormItem className="grid gap-2">
-												<FormLabel htmlFor="email">Email</FormLabel>
+												<FormLabel htmlFor={`${id}-email`}>Email</FormLabel>
 												<FormControl>
 													<Input
 														id={`${id}-email`}
 														type="email"
-														autoComplete="email"
+														autoComplete=""
 														placeholder="m@example.com"
 														required
 														{...field}
@@ -194,7 +190,9 @@ export function SignUpForm() {
 										render={({ field }) => (
 											<FormItem className="grid gap-2">
 												<div className="flex items-center">
-													<Label htmlFor="password">Password</Label>
+													<FormLabel htmlFor={`${id}-password`}>
+														Password
+													</FormLabel>
 													<TooltipProvider>
 														<Tooltip>
 															<TooltipTrigger className="ml-2">

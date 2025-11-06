@@ -6,7 +6,6 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 import { toast } from "sonner";
 import type { z } from "zod";
-import { useTheme } from "@/components/theme/use-theme";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -141,14 +140,12 @@ export function SignInForm() {
 		}
 	};
 
-	const { theme } = useTheme();
-
 	return (
 		<>
-			<Card className="max-w-sm min-w-[320px] md:min-w-[420px] py-0 border-none shadow-transparent">
+			<Card className="border-none shadow-transparent p-0">
 				<MagicCard
-					gradientColor={theme === "dark" ? "#262626" : "#D9D9D955"}
-					className="p-6"
+					gradientColor="var(--shadow-pointer)"
+					className="p-6 min-w-[320px] md:min-w-md"
 				>
 					<CardHeader>
 						<CardTitle className="text-2xl">Sign in</CardTitle>
