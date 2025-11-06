@@ -43,7 +43,9 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 	component: () => (
 		<div>
 			<Header />
-			<Outlet />
+			<div className="min-h-svh flex flex-col items-center justify-center px-10 py-22 lg:py-32">
+				<Outlet />
+			</div>
 			<TanstackDevtools
 				config={{
 					position: "bottom-left",
