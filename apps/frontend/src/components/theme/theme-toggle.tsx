@@ -8,6 +8,8 @@ export function ModeToggle() {
 	const { theme, setTheme } = useTheme();
 
 	const handleThemeChange = (newTheme: "light" | "dark" | "system") => {
+		if (theme === newTheme) return;
+
 		setTheme(newTheme);
 
 		const messages: Record<typeof newTheme, string[]> = {
@@ -38,7 +40,7 @@ export function ModeToggle() {
 			<Button
 				variant={theme === "light" ? "default" : "outline"}
 				onClick={() => handleThemeChange("light")}
-				className="flex items-center gap-2 w-28"
+				className={`flex items-center gap-2 w-28 ${theme === "light" ? "hover:cursor-not-allowed" : ""}`}
 			>
 				<FaSun className="h-4 w-4" />
 				Light
@@ -47,7 +49,7 @@ export function ModeToggle() {
 			<Button
 				variant={theme === "dark" ? "default" : "outline"}
 				onClick={() => handleThemeChange("dark")}
-				className="flex items-center gap-2 w-28"
+				className={`flex items-center gap-2 w-28 ${theme === "dark" ? "hover:cursor-not-allowed" : ""}`}
 			>
 				<FaMoon className="h-4 w-4" />
 				Dark
@@ -56,7 +58,7 @@ export function ModeToggle() {
 			<Button
 				variant={theme === "system" ? "default" : "outline"}
 				onClick={() => handleThemeChange("system")}
-				className="flex items-center gap-2 w-28"
+				className={`flex items-center gap-2 w-28 ${theme === "system" ? "hover:cursor-not-allowed" : ""}`}
 			>
 				<GrSystem className="h-4 w-4" />
 				System
