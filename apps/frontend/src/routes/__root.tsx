@@ -1,6 +1,10 @@
 import { TanstackDevtools } from "@tanstack/react-devtools";
 import type { QueryClient } from "@tanstack/react-query";
-import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
+import {
+	createRootRouteWithContext,
+	HeadContent,
+	Outlet,
+} from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { GlobalError } from "@/components/errors/global-error";
 import { NotFoundComponent } from "@/components/errors/not-found";
@@ -33,16 +37,34 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 			{
 				title: "Bingy",
 			},
+			{
+				name: "description",
+				content:
+					"Tired of losing track of what you're watching? Track your movies and shows with bingy, get notified about new releases, and discover what to watch next",
+			},
 		],
 		links: [
 			{
 				rel: "stylesheet",
 				href: appCss,
 			},
+			{
+				rel: "icon",
+				href: "/favicon.ico",
+			},
+			{
+				rel: "apple-touch-icon",
+				href: "/logo192.png",
+			},
+			{
+				rel: "manifest",
+				href: "/manifest.json",
+			},
 		],
 	}),
 	component: () => (
 		<div>
+			<HeadContent />
 			<Header />
 			<div className="min-h-svh flex flex-col items-center px-10 py-22 lg:py-32">
 				<Outlet />

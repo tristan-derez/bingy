@@ -1,11 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_auth/dashboard")({
+	head: () => ({
+		meta: [
+			{
+				title: "Bingy - Dashboard",
+			},
+		],
+	}),
 	component: RouteComponent,
 });
 
 function RouteComponent() {
-	// Generate stable sections with IDs
 	const sections = Array.from({ length: 20 }, () => ({
 		id: crypto.randomUUID(),
 	}));
@@ -15,7 +21,6 @@ function RouteComponent() {
 			<div className="max-w-2xl w-full space-y-4">
 				<h1 className="text-3xl font-bold mb-4">Dashboard Overview</h1>
 
-				{/* Generate multiple paragraphs */}
 				{sections.map((section, index) => (
 					<div key={section.id} className="space-y-3">
 						<h2 className="text-xl font-semibold">Section {index + 1}</h2>
@@ -44,7 +49,7 @@ function RouteComponent() {
 						)}
 						{index % 5 === 0 && (
 							<div className="bg-gray-100 p-3 rounded mt-2">
-								<p className="text-sm text-accent">
+								<p className="text-sm text-foreground-autofilled">
 									Note: This is an important note in section {index + 1}. It
 									provides additional context or highlights key information
 									relevant to this section.
@@ -54,8 +59,7 @@ function RouteComponent() {
 					</div>
 				))}
 
-				{/* Additional content blocks */}
-				<div className="mt-6 p-4 bg-blue-50 rounded-lg text-accent">
+				<div className="mt-6 p-4 bg-blue-50 rounded-lg text-foreground-autofilled">
 					<h2 className="text-2xl font-bold mb-3">Summary</h2>
 					<p className="text-base leading-normal">
 						In total, this dashboard contains extensive content spanning

@@ -41,6 +41,7 @@
 	--color-sidebar-border: var(--sidebar-border);
 	--color-sidebar-ring: var(--sidebar-ring);
 	--color-shadow-pointer: var(--shadow-pointer);
+	--color-particles: var(--particles-color);
 }
 
 :root {
@@ -78,6 +79,7 @@
 	--sidebar-border: oklch(0.92 0.004 286.32);
 	--sidebar-ring: oklch(0.705 0.015 286.067);
 	--shadow-pointer: oklch(0.88 0 0 / 0.33);
+	--particles-color: #000000;
 }
 
 .dark {
@@ -114,6 +116,7 @@
 	--sidebar-border: oklch(1 0 0 / 10%);
 	--sidebar-ring: oklch(0.552 0.016 285.938);
 	--shadow-pointer: oklch(0.2 0 0);
+	--particles-color: #ffffff;
 }
 
 @layer base {
@@ -123,4 +126,10 @@
 	body {
 		@apply bg-background text-foreground;
 	}
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+	animation: none;
+	mix-blend-mode: normal;
 }

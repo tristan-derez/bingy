@@ -1,16 +1,54 @@
+import { useRef } from "react";
+import { flushSync } from "react-dom";
 import { FaMoon, FaSun } from "react-icons/fa";
 import { GrSystem } from "react-icons/gr";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "./use-theme";
 
-export function ModeToggle() {
-	const { theme, setTheme } = useTheme();
+interface ModeToggleProps {
+	duration?: number;
+}
 
-	const handleThemeChange = (newTheme: "light" | "dark" | "system") => {
+export function ModeToggle({ duration = 700 }: ModeToggleProps) {
+	const { theme, setTheme } = useTheme();
+	const containerRef = useRef<HTMLDivElement>(null);
+
+	const handleThemeChange = async (
+		newTheme: "light" | "dark" | "system",
+		event: React.MouseEvent<HTMLButtonElement>,
+	) => {
 		if (theme === newTheme) return;
 
-		setTheme(newTheme);
+		const button = event.currentTarget;
+
+		await document.startViewTransition(() => {
+			flushSync(() => {
+				setTheme(newTheme);
+			});
+		}).ready;
+
+		const { top, left, width, height } = button.getBoundingClientRect();
+		const x = left + width / 2;
+		const y = top + height / 2;
+		const maxRadius = Math.hypot(
+			Math.max(left, window.innerWidth - left),
+			Math.max(top, window.innerHeight - top),
+		);
+
+		document.documentElement.animate(
+			{
+				clipPath: [
+					`circle(0px at ${x}px ${y}px)`,
+					`circle(${maxRadius}px at ${x}px ${y}px)`,
+				],
+			},
+			{
+				duration,
+				easing: "ease-in-out",
+				pseudoElement: "::view-transition-new(root)",
+			},
+		);
 
 		const messages: Record<typeof newTheme, string[]> = {
 			light: [
@@ -36,10 +74,10 @@ export function ModeToggle() {
 	};
 
 	return (
-		<div className="flex space-x-2 w-full">
+		<div ref={containerRef} className="flex space-x-2 w-full">
 			<Button
 				variant={theme === "light" ? "default" : "outline"}
-				onClick={() => handleThemeChange("light")}
+				onClick={(e) => handleThemeChange("light", e)}
 				className={`flex items-center gap-2 w-28 ${theme === "light" ? "hover:cursor-not-allowed" : ""}`}
 			>
 				<FaSun className="h-4 w-4" />
@@ -48,7 +86,7 @@ export function ModeToggle() {
 
 			<Button
 				variant={theme === "dark" ? "default" : "outline"}
-				onClick={() => handleThemeChange("dark")}
+				onClick={(e) => handleThemeChange("dark", e)}
 				className={`flex items-center gap-2 w-28 ${theme === "dark" ? "hover:cursor-not-allowed" : ""}`}
 			>
 				<FaMoon className="h-4 w-4" />
@@ -57,7 +95,7 @@ export function ModeToggle() {
 
 			<Button
 				variant={theme === "system" ? "default" : "outline"}
-				onClick={() => handleThemeChange("system")}
+				onClick={(e) => handleThemeChange("system", e)}
 				className={`flex items-center gap-2 w-28 ${theme === "system" ? "hover:cursor-not-allowed" : ""}`}
 			>
 				<GrSystem className="h-4 w-4" />

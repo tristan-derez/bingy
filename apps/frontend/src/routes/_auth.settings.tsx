@@ -9,6 +9,13 @@ const settingsPageSchema = z.object({
 });
 
 export const Route = createFileRoute("/_auth/settings")({
+	head: () => ({
+		meta: [
+			{
+				title: "Bingy - Settings",
+			},
+		],
+	}),
 	validateSearch: settingsPageSchema,
 	component: SettingsPage,
 	beforeLoad: async () => {
