@@ -1,11 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_auth/dashboard")({
+	head: () => ({
+		meta: [
+			{
+				title: "Bingy - Dashboard",
+			},
+		],
+	}),
 	component: RouteComponent,
 });
 
 function RouteComponent() {
-	// Generate stable sections with IDs
 	const sections = Array.from({ length: 20 }, () => ({
 		id: crypto.randomUUID(),
 	}));
