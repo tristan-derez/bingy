@@ -1,9 +1,4 @@
-import {
-	createFileRoute,
-	Link,
-	redirect,
-	useNavigate,
-} from "@tanstack/react-router";
+import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { FaArrowRight } from "react-icons/fa";
 import { CenteredLayout } from "@/components/layout/centered-layout";
 import { useTheme } from "@/components/theme/use-theme";
