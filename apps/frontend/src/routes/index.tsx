@@ -53,27 +53,24 @@ function App() {
 				<div className="flex gap-4">
 					<Button
 						variant="outline"
-						className="transition-transform hover:scale-105"
+						className="transition-transform hover:scale-105 h-11"
 						onClick={() => {
 							navigate({ to: "/features" });
 						}}
 					>
 						View Features
 					</Button>
-					<Button
-						className="p-0 m-0 w-30"
+
+					<HoverBorderGradient
+						containerClassName="rounded-md"
+						className="flex items-center gap-2"
 						onClick={() => {
 							navigate({ to: "/signup" });
 						}}
+						as="button"
 					>
-						<HoverBorderGradient
-							containerClassName="rounded-md"
-							as="button"
-							className="flex items-center gap-2"
-						>
-							Get Started <FaArrowRight />
-						</HoverBorderGradient>
-					</Button>
+						Get Started <FaArrowRight />
+					</HoverBorderGradient>
 				</div>
 			</div>
 
