@@ -174,7 +174,7 @@ export function SignUpForm() {
 													<Input
 														id={`${id}-email`}
 														type="email"
-														autoComplete=""
+														autoComplete="email"
 														placeholder="m@example.com"
 														required
 														{...field}
