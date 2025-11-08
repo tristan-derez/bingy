@@ -63,7 +63,7 @@ function App() {
 
 					<HoverBorderGradient
 						containerClassName="rounded-md"
-						className="flex items-center gap-2"
+						className="flex items-center gap-2 hover:cursor-pointer"
 						onClick={() => {
 							navigate({ to: "/signup" });
 						}}
