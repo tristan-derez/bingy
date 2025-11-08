@@ -241,18 +241,16 @@ export const NavbarLogo = () => {
 
 export const NavbarButton = ({
 	to,
-	as: Tag = Link,
 	children,
 	className,
 	variant = "primary",
 	...props
 }: {
-	to?: string;
-	as?: React.ElementType;
+	to: string;
 	children: React.ReactNode;
 	className?: string;
 	variant?: "primary" | "secondary" | "dark" | "gradient";
-} & Record<string, unknown>) => {
+} & React.ComponentPropsWithoutRef<typeof Link>) => {
 	const baseStyles =
 		"px-4 py-2 rounded-md bg-white button bg-white text-black text-sm font-bold relative cursor-pointer hover:-translate-y-0.5 transition duration-200 inline-block text-center";
 
@@ -266,12 +264,12 @@ export const NavbarButton = ({
 	};
 
 	return (
-		<Tag
+		<Link
 			to={to}
 			className={cn(baseStyles, variantStyles[variant], className)}
 			{...props}
 		>
 			{children}
-		</Tag>
+		</Link>
 	);
 };
