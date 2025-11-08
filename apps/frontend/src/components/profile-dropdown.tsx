@@ -24,11 +24,13 @@ export type Session = BaseSession & {
 
 interface ProfileDropdownProps extends React.HTMLAttributes<HTMLDivElement> {
 	session: Session;
+	onLinkClick?: () => void;
 }
 
 export const ProfileDropdown = ({
 	session,
 	className,
+	onLinkClick,
 	...props
 }: ProfileDropdownProps) => {
 	const router = useRouter();
@@ -36,6 +38,7 @@ export const ProfileDropdown = ({
 	const [isOpen, setIsOpen] = useState(false);
 
 	const logout = async () => {
+		onLinkClick?.();
 		toast.success("You have been successfully logged out. Come back soon!");
 		await authClient.signOut();
 		router.invalidate().finally(() => {
@@ -129,6 +132,7 @@ export const ProfileDropdown = ({
 							<Link
 								to="/profile"
 								className="flex items-center gap-2 text-[color:var(--foreground)]"
+								onClick={onLinkClick}
 							>
 								<PiUserFill />
 								Profile
@@ -138,6 +142,7 @@ export const ProfileDropdown = ({
 							<Link
 								to="/settings"
 								className="flex items-center gap-2 text-[color:var(--foreground)]"
+								onClick={onLinkClick}
 							>
 								<IoSettingsSharp />
 								Settings

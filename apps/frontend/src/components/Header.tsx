@@ -133,6 +133,7 @@ export default function Header() {
 						{session && (
 							<ProfileDropdown
 								session={{ ...session.session, user: session.user }}
+								onLinkClick={() => setIsMobileMenuOpen(false)}
 							/>
 						)}
 					</div>
