@@ -66,7 +66,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 		<div>
 			<HeadContent />
 			<Header />
-			<div className="min-h-svh flex flex-col items-center px-10 py-22 lg:py-32">
+			<div className="min-h-svh flex flex-col items-center px-2 md:px-10 py-22 lg:py-32">
 				<Outlet />
 			</div>
 			<TanstackDevtools

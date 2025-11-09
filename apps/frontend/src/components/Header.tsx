@@ -118,6 +118,7 @@ export default function Header() {
 									onClick={() => setIsMobileMenuOpen(false)}
 									variant="primary"
 									className="w-full"
+									to={"/signin"}
 								>
 									Sign In
 								</NavbarButton>
@@ -125,6 +126,7 @@ export default function Header() {
 									onClick={() => setIsMobileMenuOpen(false)}
 									variant="primary"
 									className="w-full"
+									to={"/signup"}
 								>
 									Get Started
 								</NavbarButton>
@@ -133,6 +135,7 @@ export default function Header() {
 						{session && (
 							<ProfileDropdown
 								session={{ ...session.session, user: session.user }}
+								onLinkClick={() => setIsMobileMenuOpen(false)}
 							/>
 						)}
 					</div>

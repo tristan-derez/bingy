@@ -38,28 +38,28 @@ export function Welcome() {
 				await authClient.sendVerificationEmail({
 					email: session.user.email,
 					callbackURL: `${config.appUrl}/welcome`,
-				});
+				})
 				toast.success("Verification email sent!", {
 					description: "Please check your inbox.",
-				});
+				})
 			}
 
 			await router.navigate({
 				replace: true,
-			});
+			})
 		} catch (error) {
 			toast.error("Failed to resend", { description: String(error) });
 		} finally {
 			setIsPending(false);
 		}
-	};
+	}
 
 	if (error === "token_expired" && session?.user.emailVerified === false) {
 		toast.error("Link expired", {
 			id: "token-expired-toast",
 			duration: Infinity,
 			cancel: { label: "Resend email", onClick: handleResendEmail },
-		});
+		})
 	}
 
 	return (
@@ -114,5 +114,5 @@ export function Welcome() {
 				</div>
 			</Card>
 		</div>
-	);
+	)
 }

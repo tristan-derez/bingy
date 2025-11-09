@@ -16,10 +16,10 @@ import { Route as GoodbyeRouteImport } from './routes/goodbye'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthWelcomeRouteImport } from './routes/_auth.welcome'
-import { Route as AuthSettingsRouteImport } from './routes/_auth.settings'
-import { Route as AuthProfileRouteImport } from './routes/_auth.profile'
-import { Route as AuthDashboardRouteImport } from './routes/_auth.dashboard'
+import { Route as AuthWelcomeRouteImport } from './routes/_auth/welcome'
+import { Route as AuthSettingsRouteImport } from './routes/_auth/settings'
+import { Route as AuthProfileRouteImport } from './routes/_auth/profile'
+import { Route as AuthDashboardRouteImport } from './routes/_auth/dashboard'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',

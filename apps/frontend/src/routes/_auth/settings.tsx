@@ -34,12 +34,12 @@ function SettingsPage() {
 		toast.error("Email doesn't match", {
 			id: "email-doesnt-match-toast",
 			duration: Infinity,
-		});
+		})
 	}
 
 	return (
 		<div className="flex w-full max-w-md flex-col gap-6">
 			<SettingsComponent />
 		</div>
-	);
+	)
 }

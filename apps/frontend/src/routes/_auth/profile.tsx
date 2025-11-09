@@ -16,5 +16,5 @@ function ProfilePage() {
 		<div>
 			<p>Hello "/_auth/profile"!</p>
 		</div>
-	);
+	)
 }
