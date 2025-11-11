@@ -1,0 +1,51 @@
+import { config } from "@/lib/env";
+
+type MovieEndpoint =
+	| "latest"
+	| "now_playing"
+	| "popular"
+	| "top_rated"
+	| "upcoming";
+
+export type MovieParams = {
+	language?: string;
+	page?: number;
+	region?: string;
+};
+
+export const fetchMovies = async (
+	endpoint: MovieEndpoint,
+	params?: MovieParams,
+) => {
+	const url = new URL(`${config.apiUrl}/movies/${endpoint}`);
+	if (params) {
+		Object.entries(params).forEach(([key, value]) => {
+			if (value !== undefined) url.searchParams.set(key, String(value));
+		});
+	}
+
+	const res = await fetch(url);
+	if (!res.ok) throw new Error("Failed to fetch movies");
+	return res.json();
+};
+
+export const fetchMovie = async (
+	id: string,
+	params?: { language?: string },
+) => {
+	const url = new URL(`${config.apiUrl}/movies/${id}`);
+	if (params?.language) url.searchParams.set("language", params.language);
+
+	const res = await fetch(url);
+	if (!res.ok) throw new Error("Failed to fetch movie");
+	return res.json();
+};
+
+export const fetchMovieCredits = async (id: string, language?: string) => {
+	const url = new URL(`${config.apiUrl}/movies/${id}/credits`);
+	if (language) url.searchParams.set("language", language);
+
+	const res = await fetch(url);
+	if (!res.ok) throw new Error("Failed to fetch credits");
+	return res.json();
+};
