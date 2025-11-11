@@ -1,10 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import {
-	fetchMovie,
-	fetchMovieCredits,
-	fetchMovies,
-	type MovieParams,
-} from "@/api/movies";
+import { fetchMovie, fetchMovieCredits, fetchMovies } from "@/api/movies";
+import type { MovieParams } from "@/types/movie";
 
 export function useLatestMovie() {
 	return useQuery({
