@@ -37,7 +37,7 @@ export function useUpcomingMovies(params?: MovieParams) {
 	});
 }
 
-export function useMovie(id: string, params?: MovieParams) {
+export function useMovie(id: number, params?: MovieParams) {
 	return useQuery({
 		queryKey: ["movies", id, params],
 		queryFn: () => fetchMovie(id, params),
@@ -45,7 +45,7 @@ export function useMovie(id: string, params?: MovieParams) {
 }
 
 export function useMovieResource(
-	id: string,
+	id: number,
 	endpoint: MovieEndpoint,
 	params?: MovieParams,
 ) {
