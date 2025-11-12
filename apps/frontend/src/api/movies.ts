@@ -12,7 +12,7 @@ export const fetchMovies = async (
 	return res.data;
 };
 
-export const fetchMovie = async (id: string, params?: MovieParams) => {
+export const fetchMovie = async (id: number, params?: MovieParams) => {
 	const res = await apiFetch(`/movies/${id}`, {
 		method: "GET",
 		query: params,
@@ -21,7 +21,7 @@ export const fetchMovie = async (id: string, params?: MovieParams) => {
 };
 
 export const fetchMovieResources = async (
-	id: string,
+	id: number,
 	endpoint: MovieEndpoint,
 	params?: MovieParams,
 ) => {
