@@ -14,12 +14,27 @@ export type Movie = {
 	adult: boolean;
 };
 
-export type MovieEndpoint =
+export type MoviesEndpoint =
 	| "latest"
 	| "now_playing"
 	| "popular"
 	| "top_rated"
 	| "upcoming";
+
+export type MovieEndpoint =
+	| "alternative_titles"
+	| "credits"
+	| "external_ids"
+	| "images"
+	| "keywords"
+	| "lists"
+	| "recommendations"
+	| "release_dates"
+	| "reviews"
+	| "similar"
+	| "translations"
+	| "videos"
+	| "watch/providers";
 
 export type MovieParams = {
 	language?: string;
