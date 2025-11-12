@@ -1,4 +1,6 @@
-export type Movie = {
+type Pretty<T> = T extends infer O ? { [K in keyof O]: O[K] } : never;
+
+export type Movie = Pretty<{
 	id: number;
 	title: string;
 	original_title: string;
@@ -12,16 +14,13 @@ export type Movie = {
 	popularity: number;
 	genre_ids: number[];
 	adult: boolean;
-};
+}>;
 
-export type MoviesEndpoint =
-	| "latest"
-	| "now_playing"
-	| "popular"
-	| "top_rated"
-	| "upcoming";
+export type MoviesEndpoint = Pretty<
+	"latest" | "now_playing" | "popular" | "top_rated" | "upcoming"
+>;
 
-export type MovieEndpoint =
+export type MovieEndpoint = Pretty<
 	| "alternative_titles"
 	| "credits"
 	| "external_ids"
@@ -34,10 +33,11 @@ export type MovieEndpoint =
 	| "similar"
 	| "translations"
 	| "videos"
-	| "watch/providers";
+	| "watch/providers"
+>;
 
-export type MovieParams = {
+export type MovieParams = Pretty<{
 	language?: string;
 	page?: number;
 	region?: string;
-};
+}>;
