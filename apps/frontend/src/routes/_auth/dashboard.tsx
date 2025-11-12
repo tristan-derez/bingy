@@ -1,8 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { toast } from "sonner";
-import { CenteredLayout } from "@/components/layout/centered-layout";
-import { LoaderOne } from "@/components/ui/loader";
-import { useNowPlayingMovies } from "@/hooks/useMovies";
+import { NowPlayingMovies } from "@/components/movies/now-playing";
 
 export const Route = createFileRoute("/_auth/dashboard")({
 	head: () => ({
@@ -16,30 +13,12 @@ export const Route = createFileRoute("/_auth/dashboard")({
 });
 
 function RouteComponent() {
-	const { data, isLoading, error } = useNowPlayingMovies();
-
-	if (isLoading) {
-		return (
-			<CenteredLayout>
-				<LoaderOne />
-			</CenteredLayout>
-		);
-	}
-
-	if (error) {
-		toast.error("oops");
-		return;
-	}
-
-	if (data) {
-		console.log(data);
-	}
-
-	return data.results.length ? (
-		<p>data exists</p>
-	) : (
-		<CenteredLayout>
-			<p>nothing to show. sorry</p>
-		</CenteredLayout>
+	return (
+		<div className="flex flex-col w-full p-4 space-y-4">
+			<NowPlayingMovies />
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
 	);
 }
