@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchMovie, fetchMovieCredits, fetchMovies } from "@/api/movies";
-import type { MovieParams } from "@/types/movie";
+import { fetchMovie, fetchMovieResources, fetchMovies } from "@/api/movies";
+import type { MovieEndpoint, MovieParams } from "@/types/movie";
 
 export function useLatestMovie() {
 	return useQuery({
@@ -37,16 +37,20 @@ export function useUpcomingMovies(params?: MovieParams) {
 	});
 }
 
-export function useMovie(id: string, language?: string) {
+export function useMovie(id: string, params?: MovieParams) {
 	return useQuery({
-		queryKey: ["movies", id, { language }],
-		queryFn: () => fetchMovie(id, { language }),
+		queryKey: ["movies", id, params],
+		queryFn: () => fetchMovie(id, params),
 	});
 }
 
-export function useMovieCredits(id: string, language?: string) {
+export function useMovieResource(
+	id: string,
+	endpoint: MovieEndpoint,
+	params?: MovieParams,
+) {
 	return useQuery({
-		queryKey: ["movies", id, "credits", { language }],
-		queryFn: () => fetchMovieCredits(id, language),
+		queryKey: ["movies", id, endpoint, params],
+		queryFn: () => fetchMovieResources(id, endpoint, params),
 	});
 }
