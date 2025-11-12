@@ -17,7 +17,6 @@ export const Route = createFileRoute("/_auth/dashboard")({
 
 function RouteComponent() {
 	const { data, isLoading, error } = useNowPlayingMovies();
-	console.log(data.dates);
 
 	if (isLoading) {
 		return (
@@ -32,5 +31,15 @@ function RouteComponent() {
 		return;
 	}
 
-	return <div></div>;
+	if (data) {
+		console.log(data);
+	}
+
+	return data.results.length ? (
+		<p>data exists</p>
+	) : (
+		<CenteredLayout>
+			<p>nothing to show. sorry</p>
+		</CenteredLayout>
+	);
 }
