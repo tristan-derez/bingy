@@ -64,7 +64,10 @@ export const Navbar = ({ children, className }: NavbarProps) => {
 			initial={{ top: 0 }}
 			animate={{ top: visible ? 30 : 0 }}
 			transition={{ type: "spring", stiffness: 200, damping: 50 }}
-			className={cn("fixed inset-x-0 z-99 w-full", className)}
+			className={cn(
+				"fixed top-0 inset-x-0 z-99 w-full px-2 md:px-6 lg:px-12 2xl:px-32",
+				className,
+			)}
 		>
 			{React.Children.map(children, (child) =>
 				React.isValidElement(child)
@@ -86,8 +89,7 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => {
 				boxShadow: visible
 					? "0 0 24px rgba(34, 42, 53, 0.06), 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(34, 42, 53, 0.04), 0 0 4px rgba(34, 42, 53, 0.08), 0 16px 68px rgba(47, 48, 55, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1) inset"
 					: "none",
-				width: visible ? "40%" : "100%",
-				y: visible ? 20 : 5,
+				width: visible ? "60%" : "100%",
 			}}
 			transition={{
 				type: "spring",
@@ -95,11 +97,10 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => {
 				damping: 50,
 			}}
 			style={{
-				minWidth: "800px",
 				backgroundColor: "inherit",
 			}}
 			className={cn(
-				"relative z-[60] mx-auto hidden w-full max-w-7xl flex-row items-center justify-between self-start rounded-full bg-transparent px-4 py-2 lg:flex",
+				"relative z-[60] hidden w-full min-w-[600px] max-w-full mx-auto flex-row items-center justify-between self-start rounded-full bg-transparent px-4 py-2 lg:flex",
 				visible && "bg-[color:var(--card)]",
 				className,
 			)}
