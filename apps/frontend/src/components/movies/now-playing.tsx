@@ -51,10 +51,7 @@ export const NowPlayingMovies = () => {
 			<div className="overflow-hidden hover:cursor-grab" ref={emblaRef}>
 				<div className="flex gap-4">
 					{data.results.map((movie: Movie) => (
-						<div
-							key={movie.id}
-							className="flex-[0_0_80%] sm:flex-[0_0_60%] md:flex-[0_0_40%] lg:flex-[0_0_300px]"
-						>
+						<div key={movie.id} className="min-w-80 md:min-w-60">
 							<MovieCard movie={movie} />
 						</div>
 					))}
