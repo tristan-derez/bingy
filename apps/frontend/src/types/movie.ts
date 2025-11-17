@@ -1,4 +1,4 @@
-type Pretty<T> = T extends infer O ? { [K in keyof O]: O[K] } : never;
+import type { Pretty } from "./generic";
 
 export type Movie = Pretty<{
 	id: number;
