@@ -18,6 +18,8 @@ export type TvEndPoints = Pretty<
 	| "translations"
 	| "videos"
 	| "watch/providers"
+	| "latest"
+	| "top_rated"
 >;
 
 export type TvSeasonEndpoints = Pretty<
