@@ -7,8 +7,7 @@ import {
 } from "@/components/ui/embla/embla-carousel-arrow-buttons";
 import { useNowPlayingMovies } from "@/hooks/useMovies";
 import type { Movie } from "@/types/movie";
-import { CenteredLayout } from "../layout/centered-layout";
-import { LoaderOne } from "../ui/loader";
+import { LoadingSection } from "../loading/loading-section";
 import { MovieCard } from "./movie-card";
 
 export const NowPlayingMovies = () => {
@@ -26,11 +25,7 @@ export const NowPlayingMovies = () => {
 	} = usePrevNextButtons(emblaApi);
 
 	if (isLoading) {
-		return (
-			<CenteredLayout>
-				<LoaderOne />
-			</CenteredLayout>
-		);
+		return <LoadingSection title="In Theaters Now" />;
 	}
 
 	if (error) {
@@ -47,7 +42,7 @@ export const NowPlayingMovies = () => {
 	}
 	return (
 		<section className="flex flex-col gap-4">
-			<h2 className="text-xl font-semibold">Now Playing</h2>
+			<h2 className="text-xl font-semibold">In Theaters Now</h2>
 			<div className="overflow-hidden hover:cursor-grab" ref={emblaRef}>
 				<div className="flex gap-4">
 					{data.results.map((movie: Movie) => (
