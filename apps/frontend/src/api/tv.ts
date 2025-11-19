@@ -19,7 +19,7 @@ export const fetchTvSeries = async (
 
 export const fetchTvResources = async (
 	tv_id: number,
-	endpoint: TvEndPoints,
+	endpoint?: TvEndPoints,
 	params?: TvParams,
 ) => {
 	const path = endpoint ? `/tv/${tv_id}/${endpoint}` : `/tv/${tv_id}`;
