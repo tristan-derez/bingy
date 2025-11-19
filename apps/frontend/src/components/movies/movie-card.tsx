@@ -39,11 +39,13 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
 				</div>
 
 				<CardHeader>
-					<CardTitle className="line-clamp-1">{movie.title}</CardTitle>
+					<CardTitle className="line-clamp-1 leading-normal">
+						{movie.title}
+					</CardTitle>
 				</CardHeader>
 
 				<CardContent className="space-y-3">
-					<p className="text-sm text-muted-foreground line-clamp-3">
+					<p className="text-sm text-muted-foreground line-clamp-3 leading-normal">
 						{movie.overview}
 					</p>
 
@@ -51,7 +53,9 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
 						<div className="flex items-center gap-1">
 							<Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
 							<span className="font-medium">
-								{movie.vote_average.toFixed(1)}
+								{movie.vote_count > 0
+									? movie.vote_average.toFixed(1)
+									: "No rating"}
 							</span>
 						</div>
 
