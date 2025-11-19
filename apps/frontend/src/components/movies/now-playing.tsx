@@ -4,7 +4,7 @@ import { LoadingSection } from "../loading/loading-section";
 import { MovieCarousel } from "./movie-carousel";
 
 export const NowPlayingMovies = () => {
-	const { data, isLoading, error } = useNowPlayingMovies();
+	const { data, isLoading, error } = useNowPlayingMovies({ region: "US" });
 
 	if (isLoading) {
 		return <LoadingSection title="In Theaters Now" />;
