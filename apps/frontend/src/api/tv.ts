@@ -19,14 +19,18 @@ export const fetchTvSeries = async (
 
 export const fetchTvResources = async (
 	tv_id: number,
-	endpoint?: TvEndPoints,
-	params?: TvParams,
+	options: {
+		endpoint?: TvEndPoints;
+		params?: TvParams;
+	},
 ) => {
-	const path = endpoint ? `/tv/${tv_id}/${endpoint}` : `/tv/${tv_id}`;
+	const path = options.endpoint
+		? `/tv/${tv_id}/${options.endpoint}`
+		: `/tv/${tv_id}`;
 
 	const res = await apiFetch(path, {
 		method: "GET",
-		query: params,
+		query: options.params,
 	});
 	return res.data;
 };
@@ -34,16 +38,18 @@ export const fetchTvResources = async (
 export const fetchTvSeasonResources = async (
 	tv_id: number,
 	season_number: number,
-	endpoint?: TvSeasonEndpoints,
-	params?: TvParams,
+	options: {
+		endpoint?: TvSeasonEndpoints;
+		params?: TvParams;
+	},
 ) => {
-	const path = endpoint
-		? `/tv/${tv_id}/season/${season_number}/${endpoint}`
+	const path = options.endpoint
+		? `/tv/${tv_id}/season/${season_number}/${options.endpoint}`
 		: `/tv/${tv_id}/season/${season_number}`;
 
 	const res = await apiFetch(path, {
 		method: "GET",
-		query: params,
+		query: options.params,
 	});
 	return res.data;
 };
@@ -52,16 +58,18 @@ export const fetchTvEpisodeResources = async (
 	tv_id: number,
 	season_number: number,
 	episode_number: number,
-	endpoint?: TvEpisodeEndpoints,
-	params?: TvParams,
+	options: {
+		endpoint?: TvEpisodeEndpoints;
+		params?: TvParams;
+	},
 ) => {
-	const path = endpoint
-		? `/tv/${tv_id}/season/${season_number}/episode/${episode_number}/${endpoint}`
+	const path = options.endpoint
+		? `/tv/${tv_id}/season/${season_number}/episode/${episode_number}/${options.endpoint}`
 		: `/tv/${tv_id}/season/${season_number}/episode/${episode_number}`;
 
 	const res = await apiFetch(path, {
 		method: "GET",
-		query: params,
+		query: options.params,
 	});
 	return res.data;
 };
