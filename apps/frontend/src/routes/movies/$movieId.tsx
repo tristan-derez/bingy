@@ -115,7 +115,9 @@ function MovieDetailsComponent() {
 								<Star className="h-5 w-5 text-yellow-500" />
 								<div>
 									<p className="text-2xl font-bold">
-										{data.vote_average.toFixed(1)}
+										{data.vote_count > 0
+											? data.vote_average.toFixed(1)
+											: "No rating"}
 									</p>
 									<p className="text-sm text-muted-foreground">
 										{data.vote_count} votes
