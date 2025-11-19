@@ -41,3 +41,8 @@ export type MovieParams = Pretty<{
 	page?: number;
 	region?: string;
 }>;
+
+export type Genre = Pretty<{
+	id: number;
+	name: string;
+}>;
