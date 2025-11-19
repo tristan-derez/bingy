@@ -18,7 +18,6 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
 	const imageUrl = movie.poster_path
 		? `https://image.tmdb.org/t/p/w300${movie.poster_path}`
 		: "/placeholder.svg";
-
 	return (
 		<Link
 			to="/movies/$movieId"
@@ -66,7 +65,13 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
 				<CardFooter className="text-sm text-muted-foreground">
 					<div className="flex items-center gap-1">
 						<Calendar className="h-4 w-4" />
-						<span>{new Date(movie.release_date).toLocaleDateString()}</span>
+						<span>
+							{new Date(movie.release_date).toLocaleDateString("en-US", {
+								year: "numeric",
+								month: "short",
+								day: "numeric",
+							})}
+						</span>
 					</div>
 				</CardFooter>
 			</Card>
