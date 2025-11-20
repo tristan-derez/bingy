@@ -23,6 +23,7 @@ import {
 import type { Company, Country, Genre, MovieDetails } from "@/types/movie";
 import { formatRuntime } from "@/utils/format-runtime";
 import { shortenCountryName } from "@/utils/shorten-country-name";
+import { CenteredLayout } from "../layout/centered-layout";
 import { LoadingCentered } from "../loading/loading-centered";
 import { PersonCarousel } from "../person/person-carousel";
 import { SocialLinks } from "../social-links";
@@ -65,7 +66,7 @@ export function MovieDetailView({
 
 	if (isError) {
 		return (
-			<div className="container mx-auto p-6">
+			<CenteredLayout>
 				<Button onClick={onBack} className="mb-4" variant="outline">
 					<ArrowLeft className="h-4 w-4" /> Back
 				</Button>
@@ -74,13 +75,13 @@ export function MovieDetailView({
 					<AlertTitle>Error</AlertTitle>
 					<AlertDescription>Failed to load movie details</AlertDescription>
 				</Alert>
-			</div>
+			</CenteredLayout>
 		);
 	}
 
 	if (!movie) {
 		return (
-			<div className="container mx-auto p-6">
+			<CenteredLayout>
 				<Button onClick={onBack} className="mb-4" variant="outline">
 					<ArrowLeft className="h-4 w-4" /> Back
 				</Button>
@@ -89,7 +90,7 @@ export function MovieDetailView({
 					<AlertTitle>Not Found</AlertTitle>
 					<AlertDescription>Movie not found</AlertDescription>
 				</Alert>
-			</div>
+			</CenteredLayout>
 		);
 	}
 
@@ -98,7 +99,7 @@ export function MovieDetailView({
 		: fallbackPoster;
 
 	return (
-		<div className="container mx-auto p-6">
+		<div className="container">
 			<Button onClick={onBack} className="mb-4" variant="outline">
 				<ArrowLeft className="h-4 w-4" /> Back
 			</Button>
