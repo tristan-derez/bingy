@@ -1,9 +1,9 @@
-import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa6";
+import { FaInstagram, FaSquareFacebook, FaXTwitter } from "react-icons/fa6";
 
 const SOCIAL_ICONS = {
-	facebook: FaFacebookF,
+	facebook: FaSquareFacebook,
 	instagram: FaInstagram,
-	twitter: FaTwitter,
+	twitter: FaXTwitter,
 } as const;
 
 type SocialKey = keyof typeof SOCIAL_ICONS;
