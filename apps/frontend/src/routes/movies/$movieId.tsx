@@ -3,6 +3,7 @@ import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { MovieDetailView } from "@/components/movies/movie-details";
 import { useMovie, useMovieResource } from "@/hooks/useMovies";
 import type { MovieCredits, MovieExternalIds } from "@/types/movie";
+import { getRole } from "@/utils/excluded-jobs";
 import { getSocialUrls } from "@/utils/social-urls";
 
 export const Route = createFileRoute("/movies/$movieId")({
@@ -27,9 +28,7 @@ function MovieDetailsContainer() {
 	const crewWithRoles =
 		credits?.crew.reduce<Map<number, { name: string; roles: Set<string> }>>(
 			(map, person) => {
-				let role: string | null = null;
-				if (person.job === "Director") role = "Director";
-				else if (person.department === "Writing") role = person.job;
+				const role = getRole(person);
 				if (!role) return map;
 
 				const existing = map.get(person.id);
