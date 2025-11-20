@@ -16,6 +16,27 @@ export type Movie = Pretty<{
 	adult: boolean;
 }>;
 
+export interface MovieDetails {
+	id: number;
+	title: string;
+	original_title: string;
+	overview: string;
+	poster_path: string | null;
+	backdrop_path: string | null;
+	release_date: string;
+	vote_average: number;
+	vote_count: number;
+	tagline: string;
+	status: string;
+	runtime: number;
+	budget: number;
+	revenue: number;
+	homepage: string;
+	genres: Genre[];
+	production_companies: Company[];
+	production_countries: Country[];
+}
+
 export type MoviesEndpoint = Pretty<
 	"latest" | "now_playing" | "popular" | "top_rated" | "upcoming"
 >;
@@ -50,4 +71,45 @@ export type Genre = Pretty<{
 export type Country = Pretty<{
 	iso_3166_1: string;
 	name: string;
+}>;
+
+export type Company = Pretty<{
+	id: number;
+	name: string;
+	logo_path?: string | null;
+}>;
+
+export type MovieCredits = Pretty<{
+	id: number;
+	cast: PersonFromCast[];
+	crew: PersonFromCrew[];
+}>;
+
+type PersonFromCast = Pretty<
+	Omit<Person, "media_type"> & {
+		cast_id: number;
+		credit_id: string;
+		character: string;
+		order: number;
+	}
+>;
+
+type PersonFromCrew = Pretty<
+	Omit<Person, "media_type"> & {
+		credit_id: string;
+		department: string;
+		job: string;
+	}
+>;
+
+type Person = Pretty<{
+	adult: boolean;
+	id: number;
+	name: string;
+	original_name: string;
+	media_type: string;
+	popularity: number;
+	gender: number;
+	known_for_department: string;
+	profile_path: string | null;
 }>;
