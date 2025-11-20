@@ -1,5 +1,6 @@
 import { toast } from "sonner";
 import { useNowPlayingMovies } from "@/hooks/useMovies";
+import type { Movie } from "@/types/movie";
 import { LoadingSection } from "../loading/loading-section";
 import { MovieCarousel } from "./movie-carousel";
 
@@ -15,5 +16,12 @@ export const NowPlayingMovies = () => {
 		return null;
 	}
 
-	return <MovieCarousel title="In Theaters Now" movies={data?.results ?? []} />;
+	const today = new Date().toISOString().split("T")[0];
+
+	const filteredMovies =
+		data?.results.filter((movie: Movie) => {
+			return movie.release_date <= today;
+		}) ?? [];
+
+	return <MovieCarousel title="In Theaters Now" movies={filteredMovies} />;
 };
