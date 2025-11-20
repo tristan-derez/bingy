@@ -18,7 +18,7 @@ export const PersonCard = ({ person }: PersonCardProps) => {
 
 	return (
 		<Card className="w-full max-w-30 lg:max-w-60 min-h-[250px] overflow-hidden pt-0">
-			<div className="w-full h-auto">
+			<div className="w-full h-[180px] lg:h-[300px] bg-gray-200">
 				<img
 					src={imageUrl}
 					alt={person.name}
@@ -26,7 +26,7 @@ export const PersonCard = ({ person }: PersonCardProps) => {
 						if (e.currentTarget.src !== fallbackPoster)
 							e.currentTarget.src = fallbackPoster;
 					}}
-					className="h-full w-full object-contain"
+					className="h-full w-full object-cover"
 				/>
 			</div>
 			<CardHeader className="flex-grow justify-between py-2 px-3">
