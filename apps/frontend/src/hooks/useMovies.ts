@@ -5,7 +5,7 @@ import {
 	fetchMovies,
 	fetchMultiPagesMovies,
 } from "@/api/movies";
-import type { MovieEndpoint, MovieParams } from "@/types/movie";
+import type { MovieDetails, MovieEndpoint, MovieParams } from "@/types/movie";
 
 export function useLatestMovie() {
 	return useQuery({
@@ -48,19 +48,19 @@ export function useUpcomingMovies(params?: MovieParams) {
 }
 
 export function useMovie(id: number, params?: MovieParams) {
-	return useQuery({
+	return useQuery<MovieDetails>({
 		queryKey: ["movies", id, params],
 		queryFn: () => fetchMovie(id, params),
 		staleTime: 1000 * 60 * 10,
 	});
 }
 
-export function useMovieResource(
+export function useMovieResource<T>(
 	id: number,
 	endpoint: MovieEndpoint,
 	params?: MovieParams,
 ) {
-	return useQuery({
+	return useQuery<T>({
 		queryKey: ["movies", id, endpoint, params],
 		queryFn: () => fetchMovieResources(id, endpoint, params),
 		staleTime: 1000 * 60 * 10,
