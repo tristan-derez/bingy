@@ -85,7 +85,7 @@ export type MovieCredits = Pretty<{
 	crew: PersonFromCrew[];
 }>;
 
-type PersonFromCast = Pretty<
+export type PersonFromCast = Pretty<
 	Omit<Person, "media_type"> & {
 		cast_id: number;
 		credit_id: string;
@@ -94,7 +94,7 @@ type PersonFromCast = Pretty<
 	}
 >;
 
-type PersonFromCrew = Pretty<
+export type PersonFromCrew = Pretty<
 	Omit<Person, "media_type"> & {
 		credit_id: string;
 		department: string;
@@ -112,4 +112,13 @@ type Person = Pretty<{
 	gender: number;
 	known_for_department: string;
 	profile_path: string | null;
+}>;
+
+export type MovieExternalIds = Pretty<{
+	id: number;
+	imdb_id: string | null;
+	wikidata_id: string | null;
+	facebook_id: string | null;
+	instagram_id: string | null;
+	twitter_id: string | null;
 }>;
