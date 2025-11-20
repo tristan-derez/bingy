@@ -1,4 +1,4 @@
-import fallbackPoster from "@/assets/movie-placeholder.jpg";
+import fallbackPoster from "@/assets/user-placeholder.jpg";
 import {
 	Card,
 	CardDescription,
