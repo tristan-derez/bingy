@@ -26,7 +26,7 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
 			params={{ movieId: movie.id.toString() }}
 			className="block"
 		>
-			<Card className="w-full max-w-80 overflow-hidden pt-0 flex flex-col">
+			<Card className="w-full max-w-80 overflow-hidden pt-0 flex flex-col select-none">
 				<div className="relative h-40 w-full overflow-hidden">
 					<img
 						src={imageUrl}
