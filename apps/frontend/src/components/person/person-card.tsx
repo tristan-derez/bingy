@@ -29,7 +29,7 @@ export const PersonCard = ({ person }: PersonCardProps) => {
 					className="h-full w-full object-cover"
 				/>
 			</div>
-			<CardHeader className="flex-grow justify-between py-2 px-3">
+			<CardHeader className="flex-grow justify-between">
 				<CardTitle
 					className="text-base leading-tight line-clamp-1"
 					title={person.name}
