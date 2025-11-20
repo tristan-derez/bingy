@@ -1,11 +1,11 @@
 import { toast } from "sonner";
-import { useNowPlayingMovies } from "@/hooks/useMovies";
+import { useUpcomingMovies } from "@/hooks/useMovies";
 import type { Movie } from "@/types/movie";
 import { LoadingSection } from "../loading/loading-section";
 import { MovieCarousel } from "./movie-carousel";
 
-export const NowPlayingMovies = () => {
-	const { data, isLoading, error } = useNowPlayingMovies({ region: "US" });
+export const UpcomingMovies = () => {
+	const { data, isLoading, error } = useUpcomingMovies({ region: "US" });
 
 	if (isLoading) {
 		return <LoadingSection title="In Theaters Now" />;
@@ -18,10 +18,10 @@ export const NowPlayingMovies = () => {
 
 	const today = new Date().toISOString().split("T")[0];
 
-	const filteredMovies =
+	const futureMovies =
 		data?.results.filter((movie: Movie) => {
-			return movie.release_date <= today;
+			return movie.release_date >= today;
 		}) ?? [];
 
-	return <MovieCarousel title="In Theaters Now" movies={filteredMovies} />;
+	return <MovieCarousel title="Upcoming" movies={futureMovies} />;
 };
