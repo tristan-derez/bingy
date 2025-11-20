@@ -17,10 +17,15 @@ export const NowPlayingMovies = () => {
 	}
 
 	const today = new Date().toISOString().split("T")[0];
+	const seenIds = new Set<number>();
 
 	const filteredMovies =
 		data?.results.filter((movie: Movie) => {
-			return movie.release_date <= today;
+			if (seenIds.has(movie.id) || movie.release_date > today) {
+				return false;
+			}
+			seenIds.add(movie.id);
+			return true;
 		}) ?? [];
 
 	return <MovieCarousel title="In Theaters Now" movies={filteredMovies} />;

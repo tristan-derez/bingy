@@ -17,11 +17,16 @@ export const UpcomingMovies = () => {
 	}
 
 	const today = new Date().toISOString().split("T")[0];
+	const seenIds = new Set<number>();
 
-	const futureMovies =
+	const filteredMovies =
 		data?.results.filter((movie: Movie) => {
-			return movie.release_date >= today;
+			if (seenIds.has(movie.id) || movie.release_date < today) {
+				return false;
+			}
+			seenIds.add(movie.id);
+			return true;
 		}) ?? [];
 
-	return <MovieCarousel title="Upcoming" movies={futureMovies} />;
+	return <MovieCarousel title="Upcoming" movies={filteredMovies} />;
 };
