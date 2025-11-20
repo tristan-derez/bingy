@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Calendar, Star, Users } from "lucide-react";
+import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import type { Movie } from "@/types/movie";
 import { Badge } from "../ui/badge";
 import {
@@ -17,18 +18,25 @@ interface MovieCardProps {
 export const MovieCard = ({ movie }: MovieCardProps) => {
 	const imageUrl = movie.poster_path
 		? `https://image.tmdb.org/t/p/w300${movie.poster_path}`
-		: "/placeholder.svg";
+		: fallbackPoster;
+
 	return (
 		<Link
 			to="/movies/$movieId"
 			params={{ movieId: movie.id.toString() }}
 			className="block"
 		>
-			<Card className="w-full max-w-80 overflow-hidden pt-0">
+			<Card className="w-full max-w-80 overflow-hidden pt-0 flex flex-col">
 				<div className="relative h-40 w-full overflow-hidden">
 					<img
 						src={imageUrl}
 						alt={movie.title}
+						onError={(e) => {
+							const target = e.currentTarget;
+							if (target.src !== fallbackPoster) {
+								target.src = fallbackPoster;
+							}
+						}}
 						className="h-full w-full object-cover"
 					/>
 					{movie.adult && (
@@ -44,8 +52,8 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
 					</CardTitle>
 				</CardHeader>
 
-				<CardContent className="space-y-3">
-					<p className="text-sm text-muted-foreground line-clamp-3 leading-normal">
+				<CardContent className="space-y-3 flex-grow">
+					<p className="text-sm text-muted-foreground line-clamp-3 leading-normal min-h-[4rem]">
 						{movie.overview}
 					</p>
 

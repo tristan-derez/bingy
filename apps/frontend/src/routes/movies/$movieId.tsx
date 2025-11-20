@@ -1,5 +1,6 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { AlertCircle, ArrowLeft, Calendar, Clock, Star } from "lucide-react";
+import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -65,6 +66,10 @@ function MovieDetailsComponent() {
 		);
 	}
 
+	const imageUrl = data.poster_path
+		? `https://image.tmdb.org/t/p/w500${data.poster_path}`
+		: fallbackPoster;
+
 	return (
 		<div className="container mx-auto p-6">
 			<Button
@@ -75,15 +80,19 @@ function MovieDetailsComponent() {
 				<ArrowLeft className="h-4 w-4" /> Back
 			</Button>
 			<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-				{data.poster_path && (
-					<div className="md:col-span-1">
-						<img
-							src={`https://image.tmdb.org/t/p/w500${data.poster_path}`}
-							alt={data.title}
-							className="rounded-lg shadow-lg w-full"
-						/>
-					</div>
-				)}
+				<div className="md:col-span-1">
+					<img
+						src={imageUrl}
+						alt={data.title}
+						className="rounded-lg shadow-lg w-full"
+						onError={(e) => {
+							const target = e.currentTarget;
+							if (target.src !== fallbackPoster) {
+								target.src = fallbackPoster;
+							}
+						}}
+					/>
+				</div>
 				<div className="md:col-span-2 space-y-4">
 					<div>
 						<h1 className="text-4xl font-bold">{data.title}</h1>
