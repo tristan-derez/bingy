@@ -5,7 +5,13 @@ import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+	Card,
+	CardContent,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useMovie } from "@/hooks/useMovies";
 import type { Country, Genre } from "@/types/movie";
@@ -117,6 +123,8 @@ function MovieDetailsComponent() {
 						</CardHeader>
 						<CardContent className="space-y-4">
 							<p>{data.overview}</p>
+						</CardContent>
+						<CardFooter>
 							<div className="flex flex-wrap gap-2">
 								{data.production_countries.map((country: Country) => (
 									<Badge
@@ -132,7 +140,7 @@ function MovieDetailsComponent() {
 									</Badge>
 								))}
 							</div>
-						</CardContent>
+						</CardFooter>
 					</Card>
 
 					<div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
