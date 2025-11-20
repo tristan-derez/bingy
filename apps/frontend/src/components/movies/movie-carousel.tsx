@@ -1,4 +1,5 @@
 import useEmblaCarousel from "embla-carousel-react";
+import { useId } from "react";
 import {
 	NextButton,
 	PrevButton,
@@ -17,6 +18,8 @@ export const MovieCarousel = ({ title, movies }: MovieCarouselProps) => {
 		dragFree: true,
 		align: "start",
 	});
+
+	const carouselId = useId();
 
 	const {
 		prevBtnDisabled,
@@ -39,7 +42,10 @@ export const MovieCarousel = ({ title, movies }: MovieCarouselProps) => {
 			<div className="overflow-hidden hover:cursor-grab" ref={emblaRef}>
 				<div className="flex gap-4">
 					{movies.map((movie) => (
-						<div key={movie.id} className="min-w-80 md:min-w-60">
+						<div
+							key={`${carouselId}-${movie.id}`}
+							className="min-w-80 md:min-w-60"
+						>
 							<MovieCard movie={movie} />
 						</div>
 					))}
