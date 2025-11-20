@@ -1,5 +1,6 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { AlertCircle, ArrowLeft, Calendar, Clock, Star } from "lucide-react";
+import Flag from "react-world-flags";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
@@ -7,8 +8,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useMovie } from "@/hooks/useMovies";
-import type { Genre } from "@/types/movie";
+import type { Country, Genre } from "@/types/movie";
 import { formatRuntime } from "@/utils/format-runtime";
+import { shortenCountryName } from "@/utils/shorten-country-name";
 
 export const Route = createFileRoute("/movies/$movieId")({
 	component: MovieDetailsComponent,
@@ -99,22 +101,37 @@ function MovieDetailsComponent() {
 						{data.tagline && (
 							<p className="text-muted-foreground italic">{data.tagline}</p>
 						)}
-					</div>
 
-					<div className="flex flex-wrap gap-2">
-						{data.genres.map((genre: Genre) => (
-							<Badge key={genre.id} variant="secondary">
-								{genre.name}
-							</Badge>
-						))}
+						<div className="flex flex-wrap gap-2 mt-2">
+							{data.genres.map((genre: Genre) => (
+								<Badge key={genre.id} variant="secondary">
+									{genre.name}
+								</Badge>
+							))}
+						</div>
 					</div>
 
 					<Card>
 						<CardHeader>
 							<CardTitle>Overview</CardTitle>
 						</CardHeader>
-						<CardContent>
+						<CardContent className="space-y-4">
 							<p>{data.overview}</p>
+							<div className="flex flex-wrap gap-2">
+								{data.production_countries.map((country: Country) => (
+									<Badge
+										key={country.iso_3166_1}
+										variant="secondary"
+										className="flex items-center gap-3"
+									>
+										<Flag
+											code={country.iso_3166_1}
+											style={{ width: 18, height: 14 }}
+										/>
+										<span>{shortenCountryName(country.name)}</span>
+									</Badge>
+								))}
+							</div>
 						</CardContent>
 					</Card>
 

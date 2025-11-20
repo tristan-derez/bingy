@@ -46,3 +46,8 @@ export type Genre = Pretty<{
 	id: number;
 	name: string;
 }>;
+
+export type Country = Pretty<{
+	iso_3166_1: string;
+	name: string;
+}>;
