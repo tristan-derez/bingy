@@ -20,21 +20,31 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import type {
-	Company,
-	Country,
-	Genre,
-	MovieCredits,
-	MovieDetails,
-} from "@/types/movie";
+import type { Company, Country, Genre, MovieDetails } from "@/types/movie";
 import { formatRuntime } from "@/utils/format-runtime";
 import { shortenCountryName } from "@/utils/shorten-country-name";
 import { LoadingCentered } from "../loading/loading-centered";
+import { PersonCarousel } from "../person/person-carousel";
+import { SocialLinks } from "../social-links";
 import { Separator } from "../ui/separator";
+
+interface CrewMember {
+	name: string;
+	roles: Set<string>;
+}
+
+export interface CastMember {
+	id: number;
+	name: string;
+	character: string;
+	profile_path: string | null;
+}
 
 interface MovieDetailViewProps {
 	movie: MovieDetails | undefined;
-	credits: MovieCredits | undefined;
+	crew: CrewMember[];
+	cast: CastMember[];
+	socials: Partial<Record<"facebook" | "instagram" | "twitter", string>>;
 	isLoading: boolean;
 	isError: boolean;
 	onBack: () => void;
@@ -42,7 +52,9 @@ interface MovieDetailViewProps {
 
 export function MovieDetailView({
 	movie,
-	credits,
+	cast,
+	crew,
+	socials,
 	isLoading,
 	isError,
 	onBack,
@@ -81,34 +93,6 @@ export function MovieDetailView({
 		);
 	}
 
-	const crew = credits?.crew || [];
-
-	const crewRolesMap = new Map<number, { name: string; roles: Set<string> }>();
-
-	crew.forEach((person) => {
-		let role: string | null = null;
-
-		if (person.job === "Director") {
-			role = "Director";
-		} else if (person.department === "Writing") {
-			role = person.job;
-		}
-
-		if (!role) return;
-
-		const existing = crewRolesMap.get(person.id);
-		if (existing) {
-			existing.roles.add(role);
-		} else {
-			crewRolesMap.set(person.id, {
-				name: person.name,
-				roles: new Set([role]),
-			});
-		}
-	});
-
-	const crewWithRoles = Array.from(crewRolesMap.values());
-
 	const imageUrl = movie.poster_path
 		? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
 		: fallbackPoster;
@@ -135,19 +119,29 @@ export function MovieDetailView({
 				</div>
 
 				<div className="md:col-span-2 space-y-6">
-					<div>
-						<h1 className="text-4xl font-bold">{movie.title}</h1>
-						{movie.tagline && (
-							<p className="text-muted-foreground italic">{movie.tagline}</p>
-						)}
+					<div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-2">
+						<div className="flex flex-col gap-2">
+							<h1 className="text-4xl font-bold leading-tight">
+								{movie.title}
+							</h1>
+							{movie.tagline && (
+								<p className="text-muted-foreground italic">{movie.tagline}</p>
+							)}
 
-						<div className="flex flex-wrap gap-2 mt-2">
-							{movie.genres.map((genre: Genre) => (
-								<Badge key={genre.id} variant="secondary">
-									{genre.name}
-								</Badge>
-							))}
+							<div className="flex flex-wrap gap-2 mt-2">
+								{movie.genres.map((genre: Genre) => (
+									<Badge key={genre.id} variant="secondary">
+										{genre.name}
+									</Badge>
+								))}
+							</div>
 						</div>
+
+						{Object.keys(socials).length > 0 && (
+							<div className="lg:self-start mt-3 lg:pr-2">
+								<SocialLinks socials={socials} />
+							</div>
+						)}
 					</div>
 
 					<Card>
@@ -158,9 +152,9 @@ export function MovieDetailView({
 						<CardContent className="space-y-4">
 							<p>{movie.overview}</p>
 							<Separator />
-							{crewWithRoles.length > 0 && (
+							{crew.length > 0 && (
 								<div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-									{crewWithRoles.map((person) => (
+									{crew.map((person) => (
 										<div key={person.name}>
 											<h3 className="font-semibold text-lg">{person.name}</h3>
 											<p className="text-muted-foreground text-sm">
@@ -285,6 +279,8 @@ export function MovieDetailView({
 							</Card>
 						)}
 					</div>
+
+					{cast.length > 0 && <PersonCarousel people={cast} />}
 
 					{movie.production_companies.length > 0 && (
 						<Card>
