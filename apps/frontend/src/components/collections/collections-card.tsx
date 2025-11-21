@@ -44,12 +44,14 @@ export function CollectionCard({ collection }: CollectionCardProps) {
 				</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<Link
-					to="/collections/$collectionId"
-					params={{ collectionId: collection.id.toString() }}
-				>
-					<Button variant="secondary">VIEW THE COLLECTION</Button>
-				</Link>
+				<Button asChild variant="outline" className="w-full lg:w-1/2 xl:w-1/3">
+					<Link
+						to="/collections/$collectionId"
+						params={{ collectionId: collection.id.toString() }}
+					>
+						VIEW THE COLLECTION
+					</Link>
+				</Button>
 			</CardContent>
 		</Card>
 	);
