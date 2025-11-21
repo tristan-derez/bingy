@@ -124,11 +124,14 @@ export namespace Schemas {
 			episode_run_time: number[];
 			genres: Genre[];
 			in_production: string;
+			homepage: string;
 			languages: string[];
 			last_air_date: string;
 			last_episode_to_air: Pretty<Omit<Episode, "media_type"> | null>;
 			next_episode_to_air: Pretty<Omit<Episode, "media_type"> | null>;
-			networks: Pretty<Omit<NetworkDetails, "homepage" | "headquarters">>;
+			networks: Pretty<Omit<NetworkDetails, "homepage" | "headquarters">>[];
+			number_of_seasons: number;
+			number_of_episodes: number;
 			production_companies: ProductionCompany[];
 			production_countries: ProductionCountry[];
 			seasons: (Season & { vote_average: number })[];
