@@ -16,7 +16,9 @@ import { Route as GoodbyeRouteImport } from './routes/goodbye'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as TvIndexRouteImport } from './routes/tv/index'
 import { Route as MoviesIndexRouteImport } from './routes/movies/index'
+import { Route as TvTvIdRouteImport } from './routes/tv/$tvId'
 import { Route as MoviesMovieIdRouteImport } from './routes/movies/$movieId'
 import { Route as CollectionsCollectionIdRouteImport } from './routes/collections/$collectionId'
 import { Route as AuthWelcomeRouteImport } from './routes/_auth/welcome'
@@ -58,9 +60,19 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TvIndexRoute = TvIndexRouteImport.update({
+  id: '/tv/',
+  path: '/tv/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MoviesIndexRoute = MoviesIndexRouteImport.update({
   id: '/movies/',
   path: '/movies/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TvTvIdRoute = TvTvIdRouteImport.update({
+  id: '/tv/$tvId',
+  path: '/tv/$tvId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MoviesMovieIdRoute = MoviesMovieIdRouteImport.update({
@@ -107,7 +119,9 @@ export interface FileRoutesByFullPath {
   '/welcome': typeof AuthWelcomeRoute
   '/collections/$collectionId': typeof CollectionsCollectionIdRoute
   '/movies/$movieId': typeof MoviesMovieIdRoute
+  '/tv/$tvId': typeof TvTvIdRoute
   '/movies': typeof MoviesIndexRoute
+  '/tv': typeof TvIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -122,7 +136,9 @@ export interface FileRoutesByTo {
   '/welcome': typeof AuthWelcomeRoute
   '/collections/$collectionId': typeof CollectionsCollectionIdRoute
   '/movies/$movieId': typeof MoviesMovieIdRoute
+  '/tv/$tvId': typeof TvTvIdRoute
   '/movies': typeof MoviesIndexRoute
+  '/tv': typeof TvIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -139,7 +155,9 @@ export interface FileRoutesById {
   '/_auth/welcome': typeof AuthWelcomeRoute
   '/collections/$collectionId': typeof CollectionsCollectionIdRoute
   '/movies/$movieId': typeof MoviesMovieIdRoute
+  '/tv/$tvId': typeof TvTvIdRoute
   '/movies/': typeof MoviesIndexRoute
+  '/tv/': typeof TvIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -156,7 +174,9 @@ export interface FileRouteTypes {
     | '/welcome'
     | '/collections/$collectionId'
     | '/movies/$movieId'
+    | '/tv/$tvId'
     | '/movies'
+    | '/tv'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -171,7 +191,9 @@ export interface FileRouteTypes {
     | '/welcome'
     | '/collections/$collectionId'
     | '/movies/$movieId'
+    | '/tv/$tvId'
     | '/movies'
+    | '/tv'
   id:
     | '__root__'
     | '/'
@@ -187,7 +209,9 @@ export interface FileRouteTypes {
     | '/_auth/welcome'
     | '/collections/$collectionId'
     | '/movies/$movieId'
+    | '/tv/$tvId'
     | '/movies/'
+    | '/tv/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -200,7 +224,9 @@ export interface RootRouteChildren {
   SignupRoute: typeof SignupRoute
   CollectionsCollectionIdRoute: typeof CollectionsCollectionIdRoute
   MoviesMovieIdRoute: typeof MoviesMovieIdRoute
+  TvTvIdRoute: typeof TvTvIdRoute
   MoviesIndexRoute: typeof MoviesIndexRoute
+  TvIndexRoute: typeof TvIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -254,11 +280,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tv/': {
+      id: '/tv/'
+      path: '/tv'
+      fullPath: '/tv'
+      preLoaderRoute: typeof TvIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/movies/': {
       id: '/movies/'
       path: '/movies'
       fullPath: '/movies'
       preLoaderRoute: typeof MoviesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tv/$tvId': {
+      id: '/tv/$tvId'
+      path: '/tv/$tvId'
+      fullPath: '/tv/$tvId'
+      preLoaderRoute: typeof TvTvIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/movies/$movieId': {
@@ -332,7 +372,9 @@ const rootRouteChildren: RootRouteChildren = {
   SignupRoute: SignupRoute,
   CollectionsCollectionIdRoute: CollectionsCollectionIdRoute,
   MoviesMovieIdRoute: MoviesMovieIdRoute,
+  TvTvIdRoute: TvTvIdRoute,
   MoviesIndexRoute: MoviesIndexRoute,
+  TvIndexRoute: TvIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
