@@ -28,5 +28,5 @@ export const UpcomingMovies = () => {
 			return true;
 		}) ?? [];
 
-	return <MovieCarousel title="Upcoming" movies={filteredMovies} />;
+	return <MovieCarousel movies={filteredMovies} title="Upcoming" />;
 };

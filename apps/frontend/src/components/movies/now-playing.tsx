@@ -28,5 +28,5 @@ export const NowPlayingMovies = () => {
 			return true;
 		}) ?? [];
 
-	return <MovieCarousel title="In Theaters Now" movies={filteredMovies} />;
+	return <MovieCarousel movies={filteredMovies} title="In Theaters Now" />;
 };
