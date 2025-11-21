@@ -74,11 +74,13 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
 					<div className="flex items-center gap-1">
 						<Calendar className="h-4 w-4" />
 						<span>
-							{new Date(movie.release_date).toLocaleDateString("en-US", {
-								year: "numeric",
-								month: "short",
-								day: "numeric",
-							})}
+							{movie.release_date
+								? new Date(movie.release_date).toLocaleDateString("en-US", {
+										year: "numeric",
+										month: "short",
+										day: "numeric",
+									})
+								: "N/A"}
 						</span>
 					</div>
 				</CardFooter>

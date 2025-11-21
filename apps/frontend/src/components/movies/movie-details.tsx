@@ -212,11 +212,16 @@ export function MovieDetailView({
 								<Calendar className="h-5 w-5" />
 								<div>
 									<p className="text-xl xl:text-2xl font-bold">
-										{new Date(movie.release_date).toLocaleDateString("en-US", {
-											year: "numeric",
-											month: "short",
-											day: "numeric",
-										})}
+										{movie.release_date
+											? new Date(movie.release_date).toLocaleDateString(
+													"en-US",
+													{
+														year: "numeric",
+														month: "short",
+														day: "numeric",
+													},
+												)
+											: "N/A"}
 									</p>
 									<p className="text-sm text-muted-foreground">Release Date</p>
 								</div>
