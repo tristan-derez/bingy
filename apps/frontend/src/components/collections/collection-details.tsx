@@ -1,5 +1,4 @@
-import { AlertCircle, ArrowLeft } from "lucide-react";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { ArrowLeft } from "lucide-react";
 import {
 	Card,
 	CardContent,
@@ -9,7 +8,7 @@ import {
 } from "@/components/ui/card";
 import type { CollectionDetails } from "@/types/collection";
 import type { MovieDetails } from "@/types/movie";
-import { CenteredLayout } from "../layout/centered-layout";
+import { ResourceNotFound } from "../errors/resource-not-found";
 import { LoadingCentered } from "../loading/loading-centered";
 import { MovieCarousel } from "../movies/movie-carousel";
 import { Badge } from "../ui/badge";
@@ -36,16 +35,11 @@ export function CollectionDetailsView({
 
 	if (isError || !collectionData) {
 		return (
-			<CenteredLayout>
-				<Button onClick={onBack} className="mb-4" variant="outline">
-					<ArrowLeft className="h-4 w-4" /> Back
-				</Button>
-				<Alert>
-					<AlertCircle className="h-4 w-4" />
-					<AlertTitle>Not Found</AlertTitle>
-					<AlertDescription>Movie not found</AlertDescription>
-				</Alert>
-			</CenteredLayout>
+			<ResourceNotFound
+				title="Collection Not Found"
+				description="The collection you're looking for could not be found."
+				onBack={onBack}
+			/>
 		);
 	}
 
