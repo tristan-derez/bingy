@@ -1651,7 +1651,7 @@ export namespace Endpoints {
 			query: Partial<{ language: string; page: number }>;
 			path: { time_window: "day" | "week" };
 		};
-		response: Schemas.PaginatedResponse<Schemas.TvWithAdultField>;
+		response: Schemas.PaginatedResponse<Schemas.TvWithMediaType>;
 	};
 	export type getTvPopularList = {
 		method: "GET";
@@ -1793,9 +1793,7 @@ export namespace Endpoints {
 			query: Partial<{ language: string; page: number }>;
 			path: Required<{ series_id: number }>;
 		};
-		response: Schemas.PaginatedResponse<
-			Omit<Schemas.TvWithAdultField, "media_type">
-		>;
+		response: Schemas.PaginatedResponse<Schemas.Tv>;
 	};
 	export type getTvTranslations = {
 		method: "GET";
