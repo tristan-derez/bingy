@@ -1,5 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
+import { fetchMultiPagesTrending } from "@/api/trending";
 import {
+	fetchMultiPagesTv,
 	fetchTvEpisodeResources,
 	fetchTvResources,
 	fetchTvSeasonResources,
@@ -22,7 +24,30 @@ export function useLatestTv(params?: TvParams) {
 export function useTopRatedTv(params?: TvParams) {
 	return useQuery({
 		queryKey: ["tv", "top_rated", params],
-		queryFn: () => fetchTvSeries("top_rated", params),
+		queryFn: () => fetchMultiPagesTv("top_rated", { maxPages: 2, params }),
+	});
+}
+
+export function useTrendingTodayTv(params?: TvParams) {
+	return useQuery({
+		queryKey: ["tv", "trending", "day", params],
+		queryFn: () =>
+			fetchMultiPagesTrending("tv", "day", { maxPages: 2, params }),
+	});
+}
+
+export function useTrendingWeekTv(params?: TvParams) {
+	return useQuery({
+		queryKey: ["tv", "trending", "week", params],
+		queryFn: () =>
+			fetchMultiPagesTrending("tv", "week", { maxPages: 2, params }),
+	});
+}
+
+export function usePopularTv(params?: TvParams) {
+	return useQuery({
+		queryKey: ["tv", "popular", params],
+		queryFn: () => fetchMultiPagesTv("popular", { maxPages: 2, params }),
 	});
 }
 
