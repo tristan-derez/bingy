@@ -1,3 +1,4 @@
+import type { Collection } from "./collection";
 import type { Pretty } from "./generic";
 
 export type Movie = Pretty<{
@@ -19,6 +20,7 @@ export type Movie = Pretty<{
 export interface MovieDetails {
 	id: number;
 	title: string;
+	belongs_to_collection: Pretty<Collection>;
 	original_title: string;
 	overview: string;
 	poster_path: string | null;
@@ -121,4 +123,22 @@ export type MovieExternalIds = Pretty<{
 	facebook_id: string | null;
 	instagram_id: string | null;
 	twitter_id: string | null;
+}>;
+
+export type MovieInCollection = Pretty<{
+	adult: boolean;
+	backdrop_path: string | null;
+	id: number;
+	title: string;
+	original_title: string;
+	overview: string;
+	poster_path: string | null;
+	media_type: string;
+	original_language: string;
+	genre_ids: number[];
+	popularity: number;
+	release_date: string;
+	video: boolean;
+	vote_average: number;
+	vote_count: number;
 }>;
