@@ -13,11 +13,11 @@ import type { Movie } from "@/types/movie";
 import { MovieCard } from "./movie-card";
 
 interface MovieCarouselProps {
-	title: string;
 	movies: Movie[];
+	title?: string;
 }
 
-export const MovieCarousel = ({ title, movies }: MovieCarouselProps) => {
+export const MovieCarousel = ({ movies, title }: MovieCarouselProps) => {
 	const [emblaRef, emblaApi] = useEmblaCarousel({
 		dragFree: true,
 		align: "start",
@@ -42,6 +42,8 @@ export const MovieCarousel = ({ title, movies }: MovieCarouselProps) => {
 		);
 	}
 
+	const showButtons = !prevBtnDisabled || !nextBtnDisabled;
+
 	return (
 		<section className="flex flex-col gap-4">
 			<h2 className="text-xl font-semibold">{title}</h2>
@@ -51,7 +53,7 @@ export const MovieCarousel = ({ title, movies }: MovieCarouselProps) => {
 						{movies.map((movie) => (
 							<div
 								key={`${carouselId}-${movie.id}`}
-								className="min-w-80 md:min-w-60"
+								className="min-w-80 md:min-w-60 gap-4"
 							>
 								<MovieCard movie={movie} />
 							</div>
@@ -60,10 +62,12 @@ export const MovieCarousel = ({ title, movies }: MovieCarouselProps) => {
 				</div>
 				<CarouselGradient show={showGradient} />
 			</div>
-			<div className="flex items-center gap-2">
-				<PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
-				<NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
-			</div>
+			{showButtons && (
+				<div className="flex items-center gap-2">
+					<PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
+					<NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
+				</div>
+			)}
 		</section>
 	);
 };
