@@ -48,11 +48,11 @@ export namespace Schemas {
 	>
 
 	export type MovieInCollection = Pretty<{
-		adult: string;
+		adult: boolean;
 		backdrop_path: string | null;
 		id: number;
-		name: string;
-		original_name: string;
+		title: string;
+		original_title: string;
 		overview: string;
 		poster_path: string | null;
 		media_type: string;
@@ -66,7 +66,7 @@ export namespace Schemas {
 	}>;
 
 	export type Movie = Pretty<{
-		adult: string;
+		adult: boolean;
 		backdrop_path: string | null;
 		id: number;
 		title: string;
@@ -96,6 +96,7 @@ export namespace Schemas {
 	}>;
 
 	export type Tv = Pretty<{
+		adult: boolean;
 		backdrop_path: string | null;
 		first_air_date: string;
 		genre_ids: number[];
@@ -111,9 +112,8 @@ export namespace Schemas {
 		vote_count: number;
 	}>;
 
-	export type TvWithAdultField = Pretty<
+	export type TvWithMediaType = Pretty<
 		Tv & {
-			adult: boolean;
 			media_type: "tv";
 		}
 	>;
@@ -1615,9 +1615,7 @@ export namespace Endpoints {
 				year?: number;
 			};
 		};
-		response: Schemas.PaginatedResponse<
-			Omit<Schemas.TvWithAdultField, "media_type">
-		>;
+		response: Schemas.PaginatedResponse<Schemas.Tv>;
 	};
 	export type getTrendingAll = {
 		method: "GET";
