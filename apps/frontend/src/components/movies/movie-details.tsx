@@ -1,16 +1,8 @@
-import {
-	AlertCircle,
-	ArrowLeft,
-	Calendar,
-	Clock,
-	ExternalLink,
-	Star,
-} from "lucide-react";
+import { ArrowLeft, Calendar, Clock, ExternalLink, Star } from "lucide-react";
 import { FaMoneyBillTrendUp } from "react-icons/fa6";
 import { TbMoneybag } from "react-icons/tb";
 import Flag from "react-world-flags";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -26,7 +18,6 @@ import { formatRuntime } from "@/utils/format-runtime";
 import { shortenCountryName } from "@/utils/shorten-country-name";
 import { CollectionCard } from "../collections/collection-card";
 import { ResourceNotFound } from "../errors/resource-not-found";
-import { CenteredLayout } from "../layout/centered-layout";
 import { LoadingCentered } from "../loading/loading-centered";
 import { PersonCarousel } from "../person/person-carousel";
 import { SocialLinks } from "../social-links";
