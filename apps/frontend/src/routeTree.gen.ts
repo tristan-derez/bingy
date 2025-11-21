@@ -18,6 +18,7 @@ import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as MoviesIndexRouteImport } from './routes/movies/index'
 import { Route as MoviesMovieIdRouteImport } from './routes/movies/$movieId'
+import { Route as CollectionsCollectionIdRouteImport } from './routes/collections/$collectionId'
 import { Route as AuthWelcomeRouteImport } from './routes/_auth/welcome'
 import { Route as AuthSettingsRouteImport } from './routes/_auth/settings'
 import { Route as AuthProfileRouteImport } from './routes/_auth/profile'
@@ -67,6 +68,11 @@ const MoviesMovieIdRoute = MoviesMovieIdRouteImport.update({
   path: '/movies/$movieId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CollectionsCollectionIdRoute = CollectionsCollectionIdRouteImport.update({
+  id: '/collections/$collectionId',
+  path: '/collections/$collectionId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthWelcomeRoute = AuthWelcomeRouteImport.update({
   id: '/welcome',
   path: '/welcome',
@@ -99,6 +105,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof AuthProfileRoute
   '/settings': typeof AuthSettingsRoute
   '/welcome': typeof AuthWelcomeRoute
+  '/collections/$collectionId': typeof CollectionsCollectionIdRoute
   '/movies/$movieId': typeof MoviesMovieIdRoute
   '/movies': typeof MoviesIndexRoute
 }
@@ -113,6 +120,7 @@ export interface FileRoutesByTo {
   '/profile': typeof AuthProfileRoute
   '/settings': typeof AuthSettingsRoute
   '/welcome': typeof AuthWelcomeRoute
+  '/collections/$collectionId': typeof CollectionsCollectionIdRoute
   '/movies/$movieId': typeof MoviesMovieIdRoute
   '/movies': typeof MoviesIndexRoute
 }
@@ -129,6 +137,7 @@ export interface FileRoutesById {
   '/_auth/profile': typeof AuthProfileRoute
   '/_auth/settings': typeof AuthSettingsRoute
   '/_auth/welcome': typeof AuthWelcomeRoute
+  '/collections/$collectionId': typeof CollectionsCollectionIdRoute
   '/movies/$movieId': typeof MoviesMovieIdRoute
   '/movies/': typeof MoviesIndexRoute
 }
@@ -145,6 +154,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/settings'
     | '/welcome'
+    | '/collections/$collectionId'
     | '/movies/$movieId'
     | '/movies'
   fileRoutesByTo: FileRoutesByTo
@@ -159,6 +169,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/settings'
     | '/welcome'
+    | '/collections/$collectionId'
     | '/movies/$movieId'
     | '/movies'
   id:
@@ -174,6 +185,7 @@ export interface FileRouteTypes {
     | '/_auth/profile'
     | '/_auth/settings'
     | '/_auth/welcome'
+    | '/collections/$collectionId'
     | '/movies/$movieId'
     | '/movies/'
   fileRoutesById: FileRoutesById
@@ -186,6 +198,7 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   SigninRoute: typeof SigninRoute
   SignupRoute: typeof SignupRoute
+  CollectionsCollectionIdRoute: typeof CollectionsCollectionIdRoute
   MoviesMovieIdRoute: typeof MoviesMovieIdRoute
   MoviesIndexRoute: typeof MoviesIndexRoute
 }
@@ -255,6 +268,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MoviesMovieIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/collections/$collectionId': {
+      id: '/collections/$collectionId'
+      path: '/collections/$collectionId'
+      fullPath: '/collections/$collectionId'
+      preLoaderRoute: typeof CollectionsCollectionIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_auth/welcome': {
       id: '/_auth/welcome'
       path: '/welcome'
@@ -310,6 +330,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   SigninRoute: SigninRoute,
   SignupRoute: SignupRoute,
+  CollectionsCollectionIdRoute: CollectionsCollectionIdRoute,
   MoviesMovieIdRoute: MoviesMovieIdRoute,
   MoviesIndexRoute: MoviesIndexRoute,
 }

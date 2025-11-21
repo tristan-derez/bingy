@@ -27,5 +27,5 @@ export const TopRatedMovies = () => {
 			return true;
 		}) ?? [];
 
-	return <MovieCarousel title="Top Rated" movies={filteredMovies} />;
+	return <MovieCarousel movies={filteredMovies} title="Top Rated" />;
 };

@@ -27,5 +27,5 @@ export const PopularMovies = () => {
 			return true;
 		}) ?? [];
 
-	return <MovieCarousel title="Popular" movies={filteredMovies} />;
+	return <MovieCarousel movies={filteredMovies} title="Popular" />;
 };

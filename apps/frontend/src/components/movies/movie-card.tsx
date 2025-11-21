@@ -21,11 +21,7 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
 		: fallbackPoster;
 
 	return (
-		<Link
-			to="/movies/$movieId"
-			params={{ movieId: movie.id.toString() }}
-			className="block"
-		>
+		<Link to="/movies/$movieId" params={{ movieId: movie.id.toString() }}>
 			<Card className="w-full max-w-80 overflow-hidden pt-0 flex flex-col select-none">
 				<div className="relative h-40 w-full overflow-hidden">
 					<img

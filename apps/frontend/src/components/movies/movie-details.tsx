@@ -20,9 +20,11 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import type { Collection } from "@/types/collection";
 import type { Company, Country, Genre, MovieDetails } from "@/types/movie";
 import { formatRuntime } from "@/utils/format-runtime";
 import { shortenCountryName } from "@/utils/shorten-country-name";
+import { CollectionCard } from "../collections/collections-card";
 import { CenteredLayout } from "../layout/centered-layout";
 import { LoadingCentered } from "../loading/loading-centered";
 import { PersonCarousel } from "../person/person-carousel";
@@ -46,6 +48,7 @@ interface MovieDetailViewProps {
 	crew: CrewMember[];
 	cast: CastMember[];
 	socials: Partial<Record<"facebook" | "instagram" | "twitter", string>>;
+	collection: Collection | undefined;
 	isLoading: boolean;
 	isError: boolean;
 	onBack: () => void;
@@ -56,6 +59,7 @@ export function MovieDetailView({
 	cast,
 	crew,
 	socials,
+	collection,
 	isLoading,
 	isError,
 	onBack,
@@ -282,6 +286,8 @@ export function MovieDetailView({
 					</div>
 
 					{cast.length > 0 && <PersonCarousel people={cast} />}
+
+					{collection && <CollectionCard collection={collection} />}
 
 					{movie.production_companies.length > 0 && (
 						<Card>

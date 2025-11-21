@@ -53,6 +53,7 @@ function MovieDetailsContainer() {
 		})) || [];
 
 	const socialUrls = socials ? getSocialUrls(socials) : {};
+	const collection = movie ? movie.belongs_to_collection : undefined;
 
 	return (
 		<MovieDetailView
@@ -60,6 +61,7 @@ function MovieDetailsContainer() {
 			socials={socialUrls}
 			crew={result}
 			cast={cast}
+			collection={collection}
 			isLoading={isLoading}
 			isError={isError}
 			onBack={() => router.history.back()}
