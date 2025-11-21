@@ -28,6 +28,13 @@ export function useTopRatedTv(params?: TvParams) {
 	});
 }
 
+export function usePopularTv(params?: TvParams) {
+	return useQuery({
+		queryKey: ["tv", "popular", params],
+		queryFn: () => fetchMultiPagesTv("popular", { maxPages: 2, params }),
+	});
+}
+
 export function useTrendingTodayTv(params?: TvParams) {
 	return useQuery({
 		queryKey: ["tv", "trending", "day", params],
@@ -41,13 +48,6 @@ export function useTrendingWeekTv(params?: TvParams) {
 		queryKey: ["tv", "trending", "week", params],
 		queryFn: () =>
 			fetchMultiPagesTrending("tv", "week", { maxPages: 2, params }),
-	});
-}
-
-export function usePopularTv(params?: TvParams) {
-	return useQuery({
-		queryKey: ["tv", "popular", params],
-		queryFn: () => fetchMultiPagesTv("popular", { maxPages: 2, params }),
 	});
 }
 
