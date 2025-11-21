@@ -33,12 +33,12 @@ export function useTv(id: number, params?: TvParams) {
 	});
 }
 
-export function useTvResources(
+export function useTvResources<T>(
 	id: number,
 	endpoint: TvEndPoints,
 	params?: TvParams,
 ) {
-	return useQuery({
+	return useQuery<T>({
 		queryKey: ["tv", id, endpoint, params],
 		queryFn: () => fetchTvResources(id, { endpoint, params }),
 	});
