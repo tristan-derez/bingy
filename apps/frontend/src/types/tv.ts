@@ -26,6 +26,7 @@ export type TvEndPoints = Pretty<
 	| "watch/providers"
 	| "latest"
 	| "top_rated"
+	| "popular"
 >;
 
 export type TvSeasonEndpoints = Pretty<
