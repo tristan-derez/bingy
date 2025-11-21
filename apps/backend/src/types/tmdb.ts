@@ -2054,6 +2054,7 @@ export type EndpointByMethod = {
 		"/trending/person/{time_window}": Endpoints.getTrendingPeople;
 		"/trending/tv/{time_window}": Endpoints.getTrendingTv;
 		"/tv/top_rated": Endpoints.getTvTopRatedList;
+		"/tv/popular": Endpoints.getTvPopularList;
 		"/tv/{series_id}": Endpoints.getTvDetails;
 		"/tv/{series_id}/aggregate_credits": Endpoints.getTvAggregateCredits;
 		"/tv/{series_id}/alternative_titles": Endpoints.getTvAlternativeTitles;

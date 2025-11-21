@@ -36,10 +36,31 @@ tvRoutes.get(
 		const { language, page } = c.req.valid("query");
 
 		try {
-			const tvWatchProviders = await tmdbClient.get("/tv/top_rated", {
+			const tvTopRated = await tmdbClient.get("/tv/top_rated", {
 				query: { language, page },
 			});
-			return serveData(c, tvWatchProviders);
+			return serveData(c, tvTopRated);
+		} catch (error) {
+			if (error instanceof TmdbError && error.status === 404) {
+				return serveNotFound(c, "Resource not found");
+			}
+			logger.error(error);
+			return serveInternalServerError(c, error);
+		}
+	},
+);
+
+tvRoutes.get(
+	"/popular",
+	zValidator("query", paginationQuerySchema),
+	async (c) => {
+		const { language, page } = c.req.valid("query");
+
+		try {
+			const tvPopular = await tmdbClient.get("/tv/popular", {
+				query: { language, page },
+			});
+			return serveData(c, tvPopular);
 		} catch (error) {
 			if (error instanceof TmdbError && error.status === 404) {
 				return serveNotFound(c, "Resource not found");
