@@ -84,7 +84,7 @@ export function CollectionDetailsView({
 
 			<div className="flex flex-col gap-4">
 				<Card
-					className="relative overflow-hidden min-h-[200px] justify-center"
+					className="relative overflow-hidden min-h-[200px] justify-center text-dark-card-foreground"
 					style={
 						backgroundImage
 							? {
@@ -113,7 +113,11 @@ export function CollectionDetailsView({
 								</CardTitle>
 								<CardDescription className="flex flex-wrap gap-2">
 									{collectionStats.genres.map((genre) => (
-										<Badge key={genre.id} variant="outline">
+										<Badge
+											key={genre.id}
+											variant="outline"
+											className="text-dark-card-foreground"
+										>
 											{genre.name}
 										</Badge>
 									))}
@@ -121,21 +125,15 @@ export function CollectionDetailsView({
 							</CardHeader>
 							<CardContent className="p-0 w-1/2 flex flex-col gap-4">
 								<div>
-									<h2 className="text-semi-bold text-md text-foreground">
-										Overview:
-									</h2>
+									<h2 className="text-semi-bold text-md">Overview:</h2>
 									{collectionData.overview && (
-										<p className="text-muted-foreground mt-2">
-											{collectionData.overview}
-										</p>
+										<p className="mt-2">{collectionData.overview}</p>
 									)}
 								</div>
 								{collectionStats.totalRevenue > 0 && (
 									<div className="flex gap-2">
-										<h3 className="text-semi-bold text-md text-foreground">
-											Revenue:
-										</h3>
-										<p className="text-muted-foreground">{formattedRevenue}</p>
+										<h3 className="text-semi-bold text-md">Revenue:</h3>
+										<p>{formattedRevenue}</p>
 									</div>
 								)}
 							</CardContent>

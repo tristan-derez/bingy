@@ -112,22 +112,27 @@ export function TvDetailsView({
 								: undefined
 						}
 					>
-						<CardHeader>
+						<CardHeader className="text-dark-card-foreground">
 							<CardTitle>Overview</CardTitle>
 						</CardHeader>
 
-						<CardContent className="space-y-4">
+						<CardContent className="space-y-4 text-dark-card-foreground">
 							<p>{tv.overview}</p>
-							<Separator />
+
 							{tv.created_by.length > 0 && (
-								<div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-									{tv.created_by.map((creator) => (
-										<div key={creator.id}>
-											<h3 className="font-semibold text-lg">{creator.name}</h3>
-											<p className="text-muted-foreground text-sm">Creator</p>
-										</div>
-									))}
-								</div>
+								<>
+									<Separator />
+									<div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+										{tv.created_by.map((creator) => (
+											<div key={creator.id}>
+												<h3 className="font-semibold text-lg">
+													{creator.name}
+												</h3>
+												<p className="text-muted-foreground text-sm">Creator</p>
+											</div>
+										))}
+									</div>
+								</>
 							)}
 						</CardContent>
 

@@ -26,7 +26,7 @@ export function CollectionCard({ collection }: CollectionCardProps) {
 
 	return (
 		<Card
-			className="relative overflow-hidden min-h-[200px] justify-center"
+			className="relative overflow-hidden min-h-[200px] justify-center text-dark-card-foreground"
 			style={
 				backgroundImage
 					? {
@@ -44,7 +44,11 @@ export function CollectionCard({ collection }: CollectionCardProps) {
 				</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<Button asChild variant="outline" className="w-full lg:w-1/2 xl:w-1/3">
+				<Button
+					asChild
+					variant="outline"
+					className="w-full lg:w-1/2 xl:w-1/3 text-foreground"
+				>
 					<Link
 						to="/collections/$collectionId"
 						params={{ collectionId: collection.id.toString() }}
