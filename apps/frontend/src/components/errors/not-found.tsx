@@ -1,32 +1,17 @@
 import { useNavigate } from "@tanstack/react-router";
-import { useMemo } from "react";
-import cat404 from "@/assets/not-found/404-cat.png";
 import cuteAnimal404 from "@/assets/not-found/404-cute-animal.png";
-import desert404 from "@/assets/not-found/404-desert.png";
-import mountains404 from "@/assets/not-found/404-mountains.png";
 import { Button } from "@/components/ui/button";
 import { CenteredLayout } from "../layout/centered-layout";
 
-const NOT_FOUND_IMAGES = [
-	cat404,
-	cuteAnimal404,
-	desert404,
-	mountains404,
-] as const;
-
 export function NotFoundComponent() {
 	const navigate = useNavigate();
-	const randomImage = useMemo(
-		() => NOT_FOUND_IMAGES[Math.floor(Math.random() * NOT_FOUND_IMAGES.length)],
-		[],
-	);
 
 	return (
 		<CenteredLayout>
 			<div role="alert" aria-live="polite">
 				<div className="grid">
 					<img
-						src={randomImage}
+						src={cuteAnimal404}
 						alt="Not found illustration"
 						className="w-3/4 sm:w-1/2 lg:w-1/3 mx-auto object-contain"
 						role="presentation"
