@@ -24,7 +24,8 @@ import type { Collection } from "@/types/collection";
 import type { Company, Country, Genre, MovieDetails } from "@/types/movie";
 import { formatRuntime } from "@/utils/format-runtime";
 import { shortenCountryName } from "@/utils/shorten-country-name";
-import { CollectionCard } from "../collections/collections-card";
+import { CollectionCard } from "../collections/collection-card";
+import { ResourceNotFound } from "../errors/resource-not-found";
 import { CenteredLayout } from "../layout/centered-layout";
 import { LoadingCentered } from "../loading/loading-centered";
 import { PersonCarousel } from "../person/person-carousel";
@@ -68,33 +69,13 @@ export function MovieDetailView({
 		return <LoadingCentered />;
 	}
 
-	if (isError) {
+	if (isError || !movie) {
 		return (
-			<CenteredLayout>
-				<Button onClick={onBack} className="mb-4" variant="outline">
-					<ArrowLeft className="h-4 w-4" /> Back
-				</Button>
-				<Alert variant="destructive">
-					<AlertCircle className="h-4 w-4" />
-					<AlertTitle>Error</AlertTitle>
-					<AlertDescription>Failed to load movie details</AlertDescription>
-				</Alert>
-			</CenteredLayout>
-		);
-	}
-
-	if (!movie) {
-		return (
-			<CenteredLayout>
-				<Button onClick={onBack} className="mb-4" variant="outline">
-					<ArrowLeft className="h-4 w-4" /> Back
-				</Button>
-				<Alert>
-					<AlertCircle className="h-4 w-4" />
-					<AlertTitle>Not Found</AlertTitle>
-					<AlertDescription>Movie not found</AlertDescription>
-				</Alert>
-			</CenteredLayout>
+			<ResourceNotFound
+				title="Movie Not Found"
+				description="The movie you're looking for could not be found."
+				onBack={onBack}
+			/>
 		);
 	}
 

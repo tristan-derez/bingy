@@ -1,7 +1,7 @@
 import { useQueries } from "@tanstack/react-query";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { fetchMovie } from "@/api/movies";
-import { CollectionDetailsView } from "@/components/collections/collections-details";
+import { CollectionDetailsView } from "@/components/collections/collection-details";
 import { useCollection } from "@/hooks/useCollections";
 import type { MovieDetails } from "@/types/movie";
 
