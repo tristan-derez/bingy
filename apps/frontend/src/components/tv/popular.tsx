@@ -4,15 +4,19 @@ import type { Tv } from "@/types/tv";
 import { LoadingSection } from "../loading/loading-section";
 import { TvCarousel } from "./tv-carousel";
 
-export const PopularTv = () => {
+interface PopularTvProps {
+	title: string;
+}
+
+export const PopularTv = ({ title }: PopularTvProps) => {
 	const { data, isLoading, error } = usePopularTv({ region: "US" });
 
 	if (isLoading) {
-		return <LoadingSection title="Popular" />;
+		return <LoadingSection title={title} />;
 	}
 
 	if (error) {
-		toast.error("error while fetching popular tv shows");
+		toast.error(`Failed to load ${title}`);
 		return null;
 	}
 
@@ -27,5 +31,5 @@ export const PopularTv = () => {
 			return true;
 		}) ?? [];
 
-	return <TvCarousel tvShows={filteredTv} title="Popular" />;
+	return <TvCarousel tvShows={filteredTv} title={title} />;
 };

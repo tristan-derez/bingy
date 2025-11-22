@@ -11,10 +11,10 @@ export const Route = createFileRoute("/tv/")({
 function RouteComponent() {
 	return (
 		<div className="flex flex-col w-full p-4 space-y-4 gap-4">
-			<TopRatedTv />
-			<TrendingTodayTv />
-			<PopularTv />
-			<TrendingWeekTv />
+			<TopRatedTv title="Top Rated TV Shows" />
+			<TrendingTodayTv title="TV Shows Trending Today" />
+			<PopularTv title="Popular TV Shows" />
+			<TrendingWeekTv title="Tv Shows Trending This Week" />
 		</div>
 	);
 }

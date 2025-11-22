@@ -4,15 +4,19 @@ import type { Tv } from "@/types/tv";
 import { LoadingSection } from "../loading/loading-section";
 import { TvCarousel } from "./tv-carousel";
 
-export const TrendingWeekTv = () => {
+interface TrendingWeekTvProps {
+	title: string;
+}
+
+export const TrendingWeekTv = ({ title }: TrendingWeekTvProps) => {
 	const { data, isLoading, error } = useTrendingWeekTv();
 
 	if (isLoading) {
-		return <LoadingSection title="Trending This Week" />;
+		return <LoadingSection title={title} />;
 	}
 
 	if (error) {
-		toast.error("error while fetching trending tv shows");
+		toast.error(`Failed to load ${title}`);
 		return null;
 	}
 
@@ -27,5 +31,5 @@ export const TrendingWeekTv = () => {
 			return true;
 		}) ?? [];
 
-	return <TvCarousel tvShows={filteredTv} title="Trending This Week" />;
+	return <TvCarousel tvShows={filteredTv} title={title} />;
 };

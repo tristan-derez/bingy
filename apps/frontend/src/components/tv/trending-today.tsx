@@ -4,15 +4,19 @@ import type { Tv } from "@/types/tv";
 import { LoadingSection } from "../loading/loading-section";
 import { TvCarousel } from "./tv-carousel";
 
-export const TrendingTodayTv = () => {
+interface TrendingTodayTvProps {
+	title: string;
+}
+
+export const TrendingTodayTv = ({ title }: TrendingTodayTvProps) => {
 	const { data, isLoading, error } = useTrendingTodayTv();
 
 	if (isLoading) {
-		return <LoadingSection title="Trending Today" />;
+		return <LoadingSection title={title} />;
 	}
 
 	if (error) {
-		toast.error("error while fetching trending tv shows");
+		toast.error(`Failed to load ${title}`);
 		return null;
 	}
 
@@ -27,5 +31,5 @@ export const TrendingTodayTv = () => {
 			return true;
 		}) ?? [];
 
-	return <TvCarousel tvShows={filteredTv} title="Trending Today" />;
+	return <TvCarousel tvShows={filteredTv} title={title} />;
 };

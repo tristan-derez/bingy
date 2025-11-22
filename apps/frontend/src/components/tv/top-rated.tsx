@@ -4,15 +4,19 @@ import type { Tv } from "@/types/tv";
 import { LoadingSection } from "../loading/loading-section";
 import { TvCarousel } from "./tv-carousel";
 
-export const TopRatedTv = () => {
+interface TopRatedTvProps {
+	title: string;
+}
+
+export const TopRatedTv = ({ title }: TopRatedTvProps) => {
 	const { data, isLoading, error } = useTopRatedTv({ region: "US" });
 
 	if (isLoading) {
-		return <LoadingSection title="Top Rated" />;
+		return <LoadingSection title={title} />;
 	}
 
 	if (error) {
-		toast.error("error while fetching top rated tv shows");
+		toast.error(`Failed to load ${title}`);
 		return null;
 	}
 
@@ -27,5 +31,5 @@ export const TopRatedTv = () => {
 			return true;
 		}) ?? [];
 
-	return <TvCarousel tvShows={filteredTv} title="Top Rated" />;
+	return <TvCarousel tvShows={filteredTv} title={title} />;
 };
