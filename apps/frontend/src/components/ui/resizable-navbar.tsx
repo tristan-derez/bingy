@@ -63,7 +63,7 @@ export const Navbar = ({ children, className }: NavbarProps) => {
 			ref={ref}
 			initial={{ top: 0 }}
 			animate={{ top: visible ? 30 : 0 }}
-			transition={{ type: "spring", stiffness: 200, damping: 50 }}
+			transition={{ type: "tween", stiffness: 500 }}
 			className={cn(
 				"fixed top-0 inset-x-0 z-99 w-full px-2 md:px-6 lg:px-12 2xl:px-32",
 				className,
@@ -92,8 +92,8 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => {
 				width: visible ? "60%" : "100%",
 			}}
 			transition={{
-				type: "spring",
-				stiffness: 200,
+				type: "tween",
+				stiffness: 350,
 				damping: 50,
 			}}
 			style={{
