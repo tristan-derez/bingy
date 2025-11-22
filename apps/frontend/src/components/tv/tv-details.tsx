@@ -190,9 +190,7 @@ export function TvDetailsView({
 								<Star className="h-5 w-5 text-yellow-500" />
 								<div>
 									<p className="text-xl xl:text-2xl font-bold">
-										{tv.vote_count > 0
-											? tv.vote_average.toFixed(1)
-											: "No rating"}
+										{tv.vote_count > 0 ? tv.vote_average.toFixed(1) : "N/R"}
 									</p>
 									<p className="text-sm text-muted-foreground">
 										{tv.vote_count} votes
@@ -296,7 +294,9 @@ export function TvDetailsView({
 					{tv.networks.length > 0 && (
 						<Card>
 							<CardHeader>
-								<CardTitle>Networks</CardTitle>
+								<CardTitle>
+									{`Network${tv.networks.length > 1 ? "s" : ""}`}
+								</CardTitle>
 							</CardHeader>
 
 							<CardContent className="flex flex-wrap gap-4">
