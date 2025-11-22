@@ -59,10 +59,15 @@ export function TvSeasonsDetailsView({
 									? tv.overview
 									: undefined
 							}
+							tvId={tv.id}
 						/>
 					))}
 					{specialSeason && (
-						<SeasonCard key={specialSeason.id} season={specialSeason} />
+						<SeasonCard
+							key={specialSeason.id}
+							season={specialSeason}
+							tvId={tv.id}
+						/>
 					)}
 				</div>
 			</div>
