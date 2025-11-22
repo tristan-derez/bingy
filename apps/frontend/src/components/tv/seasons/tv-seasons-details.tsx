@@ -51,7 +51,15 @@ export function TvSeasonsDetailsView({
 
 				<div className="grid gap-4 xl:grid-cols-2">
 					{regularSeasons.map((season) => (
-						<SeasonCard key={season.id} season={season} />
+						<SeasonCard
+							key={season.id}
+							season={season}
+							fallbackOverview={
+								season.season_number === 1 && !season.overview
+									? tv.overview
+									: undefined
+							}
+						/>
 					))}
 					{specialSeason && (
 						<SeasonCard key={specialSeason.id} season={specialSeason} />

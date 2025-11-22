@@ -6,12 +6,16 @@ import type { TvDetails } from "@/types/tv";
 
 export function SeasonCard({
 	season,
+	fallbackOverview,
 }: {
 	season: TvDetails["seasons"][number];
+	fallbackOverview?: string;
 }) {
 	const imageUrl = season.poster_path
 		? `https://image.tmdb.org/t/p/w200${season.poster_path}`
 		: fallbackPoster;
+
+	const overview = season.overview || fallbackOverview;
 
 	return (
 		<Card>
@@ -56,9 +60,7 @@ export function SeasonCard({
 							season.season_number !== 0 && (
 								<h3 className="font-semibold">{season.name}</h3>
 							)}
-						{season.overview && (
-							<p className="text-muted-foreground">{season.overview}</p>
-						)}
+						{overview && <p className="text-muted-foreground">{overview}</p>}
 					</div>
 				</div>
 			</CardContent>
