@@ -39,12 +39,12 @@ export const PersonCarousel = ({ people }: PersonCarouselProps) => {
 	}
 
 	return (
-		<section className="flex flex-col gap-1 lg:gap-2">
+		<section className="flex flex-col gap-4">
 			<div className="relative">
 				<div className="overflow-hidden hover:cursor-grab" ref={emblaRef}>
-					<div className="flex gap-1 lg:gap-4">
+					<div className="flex gap-4">
 						{people.map((person) => (
-							<div key={person.id} className="min-w-30 lg:min-w-60">
+							<div key={person.id}>
 								<PersonCard person={person} />
 							</div>
 						))}

@@ -17,8 +17,8 @@ export const PersonCard = ({ person }: PersonCardProps) => {
 		: fallbackPoster;
 
 	return (
-		<Card className="w-full max-w-30 lg:max-w-60 min-h-[250px] overflow-hidden pt-0 select-none">
-			<div className="w-full h-[180px] lg:h-[300px] bg-gray-200">
+		<Card className="w-full min-w-42 lg:min-w-60 min-h-[250px] lg:min-h-[350px] overflow-hidden pt-0 select-none">
+			<div className="w-full h-[180px] lg:h-[300px]">
 				<img
 					src={imageUrl}
 					alt={person.name}
