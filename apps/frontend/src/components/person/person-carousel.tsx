@@ -38,6 +38,8 @@ export const PersonCarousel = ({ people }: PersonCarouselProps) => {
 		);
 	}
 
+	const showButtons = !prevBtnDisabled || !nextBtnDisabled;
+
 	return (
 		<section className="flex flex-col gap-4">
 			<div className="relative">
@@ -52,10 +54,13 @@ export const PersonCarousel = ({ people }: PersonCarouselProps) => {
 				</div>
 				<CarouselGradient show={showGradient} />
 			</div>
-			<div className="flex items-center gap-2">
-				<PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
-				<NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
-			</div>
+
+			{showButtons ? (
+				<div className="flex items-center gap-2">
+					<PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
+					<NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
+				</div>
+			) : null}
 		</section>
 	);
 };

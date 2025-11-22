@@ -62,12 +62,12 @@ export const MovieCarousel = ({ movies, title }: MovieCarouselProps) => {
 				</div>
 				<CarouselGradient show={showGradient} />
 			</div>
-			{showButtons && (
+			{showButtons ? (
 				<div className="flex items-center gap-2">
 					<PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
 					<NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
 				</div>
-			)}
+			) : null}
 		</section>
 	);
 };
