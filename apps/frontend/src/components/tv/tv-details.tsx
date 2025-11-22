@@ -1,4 +1,16 @@
-import { ArrowLeft, Calendar, ExternalLink, Star, Tv } from "lucide-react";
+import {
+	ArrowLeft,
+	Calendar,
+	CheckCircle,
+	Clapperboard,
+	ExternalLink,
+	Layers,
+	RotateCcw,
+	Sparkles,
+	Star,
+	Tv,
+	XCircle,
+} from "lucide-react";
 import Flag from "react-world-flags";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import { Badge } from "@/components/ui/badge";
@@ -61,12 +73,12 @@ export function TvDetailsView({
 				<ArrowLeft className="h-4 w-4" /> Back
 			</Button>
 
-			<div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-				<div className="md:col-span-1">
+			<div className="grid xl:grid-cols-[auto_1fr] gap-4">
+				<div className="flex justify-center xl:justify-start">
 					<img
 						src={imageUrl}
 						alt={tv.name}
-						className="rounded-lg shadow-lg w-1/2 xl:w-full"
+						className="rounded-lg shadow-lg w-1/2 xl:w-auto xl:max-h-[600px]"
 						onError={(e) => {
 							const target = e.currentTarget;
 							if (target.src !== fallbackPoster) {
@@ -76,29 +88,35 @@ export function TvDetailsView({
 					/>
 				</div>
 
-				<div className="md:col-span-2 space-y-6">
-					<div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2">
-						<div className="flex flex-col gap-2">
-							<h1 className="text-4xl font-bold leading-tight">{tv.name}</h1>
-							{tv.tagline && (
-								<p className="text-muted-foreground italic">{tv.tagline}</p>
-							)}
+				<div className="space-y-4">
+					<Card className="shadow-none bg-transparent xl:p-0 border-none">
+						<CardContent className="xl:p-0">
+							<div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2">
+								<div className="flex flex-col gap-2">
+									<h1 className="text-4xl font-bold leading-tight">
+										{tv.name}
+									</h1>
+									{tv.tagline && (
+										<p className="text-muted-foreground italic">{tv.tagline}</p>
+									)}
 
-							<div className="flex flex-wrap gap-2 mt-2">
-								{tv.genres.map((genre) => (
-									<Badge key={genre.id} variant="secondary">
-										{genre.name}
-									</Badge>
-								))}
-							</div>
-						</div>
+									<div className="flex flex-wrap gap-2 mt-2">
+										{tv.genres.map((genre) => (
+											<Badge key={genre.id} variant="secondary">
+												{genre.name}
+											</Badge>
+										))}
+									</div>
+								</div>
 
-						{Object.keys(socials).length > 0 && (
-							<div className="lg:self-start mt-3 lg:pr-2">
-								<SocialLinks socials={socials} />
+								{Object.keys(socials).length > 0 && (
+									<div className="lg:self-start mt-3 lg:pr-2">
+										<SocialLinks socials={socials} />
+									</div>
+								)}
 							</div>
-						)}
-					</div>
+						</CardContent>
+					</Card>
 
 					<Card
 						className="relative overflow-hidden min-h-[200px] justify-center border-none"
@@ -122,7 +140,7 @@ export function TvDetailsView({
 							{tv.created_by.length > 0 && (
 								<>
 									<Separator />
-									<div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+									<div className="grid lg:grid-cols-2 gap-4">
 										{tv.created_by.map((creator) => (
 											<div key={creator.id}>
 												<h3 className="font-semibold text-lg">
@@ -155,7 +173,7 @@ export function TvDetailsView({
 						</CardFooter>
 					</Card>
 
-					<div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+					<div className="grid lg:grid-cols-3 gap-3">
 						<Card>
 							<CardContent className="flex items-center gap-4">
 								<Star className="h-5 w-5 text-yellow-500" />
@@ -195,7 +213,15 @@ export function TvDetailsView({
 
 						<Card>
 							<CardContent className="flex items-center gap-4">
-								<Tv className="h-5 w-5" />
+								{tv.status === "In Production" && (
+									<Clapperboard className="h-5 w-5" />
+								)}
+								{tv.status === "Returning Series" && (
+									<RotateCcw className="h-5 w-5" />
+								)}
+								{tv.status === "Canceled" && <XCircle className="h-5 w-5" />}
+								{tv.status === "Ended" && <CheckCircle className="h-5 w-5" />}
+								{tv.status === "Pilot" && <Sparkles className="h-5 w-5" />}
 								<div>
 									<p className="text-xl xl:text-2xl font-bold">{tv.status}</p>
 									<p className="text-sm text-muted-foreground">Status</p>
@@ -219,7 +245,7 @@ export function TvDetailsView({
 
 						<Card>
 							<CardContent className="flex items-center gap-4">
-								<Tv className="h-5 w-5" />
+								<Layers className="h-5 w-5" />
 								<div>
 									<p className="text-xl xl:text-2xl font-bold">
 										{tv.number_of_episodes}
