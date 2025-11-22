@@ -8,11 +8,11 @@ export const NowPlayingMovies = () => {
 	const { data, isLoading, error } = useNowPlayingMovies({ region: "US" });
 
 	if (isLoading) {
-		return <LoadingSection title="In Theaters Now" />;
+		return <LoadingSection title="Now In Theaters" />;
 	}
 
 	if (error) {
-		toast.error("error while fetching now playing movies");
+		toast.error("Failed to load movies in theaters");
 		return null;
 	}
 
@@ -28,5 +28,5 @@ export const NowPlayingMovies = () => {
 			return true;
 		}) ?? [];
 
-	return <MovieCarousel movies={filteredMovies} title="In Theaters Now" />;
+	return <MovieCarousel movies={filteredMovies} title="Now In Theaters" />;
 };

@@ -8,11 +8,11 @@ export const TopRatedMovies = () => {
 	const { data, isLoading, error } = useTopRatedMovies({ region: "US" });
 
 	if (isLoading) {
-		return <LoadingSection title="In Theaters Now" />;
+		return <LoadingSection title="Top Rated Movies" />;
 	}
 
 	if (error) {
-		toast.error("error while fetching now playing movies");
+		toast.error("Failed to load top rated movies");
 		return null;
 	}
 
@@ -27,5 +27,5 @@ export const TopRatedMovies = () => {
 			return true;
 		}) ?? [];
 
-	return <MovieCarousel movies={filteredMovies} title="Top Rated" />;
+	return <MovieCarousel movies={filteredMovies} title="Top Rated Movies" />;
 };

@@ -8,11 +8,11 @@ export const PopularMovies = () => {
 	const { data, isLoading, error } = usePopularMovies({ region: "US" });
 
 	if (isLoading) {
-		return <LoadingSection title="In Theaters Now" />;
+		return <LoadingSection title="Popular Movies" />;
 	}
 
 	if (error) {
-		toast.error("error while fetching now playing movies");
+		toast.error("Failed to load popular movies");
 		return null;
 	}
 
@@ -27,5 +27,5 @@ export const PopularMovies = () => {
 			return true;
 		}) ?? [];
 
-	return <MovieCarousel movies={filteredMovies} title="Popular" />;
+	return <MovieCarousel movies={filteredMovies} title="Popular Movies" />;
 };
