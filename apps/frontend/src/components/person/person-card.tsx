@@ -17,7 +17,7 @@ export const PersonCard = ({ person }: PersonCardProps) => {
 		: fallbackPoster;
 
 	return (
-		<Card className="w-full min-w-42 lg:min-w-60 min-h-[250px] lg:min-h-[350px] overflow-hidden pt-0 select-none">
+		<Card className="w-full min-w-42 lg:min-w-60 min-h-[300px] lg:min-h-[400px] overflow-hidden pt-0 select-none">
 			<div className="w-full h-[180px] lg:h-[300px]">
 				<img
 					src={imageUrl}
@@ -40,7 +40,7 @@ export const PersonCard = ({ person }: PersonCardProps) => {
 					className="text-sm leading-tight line-clamp-1 mt-1"
 					title={person.character}
 				>
-					{person.character}
+					{person.character ? person.character : "N/A"}
 				</CardDescription>
 			</CardHeader>
 		</Card>
