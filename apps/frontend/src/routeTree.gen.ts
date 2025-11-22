@@ -26,6 +26,7 @@ import { Route as AuthSettingsRouteImport } from './routes/_auth/settings'
 import { Route as AuthProfileRouteImport } from './routes/_auth/profile'
 import { Route as AuthDashboardRouteImport } from './routes/_auth/dashboard'
 import { Route as TvTvIdSeasonsRouteImport } from './routes/tv/$tvId_/seasons'
+import { Route as TvTvIdSeasonSeasonNumberRouteImport } from './routes/tv/$tvId_/season_/$seasonNumber'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -111,6 +112,12 @@ const TvTvIdSeasonsRoute = TvTvIdSeasonsRouteImport.update({
   path: '/tv/$tvId/seasons',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TvTvIdSeasonSeasonNumberRoute =
+  TvTvIdSeasonSeasonNumberRouteImport.update({
+    id: '/tv/$tvId_/season_/$seasonNumber',
+    path: '/tv/$tvId/season/$seasonNumber',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -129,6 +136,7 @@ export interface FileRoutesByFullPath {
   '/movies': typeof MoviesIndexRoute
   '/tv': typeof TvIndexRoute
   '/tv/$tvId/seasons': typeof TvTvIdSeasonsRoute
+  '/tv/$tvId/season/$seasonNumber': typeof TvTvIdSeasonSeasonNumberRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -147,6 +155,7 @@ export interface FileRoutesByTo {
   '/movies': typeof MoviesIndexRoute
   '/tv': typeof TvIndexRoute
   '/tv/$tvId/seasons': typeof TvTvIdSeasonsRoute
+  '/tv/$tvId/season/$seasonNumber': typeof TvTvIdSeasonSeasonNumberRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -167,6 +176,7 @@ export interface FileRoutesById {
   '/movies/': typeof MoviesIndexRoute
   '/tv/': typeof TvIndexRoute
   '/tv/$tvId_/seasons': typeof TvTvIdSeasonsRoute
+  '/tv/$tvId_/season_/$seasonNumber': typeof TvTvIdSeasonSeasonNumberRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -187,6 +197,7 @@ export interface FileRouteTypes {
     | '/movies'
     | '/tv'
     | '/tv/$tvId/seasons'
+    | '/tv/$tvId/season/$seasonNumber'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -205,6 +216,7 @@ export interface FileRouteTypes {
     | '/movies'
     | '/tv'
     | '/tv/$tvId/seasons'
+    | '/tv/$tvId/season/$seasonNumber'
   id:
     | '__root__'
     | '/'
@@ -224,6 +236,7 @@ export interface FileRouteTypes {
     | '/movies/'
     | '/tv/'
     | '/tv/$tvId_/seasons'
+    | '/tv/$tvId_/season_/$seasonNumber'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -240,6 +253,7 @@ export interface RootRouteChildren {
   MoviesIndexRoute: typeof MoviesIndexRoute
   TvIndexRoute: typeof TvIndexRoute
   TvTvIdSeasonsRoute: typeof TvTvIdSeasonsRoute
+  TvTvIdSeasonSeasonNumberRoute: typeof TvTvIdSeasonSeasonNumberRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -363,6 +377,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TvTvIdSeasonsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tv/$tvId_/season_/$seasonNumber': {
+      id: '/tv/$tvId_/season_/$seasonNumber'
+      path: '/tv/$tvId/season/$seasonNumber'
+      fullPath: '/tv/$tvId/season/$seasonNumber'
+      preLoaderRoute: typeof TvTvIdSeasonSeasonNumberRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -396,6 +417,7 @@ const rootRouteChildren: RootRouteChildren = {
   MoviesIndexRoute: MoviesIndexRoute,
   TvIndexRoute: TvIndexRoute,
   TvTvIdSeasonsRoute: TvTvIdSeasonsRoute,
+  TvTvIdSeasonSeasonNumberRoute: TvTvIdSeasonSeasonNumberRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
