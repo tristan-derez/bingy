@@ -4,7 +4,7 @@ import type {
 	ProductionCountry,
 } from "./company";
 import type { Pretty } from "./generic";
-import type { PersonShort } from "./person";
+import type { PersonFromCast, PersonFromCrew, PersonShort } from "./person";
 
 export type TvEndPoints = Pretty<
 	| ""
@@ -163,4 +163,10 @@ export type Episode = Pretty<{
 	season_number: number;
 	show_id: number;
 	still_path: string | null;
+}>;
+
+export type TvCredits = Pretty<{
+	cast: PersonFromCast[];
+	crew: PersonFromCrew[];
+	id: number;
 }>;

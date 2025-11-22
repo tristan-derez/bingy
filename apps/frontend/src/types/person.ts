@@ -39,3 +39,20 @@ export type PersonDetails = Pretty<
 		place_of_birth: string;
 	}
 >;
+
+export type PersonFromCast = Pretty<
+	Omit<Person, "media_type"> & {
+		cast_id: number;
+		credit_id: string;
+		character: string;
+		order: number;
+	}
+>;
+
+export type PersonFromCrew = Pretty<
+	Omit<Person, "media_type"> & {
+		credit_id: string;
+		department: string;
+		job: string;
+	}
+>;
