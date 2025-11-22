@@ -56,3 +56,31 @@ export type PersonFromCrew = Pretty<
 		job: string;
 	}
 >;
+
+export type CastPersonInAggregatedTvCredits = Pretty<
+	Omit<Person, "media_type"> & {
+		roles: Role[];
+		total_episode_count: number;
+		order: number;
+	}
+>;
+
+export type CrewPersonInAggregatedTvCredits = Pretty<
+	Omit<Person, "media_type"> & {
+		jobs: Job[];
+		total_episode_count: number;
+		department: string;
+	}
+>;
+
+type Role = Pretty<{
+	credit_id: string;
+	character: string;
+	episode_count: number;
+}>;
+
+type Job = Pretty<{
+	credit_id: string;
+	job: string;
+	episode_count: number;
+}>;
