@@ -1,4 +1,5 @@
 import { ArrowLeft } from "lucide-react";
+import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import {
 	Card,
 	CardContent,
@@ -76,6 +77,10 @@ export function CollectionDetailsView({
 		? `https://image.tmdb.org/t/p/original${collectionData.backdrop_path}`
 		: undefined;
 
+	const posterImage = collectionData.poster_path
+		? `https://image.tmdb.org/t/p/w200${collectionData.poster_path}`
+		: fallbackPoster;
+
 	return (
 		<div className="container">
 			<Button onClick={onBack} className="mb-4" variant="outline">
@@ -95,16 +100,20 @@ export function CollectionDetailsView({
 							: undefined
 					}
 				>
-					<div className="flex flex-col md:flex-row gap-6 p-6 items-center md:items-start">
-						{collectionData.poster_path && (
-							<div className="flex-shrink-0 md:mx-0">
-								<img
-									src={`https://image.tmdb.org/t/p/w400${collectionData.poster_path}`}
-									alt={`${collectionData.name} poster`}
-									className="w-full h-112 md:w-75 lg:h-112.5 object-cover rounded-sm shadow-lg"
-								/>
-							</div>
-						)}
+					<div className="flex flex-col md:flex-row gap-6 p-6 items-start">
+						<div className="flex justify-center xl:justify-start">
+							<img
+								src={posterImage}
+								alt={`${collectionData.name} poster`}
+								className="rounded-lg shadow-lg w-1/2 xl:w-auto xl:max-h-[600px]"
+								onError={(e) => {
+									const target = e.currentTarget;
+									if (target.src !== fallbackPoster) {
+										target.src = fallbackPoster;
+									}
+								}}
+							/>
+						</div>
 
 						<div className="flex-1">
 							<CardHeader className="p-0 pb-4">
