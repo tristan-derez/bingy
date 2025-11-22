@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import {
 	ArrowLeft,
 	Calendar,
@@ -228,20 +229,21 @@ export function TvDetailsView({
 								</div>
 							</CardContent>
 						</Card>
-
-						<Card>
-							<CardContent className="flex items-center gap-4">
-								<Tv className="h-5 w-5" />
-								<div>
-									<p className="text-xl xl:text-2xl font-bold">
-										{tv.number_of_seasons}
-									</p>
-									<p className="text-sm text-muted-foreground">
-										{tv.number_of_seasons > 1 ? "Seasons" : "Season"}
-									</p>
-								</div>
-							</CardContent>
-						</Card>
+						<Link to="/tv/$tvId/seasons" params={{ tvId: tv.id.toString() }}>
+							<Card>
+								<CardContent className="flex items-center gap-4">
+									<Tv className="h-5 w-5" />
+									<div>
+										<p className="text-xl xl:text-2xl font-bold">
+											{tv.number_of_seasons}
+										</p>
+										<p className="text-sm text-muted-foreground">
+											{tv.number_of_seasons > 1 ? "Seasons" : "Season"}
+										</p>
+									</div>
+								</CardContent>
+							</Card>
+						</Link>
 
 						<Card>
 							<CardContent className="flex items-center gap-4">
@@ -251,7 +253,7 @@ export function TvDetailsView({
 										{tv.number_of_episodes}
 									</p>
 									<p className="text-sm text-muted-foreground">
-										{tv.number_of_episodes > 1 ? "Episodes" : "Episode"}
+										Total {tv.number_of_episodes > 1 ? "Episodes" : "Episode"}
 									</p>
 								</div>
 							</CardContent>
