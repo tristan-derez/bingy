@@ -4,15 +4,19 @@ import type { Movie } from "@/types/movie";
 import { LoadingSection } from "../loading/loading-section";
 import { MovieCarousel } from "./movie-carousel";
 
-export const PopularMovies = () => {
+interface PopularMoviesProps {
+	title: string;
+}
+
+export const PopularMovies = ({ title }: PopularMoviesProps) => {
 	const { data, isLoading, error } = usePopularMovies({ region: "US" });
 
 	if (isLoading) {
-		return <LoadingSection title="Popular Movies" />;
+		return <LoadingSection title={title} />;
 	}
 
 	if (error) {
-		toast.error("Failed to load popular movies");
+		toast.error(`Failed to load ${title}`);
 		return null;
 	}
 
@@ -27,5 +31,5 @@ export const PopularMovies = () => {
 			return true;
 		}) ?? [];
 
-	return <MovieCarousel movies={filteredMovies} title="Popular Movies" />;
+	return <MovieCarousel movies={filteredMovies} title={title} />;
 };
