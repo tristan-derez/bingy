@@ -6,18 +6,14 @@ import type { TvDetails } from "@/types/tv";
 
 export function SeasonCard({
 	season,
-	fallbackOverview,
 	tvId,
 }: {
 	season: TvDetails["seasons"][number];
-	fallbackOverview?: string;
 	tvId: number;
 }) {
 	const imageUrl = season.poster_path
 		? `https://image.tmdb.org/t/p/w200${season.poster_path}`
 		: fallbackPoster;
-
-	const overview = season.overview || fallbackOverview;
 
 	return (
 		<Link
@@ -70,11 +66,9 @@ export function SeasonCard({
 										<h3 className="font-semibold">{season.name}</h3>
 									)
 								: null}
-							{overview ? (
-								<p className="text-muted-foreground xl:line-clamp-9">
-									{overview}
-								</p>
-							) : null}
+							<p className="text-muted-foreground xl:line-clamp-9">
+								{season.overview ? season.overview : "No overview available."}
+							</p>
 						</div>
 					</div>
 				</CardContent>
