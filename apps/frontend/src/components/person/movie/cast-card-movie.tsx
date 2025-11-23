@@ -8,15 +8,15 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import type { CrewMember } from "@/types/person";
-import { Button } from "../ui/button";
-import { Separator } from "../ui/separator";
+import type { CastMember } from "@/types/person";
+import { Button } from "../../ui/button";
+import { Separator } from "../../ui/separator";
 
-interface CrewCardProps {
-	person: CrewMember;
+interface CastCardProps {
+	person: CastMember;
 }
 
-export const CrewCard = ({ person }: CrewCardProps) => {
+export const CastCard = ({ person }: CastCardProps) => {
 	const imageUrl = person.profile_path
 		? `https://image.tmdb.org/t/p/w200${person.profile_path}`
 		: fallbackPoster;
@@ -46,11 +46,12 @@ export const CrewCard = ({ person }: CrewCardProps) => {
 					</CardTitle>
 					<CardDescription
 						className="text-sm leading-tight mt-1 line-clamp-1"
-						title={person.job}
+						title={person.character}
 					>
-						{person.job ? person.job : "N/A"}
+						{person.character ? person.character : "N/A"}
 					</CardDescription>
 				</CardHeader>
+
 				<CardContent className="text-center pt-0 gap-4 flex flex-col">
 					<Separator />
 					<Button asChild>

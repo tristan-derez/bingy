@@ -1,12 +1,15 @@
 import type { CastMember } from "@/types/person";
-import { CastCard } from "./cast-card";
+import { CastCard } from "./cast-card-movie";
 
-interface CastSectionProps {
+interface CastSectionMovieProps {
 	people: CastMember[];
 	title?: string;
 }
 
-export const CastSection = ({ people, title = "Cast" }: CastSectionProps) => {
+export const CastSectionMovie = ({
+	people,
+	title = "Cast",
+}: CastSectionMovieProps) => {
 	const uniquePeople = Array.from(
 		new Map(people.map((person) => [person.id, person])).values(),
 	);

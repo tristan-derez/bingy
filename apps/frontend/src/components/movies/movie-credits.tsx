@@ -3,8 +3,8 @@ import { useId } from "react";
 import type { MovieCredits } from "@/types/movie";
 import { ResourceNotFound } from "../errors/resource-not-found";
 import { LoadingCentered } from "../loading/loading-centered";
-import { CastSection } from "../person/cast-section";
-import { CrewSection } from "../person/crew-section";
+import { CastSectionMovie } from "../person/movie/cast-section-movie";
+import { CrewSectionMovie } from "../person/movie/crew-section-movie";
 import { Button } from "../ui/button";
 
 interface MovieCreditsViewProps {
@@ -56,9 +56,9 @@ export function MovieCreditsView({
 				</Button>
 			</div>
 			<div className="flex flex-col gap-8 mt-8 text-center md:text-left">
-				<CastSection people={credits.cast} />
+				<CastSectionMovie people={credits.cast} />
 				<div id={crewSectionId} className="scroll-mt-26 lg:scroll-mt-30">
-					<CrewSection people={credits.crew} />
+					<CrewSectionMovie people={credits.crew} />
 				</div>
 			</div>
 		</div>

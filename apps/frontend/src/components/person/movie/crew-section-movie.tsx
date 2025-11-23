@@ -1,12 +1,15 @@
 import type { CrewMember } from "@/types/person";
-import { CrewCard } from "./crew-card";
+import { CrewCardMovie } from "./crew-card-movie";
 
-interface CrewSectionProps {
+interface CrewSectionMovieProps {
 	people: CrewMember[];
 	title?: string;
 }
 
-export const CrewSection = ({ people, title = "Crew" }: CrewSectionProps) => {
+export const CrewSectionMovie = ({
+	people,
+	title = "Crew",
+}: CrewSectionMovieProps) => {
 	const byDepartment = new Map<string, Map<string | number, CrewMember>>();
 
 	for (const person of people) {
@@ -49,7 +52,10 @@ export const CrewSection = ({ people, title = "Crew" }: CrewSectionProps) => {
 						<h3 className="text-xl font-semibold">{department}</h3>
 						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
 							{deptPeople.map((person) => (
-								<CrewCard key={`${department}-${person.id}`} person={person} />
+								<CrewCardMovie
+									key={`${department}-${person.id}`}
+									person={person}
+								/>
 							))}
 						</div>
 					</div>
