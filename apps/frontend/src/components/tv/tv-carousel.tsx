@@ -36,8 +36,11 @@ export const TvCarousel = ({ tvShows, title }: TvCarouselProps) => {
 
 	if (!tvShows.length) {
 		return (
-			<div>
-				<p>No tv shows found</p>
+			<div className="min-h-[404px] flex flex-col">
+				<h2 className="text-xl font-semibold">{title}</h2>
+				<div className="flex-1 flex items-center justify-center">
+					<p>No TV Shows available at the moment</p>
+				</div>
 			</div>
 		);
 	}
