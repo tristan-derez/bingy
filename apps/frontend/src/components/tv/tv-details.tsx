@@ -28,7 +28,7 @@ import type { TvDetails } from "@/types/tv";
 import { shortenCountryName } from "@/utils/shorten-country-name";
 import { ResourceNotFound } from "../errors/resource-not-found";
 import { LoadingCentered } from "../loading/loading-centered";
-import { PersonCarousel } from "../person/person-carousel";
+import { CastCarousel } from "../person/cast-carousel";
 import { SocialLinks } from "../social-links";
 import { Separator } from "../ui/separator";
 
@@ -289,7 +289,7 @@ export function TvDetailsView({
 						)}
 					</div>
 
-					{cast.length > 0 && <PersonCarousel people={cast} />}
+					{cast.length > 0 && <CastCarousel people={cast} />}
 
 					{tv.networks.length > 0 && (
 						<Card>
