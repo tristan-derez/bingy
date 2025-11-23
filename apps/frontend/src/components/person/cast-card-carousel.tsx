@@ -5,13 +5,19 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import type { CastMember } from "../movies/movie-details";
 
-interface PersonCardProps {
+interface CastMember {
+	id: number;
+	name: string;
+	character: string;
+	profile_path: string | null;
+}
+
+interface CastCardCarouselProps {
 	person: CastMember;
 }
 
-export const PersonCard = ({ person }: PersonCardProps) => {
+export const CastCardCarousel = ({ person }: CastCardCarouselProps) => {
 	const imageUrl = person.profile_path
 		? `https://image.tmdb.org/t/p/w200${person.profile_path}`
 		: fallbackPoster;
