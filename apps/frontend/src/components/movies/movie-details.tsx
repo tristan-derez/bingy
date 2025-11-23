@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { ArrowLeft, Calendar, Clock, ExternalLink, Star } from "lucide-react";
 import { FaMoneyBillTrendUp } from "react-icons/fa6";
 import { TbMoneybag } from "react-icons/tb";
@@ -19,16 +20,16 @@ import { shortenCountryName } from "@/utils/shorten-country-name";
 import { CollectionCard } from "../collections/collection-card";
 import { ResourceNotFound } from "../errors/resource-not-found";
 import { LoadingCentered } from "../loading/loading-centered";
-import { PersonCarousel } from "../person/person-carousel";
+import { CastCarousel } from "../person/cast-carousel";
 import { SocialLinks } from "../social-links";
 import { Separator } from "../ui/separator";
 
-interface CrewMember {
+interface CrewMemberInMovieDetails {
 	name: string;
 	roles: Set<string>;
 }
 
-export interface CastMember {
+interface CastMemberInMovieDetails {
 	id: number;
 	name: string;
 	character: string;
@@ -37,8 +38,8 @@ export interface CastMember {
 
 interface MovieDetailViewProps {
 	movie: MovieDetails | undefined;
-	crew: CrewMember[];
-	cast: CastMember[];
+	crew: CrewMemberInMovieDetails[];
+	cast: CastMemberInMovieDetails[];
 	socials: Partial<Record<"facebook" | "instagram" | "twitter", string>>;
 	collection: Collection | undefined;
 	isLoading: boolean;
@@ -284,7 +285,17 @@ export function MovieDetailView({
 						)}
 					</div>
 
-					{cast.length > 0 && <PersonCarousel people={cast} />}
+					{cast.length > 0 && (
+						<div className="flex flex-col gap-2">
+							<CastCarousel people={cast} />
+							<Link
+								to="/movies/$movieId/credits"
+								params={{ movieId: movie.id.toString() }}
+							>
+								See full cast and crew
+							</Link>
+						</div>
+					)}
 
 					{collection && <CollectionCard collection={collection} />}
 
