@@ -6,7 +6,7 @@ type LoadingSectionProps = {
 
 export function LoadingSection({ title }: LoadingSectionProps) {
 	return (
-		<section className="flex flex-col gap-4 min-h-[496px]">
+		<section className="flex flex-col gap-4 min-h-[496px] pb-4">
 			<h2 className="text-xl font-semibold">{title}</h2>
 			<div className="flex items-center justify-center py-12 min-h-[404px]">
 				<LoaderOne />
