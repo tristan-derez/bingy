@@ -31,11 +31,7 @@ export const PersonCarousel = ({ people }: PersonCarouselProps) => {
 	const { showGradient } = useCarouselGradient(emblaApi);
 
 	if (!people.length) {
-		return (
-			<div>
-				<p>No cast</p>
-			</div>
-		);
+		return null;
 	}
 
 	const showButtons = !prevBtnDisabled || !nextBtnDisabled;
