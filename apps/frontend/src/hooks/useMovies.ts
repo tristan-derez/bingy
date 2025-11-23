@@ -27,7 +27,7 @@ export function usePopularMovies(params?: MovieParams) {
 	return useQuery({
 		queryKey: ["movies", "popular", params],
 		queryFn: () => fetchMovies("popular", params),
-		staleTime: 1000 * 60 * 10,
+		staleTime: 1000 * 60 * 40,
 	});
 }
 
@@ -35,7 +35,7 @@ export function useTopRatedMovies(params?: MovieParams) {
 	return useQuery({
 		queryKey: ["movies", "top_rated", params],
 		queryFn: () => fetchMultiPagesMovies("top_rated", 2, params),
-		staleTime: 1000 * 60 * 10,
+		staleTime: 1000 * 60 * 40,
 	});
 }
 
@@ -51,7 +51,7 @@ export function useMovie(id: number, params?: MovieParams) {
 	return useQuery<MovieDetails>({
 		queryKey: ["movies", id, params],
 		queryFn: () => fetchMovie(id, params),
-		staleTime: 1000 * 60 * 10,
+		staleTime: 1000 * 60 * 30,
 	});
 }
 
