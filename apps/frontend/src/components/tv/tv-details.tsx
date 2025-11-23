@@ -32,7 +32,7 @@ import { CastCarousel } from "../person/cast-carousel";
 import { SocialLinks } from "../social-links";
 import { Separator } from "../ui/separator";
 
-export interface CastMember {
+interface CastMember {
 	id: number;
 	name: string;
 	character: string;
@@ -289,7 +289,14 @@ export function TvDetailsView({
 						)}
 					</div>
 
-					{cast.length > 0 && <CastCarousel people={cast} />}
+					{cast.length > 0 && (
+						<div className="flex flex-col gap-2">
+							<CastCarousel people={cast} />
+							<Link to="/tv/$tvId/credits" params={{ tvId: tv.id.toString() }}>
+								See full cast and crew
+							</Link>
+						</div>
+					)}
 
 					{tv.networks.length > 0 && (
 						<Card>
