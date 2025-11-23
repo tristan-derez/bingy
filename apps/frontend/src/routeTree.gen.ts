@@ -26,6 +26,7 @@ import { Route as AuthSettingsRouteImport } from './routes/_auth/settings'
 import { Route as AuthProfileRouteImport } from './routes/_auth/profile'
 import { Route as AuthDashboardRouteImport } from './routes/_auth/dashboard'
 import { Route as TvTvIdSeasonsRouteImport } from './routes/tv/$tvId_/seasons'
+import { Route as TvTvIdCreditsRouteImport } from './routes/tv/$tvId_/credits'
 import { Route as MoviesMovieIdCreditsRouteImport } from './routes/movies/$movieId_/credits'
 import { Route as TvTvIdSeasonSeasonNumberRouteImport } from './routes/tv/$tvId_/season_/$seasonNumber'
 
@@ -113,6 +114,11 @@ const TvTvIdSeasonsRoute = TvTvIdSeasonsRouteImport.update({
   path: '/tv/$tvId/seasons',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TvTvIdCreditsRoute = TvTvIdCreditsRouteImport.update({
+  id: '/tv/$tvId_/credits',
+  path: '/tv/$tvId/credits',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MoviesMovieIdCreditsRoute = MoviesMovieIdCreditsRouteImport.update({
   id: '/movies/$movieId_/credits',
   path: '/movies/$movieId/credits',
@@ -142,6 +148,7 @@ export interface FileRoutesByFullPath {
   '/movies': typeof MoviesIndexRoute
   '/tv': typeof TvIndexRoute
   '/movies/$movieId/credits': typeof MoviesMovieIdCreditsRoute
+  '/tv/$tvId/credits': typeof TvTvIdCreditsRoute
   '/tv/$tvId/seasons': typeof TvTvIdSeasonsRoute
   '/tv/$tvId/season/$seasonNumber': typeof TvTvIdSeasonSeasonNumberRoute
 }
@@ -162,6 +169,7 @@ export interface FileRoutesByTo {
   '/movies': typeof MoviesIndexRoute
   '/tv': typeof TvIndexRoute
   '/movies/$movieId/credits': typeof MoviesMovieIdCreditsRoute
+  '/tv/$tvId/credits': typeof TvTvIdCreditsRoute
   '/tv/$tvId/seasons': typeof TvTvIdSeasonsRoute
   '/tv/$tvId/season/$seasonNumber': typeof TvTvIdSeasonSeasonNumberRoute
 }
@@ -184,6 +192,7 @@ export interface FileRoutesById {
   '/movies/': typeof MoviesIndexRoute
   '/tv/': typeof TvIndexRoute
   '/movies/$movieId_/credits': typeof MoviesMovieIdCreditsRoute
+  '/tv/$tvId_/credits': typeof TvTvIdCreditsRoute
   '/tv/$tvId_/seasons': typeof TvTvIdSeasonsRoute
   '/tv/$tvId_/season_/$seasonNumber': typeof TvTvIdSeasonSeasonNumberRoute
 }
@@ -206,6 +215,7 @@ export interface FileRouteTypes {
     | '/movies'
     | '/tv'
     | '/movies/$movieId/credits'
+    | '/tv/$tvId/credits'
     | '/tv/$tvId/seasons'
     | '/tv/$tvId/season/$seasonNumber'
   fileRoutesByTo: FileRoutesByTo
@@ -226,6 +236,7 @@ export interface FileRouteTypes {
     | '/movies'
     | '/tv'
     | '/movies/$movieId/credits'
+    | '/tv/$tvId/credits'
     | '/tv/$tvId/seasons'
     | '/tv/$tvId/season/$seasonNumber'
   id:
@@ -247,6 +258,7 @@ export interface FileRouteTypes {
     | '/movies/'
     | '/tv/'
     | '/movies/$movieId_/credits'
+    | '/tv/$tvId_/credits'
     | '/tv/$tvId_/seasons'
     | '/tv/$tvId_/season_/$seasonNumber'
   fileRoutesById: FileRoutesById
@@ -265,6 +277,7 @@ export interface RootRouteChildren {
   MoviesIndexRoute: typeof MoviesIndexRoute
   TvIndexRoute: typeof TvIndexRoute
   MoviesMovieIdCreditsRoute: typeof MoviesMovieIdCreditsRoute
+  TvTvIdCreditsRoute: typeof TvTvIdCreditsRoute
   TvTvIdSeasonsRoute: typeof TvTvIdSeasonsRoute
   TvTvIdSeasonSeasonNumberRoute: typeof TvTvIdSeasonSeasonNumberRoute
 }
@@ -390,6 +403,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TvTvIdSeasonsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tv/$tvId_/credits': {
+      id: '/tv/$tvId_/credits'
+      path: '/tv/$tvId/credits'
+      fullPath: '/tv/$tvId/credits'
+      preLoaderRoute: typeof TvTvIdCreditsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/movies/$movieId_/credits': {
       id: '/movies/$movieId_/credits'
       path: '/movies/$movieId/credits'
@@ -437,6 +457,7 @@ const rootRouteChildren: RootRouteChildren = {
   MoviesIndexRoute: MoviesIndexRoute,
   TvIndexRoute: TvIndexRoute,
   MoviesMovieIdCreditsRoute: MoviesMovieIdCreditsRoute,
+  TvTvIdCreditsRoute: TvTvIdCreditsRoute,
   TvTvIdSeasonsRoute: TvTvIdSeasonsRoute,
   TvTvIdSeasonSeasonNumberRoute: TvTvIdSeasonSeasonNumberRoute,
 }
