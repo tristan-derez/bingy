@@ -3,20 +3,22 @@ import { CastCardTv } from "./cast-card-tv";
 
 interface CastSectionTvProps {
 	people: CastMemberForEpisode[];
+	guestStars: CastMemberForEpisode[];
 	title?: string;
 }
 
 export const CastSectionTv = ({
 	people,
+	guestStars,
 	title = "Cast",
 }: CastSectionTvProps) => {
+	const merged = [...people, ...guestStars];
+
 	const uniquePeople = Array.from(
-		new Map(people.map((person) => [person.id, person])).values(),
+		new Map(merged.map((p) => [p.id, p])).values(),
 	);
 
-	if (!uniquePeople.length) {
-		return null;
-	}
+	if (!uniquePeople.length) return null;
 
 	return (
 		<section className="flex flex-col gap-6">

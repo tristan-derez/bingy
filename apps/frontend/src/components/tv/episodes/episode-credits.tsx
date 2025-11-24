@@ -62,7 +62,12 @@ export function TvEpisodeCreditsView({
 			</div>
 			<div className="flex flex-col gap-8 mt-8 text-center md:text-left">
 				<h2 className="text-2xl font-bold">Episode {episodeNumber}</h2>
-				{credits.cast ? <CastSectionTv people={credits.cast} /> : null}
+				{credits.cast ? (
+					<CastSectionTv
+						people={credits.cast}
+						guestStars={credits.guest_stars}
+					/>
+				) : null}
 				{credits.crew ? (
 					<div id={crewSectionId} className="scroll-mt-26 lg:scroll-mt-30">
 						<CrewSectionTv people={credits.crew} />
