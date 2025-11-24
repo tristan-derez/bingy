@@ -312,7 +312,7 @@ export namespace Schemas {
 	type EpisodeWithCrewAndGuestStars = Pretty<
 		Omit<Episode, "media_type"> & {
 			crew: CrewMember[];
-			guest_star: CastMember[];
+			guest_stars: CastMember[];
 		}
 	>;
 
