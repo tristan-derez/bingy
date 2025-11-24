@@ -123,20 +123,23 @@ export function TvEpisodeDetailsView({
 						<p className="max-w-1/2">
 							{episode.overview ? episode.overview : "No overview available."}
 						</p>
-						<Separator />
+
 						{crewToShow.length > 0 && (
-							<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-								{crewToShow.slice(0, 3).map((person) => (
-									<div key={`${person.name}`}>
-										<h3 className="font-semibold text-lg whitespace-nowrap">
-											{person.name}
-										</h3>
-										<p className="text-muted-foreground text-sm">
-											{Array.from(person.roles).join(", ")}
-										</p>
-									</div>
-								))}
-							</div>
+							<>
+								<Separator />
+								<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+									{crewToShow.slice(0, 3).map((person) => (
+										<div key={`${person.name}`}>
+											<h3 className="font-semibold text-lg whitespace-nowrap">
+												{person.name}
+											</h3>
+											<p className="text-muted-foreground text-sm">
+												{Array.from(person.roles).join(", ")}
+											</p>
+										</div>
+									))}
+								</div>
+							</>
 						)}
 					</CardContent>
 				</Card>
