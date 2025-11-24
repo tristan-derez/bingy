@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowLeft, Calendar, Clock, ExternalLink, Star } from "lucide-react";
+import { useId } from "react";
 import { FaMoneyBillTrendUp } from "react-icons/fa6";
 import { TbMoneybag } from "react-icons/tb";
 import Flag from "react-world-flags";
@@ -57,6 +58,8 @@ export function MovieDetailView({
 	isError,
 	onBack,
 }: MovieDetailViewProps) {
+	const id = useId();
+
 	if (isLoading) {
 		return <LoadingCentered />;
 	}
@@ -153,10 +156,12 @@ export function MovieDetailView({
 							<p>{movie.overview}</p>
 							<Separator />
 							{crew.length > 0 && (
-								<div className="grid lg:grid-cols-2 gap-4">
-									{crew.map((person) => (
-										<div key={person.name}>
-											<h3 className="font-semibold text-lg">{person.name}</h3>
+								<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+									{crew.slice(0, 3).map((person) => (
+										<div key={`${id}-${person.name}`}>
+											<h3 className="font-semibold text-lg whitespace-nowrap">
+												{person.name}
+											</h3>
 											<p className="text-muted-foreground text-sm">
 												{Array.from(person.roles).join(", ")}
 											</p>
