@@ -1,23 +1,37 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
-import { TvSeasonNumberDetailsView } from "@/components/tv/seasons/tv-season-details";
+import { TvSeasonDetailsView } from "@/components/tv/seasons/tv-season-details";
 import { useTvSeasonResources } from "@/hooks/useTv";
+import type { TvCredits, TvSeasonDetails } from "@/types/tv";
 
 export const Route = createFileRoute("/tv/$tvId_/season_/$seasonNumber")({
-	component: RouteComponent,
+	component: TvSeasonDetailsContainer,
 });
 
-function RouteComponent() {
+function TvSeasonDetailsContainer() {
 	const router = useRouter();
 	const { tvId, seasonNumber } = Route.useParams();
+
 	const {
 		data: tvSeason,
 		isLoading,
 		isError,
-	} = useTvSeasonResources(Number(tvId), Number(seasonNumber), "");
+	} = useTvSeasonResources<TvSeasonDetails>(
+		Number(tvId),
+		Number(seasonNumber),
+		"",
+	);
+
+	const { data: credits } = useTvSeasonResources<TvCredits>(
+		Number(tvId),
+		Number(seasonNumber),
+		"credits",
+	);
 
 	return (
-		<TvSeasonNumberDetailsView
+		<TvSeasonDetailsView
 			tvSeason={tvSeason}
+			credits={credits}
+			tvId={Number(tvId)}
 			isLoading={isLoading}
 			isError={isError}
 			onBack={() => router.history.back()}

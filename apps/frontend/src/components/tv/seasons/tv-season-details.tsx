@@ -1,26 +1,42 @@
+import { Link } from "@tanstack/react-router";
 import { ArrowLeft, Calendar, Layers, Star, Timer } from "lucide-react";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
 import { LoadingCentered } from "@/components/loading/loading-centered";
+import { CastCarousel } from "@/components/person/cast-carousel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import type { CastMember } from "@/types/person";
 import type { TvSeasonDetails } from "@/types/season";
+import type { TvCredits } from "@/types/tv";
 import { EpisodesContainer } from "../episodes/episodes-container";
 
-interface TvSeasonNumberDetailsViewProps {
+interface TvSeasonDetailsViewProps {
 	tvSeason: TvSeasonDetails | undefined;
+	credits: TvCredits | undefined;
+	tvId: number;
 	isLoading: boolean;
 	isError: boolean;
 	onBack: () => void;
 }
 
-export function TvSeasonNumberDetailsView({
+type MinimalCast = {
+	id: number;
+	name: string;
+	character: string;
+	profile_path: string | null;
+	order: number;
+};
+
+export function TvSeasonDetailsView({
 	tvSeason,
+	credits,
+	tvId,
 	isLoading,
 	isError,
 	onBack,
-}: TvSeasonNumberDetailsViewProps) {
+}: TvSeasonDetailsViewProps) {
 	if (isLoading) {
 		return <LoadingCentered />;
 	}
@@ -39,6 +55,69 @@ export function TvSeasonNumberDetailsView({
 		(network, index, self) =>
 			index === self.findIndex((n) => n.id === network.id),
 	);
+
+	const guestStars = Array.from(
+		new Map(
+			tvSeason.episodes
+				.flatMap((ep) =>
+					(ep.guest_stars ?? []).map((g) => ({
+						id: g.id,
+						name: g.name,
+						character: g.character,
+						profile_path: g.profile_path,
+					})),
+				)
+				.map((p) => [p.id, p]),
+		).values(),
+	);
+
+	const seasonCastMinimal: MinimalCast[] =
+		(credits?.cast ?? []).map((p: CastMember) => ({
+			id: p.id,
+			name: p.name,
+			character: p.character,
+			profile_path: p.profile_path ?? null,
+			order: typeof p.order === "number" ? p.order : 9999,
+		})) ?? [];
+
+	const guestStarsMinimal: MinimalCast[] = guestStars.map((g) => ({
+		id: g.id,
+		name: g.name,
+		character: g.character,
+		profile_path: g.profile_path ?? null,
+		order: typeof (g as any).order === "number" ? (g as any).order : 9999,
+	}));
+
+	let mergedCast: MinimalCast[] = [];
+
+	if (seasonCastMinimal.length >= 10) {
+		mergedCast = seasonCastMinimal
+			.slice()
+			.sort((a, b) => a.order - b.order)
+			.slice(0, 10);
+	} else if (seasonCastMinimal.length > 0) {
+		const all = [...seasonCastMinimal, ...guestStarsMinimal];
+
+		const byId = new Map<number, MinimalCast>();
+
+		for (const p of all) {
+			const existing = byId.get(p.id);
+			if (!existing) {
+				byId.set(p.id, p);
+			} else if (p.order < existing.order) {
+				byId.set(p.id, p);
+			}
+		}
+
+		mergedCast = Array.from(byId.values())
+			.sort((a, b) => a.order - b.order)
+			.slice(0, 10);
+	} else {
+		mergedCast = guestStarsMinimal
+			.slice()
+			.sort((a, b) => a.order - b.order)
+			.slice(0, 10);
+	}
 
 	const imageUrl = tvSeason.poster_path
 		? `https://image.tmdb.org/t/p/w500${tvSeason.poster_path}`
@@ -161,6 +240,22 @@ export function TvSeasonNumberDetailsView({
 					{tvSeason.episodes.length > 0 ? (
 						<EpisodesContainer episodes={tvSeason.episodes} />
 					) : null}
+
+					{mergedCast.length > 0 && (
+						<div className="flex flex-col gap-2">
+							<CastCarousel people={mergedCast} />
+							<Link
+								to="/tv/$tvId/season/$seasonNumber/credits"
+								params={{
+									tvId: tvId.toString(),
+									seasonNumber: tvSeason.season_number.toString(),
+								}}
+							>
+								See full cast and crew
+							</Link>
+						</div>
+					)}
+
 					{tvSeason.networks.length > 0 ? (
 						<Card>
 							<CardHeader>
