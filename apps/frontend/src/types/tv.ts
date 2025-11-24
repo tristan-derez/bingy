@@ -3,6 +3,7 @@ import type {
 	ProductionCompany,
 	ProductionCountry,
 } from "./company";
+import type { EpisodeWithCrewAndGuestStars } from "./episode";
 import type { Pretty } from "./generic";
 import type {
 	CastPersonInAggregatedTvCredits,
@@ -181,4 +182,17 @@ export type TvAggregatedCredits = Pretty<{
 	cast: CastPersonInAggregatedTvCredits[];
 	crew: CrewPersonInAggregatedTvCredits[];
 	id: number;
+}>;
+
+export type TvSeasonDetails = Pretty<{
+	_id: string;
+	air_date: string | null;
+	episodes: EpisodeWithCrewAndGuestStars[];
+	name: string;
+	networks: ProductionCompany[];
+	overview: string;
+	id: number;
+	poster_path: string | null;
+	season_number: number;
+	vote_average: number;
 }>;

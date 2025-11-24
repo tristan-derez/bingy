@@ -65,6 +65,8 @@ export type CastPersonInAggregatedTvCredits = Pretty<
 	}
 >;
 
+export type CastMemberForEpisode = Pretty<Omit<CastMember, "cast_id">>;
+
 export type CrewPersonInAggregatedTvCredits = Pretty<
 	Omit<Person, "media_type"> & {
 		jobs: Job[];
