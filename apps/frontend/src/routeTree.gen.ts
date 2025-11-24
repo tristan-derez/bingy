@@ -29,6 +29,8 @@ import { Route as TvTvIdSeasonsRouteImport } from './routes/tv/$tvId_/seasons'
 import { Route as TvTvIdCreditsRouteImport } from './routes/tv/$tvId_/credits'
 import { Route as MoviesMovieIdCreditsRouteImport } from './routes/movies/$movieId_/credits'
 import { Route as TvTvIdSeasonSeasonNumberRouteImport } from './routes/tv/$tvId_/season_/$seasonNumber'
+import { Route as TvTvIdSeasonSeasonNumberCreditsRouteImport } from './routes/tv/$tvId_/season_/$seasonNumber_/credits'
+import { Route as TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberRouteImport } from './routes/tv/$tvId_/season_/$seasonNumber_/episode_/$episodeNumber'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -130,6 +132,18 @@ const TvTvIdSeasonSeasonNumberRoute =
     path: '/tv/$tvId/season/$seasonNumber',
     getParentRoute: () => rootRouteImport,
   } as any)
+const TvTvIdSeasonSeasonNumberCreditsRoute =
+  TvTvIdSeasonSeasonNumberCreditsRouteImport.update({
+    id: '/tv/$tvId_/season_/$seasonNumber_/credits',
+    path: '/tv/$tvId/season/$seasonNumber/credits',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberRoute =
+  TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberRouteImport.update({
+    id: '/tv/$tvId_/season_/$seasonNumber_/episode_/$episodeNumber',
+    path: '/tv/$tvId/season/$seasonNumber/episode/$episodeNumber',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -151,6 +165,8 @@ export interface FileRoutesByFullPath {
   '/tv/$tvId/credits': typeof TvTvIdCreditsRoute
   '/tv/$tvId/seasons': typeof TvTvIdSeasonsRoute
   '/tv/$tvId/season/$seasonNumber': typeof TvTvIdSeasonSeasonNumberRoute
+  '/tv/$tvId/season/$seasonNumber/credits': typeof TvTvIdSeasonSeasonNumberCreditsRoute
+  '/tv/$tvId/season/$seasonNumber/episode/$episodeNumber': typeof TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -172,6 +188,8 @@ export interface FileRoutesByTo {
   '/tv/$tvId/credits': typeof TvTvIdCreditsRoute
   '/tv/$tvId/seasons': typeof TvTvIdSeasonsRoute
   '/tv/$tvId/season/$seasonNumber': typeof TvTvIdSeasonSeasonNumberRoute
+  '/tv/$tvId/season/$seasonNumber/credits': typeof TvTvIdSeasonSeasonNumberCreditsRoute
+  '/tv/$tvId/season/$seasonNumber/episode/$episodeNumber': typeof TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -195,6 +213,8 @@ export interface FileRoutesById {
   '/tv/$tvId_/credits': typeof TvTvIdCreditsRoute
   '/tv/$tvId_/seasons': typeof TvTvIdSeasonsRoute
   '/tv/$tvId_/season_/$seasonNumber': typeof TvTvIdSeasonSeasonNumberRoute
+  '/tv/$tvId_/season_/$seasonNumber_/credits': typeof TvTvIdSeasonSeasonNumberCreditsRoute
+  '/tv/$tvId_/season_/$seasonNumber_/episode_/$episodeNumber': typeof TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -218,6 +238,8 @@ export interface FileRouteTypes {
     | '/tv/$tvId/credits'
     | '/tv/$tvId/seasons'
     | '/tv/$tvId/season/$seasonNumber'
+    | '/tv/$tvId/season/$seasonNumber/credits'
+    | '/tv/$tvId/season/$seasonNumber/episode/$episodeNumber'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -239,6 +261,8 @@ export interface FileRouteTypes {
     | '/tv/$tvId/credits'
     | '/tv/$tvId/seasons'
     | '/tv/$tvId/season/$seasonNumber'
+    | '/tv/$tvId/season/$seasonNumber/credits'
+    | '/tv/$tvId/season/$seasonNumber/episode/$episodeNumber'
   id:
     | '__root__'
     | '/'
@@ -261,6 +285,8 @@ export interface FileRouteTypes {
     | '/tv/$tvId_/credits'
     | '/tv/$tvId_/seasons'
     | '/tv/$tvId_/season_/$seasonNumber'
+    | '/tv/$tvId_/season_/$seasonNumber_/credits'
+    | '/tv/$tvId_/season_/$seasonNumber_/episode_/$episodeNumber'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -280,6 +306,8 @@ export interface RootRouteChildren {
   TvTvIdCreditsRoute: typeof TvTvIdCreditsRoute
   TvTvIdSeasonsRoute: typeof TvTvIdSeasonsRoute
   TvTvIdSeasonSeasonNumberRoute: typeof TvTvIdSeasonSeasonNumberRoute
+  TvTvIdSeasonSeasonNumberCreditsRoute: typeof TvTvIdSeasonSeasonNumberCreditsRoute
+  TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberRoute: typeof TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -424,6 +452,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TvTvIdSeasonSeasonNumberRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tv/$tvId_/season_/$seasonNumber_/credits': {
+      id: '/tv/$tvId_/season_/$seasonNumber_/credits'
+      path: '/tv/$tvId/season/$seasonNumber/credits'
+      fullPath: '/tv/$tvId/season/$seasonNumber/credits'
+      preLoaderRoute: typeof TvTvIdSeasonSeasonNumberCreditsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tv/$tvId_/season_/$seasonNumber_/episode_/$episodeNumber': {
+      id: '/tv/$tvId_/season_/$seasonNumber_/episode_/$episodeNumber'
+      path: '/tv/$tvId/season/$seasonNumber/episode/$episodeNumber'
+      fullPath: '/tv/$tvId/season/$seasonNumber/episode/$episodeNumber'
+      preLoaderRoute: typeof TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -460,6 +502,9 @@ const rootRouteChildren: RootRouteChildren = {
   TvTvIdCreditsRoute: TvTvIdCreditsRoute,
   TvTvIdSeasonsRoute: TvTvIdSeasonsRoute,
   TvTvIdSeasonSeasonNumberRoute: TvTvIdSeasonSeasonNumberRoute,
+  TvTvIdSeasonSeasonNumberCreditsRoute: TvTvIdSeasonSeasonNumberCreditsRoute,
+  TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberRoute:
+    TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
