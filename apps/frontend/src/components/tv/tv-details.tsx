@@ -130,7 +130,7 @@ export function TvDetailsView({
 					</Card>
 
 					<Card
-						className="relative overflow-hidden min-h-[200px] justify-center border-none"
+						className="relative overflow-hidden min-h-[200px] border-none"
 						style={
 							backgroundImage
 								? {
@@ -145,8 +145,8 @@ export function TvDetailsView({
 							<CardTitle>Overview</CardTitle>
 						</CardHeader>
 
-						<CardContent className="space-y-4 text-dark-card-foreground">
-							<p>{tv.overview}</p>
+						<CardContent className="space-y-4 text-dark-card-foreground gap-4">
+							<p className="max-w-2/3">{tv.overview}</p>
 							<Separator />
 							{tv.created_by.length > 0 && (
 								<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
