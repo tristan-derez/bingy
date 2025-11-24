@@ -4,15 +4,19 @@ import type { Movie } from "@/types/movie";
 import { LoadingSection } from "../loading/loading-section";
 import { MovieCarousel } from "./movie-carousel";
 
-export const UpcomingMovies = () => {
+interface UpcomingMoviesProps {
+	title: string;
+}
+
+export const UpcomingMovies = ({ title }: UpcomingMoviesProps) => {
 	const { data, isLoading, error } = useUpcomingMovies({ region: "US" });
 
 	if (isLoading) {
-		return <LoadingSection title="In Theaters Now" />;
+		return <LoadingSection title={title} />;
 	}
 
 	if (error) {
-		toast.error("error while fetching now playing movies");
+		toast.error(`Failed to load ${title}`);
 		return null;
 	}
 
@@ -28,5 +32,5 @@ export const UpcomingMovies = () => {
 			return true;
 		}) ?? [];
 
-	return <MovieCarousel movies={filteredMovies} title="Upcoming" />;
+	return <MovieCarousel movies={filteredMovies} title={title} />;
 };

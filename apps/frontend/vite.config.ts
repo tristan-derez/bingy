@@ -5,6 +5,9 @@ import viteReact from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
 export default defineConfig({
+	optimizeDeps: {
+		force: true,
+	},
 	plugins: [
 		tanstackRouter({ autoCodeSplitting: true }),
 		viteReact(),

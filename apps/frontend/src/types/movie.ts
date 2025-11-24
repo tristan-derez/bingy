@@ -1,5 +1,6 @@
 import type { Collection } from "./collection";
 import type { Pretty } from "./generic";
+import type { PersonFromCast, PersonFromCrew } from "./person";
 
 export type Movie = Pretty<{
 	id: number;
@@ -85,35 +86,6 @@ export type MovieCredits = Pretty<{
 	id: number;
 	cast: PersonFromCast[];
 	crew: PersonFromCrew[];
-}>;
-
-export type PersonFromCast = Pretty<
-	Omit<Person, "media_type"> & {
-		cast_id: number;
-		credit_id: string;
-		character: string;
-		order: number;
-	}
->;
-
-export type PersonFromCrew = Pretty<
-	Omit<Person, "media_type"> & {
-		credit_id: string;
-		department: string;
-		job: string;
-	}
->;
-
-type Person = Pretty<{
-	adult: boolean;
-	id: number;
-	name: string;
-	original_name: string;
-	media_type: string;
-	popularity: number;
-	gender: number;
-	known_for_department: string;
-	profile_path: string | null;
 }>;
 
 export type MovieExternalIds = Pretty<{

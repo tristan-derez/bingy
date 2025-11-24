@@ -11,10 +11,10 @@ export const Route = createFileRoute("/movies/")({
 function MoviesPage() {
 	return (
 		<div className="flex flex-col w-full p-4 space-y-4 gap-4">
-			<NowPlayingMovies />
-			<PopularMovies />
-			<UpcomingMovies />
-			<TopRatedMovies />
+			<NowPlayingMovies title="Movies In Theaters Now" />
+			<PopularMovies title="Popular Movies" />
+			<UpcomingMovies title="Upcoming Movies" />
+			<TopRatedMovies title="Top Rated Movies" />
 		</div>
 	);
 }

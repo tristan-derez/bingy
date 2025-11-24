@@ -1,4 +1,6 @@
+import { Link } from "@tanstack/react-router";
 import { ArrowLeft, Calendar, Clock, ExternalLink, Star } from "lucide-react";
+import { useId } from "react";
 import { FaMoneyBillTrendUp } from "react-icons/fa6";
 import { TbMoneybag } from "react-icons/tb";
 import Flag from "react-world-flags";
@@ -19,16 +21,16 @@ import { shortenCountryName } from "@/utils/shorten-country-name";
 import { CollectionCard } from "../collections/collection-card";
 import { ResourceNotFound } from "../errors/resource-not-found";
 import { LoadingCentered } from "../loading/loading-centered";
-import { PersonCarousel } from "../person/person-carousel";
+import { CastCarousel } from "../person/cast-carousel";
 import { SocialLinks } from "../social-links";
 import { Separator } from "../ui/separator";
 
-interface CrewMember {
+interface CrewMemberInMovieDetails {
 	name: string;
 	roles: Set<string>;
 }
 
-export interface CastMember {
+interface CastMemberInMovieDetails {
 	id: number;
 	name: string;
 	character: string;
@@ -37,8 +39,8 @@ export interface CastMember {
 
 interface MovieDetailViewProps {
 	movie: MovieDetails | undefined;
-	crew: CrewMember[];
-	cast: CastMember[];
+	crew: CrewMemberInMovieDetails[];
+	cast: CastMemberInMovieDetails[];
 	socials: Partial<Record<"facebook" | "instagram" | "twitter", string>>;
 	collection: Collection | undefined;
 	isLoading: boolean;
@@ -56,6 +58,8 @@ export function MovieDetailView({
 	isError,
 	onBack,
 }: MovieDetailViewProps) {
+	const id = useId();
+
 	if (isLoading) {
 		return <LoadingCentered />;
 	}
@@ -74,18 +78,22 @@ export function MovieDetailView({
 		? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
 		: fallbackPoster;
 
+	const backgroundImage = movie.backdrop_path
+		? `https://image.tmdb.org/t/p/original${movie.backdrop_path}`
+		: undefined;
+
 	return (
 		<div className="container">
 			<Button onClick={onBack} className="mb-4" variant="outline">
 				<ArrowLeft className="h-4 w-4" /> Back
 			</Button>
 
-			<div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-				<div className="md:col-span-1">
+			<div className="grid xl:grid-cols-[auto_1fr] gap-4">
+				<div className="flex justify-center xl:justify-start">
 					<img
 						src={imageUrl}
 						alt={movie.title}
-						className="rounded-lg shadow-lg w-1/2 xl:w-full"
+						className="rounded-lg shadow-lg w-1/2 xl:w-auto xl:max-h-[600px]"
 						onError={(e) => {
 							const target = e.currentTarget;
 							if (target.src !== fallbackPoster) {
@@ -95,45 +103,65 @@ export function MovieDetailView({
 					/>
 				</div>
 
-				<div className="md:col-span-2 space-y-6">
-					<div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2">
-						<div className="flex flex-col gap-2">
-							<h1 className="text-4xl font-bold leading-tight">
-								{movie.title}
-							</h1>
-							{movie.tagline && (
-								<p className="text-muted-foreground italic">{movie.tagline}</p>
-							)}
+				<div className="space-y-4 overflow-hidden">
+					<Card className="shadow-none bg-transparent xl:p-0 border-none">
+						<CardContent className="xl:p-0">
+							<div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2">
+								<div className="flex flex-col gap-2">
+									<h1 className="text-4xl font-bold leading-tight">
+										{movie.title}
+									</h1>
+									{movie.tagline && (
+										<p className="text-muted-foreground italic">
+											{movie.tagline}
+										</p>
+									)}
 
-							<div className="flex flex-wrap gap-2 mt-2">
-								{movie.genres.map((genre: Genre) => (
-									<Badge key={genre.id} variant="secondary">
-										{genre.name}
-									</Badge>
-								))}
+									<div className="flex flex-wrap gap-2 mt-2">
+										{movie.genres.map((genre: Genre) => (
+											<Badge key={genre.id} variant="secondary">
+												{genre.name}
+											</Badge>
+										))}
+									</div>
+								</div>
+
+								{Object.keys(socials).length > 0 && (
+									<div className="lg:self-start mt-3 lg:pr-2">
+										<SocialLinks socials={socials} />
+									</div>
+								)}
 							</div>
-						</div>
-
-						{Object.keys(socials).length > 0 && (
-							<div className="lg:self-start mt-3 lg:pr-2">
-								<SocialLinks socials={socials} />
-							</div>
-						)}
-					</div>
-
-					<Card>
-						<CardHeader>
+						</CardContent>
+					</Card>
+					<Card
+						className={`relative overflow-hidden min-h-[200px] justify-center ${
+							backgroundImage ? "border-none" : ""
+						}`}
+						style={
+							backgroundImage
+								? {
+										backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url(${backgroundImage})`,
+										backgroundSize: "cover",
+										backgroundPosition: "center",
+									}
+								: undefined
+						}
+					>
+						<CardHeader className="text-dark-card-foreground">
 							<CardTitle>Overview</CardTitle>
 						</CardHeader>
 
-						<CardContent className="space-y-4">
+						<CardContent className="space-y-4 text-dark-card-foreground">
 							<p>{movie.overview}</p>
 							<Separator />
 							{crew.length > 0 && (
-								<div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-									{crew.map((person) => (
-										<div key={person.name}>
-											<h3 className="font-semibold text-lg">{person.name}</h3>
+								<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+									{crew.slice(0, 3).map((person) => (
+										<div key={`${id}-${person.name}`}>
+											<h3 className="font-semibold text-lg whitespace-nowrap">
+												{person.name}
+											</h3>
 											<p className="text-muted-foreground text-sm">
 												{Array.from(person.roles).join(", ")}
 											</p>
@@ -162,7 +190,7 @@ export function MovieDetailView({
 						</CardFooter>
 					</Card>
 
-					<div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+					<div className="grid lg:grid-cols-3 gap-3">
 						<Card>
 							<CardContent className="flex items-center gap-4">
 								<Star className="h-5 w-5 text-yellow-500" />
@@ -262,7 +290,17 @@ export function MovieDetailView({
 						)}
 					</div>
 
-					{cast.length > 0 && <PersonCarousel people={cast} />}
+					{cast.length > 0 && (
+						<div className="flex flex-col gap-2">
+							<CastCarousel people={cast} />
+							<Link
+								to="/movies/$movieId/credits"
+								params={{ movieId: movie.id.toString() }}
+							>
+								See full cast and crew
+							</Link>
+						</div>
+					)}
 
 					{collection && <CollectionCard collection={collection} />}
 

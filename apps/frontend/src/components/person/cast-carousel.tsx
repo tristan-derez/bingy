@@ -4,18 +4,24 @@ import {
 	PrevButton,
 	usePrevNextButtons,
 } from "@/components/ui/embla/embla-carousel-arrow-buttons";
-import type { CastMember } from "../movies/movie-details";
 import {
 	CarouselGradient,
 	useCarouselGradient,
 } from "../ui/embla/embla-carousel-gradient";
-import { PersonCard } from "./person-card";
+import { CastCardCarousel } from "./cast-card-carousel";
 
-interface PersonCarouselProps {
+interface CastMember {
+	id: number;
+	name: string;
+	character: string;
+	profile_path: string | null;
+}
+
+interface CastCarouselProps {
 	people: CastMember[];
 }
 
-export const PersonCarousel = ({ people }: PersonCarouselProps) => {
+export const CastCarousel = ({ people }: CastCarouselProps) => {
 	const [emblaRef, emblaApi] = useEmblaCarousel({
 		dragFree: true,
 		align: "start",
@@ -31,31 +37,32 @@ export const PersonCarousel = ({ people }: PersonCarouselProps) => {
 	const { showGradient } = useCarouselGradient(emblaApi);
 
 	if (!people.length) {
-		return (
-			<div>
-				<p>No cast</p>
-			</div>
-		);
+		return null;
 	}
 
+	const showButtons = !prevBtnDisabled || !nextBtnDisabled;
+
 	return (
-		<section className="flex flex-col gap-1 lg:gap-2">
+		<section className="flex flex-col gap-4">
 			<div className="relative">
 				<div className="overflow-hidden hover:cursor-grab" ref={emblaRef}>
-					<div className="flex gap-1 lg:gap-4">
+					<div className="flex gap-4">
 						{people.map((person) => (
-							<div key={person.id} className="min-w-30 lg:min-w-60">
-								<PersonCard person={person} />
+							<div key={person.id}>
+								<CastCardCarousel person={person} />
 							</div>
 						))}
 					</div>
 				</div>
 				<CarouselGradient show={showGradient} />
 			</div>
-			<div className="flex items-center gap-2">
-				<PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
-				<NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
-			</div>
+
+			{showButtons ? (
+				<div className="flex items-center gap-2">
+					<PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
+					<NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
+				</div>
+			) : null}
 		</section>
 	);
 };

@@ -35,6 +35,39 @@ export const fetchTvResources = async (
 	return res.data;
 };
 
+export const fetchMultiPagesTv = async (
+	endpoint: TvEndPoints,
+	options: {
+		maxPages: number;
+		params?: TvParams;
+	},
+) => {
+	const firstPage = await apiFetch(`/tv/${endpoint}`, {
+		method: "GET",
+		query: options.params,
+	});
+
+	const totalPages = firstPage.data.total_pages;
+	const allResults = [...firstPage.data.results];
+
+	const pagePromises = [];
+	for (let page = 2; page <= Math.min(totalPages, options.maxPages); page++) {
+		pagePromises.push(
+			apiFetch(`/tv/${endpoint}`, {
+				method: "GET",
+				query: { ...options.params, page },
+			}),
+		);
+	}
+
+	const pages = await Promise.all(pagePromises);
+	for (const pageData of pages) {
+		allResults.push(...pageData.data.results);
+	}
+
+	return { ...firstPage.data, results: allResults };
+};
+
 export const fetchTvSeasonResources = async (
 	tv_id: number,
 	season_number: number,

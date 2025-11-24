@@ -55,20 +55,20 @@ export const ProfileDropdown = ({
 							type="button"
 							className={cn(
 								"flex items-center w-full gap-16 p-3 rounded-2xl border transition-all duration-200 focus:outline-none",
-								"bg-[color:var(--card)] border-[color:var(--border)] hover:bg-[color:var(--card-foreground)/10] hover:border-[color:var(--ring)]",
+								"bg-card border-border hover:bg-card-foreground/10 hover:border-ring",
 							)}
 						>
 							<div className="text-left flex-1">
-								<div className="text-sm font-medium tracking-tight leading-tight text-[color:var(--foreground)]">
+								<div className="text-sm font-medium tracking-tight leading-tight text-foreground">
 									{session.user.name}
 								</div>
-								<div className="text-xs tracking-tight leading-tight text-[color:var(--muted-foreground)]">
+								<div className="text-xs tracking-tight leading-tight text-muted-foreground">
 									{session.user.email}
 								</div>
 							</div>
 							<div className="relative">
 								<div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 via-pink-500 to-orange-400 p-0.5">
-									<div className="w-full h-full rounded-full overflow-hidden bg-[color:var(--card)]">
+									<div className="w-full h-full rounded-full overflow-hidden bg-card">
 										<Avatar className="w-full h-full object-cover rounded-full">
 											<AvatarImage
 												src={session.user?.image || ""}
@@ -117,8 +117,8 @@ export const ProfileDropdown = ({
 						align="end"
 						sideOffset={4}
 						className={cn(
-							"z-99 w-[300px] md:w-[250px] p-2 rounded-2xl shadow-xl shadow-[color:var(--ring)/10]",
-							"bg-[color:var(--card)/70] backdrop-blur-sm",
+							"z-99 w-[300px] md:w-[250px] p-2 rounded-2xl shadow-xl shadow-ring/10",
+							"bg-card/70 backdrop-blur-sm",
 							"data-[state=open]:animate-in data-[state=closed]:animate-out",
 							"data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
 							"data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
@@ -131,7 +131,7 @@ export const ProfileDropdown = ({
 						<DropdownMenuItem asChild>
 							<Link
 								to="/profile"
-								className="flex items-center gap-2 text-[color:var(--foreground)]"
+								className="flex items-center gap-2 text-foreground"
 								onClick={onLinkClick}
 							>
 								<PiUserFill />
@@ -141,31 +141,31 @@ export const ProfileDropdown = ({
 						<DropdownMenuItem asChild>
 							<Link
 								to="/settings"
-								className="flex items-center gap-2 text-[color:var(--foreground)]"
+								className="flex items-center gap-2 text-foreground"
 								onClick={onLinkClick}
 							>
 								<IoSettingsSharp />
 								Settings
 							</Link>
 						</DropdownMenuItem>
-						<DropdownMenuSeparator className="border-[color:var(--border)]" />
+						<DropdownMenuSeparator className="bg-border" />
 						<DropdownMenuItem>
-							<FaGithub className="mr-2 text-[color:var(--foreground)]" />
+							<FaGithub className="mr-2 text-foreground" />
 							<a
 								href="https://github.com/tristan-derez/bingy"
-								className="text-[color:var(--foreground)]"
+								className="text-foreground"
 							>
 								GitHub
 							</a>
 						</DropdownMenuItem>
 						<DropdownMenuItem>
-							<MdSupport className="mr-2 text-[color:var(--foreground)]" />
-							<span className="text-[color:var(--foreground)]">Support</span>
+							<MdSupport className="mr-2 text-foreground" />
+							<span className="text-foreground">Support</span>
 						</DropdownMenuItem>
-						<DropdownMenuSeparator className="border-[color:var(--border)]" />
+						<DropdownMenuSeparator className="bg-border" />
 						<DropdownMenuItem onSelect={logout}>
-							<IoLogOutSharp className="mr-2 text-[color:var(--foreground)]" />
-							<span className="text-[color:var(--foreground)]">Log out</span>
+							<IoLogOutSharp className="mr-2 text-foreground" />
+							<span className="text-foreground">Log out</span>
 						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</div>

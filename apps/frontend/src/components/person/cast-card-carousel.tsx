@@ -5,20 +5,26 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import type { CastMember } from "../movies/movie-details";
 
-interface PersonCardProps {
+interface CastMember {
+	id: number;
+	name: string;
+	character: string;
+	profile_path: string | null;
+}
+
+interface CastCardCarouselProps {
 	person: CastMember;
 }
 
-export const PersonCard = ({ person }: PersonCardProps) => {
+export const CastCardCarousel = ({ person }: CastCardCarouselProps) => {
 	const imageUrl = person.profile_path
 		? `https://image.tmdb.org/t/p/w200${person.profile_path}`
 		: fallbackPoster;
 
 	return (
-		<Card className="w-full max-w-30 lg:max-w-60 min-h-[250px] overflow-hidden pt-0 select-none">
-			<div className="w-full h-[180px] lg:h-[300px] bg-gray-200">
+		<Card className="w-full min-w-42 lg:min-w-60 min-h-[250px]  overflow-hidden pt-0 select-none">
+			<div className="w-full h-[250px]">
 				<img
 					src={imageUrl}
 					alt={person.name}
@@ -40,7 +46,7 @@ export const PersonCard = ({ person }: PersonCardProps) => {
 					className="text-sm leading-tight line-clamp-1 mt-1"
 					title={person.character}
 				>
-					{person.character}
+					{person.character ? person.character : "N/A"}
 				</CardDescription>
 			</CardHeader>
 		</Card>

@@ -1,4 +1,3 @@
-// MovieDetailsContainer.tsx
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { MovieDetailView } from "@/components/movies/movie-details";
 import { useMovie, useMovieResource } from "@/hooks/useMovies";

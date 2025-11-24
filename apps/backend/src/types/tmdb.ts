@@ -48,11 +48,11 @@ export namespace Schemas {
 	>
 
 	export type MovieInCollection = Pretty<{
-		adult: string;
+		adult: boolean;
 		backdrop_path: string | null;
 		id: number;
-		name: string;
-		original_name: string;
+		title: string;
+		original_title: string;
 		overview: string;
 		poster_path: string | null;
 		media_type: string;
@@ -66,7 +66,7 @@ export namespace Schemas {
 	}>;
 
 	export type Movie = Pretty<{
-		adult: string;
+		adult: boolean;
 		backdrop_path: string | null;
 		id: number;
 		title: string;
@@ -96,6 +96,7 @@ export namespace Schemas {
 	}>;
 
 	export type Tv = Pretty<{
+		adult: boolean;
 		backdrop_path: string | null;
 		first_air_date: string;
 		genre_ids: number[];
@@ -111,9 +112,8 @@ export namespace Schemas {
 		vote_count: number;
 	}>;
 
-	export type TvWithAdultField = Pretty<
+	export type TvWithMediaType = Pretty<
 		Tv & {
-			adult: boolean;
 			media_type: "tv";
 		}
 	>;
@@ -124,11 +124,14 @@ export namespace Schemas {
 			episode_run_time: number[];
 			genres: Genre[];
 			in_production: string;
+			homepage: string;
 			languages: string[];
 			last_air_date: string;
 			last_episode_to_air: Pretty<Omit<Episode, "media_type"> | null>;
 			next_episode_to_air: Pretty<Omit<Episode, "media_type"> | null>;
-			networks: Pretty<Omit<NetworkDetails, "homepage" | "headquarters">>;
+			networks: Pretty<Omit<NetworkDetails, "homepage" | "headquarters">>[];
+			number_of_seasons: number;
+			number_of_episodes: number;
 			production_companies: ProductionCompany[];
 			production_countries: ProductionCountry[];
 			seasons: (Season & { vote_average: number })[];
@@ -309,7 +312,7 @@ export namespace Schemas {
 	type EpisodeWithCrewAndGuestStars = Pretty<
 		Omit<Episode, "media_type"> & {
 			crew: CrewMember[];
-			guest_star: CastMember[];
+			guest_stars: CastMember[];
 		}
 	>;
 
@@ -1615,9 +1618,7 @@ export namespace Endpoints {
 				year?: number;
 			};
 		};
-		response: Schemas.PaginatedResponse<
-			Omit<Schemas.TvWithAdultField, "media_type">
-		>;
+		response: Schemas.PaginatedResponse<Schemas.Tv>;
 	};
 	export type getTrendingAll = {
 		method: "GET";
@@ -1653,7 +1654,7 @@ export namespace Endpoints {
 			query: Partial<{ language: string; page: number }>;
 			path: { time_window: "day" | "week" };
 		};
-		response: Schemas.PaginatedResponse<Schemas.TvWithAdultField>;
+		response: Schemas.PaginatedResponse<Schemas.TvWithMediaType>;
 	};
 	export type getTvPopularList = {
 		method: "GET";
@@ -1795,9 +1796,7 @@ export namespace Endpoints {
 			query: Partial<{ language: string; page: number }>;
 			path: Required<{ series_id: number }>;
 		};
-		response: Schemas.PaginatedResponse<
-			Omit<Schemas.TvWithAdultField, "media_type">
-		>;
+		response: Schemas.PaginatedResponse<Schemas.Tv>;
 	};
 	export type getTvTranslations = {
 		method: "GET";
@@ -2055,6 +2054,7 @@ export type EndpointByMethod = {
 		"/trending/person/{time_window}": Endpoints.getTrendingPeople;
 		"/trending/tv/{time_window}": Endpoints.getTrendingTv;
 		"/tv/top_rated": Endpoints.getTvTopRatedList;
+		"/tv/popular": Endpoints.getTvPopularList;
 		"/tv/{series_id}": Endpoints.getTvDetails;
 		"/tv/{series_id}/aggregate_credits": Endpoints.getTvAggregateCredits;
 		"/tv/{series_id}/alternative_titles": Endpoints.getTvAlternativeTitles;
