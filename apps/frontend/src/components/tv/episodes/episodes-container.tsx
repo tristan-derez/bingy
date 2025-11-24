@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { Star, Timer, User, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -22,7 +23,16 @@ export function EpisodesContainer({ episodes }: EpisodesContainerProps) {
 							<div className="flex items-start justify-between gap-4">
 								<div className="flex-1">
 									<h3 className="font-semibold text-lg">
-										{episode.episode_number}. {episode.name}
+										<Link
+											to="/tv/$tvId/season/$seasonNumber/episode/$episodeNumber"
+											params={{
+												tvId: episode.show_id.toString(),
+												seasonNumber: episode.season_number.toString(),
+												episodeNumber: episode.episode_number.toString(),
+											}}
+										>
+											{episode.episode_number}. {episode.name}
+										</Link>
 									</h3>
 									{episode.air_date ? (
 										<p className="text-sm text-muted-foreground">
@@ -64,10 +74,10 @@ export function EpisodesContainer({ episodes }: EpisodesContainerProps) {
 										{episode.crew.length} crew
 									</span>
 								) : null}
-								{episode.guest_star?.length > 0 ? (
+								{episode.guest_stars?.length > 0 ? (
 									<span className="flex items-center gap-1">
 										<User className="h-3 w-3" />
-										{episode.guest_star.length} guest stars
+										{episode.guest_stars.length} guest stars
 									</span>
 								) : null}
 							</div>
