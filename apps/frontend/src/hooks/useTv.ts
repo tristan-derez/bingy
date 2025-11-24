@@ -76,13 +76,13 @@ export function useTvResources<T>(
 	});
 }
 
-export function useTvSeasonResources(
+export function useTvSeasonResources<T>(
 	tv_id: number,
 	season_number: number,
 	endpoint: TvSeasonEndpoints,
 	params?: TvParams,
 ) {
-	return useQuery({
+	return useQuery<T>({
 		queryKey: ["tv", tv_id, season_number, endpoint, params],
 		queryFn: () =>
 			fetchTvSeasonResources(tv_id, season_number, { endpoint, params }),
@@ -90,14 +90,14 @@ export function useTvSeasonResources(
 	});
 }
 
-export function useTvEpisodeResources(
+export function useTvEpisodeResources<T>(
 	tv_id: number,
 	season_number: number,
 	episode_number: number,
 	endpoint: TvEpisodeEndpoints,
 	params?: TvParams,
 ) {
-	return useQuery({
+	return useQuery<T>({
 		queryKey: ["tv", tv_id, season_number, episode_number, endpoint, params],
 		queryFn: () =>
 			fetchTvEpisodeResources(tv_id, season_number, episode_number, {
