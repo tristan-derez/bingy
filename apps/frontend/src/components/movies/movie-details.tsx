@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/card";
 import type { Collection } from "@/types/collection";
 import type { Company, Country, Genre, MovieDetails } from "@/types/movie";
+import type { WatchProviders } from "@/types/watch-providers";
 import { formatRuntime } from "@/utils/format-runtime";
 import { shortenCountryName } from "@/utils/shorten-country-name";
 import { CollectionCard } from "../collections/collection-card";
@@ -24,6 +25,7 @@ import { LoadingCentered } from "../loading/loading-centered";
 import { CastCarousel } from "../person/cast-carousel";
 import { SocialLinks } from "../social-links";
 import { Separator } from "../ui/separator";
+import { WatchProvidersSection } from "../watch-providers/watch-providers-section";
 
 interface CrewMemberInMovieDetails {
 	name: string;
@@ -42,6 +44,7 @@ interface MovieDetailViewProps {
 	crew: CrewMemberInMovieDetails[];
 	cast: CastMemberInMovieDetails[];
 	socials: Partial<Record<"facebook" | "instagram" | "twitter", string>>;
+	watchProviders: WatchProviders | undefined;
 	collection: Collection | undefined;
 	isLoading: boolean;
 	isError: boolean;
@@ -53,6 +56,7 @@ export function MovieDetailView({
 	cast,
 	crew,
 	socials,
+	watchProviders,
 	collection,
 	isLoading,
 	isError,
@@ -88,12 +92,12 @@ export function MovieDetailView({
 				<ArrowLeft className="h-4 w-4" /> Back
 			</Button>
 
-			<div className="grid xl:grid-cols-[auto_1fr] gap-4">
-				<div className="flex justify-center xl:justify-start">
+			<div className="grid xl:grid-cols-[auto_1fr] gap-4 justify-items-center">
+				<div className="flex flex-col gap-2 items-center xl:items-start max-w-[600px]">
 					<img
 						src={imageUrl}
 						alt={movie.title}
-						className="rounded-lg shadow-lg w-1/2 xl:w-auto xl:max-h-[600px]"
+						className="rounded-lg shadow-lg w-full xl:max-h-[600px]"
 						onError={(e) => {
 							const target = e.currentTarget;
 							if (target.src !== fallbackPoster) {
@@ -101,10 +105,15 @@ export function MovieDetailView({
 							}
 						}}
 					/>
+					<WatchProvidersSection
+						watchProviders={watchProviders}
+						region="FR"
+						className="w-full justify-center items-center bg-transparent border-none py-0"
+					/>
 				</div>
 
-				<div className="space-y-4 overflow-hidden">
-					<Card className="shadow-none bg-transparent xl:p-0 border-none">
+				<div className="space-y-2 overflow-hidden max-w-full">
+					<Card className="shadow-none bg-transparent pt-0 xl:p-0 border-none">
 						<CardContent className="xl:p-0">
 							<div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2">
 								<div className="flex flex-col gap-2">

@@ -2,6 +2,7 @@ import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { TvDetailsView } from "@/components/tv/tv-details";
 import { useTv, useTvResources } from "@/hooks/useTv";
 import type { TvAggregatedCredits, TvExternalIds } from "@/types/tv";
+import type { WatchProviders } from "@/types/watch-providers";
 import { getSocialUrls } from "@/utils/social-urls";
 
 export const Route = createFileRoute("/tv/$tvId")({
@@ -31,11 +32,17 @@ function TvDetailsContainer() {
 		"external_ids",
 	);
 
+	const { data: watchProviders } = useTvResources<WatchProviders>(
+		Number(tvId),
+		"watch/providers",
+	);
+
 	const socialUrls = socials ? getSocialUrls(socials) : {};
 
 	return (
 		<TvDetailsView
 			tv={tv}
+			watchProviders={watchProviders}
 			socials={socialUrls}
 			cast={cast}
 			isLoading={isLoading}

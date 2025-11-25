@@ -25,12 +25,14 @@ import {
 } from "@/components/ui/card";
 import type { NetworkDetails } from "@/types/company";
 import type { TvDetails } from "@/types/tv";
+import type { WatchProviders } from "@/types/watch-providers";
 import { shortenCountryName } from "@/utils/shorten-country-name";
 import { ResourceNotFound } from "../errors/resource-not-found";
 import { LoadingCentered } from "../loading/loading-centered";
 import { CastCarousel } from "../person/cast-carousel";
 import { SocialLinks } from "../social-links";
 import { Separator } from "../ui/separator";
+import { WatchProvidersSection } from "../watch-providers/watch-providers-section";
 
 interface CastMember {
 	id: number;
@@ -41,6 +43,7 @@ interface CastMember {
 
 interface TvDetailViewProps {
 	tv: TvDetails | undefined;
+	watchProviders: WatchProviders | undefined;
 	socials: Partial<Record<"facebook" | "instagram" | "twitter", string>>;
 	cast: CastMember[];
 	isLoading: boolean;
@@ -50,6 +53,7 @@ interface TvDetailViewProps {
 
 export function TvDetailsView({
 	tv,
+	watchProviders,
 	socials,
 	cast,
 	isLoading,
@@ -84,12 +88,12 @@ export function TvDetailsView({
 				<ArrowLeft className="h-4 w-4" /> Back
 			</Button>
 
-			<div className="grid xl:grid-cols-[auto_1fr] gap-4">
-				<div className="flex justify-center xl:justify-start">
+			<div className="grid xl:grid-cols-[auto_1fr] gap-4 justify-items-center">
+				<div className="flex flex-col gap-2 items-center xl:items-start max-w-[600px]">
 					<img
 						src={imageUrl}
 						alt={tv.name}
-						className="rounded-lg shadow-lg w-1/2 xl:w-auto xl:max-h-[600px]"
+						className="rounded-lg shadow-lg w-full xl:max-h-[600px]"
 						onError={(e) => {
 							const target = e.currentTarget;
 							if (target.src !== fallbackPoster) {
@@ -97,9 +101,14 @@ export function TvDetailsView({
 							}
 						}}
 					/>
+					<WatchProvidersSection
+						watchProviders={watchProviders}
+						region="FR"
+						className="w-full justify-center items-center bg-transparent border-none py-0"
+					/>
 				</div>
 
-				<div className="space-y-4 overflow-hidden">
+				<div className="max-w-full space-y-4 overflow-hidden">
 					<Card className="shadow-none bg-transparent xl:p-0 border-none">
 						<CardContent className="xl:p-0">
 							<div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2">

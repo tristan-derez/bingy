@@ -2,6 +2,7 @@ import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { MovieDetailView } from "@/components/movies/movie-details";
 import { useMovie, useMovieResource } from "@/hooks/useMovies";
 import type { MovieCredits, MovieExternalIds } from "@/types/movie";
+import type { WatchProviders } from "@/types/watch-providers";
 import { getRole } from "@/utils/excluded-jobs";
 import { getSocialUrls } from "@/utils/social-urls";
 
@@ -22,6 +23,11 @@ function MovieDetailsContainer() {
 	const { data: socials } = useMovieResource<MovieExternalIds>(
 		Number(movieId),
 		"external_ids",
+	);
+
+	const { data: watchProviders } = useMovieResource<WatchProviders>(
+		Number(movieId),
+		"watch/providers",
 	);
 
 	const crewWithRoles =
@@ -60,6 +66,7 @@ function MovieDetailsContainer() {
 			socials={socialUrls}
 			crew={result}
 			cast={cast}
+			watchProviders={watchProviders}
 			collection={collection}
 			isLoading={isLoading}
 			isError={isError}
