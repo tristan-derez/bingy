@@ -7,14 +7,17 @@ import { CastCarousel } from "@/components/person/cast-carousel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { WatchProvidersSection } from "@/components/watch-providers/watch-providers-section";
 import type { CastMember } from "@/types/person";
 import type { TvSeasonDetails } from "@/types/season";
 import type { TvCredits } from "@/types/tv";
+import type { WatchProviders } from "@/types/watch-providers";
 import { EpisodesContainer } from "../episodes/episodes-container";
 
 interface TvSeasonDetailsViewProps {
 	tvSeason: TvSeasonDetails | undefined;
 	credits: TvCredits | undefined;
+	watchProviders: WatchProviders | undefined;
 	tvId: number;
 	isLoading: boolean;
 	isError: boolean;
@@ -32,6 +35,7 @@ type MinimalCast = {
 export function TvSeasonDetailsView({
 	tvSeason,
 	credits,
+	watchProviders,
 	tvId,
 	isLoading,
 	isError,
@@ -129,12 +133,12 @@ export function TvSeasonDetailsView({
 				<ArrowLeft className="h-4 w-4" /> Back
 			</Button>
 
-			<div className="grid xl:grid-cols-[auto_1fr] gap-4">
-				<div className="flex justify-center xl:justify-start">
+			<div className="grid xl:grid-cols-[auto_1fr] gap-4 justify-items-center">
+				<div className="flex flex-col gap-2 items-center xl:items-start max-w-[600px]">
 					<img
 						src={imageUrl}
 						alt={tvSeason.name}
-						className="rounded-lg shadow-lg w-1/2 xl:w-auto xl:max-h-[600px]"
+						className="rounded-lg shadow-lg w-full xl:max-h-[600px]"
 						onError={(e) => {
 							const target = e.currentTarget;
 							if (target.src !== fallbackPoster) {
@@ -142,9 +146,14 @@ export function TvSeasonDetailsView({
 							}
 						}}
 					/>
+					<WatchProvidersSection
+						watchProviders={watchProviders}
+						region="FR"
+						className="w-full justify-center items-center bg-transparent border-none py-0"
+					/>
 				</div>
 
-				<div className="space-y-4 overflow-hidden">
+				<div className="max-w-full space-y-4 overflow-hidden">
 					<Card className="shadow-none bg-transparent xl:p-0 border-none">
 						<CardContent className="xl:p-0">
 							<div className="flex flex-col gap-2">

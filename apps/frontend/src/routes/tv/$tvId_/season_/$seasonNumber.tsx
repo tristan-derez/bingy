@@ -2,6 +2,7 @@ import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { TvSeasonDetailsView } from "@/components/tv/seasons/tv-season-details";
 import { useTvSeasonResources } from "@/hooks/useTv";
 import type { TvCredits, TvSeasonDetails } from "@/types/tv";
+import type { WatchProviders } from "@/types/watch-providers";
 
 export const Route = createFileRoute("/tv/$tvId_/season_/$seasonNumber")({
 	component: TvSeasonDetailsContainer,
@@ -27,10 +28,17 @@ function TvSeasonDetailsContainer() {
 		"credits",
 	);
 
+	const { data: watchProviders } = useTvSeasonResources<WatchProviders>(
+		Number(tvId),
+		Number(seasonNumber),
+		"watch/providers",
+	);
+
 	return (
 		<TvSeasonDetailsView
 			tvSeason={tvSeason}
 			credits={credits}
+			watchProviders={watchProviders}
 			tvId={Number(tvId)}
 			isLoading={isLoading}
 			isError={isError}
