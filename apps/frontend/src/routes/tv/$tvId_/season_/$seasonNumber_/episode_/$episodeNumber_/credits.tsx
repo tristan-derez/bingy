@@ -23,6 +23,7 @@ function TvEpisodeCreditsContainer() {
 		Number(episodeNumber),
 		"credits",
 	);
+
 	return (
 		<TvEpisodeCreditsView
 			episodeNumber={Number(episodeNumber)}
