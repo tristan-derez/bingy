@@ -1,6 +1,7 @@
 import type { MediaWithCastCredits, MediaWithCrewCredits } from "@/types/media";
 
 export function sortKnownForCredits(person: {
+	name?: string;
 	known_for_department?: string;
 	combined_credits?: {
 		cast: MediaWithCastCredits[];
@@ -18,6 +19,7 @@ export function sortKnownForCredits(person: {
 		for (const item of items) {
 			if (!seen.has(item.id)) seen.set(item.id, item);
 		}
+
 		return [...seen.values()];
 	};
 
@@ -25,7 +27,15 @@ export function sortKnownForCredits(person: {
 
 	credits = credits.filter((item) => {
 		if ("character" in item && person.known_for_department === "Acting") {
-			return item.character?.trim().length > 0;
+			const character = item.character?.trim();
+			if (!character) return false;
+
+			const name = person.name?.trim();
+			if (name && character.toLowerCase() === `${name.toLowerCase()} (voice)`) {
+				return false;
+			}
+
+			return true;
 		}
 
 		if ("job" in item) {
