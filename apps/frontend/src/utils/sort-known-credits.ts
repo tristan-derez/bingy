@@ -1,6 +1,6 @@
 import type { MediaWithCastCredits, MediaWithCrewCredits } from "@/types/media";
 
-export function getSortedKnownForCredits(person: {
+export function sortKnownForCredits(person: {
 	known_for_department?: string;
 	combined_credits?: {
 		cast: MediaWithCastCredits[];
