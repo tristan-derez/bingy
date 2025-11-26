@@ -168,3 +168,20 @@ export const queryParamsFindByExternalId = z.object({
 	]),
 	language: z.string().default("en-US"),
 });
+
+const appendOptions = z.union([
+	z.literal("combined_credits"),
+	z.literal("external_ids"),
+	z.literal("translations"),
+	z.literal("combined_credits,external_ids"),
+	z.literal("external_ids,combined_credits"),
+	z.literal("combined_credits,translations"),
+	z.literal("external_ids,translations"),
+	z.literal("combined_credits,external_ids,translations"),
+	z.literal("external_ids,combined_credits,translations"),
+]);
+
+export const queryParamsPersonId = z.object({
+	language: z.string().optional(),
+	append_to_response: appendOptions.optional(),
+});

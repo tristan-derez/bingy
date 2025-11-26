@@ -8,6 +8,7 @@ import {
 	idParamSchema,
 	languageQuerySchema,
 	paginationQuerySchema,
+	queryParamsPersonId,
 } from "#web/validators/query-param";
 
 const personRoutes = new Hono();
@@ -43,14 +44,14 @@ personRoutes.get("/latest", async (c) => {
 personRoutes.get(
 	"/:id",
 	zValidator("param", idParamSchema),
-	zValidator("query", languageQuerySchema),
+	zValidator("query", queryParamsPersonId),
 	async (c) => {
 		const { id } = c.req.valid("param");
-		const { language } = c.req.valid("query");
+		const { language, append_to_response } = c.req.valid("query");
 
 		try {
 			const person = await tmdbClient.get("/person/{person_id}", {
-				query: { language },
+				query: { language, append_to_response },
 				path: { person_id: id },
 			});
 			return serveData(c, person);
