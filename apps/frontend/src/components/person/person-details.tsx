@@ -83,6 +83,16 @@ export const PersonDetailsView = ({
 							}
 						}}
 					/>
+					{person.also_known_as && person.also_known_as.length > 0 ? (
+						<div className="hidden xl:flex mt-2 text-muted-foreground">
+							<div className="flex flex-col">
+								<h3 className="font-bold text-foreground">Also known as:</h3>
+								{person.also_known_as.map((name, index) => (
+									<span key={index}>{name.trim()}</span>
+								))}
+							</div>
+						</div>
+					) : null}
 				</div>
 
 				<div className="max-w-full w-full space-y-4 overflow-hidden">
@@ -139,10 +149,10 @@ export const PersonDetailsView = ({
 					</Card>
 
 					<Card className="relative overflow-hidden border-none">
-						<CardHeader className="text-dark-card-foreground">
+						<CardHeader className="text-foreground">
 							<CardTitle>Biography</CardTitle>
 						</CardHeader>
-						<CardContent className="text-dark-card-foreground gap-4">
+						<CardContent className="text-muted-foreground gap-4">
 							{person.biography ? (
 								(() => {
 									const [firstLine, ...rest] = person.biography.split("\n");
