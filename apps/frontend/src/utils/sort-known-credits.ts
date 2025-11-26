@@ -57,7 +57,21 @@ export function sortKnownForCredits(person: {
 		return true;
 	});
 
-	credits.sort((a, b) => b.vote_count - a.vote_count);
+	credits.sort((a, b) => {
+		if (
+			person.known_for_department === "Acting" &&
+			a.media_type === "movie" &&
+			b.media_type === "movie" &&
+			"order" in a &&
+			"order" in b
+		) {
+			const scoreA = a.vote_count - a.order * 3500;
+			const scoreB = b.vote_count - b.order * 3500;
+			return scoreB - scoreA;
+		}
+
+		return b.vote_count - a.vote_count;
+	});
 
 	return credits.slice(0, 10);
 }
