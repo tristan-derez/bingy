@@ -5,10 +5,7 @@ import type { PersonDetails } from "@/types/person";
 import { calculateAge } from "@/utils/calculate-age";
 import { formatDate } from "@/utils/format-date";
 import { getSocialUrls } from "@/utils/social-urls";
-import {
-	getSortedKnownForCredits,
-	sortKnownForCredits,
-} from "@/utils/sort-known-credits";
+import { sortKnownForCredits } from "@/utils/sort-known-credits";
 import { ResourceNotFound } from "../errors/resource-not-found";
 import { LoadingCentered } from "../loading/loading-centered";
 import { MediasCarousel } from "../medias/medias-carousel";
