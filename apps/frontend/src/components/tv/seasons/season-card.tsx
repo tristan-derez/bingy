@@ -3,6 +3,7 @@ import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { TvDetails } from "@/types/tv";
+import { formatDate } from "@/utils/format-date";
 
 export function SeasonCard({
 	season,
@@ -34,7 +35,7 @@ export function SeasonCard({
 							</CardTitle>
 							<Badge className="text-sm">
 								{season.air_date
-									? new Date(season.air_date).toLocaleDateString("en-US", {
+									? formatDate(season.air_date, "en-US", {
 											year: "numeric",
 										})
 									: "N/A"}

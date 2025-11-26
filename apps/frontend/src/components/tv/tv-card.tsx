@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Calendar, Star, Users } from "lucide-react";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import type { Tv } from "@/types/tv";
+import { formatDate } from "@/utils/format-date";
 import { Badge } from "../ui/badge";
 import {
 	Card,
@@ -75,7 +76,7 @@ export const TvCard = ({ tvShow }: TvCardProps) => {
 						<Calendar className="h-4 w-4" />
 						<span>
 							{tvShow.first_air_date
-								? new Date(tvShow.first_air_date).toLocaleDateString("en-US", {
+								? formatDate(tvShow.first_air_date, "en-US", {
 										year: "numeric",
 										month: "short",
 										day: "numeric",

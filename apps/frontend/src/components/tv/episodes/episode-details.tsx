@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import type { TvEpisodeCredits, TvEpisodeDetails } from "@/types/episode";
+import { formatDate } from "@/utils/format-date";
 
 interface CastMember {
 	id: number;
@@ -120,7 +121,7 @@ export function TvEpisodeDetailsView({
 						<CardTitle>Overview</CardTitle>
 					</CardHeader>
 					<CardContent className="space-y-4 text-dark-card-foreground">
-						<p className="max-w-1/2">
+						<p className="max-w-1/2 whitespace-pre-line">
 							{episode.overview ? episode.overview : "No overview available."}
 						</p>
 
@@ -181,7 +182,7 @@ export function TvEpisodeDetailsView({
 							<div>
 								<p className="text-xl xl:text-2xl font-bold">
 									{episode.air_date
-										? new Date(episode.air_date).toLocaleDateString("en-US", {
+										? formatDate(episode.air_date, "en-US", {
 												year: "numeric",
 												month: "short",
 												day: "numeric",

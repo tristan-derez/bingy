@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import type { TvSeasonDetails } from "@/types/season";
+import { formatDate } from "@/utils/format-date";
 
 interface EpisodesContainerProps {
 	episodes: TvSeasonDetails["episodes"];
@@ -36,7 +37,7 @@ export function EpisodesContainer({ episodes }: EpisodesContainerProps) {
 									</h3>
 									{episode.air_date ? (
 										<p className="text-sm text-muted-foreground">
-											{new Date(episode.air_date).toLocaleDateString("en-US", {
+											{formatDate(episode.air_date, "en-US", {
 												year: "numeric",
 												month: "short",
 												day: "numeric",

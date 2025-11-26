@@ -26,6 +26,7 @@ import {
 import type { NetworkDetails } from "@/types/company";
 import type { TvDetails } from "@/types/tv";
 import type { WatchProviders } from "@/types/watch-providers";
+import { formatDate } from "@/utils/format-date";
 import { shortenCountryName } from "@/utils/shorten-country-name";
 import { ResourceNotFound } from "../errors/resource-not-found";
 import { LoadingCentered } from "../loading/loading-centered";
@@ -211,14 +212,11 @@ export function TvDetailsView({
 								<div>
 									<p className="text-xl xl:text-2xl font-bold">
 										{tv.first_air_date
-											? new Date(tv.first_air_date).toLocaleDateString(
-													"en-US",
-													{
-														year: "numeric",
-														month: "short",
-														day: "numeric",
-													},
-												)
+											? formatDate(tv.first_air_date, "en-US", {
+													year: "numeric",
+													month: "short",
+													day: "numeric",
+												})
 											: "N/A"}
 									</p>
 									<p className="text-sm text-muted-foreground">First Aired</p>

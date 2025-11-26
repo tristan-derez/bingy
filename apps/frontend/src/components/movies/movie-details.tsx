@@ -17,6 +17,7 @@ import {
 import type { Collection } from "@/types/collection";
 import type { Company, Country, Genre, MovieDetails } from "@/types/movie";
 import type { WatchProviders } from "@/types/watch-providers";
+import { formatDate } from "@/utils/format-date";
 import { formatRuntime } from "@/utils/format-runtime";
 import { shortenCountryName } from "@/utils/shorten-country-name";
 import { CollectionCard } from "../collections/collection-card";
@@ -222,14 +223,7 @@ export function MovieDetailView({
 								<div>
 									<p className="text-xl xl:text-2xl font-bold">
 										{movie.release_date
-											? new Date(movie.release_date).toLocaleDateString(
-													"en-US",
-													{
-														year: "numeric",
-														month: "short",
-														day: "numeric",
-													},
-												)
+											? formatDate(movie.release_date, "en-US")
 											: "N/A"}
 									</p>
 									<p className="text-sm text-muted-foreground">Release Date</p>
