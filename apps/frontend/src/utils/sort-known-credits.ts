@@ -1,5 +1,10 @@
 import type { MediaWithCastCredits, MediaWithCrewCredits } from "@/types/media";
 
+const BASE_RATING = 7.0;
+const MIN_VOTES_FOR_RELIABILITY = 500;
+const LEAD_ROLE_BOOST = 800;
+const MOVIE_ORDER_DECAY_FACTOR = 0.7;
+
 export function sortKnownForCredits(person: {
 	name?: string;
 	known_for_department?: string;
@@ -11,66 +16,83 @@ export function sortKnownForCredits(person: {
 	const combined = person.combined_credits;
 	if (!combined) return null;
 
-	const rawCredits: (MediaWithCastCredits | MediaWithCrewCredits)[] =
-		person.known_for_department === "Acting" ? combined.cast : combined.crew;
+	const isActor = person.known_for_department === "Acting";
+	const rawCredits: (MediaWithCastCredits | MediaWithCrewCredits)[] = isActor
+		? combined.cast
+		: combined.crew;
 
 	const dedupeById = <T extends { id: number }>(items: T[]): T[] => {
 		const seen = new Map<number, T>();
 		for (const item of items) {
 			if (!seen.has(item.id)) seen.set(item.id, item);
 		}
-
 		return [...seen.values()];
 	};
 
 	let credits = dedupeById(rawCredits);
 
 	credits = credits.filter((item) => {
-		if ("character" in item && person.known_for_department === "Acting") {
-			const character = item.character?.trim();
+		if (isActor && "character" in item) {
+			const character = item.character?.trim() || "";
+			const name = person.name?.trim() || "";
 			if (!character) return false;
 
-			const name = person.name?.trim();
-			if (name && character.toLowerCase() === `${name.toLowerCase()} (voice)`) {
+			const lowerChar = character.toLowerCase();
+			if (
+				(name && lowerChar === `${name.toLowerCase()} (voice)`) ||
+				lowerChar.includes("self") ||
+				lowerChar.includes("(uncredited)") ||
+				lowerChar.includes("archive footage")
+			) {
 				return false;
 			}
-
-			return true;
 		}
-
 		if ("job" in item) {
-			return item.job?.trim().length > 0;
+			return item.job && item.job.trim().length > 0;
 		}
-
 		return true;
 	});
 
-	credits = credits.filter((item) => {
-		if (
-			person.known_for_department === "Acting" &&
-			item.media_type === "movie" &&
-			"order" in item
-		) {
-			return item.order <= 8;
+	const getScore = (item: MediaWithCastCredits | MediaWithCrewCredits) => {
+		const voteCount = item.vote_count || 0;
+		const voteAverage = item.vote_average || 5;
+		const popularity = item.popularity || 0;
+
+		const adjustedRating =
+			(voteCount * voteAverage + MIN_VOTES_FOR_RELIABILITY * BASE_RATING) /
+			(voteCount + MIN_VOTES_FOR_RELIABILITY);
+
+		let score = voteCount * adjustedRating;
+
+		if (isActor) {
+			if (item.media_type === "movie" && "order" in item) {
+				const order = item.order || 0;
+
+				if (order <= 1 && voteCount < MIN_VOTES_FOR_RELIABILITY) {
+					score = score + LEAD_ROLE_BOOST;
+				}
+
+				const decay = 1 + order * MOVIE_ORDER_DECAY_FACTOR;
+				score = score / decay;
+			} else if (item.media_type === "tv" && "episode_count" in item) {
+				// @todo: fetch total episode count for each tv show
+				const epCount = item.episode_count as number;
+
+				if (epCount >= 8) {
+					score = score + popularity * 2;
+				} else {
+					score = score * 0.15 + popularity * 5;
+				}
+			}
+		} else {
+			score = score + popularity * 1;
 		}
 
-		return true;
-	});
+		return score;
+	};
 
 	credits.sort((a, b) => {
-		if (
-			person.known_for_department === "Acting" &&
-			a.media_type === "movie" &&
-			b.media_type === "movie" &&
-			"order" in a &&
-			"order" in b
-		) {
-			const scoreA = a.vote_count - a.order * 3500;
-			const scoreB = b.vote_count - b.order * 3500;
-			return scoreB - scoreA;
-		}
-
-		return b.vote_count - a.vote_count;
+		return getScore(b) - getScore(a);
 	});
 
 	return credits.slice(0, 10);
