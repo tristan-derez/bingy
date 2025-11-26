@@ -223,7 +223,11 @@ export function MovieDetailView({
 								<div>
 									<p className="text-xl xl:text-2xl font-bold">
 										{movie.release_date
-											? formatDate(movie.release_date, "en-US")
+											? formatDate(movie.release_date, "en-US", {
+													day: "numeric",
+													month: "short",
+													year: "2-digit",
+												})
 											: "N/A"}
 									</p>
 									<p className="text-sm text-muted-foreground">Release Date</p>
