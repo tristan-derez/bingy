@@ -634,15 +634,6 @@ export namespace Schemas {
 
 	export type AllowedAppends = keyof AppendToResponseMap;
 
-	export type ParseAppends<T extends string> =
-		T extends `${infer First},${infer Rest}`
-			? First extends AllowedAppends
-				? AppendToResponseMap[First] & ParseAppends<Rest>
-				: ParseAppends<Rest>
-			: T extends AllowedAppends
-				? AppendToResponseMap[T]
-				: {};
-
 	export type PersonDetails = Pretty<
 		Person & {
 			also_known_as: string[];
@@ -652,6 +643,9 @@ export namespace Schemas {
 			homepage: string | null;
 			imdb_id: string;
 			place_of_birth: string;
+			external_ids?: PersonExternalIds;
+			combined_credits?: PersonCombinedCredits;
+			translations?: PersonTranslations;
 		}
 	>;
 
@@ -1496,11 +1490,7 @@ export namespace Endpoints {
 			}>;
 			path: Required<{ person_id: number }>;
 		};
-		response: <A extends string | undefined = undefined>(
-			append?: A,
-		) => A extends string
-			? Schemas.PersonDetails & Schemas.ParseAppends<A>
-			: Schemas.PersonDetails;
+		response: Schemas.PersonDetails;
 	};
 	export type getPersonCombinedCredits = {
 		method: "GET";
