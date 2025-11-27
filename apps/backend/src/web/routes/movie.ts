@@ -9,6 +9,7 @@ import {
 	idParamSchema,
 	languageQuerySchema,
 	paginationQuerySchema,
+	queryParamsAppendToResponse,
 	queryParamsTrending,
 } from "#web/validators/query-param";
 
@@ -99,14 +100,14 @@ movieRoutes.get(
 movieRoutes.get(
 	"/:id",
 	zValidator("param", idParamSchema),
-	zValidator("query", languageQuerySchema),
+	zValidator("query", queryParamsAppendToResponse),
 	async (c) => {
 		const { id } = c.req.valid("param");
-		const { language } = c.req.valid("query");
+		const { language, append_to_response } = c.req.valid("query");
 
 		try {
 			const movie = await tmdbClient.get("/movie/{movie_id}", {
-				query: { language },
+				query: { language, append_to_response },
 				path: { movie_id: id },
 			});
 			return serveData(c, movie);

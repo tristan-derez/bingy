@@ -32,7 +32,7 @@ interface MovieDetailViewProps {
 	cast: Schemas.CastMember[];
 	socials: Partial<Record<"facebook" | "instagram" | "twitter", string>>;
 	watchProviders: Schemas.WatchProviders | undefined;
-	collection: Schemas.CollectionDetails | undefined;
+	collection: Schemas.MovieDetails["belongs_to_collection"] | undefined;
 	isLoading: boolean;
 	isError: boolean;
 	onBack: () => void;

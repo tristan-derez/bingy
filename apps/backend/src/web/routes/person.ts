@@ -8,7 +8,7 @@ import {
 	idParamSchema,
 	languageQuerySchema,
 	paginationQuerySchema,
-	queryParamsPersonId,
+	queryParamsAppendToResponse,
 } from "#web/validators/query-param";
 
 const personRoutes = new Hono();
@@ -44,7 +44,7 @@ personRoutes.get("/latest", async (c) => {
 personRoutes.get(
 	"/:id",
 	zValidator("param", idParamSchema),
-	zValidator("query", queryParamsPersonId),
+	zValidator("query", queryParamsAppendToResponse),
 	async (c) => {
 		const { id } = c.req.valid("param");
 		const { language, append_to_response } = c.req.valid("query");

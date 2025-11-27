@@ -87,4 +87,5 @@ export type MoviesParams = Pretty<{
 	language?: string;
 	page?: number;
 	region?: string;
+	append_to_response?: string;
 }>;

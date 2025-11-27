@@ -11,12 +11,13 @@ import {
 import { useCollection } from "@/hooks/useCollections";
 
 interface CollectionCardProps {
-	collection: Schemas.CollectionDetails;
+	collection: Schemas.MovieDetails["belongs_to_collection"];
 }
 
 export function CollectionCard({ collection }: CollectionCardProps) {
-	const { data: collectionData } = useCollection(collection.id);
+	if (!collection) return null;
 
+	const { data: collectionData } = useCollection(collection.id);
 	if (!collectionData?.parts?.length) return null;
 
 	const backgroundImage = collection.backdrop_path
