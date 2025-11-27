@@ -1,6 +1,20 @@
 import type { Pretty } from "./generic";
-import type { Media } from "./media";
+import type {
+	Media,
+	MediaWithCastCredits,
+	MediaWithCrewCredits,
+	MovieMediaWithCastCredits,
+	MovieMediaWithCrewCredits,
+	TvMediaWithCastCredits,
+	TvMediaWithCrewCredits,
+} from "./media";
 
+export type PersonEndpoint = Pretty<"">;
+
+export type PersonParams = Pretty<{
+	append_to_response: AllowedAppends | `${AllowedAppends},${string}`;
+	language: string;
+}>;
 export type Person = Pretty<{
 	adult: boolean;
 	id: number;
@@ -37,6 +51,9 @@ export type PersonDetails = Pretty<
 		homepage: string | null;
 		imdb_id: string;
 		place_of_birth: string;
+		external_ids?: PersonExternalIds;
+		combined_credits?: PersonCombinedCredits;
+		translations?: PersonTranslations;
 	}
 >;
 
@@ -115,3 +132,77 @@ export type CastMember = {
 	credit_id: string;
 	order: number;
 };
+
+type AppendToResponseMap = {
+	combined_credits: { combined_credits: PersonCombinedCredits };
+	external_ids: { external_ids: PersonExternalIds };
+	translations: { translations: PersonTranslations };
+};
+
+export type AllowedAppends = keyof AppendToResponseMap;
+
+export type PersonCombinedCredits = Pretty<{
+	cast: MediaWithCastCredits[];
+	crew: MediaWithCrewCredits[];
+	id: number;
+}>;
+
+export type PersonMovieCredits = Pretty<{
+	cast: MovieMediaWithCastCredits[];
+	crew: MovieMediaWithCrewCredits[];
+	id: number;
+}>;
+
+export type PersonTvCredits = Pretty<{
+	cast: TvMediaWithCastCredits[];
+	crew: TvMediaWithCrewCredits[];
+	id: number;
+}>;
+
+export type PersonImages = Pretty<{
+	id: number;
+	profiles: Image[];
+}>;
+
+export type PersonExternalIds = Pretty<{
+	id: number;
+	freebase_mid: string;
+	freebase_id: string;
+	imdb_id: string;
+	tvrage_id: number;
+	wikidata_id: string;
+	facebook_id: string;
+	instagram_id: string;
+	tiktok_id: string;
+	twitter_id: string;
+	youtube_id: string;
+}>;
+
+export type PersonTranslations = Pretty<{
+	id: number;
+	translations: Translation<PersonTranslationsData>[];
+}>;
+
+type PersonTranslationsData = Pretty<{
+	biography: string;
+	name: string;
+}>;
+
+export type Translation<T> = {
+	iso_3166_1: string;
+	iso_639_1: string;
+	name: string;
+	english_name: string;
+	data: T[];
+};
+
+export type Image = Pretty<{
+	aspect_ratio: number;
+	height: number;
+	iso_3166_1?: string | null;
+	iso_639_1?: string | null;
+	file_path: string | null;
+	vote_average: number;
+	vote_count: number;
+	width: number;
+}>;

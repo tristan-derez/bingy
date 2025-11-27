@@ -1,0 +1,64 @@
+import { Link } from "@tanstack/react-router";
+import fallbackPoster from "@/assets/movie-placeholder.jpg";
+import type { MediaWithCastCredits, MediaWithCrewCredits } from "@/types/media";
+import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
+
+interface MediaCardProps {
+	media: MediaWithCastCredits | MediaWithCrewCredits;
+}
+
+const isCastCredit = (
+	media: MediaWithCastCredits | MediaWithCrewCredits,
+): media is MediaWithCastCredits => {
+	return "character" in media;
+};
+
+export const MediaCard = ({ media }: MediaCardProps) => {
+	const imageUrl = media.poster_path
+		? `https://image.tmdb.org/t/p/w300${media.poster_path}`
+		: fallbackPoster;
+
+	const title = media.media_type === "movie" ? media.title : media.name;
+	const linkTo =
+		media.media_type === "movie" ? "/movies/$movieId" : "/tv/$tvId";
+	const linkParams =
+		media.media_type === "movie"
+			? { movieId: media.id.toString() }
+			: { tvId: media.id.toString() };
+
+	const role = isCastCredit(media) ? media.character : media.job;
+
+	return (
+		<Link to={linkTo} params={linkParams}>
+			<Card className="w-full min-w-42 lg:min-w-60 min-h-[350px]  overflow-hidden pt-0 select-none">
+				<div className="w-full h-[320px]">
+					<img
+						src={imageUrl}
+						alt={title}
+						className="h-full w-full object-cover"
+						onError={(e) => {
+							const target = e.currentTarget;
+							if (target.src !== fallbackPoster) {
+								target.src = fallbackPoster;
+							}
+						}}
+					/>
+				</div>
+
+				<CardHeader className="flex-grow justify-between">
+					<CardTitle
+						className="text-base leading-relaxed line-clamp-1"
+						title={title}
+					>
+						{title}
+					</CardTitle>
+					{role ? (
+						<CardDescription className="line-clamp-1 leading-relaxed">
+							{role}
+						</CardDescription>
+					) : null}
+				</CardHeader>
+			</Card>
+		</Link>
+	);
+};

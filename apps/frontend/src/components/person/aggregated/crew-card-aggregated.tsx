@@ -62,7 +62,12 @@ export const CrewCardAggregated = ({ person }: CrewCardAggregatedProps) => {
 				<CardContent className="text-center pt-0 gap-4 flex flex-col">
 					<Separator />
 					<Button asChild>
-						<Link to="/">See more</Link>
+						<Link
+							to="/person/$personId"
+							params={{ personId: person.id.toString() }}
+						>
+							See more
+						</Link>
 					</Button>
 				</CardContent>
 			</Card>

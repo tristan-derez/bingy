@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Calendar, Star, Users } from "lucide-react";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import type { Movie } from "@/types/movie";
+import { formatDate } from "@/utils/format-date";
 import { Badge } from "../ui/badge";
 import {
 	Card,
@@ -75,11 +76,7 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
 						<Calendar className="h-4 w-4" />
 						<span>
 							{movie.release_date
-								? new Date(movie.release_date).toLocaleDateString("en-US", {
-										year: "numeric",
-										month: "short",
-										day: "numeric",
-									})
+								? formatDate(movie.release_date, "en-US")
 								: "N/A"}
 						</span>
 					</div>

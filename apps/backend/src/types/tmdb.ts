@@ -626,6 +626,14 @@ export namespace Schemas {
 		}
 	>;
 
+	type AppendToResponseMap = {
+		combined_credits: { combined_credits: PersonCombinedCredits };
+		external_ids: { external_ids: PersonExternalIds };
+		translations: { translations: PersonTranslations };
+	};
+
+	export type AllowedAppends = keyof AppendToResponseMap;
+
 	export type PersonDetails = Pretty<
 		Person & {
 			also_known_as: string[];
@@ -635,6 +643,9 @@ export namespace Schemas {
 			homepage: string | null;
 			imdb_id: string;
 			place_of_birth: string;
+			external_ids?: PersonExternalIds;
+			combined_credits?: PersonCombinedCredits;
+			translations?: PersonTranslations;
 		}
 	>;
 
@@ -1471,7 +1482,12 @@ export namespace Endpoints {
 		method: "GET";
 		path: "/person/{person_id}";
 		parameters: {
-			query: Partial<{ append_to_response: string; language: string }>;
+			query: Partial<{
+				append_to_response:
+					| Schemas.AllowedAppends
+					| `${Schemas.AllowedAppends},${string}`;
+				language: string;
+			}>;
 			path: Required<{ person_id: number }>;
 		};
 		response: Schemas.PersonDetails;
