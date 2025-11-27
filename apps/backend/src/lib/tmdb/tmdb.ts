@@ -1,5 +1,5 @@
+import { Fetcher, GetEndpoints, MaybeOptionalArg } from "shared";
 import env from "#lib/env";
-import type { Fetcher, GetEndpoints, MaybeOptionalArg } from "#types/tmdb";
 
 export class ApiClient {
 	readonly baseUrl: string;
