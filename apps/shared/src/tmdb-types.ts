@@ -139,6 +139,9 @@ export namespace Schemas {
 			status: string;
 			tagline: string;
 			type: string;
+			aggregated_credits?: TvAggregatedCredits;
+			external_ids?: TvExternalIds;
+			"watch/providers"?: WatchProviders;
 		}
 	>;
 
