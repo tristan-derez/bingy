@@ -1,7 +1,7 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
+import type { Schemas } from "shared";
 import { MovieCreditsView } from "@/components/movies/movie-credits";
 import { useMovieResource } from "@/hooks/useMovies";
-import type { MovieCredits } from "@/types/movie";
 
 export const Route = createFileRoute("/movies/$movieId_/credits")({
 	component: MovieCreditsContainer,
@@ -15,7 +15,7 @@ function MovieCreditsContainer() {
 		data: credits,
 		isLoading,
 		isError,
-	} = useMovieResource<MovieCredits>(Number(movieId), "credits");
+	} = useMovieResource<Schemas.MovieCredits>(Number(movieId), "credits");
 
 	return (
 		<MovieCreditsView

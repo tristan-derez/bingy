@@ -4,6 +4,7 @@ import { useId } from "react";
 import { FaMoneyBillTrendUp } from "react-icons/fa6";
 import { TbMoneybag } from "react-icons/tb";
 import Flag from "react-world-flags";
+import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -14,9 +15,6 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import type { Collection } from "@/types/collection";
-import type { Company, Country, Genre, MovieDetails } from "@/types/movie";
-import type { WatchProviders } from "@/types/watch-providers";
 import { formatDate } from "@/utils/format-date";
 import { formatRuntime } from "@/utils/format-runtime";
 import { shortenCountryName } from "@/utils/shorten-country-name";
@@ -28,25 +26,13 @@ import { SocialLinks } from "../social-links";
 import { Separator } from "../ui/separator";
 import { WatchProvidersSection } from "../watch-providers/watch-providers-section";
 
-interface CrewMemberInMovieDetails {
-	name: string;
-	roles: Set<string>;
-}
-
-interface CastMemberInMovieDetails {
-	id: number;
-	name: string;
-	character: string;
-	profile_path: string | null;
-}
-
 interface MovieDetailViewProps {
-	movie: MovieDetails | undefined;
-	crew: CrewMemberInMovieDetails[];
-	cast: CastMemberInMovieDetails[];
+	movie: Schemas.MovieDetails | undefined;
+	crew: Array<{ name: string; roles: Set<string> }>;
+	cast: Schemas.CastMember[];
 	socials: Partial<Record<"facebook" | "instagram" | "twitter", string>>;
-	watchProviders: WatchProviders | undefined;
-	collection: Collection | undefined;
+	watchProviders: Schemas.WatchProviders | undefined;
+	collection: Schemas.CollectionDetails | undefined;
 	isLoading: boolean;
 	isError: boolean;
 	onBack: () => void;
@@ -128,7 +114,7 @@ export function MovieDetailView({
 									)}
 
 									<div className="flex flex-wrap gap-2 mt-2">
-										{movie.genres.map((genre: Genre) => (
+										{movie.genres.map((genre: Schemas.Genre) => (
 											<Badge key={genre.id} variant="secondary">
 												{genre.name}
 											</Badge>
@@ -183,19 +169,21 @@ export function MovieDetailView({
 
 						<CardFooter>
 							<div className="flex flex-wrap gap-2">
-								{movie.production_countries.map((country: Country) => (
-									<Badge
-										key={country.iso_3166_1}
-										variant="secondary"
-										className="flex items-center gap-3"
-									>
-										<Flag
-											code={country.iso_3166_1}
-											style={{ width: 18, height: 14 }}
-										/>
-										<span>{shortenCountryName(country.name)}</span>
-									</Badge>
-								))}
+								{movie.production_countries.map(
+									(country: Schemas.ProductionCountry) => (
+										<Badge
+											key={country.iso_3166_1}
+											variant="secondary"
+											className="flex items-center gap-3"
+										>
+											<Flag
+												code={country.iso_3166_1}
+												style={{ width: 18, height: 14 }}
+											/>
+											<span>{shortenCountryName(country.name)}</span>
+										</Badge>
+									),
+								)}
 							</div>
 						</CardFooter>
 					</Card>
@@ -311,22 +299,24 @@ export function MovieDetailView({
 
 					{collection && <CollectionCard collection={collection} />}
 
-					{movie.production_companies.length > 0 && (
+					{movie.production_company.length > 0 && (
 						<Card>
 							<CardHeader>
 								<CardTitle>Production Companies</CardTitle>
 							</CardHeader>
 
 							<CardContent className="flex flex-wrap gap-4">
-								{movie.production_companies.map((company: Company) => (
-									<Badge
-										key={company.id}
-										className="flex items-center gap-3"
-										variant="outline"
-									>
-										<span className="font-medium">{company.name}</span>
-									</Badge>
-								))}
+								{movie.production_company.map(
+									(company: Schemas.ProductionCompany) => (
+										<Badge
+											key={company.id}
+											className="flex items-center gap-3"
+											variant="outline"
+										>
+											<span className="font-medium">{company.name}</span>
+										</Badge>
+									),
+								)}
 							</CardContent>
 						</Card>
 					)}

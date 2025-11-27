@@ -1,7 +1,7 @@
 import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
+import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/user-placeholder.jpg";
-import type { PersonDetails } from "@/types/person";
 import { calculateAge } from "@/utils/calculate-age";
 import { formatDate } from "@/utils/format-date";
 import { getSocialUrls } from "@/utils/social-urls";
@@ -26,7 +26,7 @@ import {
 } from "../ui/collapsible";
 
 interface PersonDetailsViewProps {
-	person: PersonDetails | undefined;
+	person: Schemas.PersonDetailsWithCombinedCreditsAndSocials | undefined;
 	isLoading: boolean;
 	isError: boolean;
 	onBack: () => void;
@@ -87,7 +87,7 @@ export const PersonDetailsView = ({
 						<div className="hidden xl:flex mt-2 text-muted-foreground">
 							<div className="flex flex-col">
 								<h3 className="font-bold text-foreground">Also known as:</h3>
-								{person.also_known_as.map((name, index) => (
+								{person.also_known_as.map((name: string, index: number) => (
 									<span key={index}>{name.trim()}</span>
 								))}
 							</div>

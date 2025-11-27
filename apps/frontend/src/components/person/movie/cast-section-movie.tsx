@@ -1,8 +1,8 @@
-import type { CastMember } from "@/types/person";
+import type { Schemas } from "shared";
 import { CastCard } from "./cast-card-movie";
 
 interface CastSectionMovieProps {
-	people: CastMember[];
+	people: Schemas.CastMember[];
 	title?: string;
 }
 

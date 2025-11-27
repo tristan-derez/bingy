@@ -1,6 +1,6 @@
+import type { Schemas } from "shared";
 import { toast } from "sonner";
 import { useNowPlayingMovies } from "@/hooks/useMovies";
-import type { Movie } from "@/types/movie";
 import { LoadingSection } from "../loading/loading-section";
 import { MovieCarousel } from "./movie-carousel";
 
@@ -24,7 +24,7 @@ export const NowPlayingMovies = ({ title }: NowPlayingMovieProps) => {
 	const seenIds = new Set<number>();
 
 	const filteredMovies =
-		data?.results.filter((movie: Movie) => {
+		data?.results.filter((movie: Schemas.Movie) => {
 			if (seenIds.has(movie.id) || movie.release_date > today) {
 				return false;
 			}

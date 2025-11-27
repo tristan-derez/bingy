@@ -1,6 +1,6 @@
 import { ArrowDown, ArrowLeft } from "lucide-react";
 import { useId } from "react";
-import type { MovieCredits } from "@/types/movie";
+import type { Schemas } from "shared";
 import { ResourceNotFound } from "../errors/resource-not-found";
 import { LoadingCentered } from "../loading/loading-centered";
 import { CastSectionMovie } from "../person/movie/cast-section-movie";
@@ -8,7 +8,7 @@ import { CrewSectionMovie } from "../person/movie/crew-section-movie";
 import { Button } from "../ui/button";
 
 interface MovieCreditsViewProps {
-	credits: MovieCredits | undefined;
+	credits: Schemas.MovieCredits | undefined;
 	isLoading: boolean;
 	isError: boolean;
 	onBack: () => void;

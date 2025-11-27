@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import type { Schemas } from "shared";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -7,12 +8,10 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-
 import { useCollection } from "@/hooks/useCollections";
-import type { Collection } from "@/types/collection";
 
 interface CollectionCardProps {
-	collection: Collection;
+	collection: Schemas.CollectionDetails;
 }
 
 export function CollectionCard({ collection }: CollectionCardProps) {

@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Calendar, Star, Users } from "lucide-react";
+import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
-import type { Movie } from "@/types/movie";
 import { formatDate } from "@/utils/format-date";
 import { Badge } from "../ui/badge";
 import {
@@ -13,7 +13,7 @@ import {
 } from "../ui/card";
 
 interface MovieCardProps {
-	movie: Movie;
+	movie: Schemas.Movie;
 }
 
 export const MovieCard = ({ movie }: MovieCardProps) => {

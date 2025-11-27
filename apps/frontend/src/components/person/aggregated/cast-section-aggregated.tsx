@@ -1,8 +1,8 @@
-import type { CastPersonInAggregatedTvCredits } from "@/types/person";
+import type { Schemas } from "shared";
 import { CastCardAggregated } from "./cast-card-aggregated";
 
 interface CastSectionAggregatedProps {
-	people: CastPersonInAggregatedTvCredits[];
+	people: Schemas.CastPersonInAggregatedTvCredits[];
 	title?: string;
 }
 

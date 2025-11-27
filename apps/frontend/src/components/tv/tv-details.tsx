@@ -13,6 +13,7 @@ import {
 	XCircle,
 } from "lucide-react";
 import Flag from "react-world-flags";
+import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -23,9 +24,6 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import type { NetworkDetails } from "@/types/company";
-import type { TvDetails } from "@/types/tv";
-import type { WatchProviders } from "@/types/watch-providers";
 import { formatDate } from "@/utils/format-date";
 import { shortenCountryName } from "@/utils/shorten-country-name";
 import { ResourceNotFound } from "../errors/resource-not-found";
@@ -35,18 +33,11 @@ import { SocialLinks } from "../social-links";
 import { Separator } from "../ui/separator";
 import { WatchProvidersSection } from "../watch-providers/watch-providers-section";
 
-interface CastMember {
-	id: number;
-	name: string;
-	character: string;
-	profile_path: string | null;
-}
-
 interface TvDetailViewProps {
-	tv: TvDetails | undefined;
-	watchProviders: WatchProviders | undefined;
+	tv: Schemas.TvDetails | undefined;
+	watchProviders: Schemas.WatchProviders | undefined;
 	socials: Partial<Record<"facebook" | "instagram" | "twitter", string>>;
-	cast: CastMember[];
+	cast: Schemas.CastMember[];
 	isLoading: boolean;
 	isError: boolean;
 	onBack: () => void;
@@ -313,7 +304,10 @@ export function TvDetailsView({
 							<CardContent className="flex flex-wrap gap-4">
 								{tv.networks.map(
 									(
-										network: Omit<NetworkDetails, "homepage" | "headquarters">,
+										network: Omit<
+											Schemas.NetworkDetails,
+											"homepage" | "headquarters"
+										>,
 									) => (
 										<Badge
 											key={network.id}

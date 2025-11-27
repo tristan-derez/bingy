@@ -1,4 +1,5 @@
 import useEmblaCarousel from "embla-carousel-react";
+import type { Schemas } from "shared";
 import {
 	NextButton,
 	PrevButton,
@@ -10,15 +11,8 @@ import {
 } from "../ui/embla/embla-carousel-gradient";
 import { CastCardCarousel } from "./cast-card-carousel";
 
-interface CastMember {
-	id: number;
-	name: string;
-	character: string;
-	profile_path: string | null;
-}
-
 interface CastCarouselProps {
-	people: CastMember[];
+	people: Schemas.CastMember[];
 }
 
 export const CastCarousel = ({ people }: CastCarouselProps) => {

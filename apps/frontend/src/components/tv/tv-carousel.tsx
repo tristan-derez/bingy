@@ -1,5 +1,6 @@
 import useEmblaCarousel from "embla-carousel-react";
 import { useId } from "react";
+import type { Schemas } from "shared";
 import {
 	NextButton,
 	PrevButton,
@@ -9,11 +10,10 @@ import {
 	CarouselGradient,
 	useCarouselGradient,
 } from "@/components/ui/embla/embla-carousel-gradient";
-import type { Tv } from "@/types/tv";
 import { TvCard } from "./tv-card";
 
 interface TvCarouselProps {
-	tvShows: Tv[];
+	tvShows: Schemas.Tv[];
 	title?: string;
 }
 
@@ -53,7 +53,7 @@ export const TvCarousel = ({ tvShows, title }: TvCarouselProps) => {
 			<div className="relative">
 				<div className="overflow-hidden hover:cursor-grab" ref={emblaRef}>
 					<div className="flex gap-4">
-						{tvShows.map((tv: Tv) => (
+						{tvShows.map((tv: Schemas.Tv) => (
 							<div
 								key={`${carouselId}-${tv.id}`}
 								className="min-w-80 md:min-w-60 gap-4"

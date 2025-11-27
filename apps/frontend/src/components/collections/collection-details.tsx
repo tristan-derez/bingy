@@ -1,4 +1,5 @@
 import { ArrowLeft } from "lucide-react";
+import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import {
 	Card,
@@ -7,8 +8,6 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import type { CollectionDetails } from "@/types/collection";
-import type { MovieDetails } from "@/types/movie";
 import { ResourceNotFound } from "../errors/resource-not-found";
 import { LoadingCentered } from "../loading/loading-centered";
 import { MovieCarousel } from "../movies/movie-carousel";
@@ -16,8 +15,8 @@ import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 
 interface CollectionDetailsViewProps {
-	collectionData: CollectionDetails | undefined;
-	moviesData: MovieDetails[] | [];
+	collectionData: Schemas.CollectionDetails | undefined;
+	moviesData: Schemas.MovieDetails[] | [];
 	isLoading: boolean;
 	isError: boolean;
 	onBack: () => void;

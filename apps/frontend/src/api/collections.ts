@@ -1,5 +1,8 @@
-import type { CollectionParams } from "@/types/collection";
 import { apiFetch } from "./fetcher";
+
+export type CollectionParams = {
+	language: string;
+};
 
 export const fetchCollection = async (
 	id: number,

@@ -1,13 +1,8 @@
-import type {
-	TvEndPoints,
-	TvEpisodeEndpoints,
-	TvParams,
-	TvSeasonEndpoints,
-} from "@/types/tv";
+import type { Pretty } from "shared";
 import { apiFetch } from "./fetcher";
 
 export const fetchTvSeries = async (
-	endpoint: TvEndPoints,
+	endpoint: TvSeriesEndpoints,
 	params?: TvParams,
 ) => {
 	const res = await apiFetch(`/tv/${endpoint}`, {
@@ -36,7 +31,7 @@ export const fetchTvResources = async (
 };
 
 export const fetchMultiPagesTv = async (
-	endpoint: TvEndPoints,
+	endpoint: TvSeriesEndpoints,
 	options: {
 		maxPages: number;
 		params?: TvParams;
@@ -106,3 +101,45 @@ export const fetchTvEpisodeResources = async (
 	});
 	return res.data;
 };
+
+export type TvSeriesEndpoints = Pretty<"top_rated" | "popular" | "latest">;
+
+export type TvEndPoints = Pretty<
+	| "aggregate_credits"
+	| "alternative_titles"
+	| "content_ratings"
+	| "credits"
+	| "episode_groups"
+	| "external_ids"
+	| "images"
+	| "keywords"
+	| "lists"
+	| "recommendations"
+	| "reviews"
+	| "screened_theatrically"
+	| "similar"
+	| "translations"
+	| "videos"
+	| "watch/providers"
+>;
+
+export type TvSeasonEndpoints = Pretty<
+	| "aggregate_credits"
+	| "credits"
+	| "external_ids"
+	| "images"
+	| "translations"
+	| "videos"
+	| "watch/providers"
+>;
+
+export type TvEpisodeEndpoints = Pretty<
+	"credits" | "external_ids" | "images" | "translations" | "videos"
+>;
+
+export type TvParams = Pretty<{
+	language?: string;
+	append_to_response?: string;
+	page?: number;
+	region?: string;
+}>;

@@ -1,7 +1,7 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
+import type { Schemas } from "shared";
 import { TvCreditsView } from "@/components/tv/tv-credits";
 import { useTvResources } from "@/hooks/useTv";
-import type { TvAggregatedCredits } from "@/types/tv";
 
 export const Route = createFileRoute("/tv/$tvId_/credits")({
 	component: TvCreditsContainer,
@@ -15,7 +15,10 @@ function TvCreditsContainer() {
 		data: credits,
 		isLoading,
 		isError,
-	} = useTvResources<TvAggregatedCredits>(Number(tvId), "aggregate_credits");
+	} = useTvResources<Schemas.TvAggregatedCredits>(
+		Number(tvId),
+		"aggregate_credits",
+	);
 
 	return (
 		<TvCreditsView

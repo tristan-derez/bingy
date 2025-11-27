@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/user-placeholder.jpg";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -8,12 +9,11 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import type { CastMember } from "@/types/person";
 import { Button } from "../../ui/button";
 import { Separator } from "../../ui/separator";
 
 interface CastCardProps {
-	person: CastMember;
+	person: Schemas.CastMember;
 }
 
 export const CastCard = ({ person }: CastCardProps) => {

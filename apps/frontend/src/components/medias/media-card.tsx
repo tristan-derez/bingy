@@ -1,15 +1,15 @@
 import { Link } from "@tanstack/react-router";
+import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
-import type { MediaWithCastCredits, MediaWithCrewCredits } from "@/types/media";
 import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
 
 interface MediaCardProps {
-	media: MediaWithCastCredits | MediaWithCrewCredits;
+	media: Schemas.MediaWithCastCredits | Schemas.MediaWithCrewCredits;
 }
 
 const isCastCredit = (
-	media: MediaWithCastCredits | MediaWithCrewCredits,
-): media is MediaWithCastCredits => {
+	media: Schemas.MediaWithCastCredits | Schemas.MediaWithCrewCredits,
+): media is Schemas.MediaWithCastCredits => {
 	return "character" in media;
 };
 
@@ -44,7 +44,6 @@ export const MediaCard = ({ media }: MediaCardProps) => {
 						}}
 					/>
 				</div>
-
 				<CardHeader className="flex-grow justify-between">
 					<CardTitle
 						className="text-base leading-relaxed line-clamp-1"

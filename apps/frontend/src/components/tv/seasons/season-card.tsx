@@ -1,15 +1,15 @@
 import { Link } from "@tanstack/react-router";
+import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type { TvDetails } from "@/types/tv";
 import { formatDate } from "@/utils/format-date";
 
 export function SeasonCard({
 	season,
 	tvId,
 }: {
-	season: TvDetails["seasons"][number];
+	season: Schemas.TvDetails["seasons"][number];
 	tvId: number;
 }) {
 	const imageUrl = season.poster_path

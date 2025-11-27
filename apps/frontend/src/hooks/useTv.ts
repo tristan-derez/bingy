@@ -6,13 +6,11 @@ import {
 	fetchTvResources,
 	fetchTvSeasonResources,
 	fetchTvSeries,
+	type TvEndPoints,
+	type TvEpisodeEndpoints,
+	type TvParams,
+	type TvSeasonEndpoints,
 } from "@/api/tv";
-import type {
-	TvEndPoints,
-	TvEpisodeEndpoints,
-	TvParams,
-	TvSeasonEndpoints,
-} from "@/types/tv";
 
 export function useLatestTv(params?: TvParams) {
 	return useQuery({

@@ -1,8 +1,8 @@
-import type { CrewMember } from "@/types/person";
+import type { Schemas } from "shared";
 import { CrewCardMovie } from "./crew-card-movie";
 
 interface CrewSectionMovieProps {
-	people: CrewMember[];
+	people: Schemas.CrewMember[];
 	title?: string;
 }
 
@@ -10,7 +10,10 @@ export const CrewSectionMovie = ({
 	people,
 	title = "Crew",
 }: CrewSectionMovieProps) => {
-	const byDepartment = new Map<string, Map<string | number, CrewMember>>();
+	const byDepartment = new Map<
+		string,
+		Map<string | number, Schemas.CrewMember>
+	>();
 
 	for (const person of people) {
 		const department = person.department || "Other";

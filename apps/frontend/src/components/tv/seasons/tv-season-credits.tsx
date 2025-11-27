@@ -1,15 +1,15 @@
 import { ArrowDown, ArrowLeft } from "lucide-react";
 import { useId } from "react";
+import type { Schemas } from "shared";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
 import { LoadingCentered } from "@/components/loading/loading-centered";
 import { CastSectionAggregated } from "@/components/person/aggregated/cast-section-aggregated";
 import { CrewSectionAggregated } from "@/components/person/aggregated/crew-section-aggregated";
 import { Button } from "@/components/ui/button";
-import type { TvAggregatedCredits } from "@/types/tv";
 
 interface TvSeasonCreditsViewProps {
 	seasonNumber: number;
-	credits: TvAggregatedCredits | undefined;
+	credits: Schemas.TvAggregatedCredits | undefined;
 	isLoading: boolean;
 	isError: boolean;
 	onBack: () => void;
