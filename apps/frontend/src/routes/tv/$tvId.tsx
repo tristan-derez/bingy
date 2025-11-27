@@ -1,7 +1,7 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import type { Schemas } from "shared";
 import { TvDetailsView } from "@/components/tv/tv-details";
-import { useTv, useTvResources } from "@/hooks/useTv";
+import { useTv } from "@/hooks/useTv";
 import { getSocialUrls } from "@/utils/social-urls";
 
 export const Route = createFileRoute("/tv/$tvId")({
@@ -12,31 +12,32 @@ function TvDetailsContainer() {
 	const router = useRouter();
 	const { tvId } = Route.useParams();
 
-	const { data: tv, isLoading, isError } = useTv(Number(tvId));
-	const { data: credits } = useTvResources<Schemas.TvAggregatedCredits>(
-		Number(tvId),
-		"aggregate_credits",
-	);
+	const {
+		data: tv,
+		isLoading,
+		isError,
+	} = useTv(Number(tvId), {
+		append_to_response: "aggregate_credits,external_ids,watch/providers",
+	});
 
-	const cast =
-		credits?.cast.slice(0, 20).map((person) => ({
-			id: person.id,
-			name: person.name,
-			character: person.roles[0]?.character ?? "Unknown",
-			profile_path: person.profile_path,
-		})) ?? [];
+	const cast: Schemas.CastMember[] =
+		tv?.aggregate_credits?.cast?.slice(0, 20).map((member) => ({
+			id: member.id,
+			name: member.name,
+			adult: member.adult,
+			gender: member.gender,
+			known_for_department: member.known_for_department,
+			original_name: member.original_name,
+			popularity: member.popularity,
+			profile_path: member.profile_path,
+			cast_id: member.id,
+			character: member.roles?.[0]?.character || "Unknown",
+			credit_id: member.roles?.[0]?.credit_id || "",
+			order: member.order,
+		})) || [];
 
-	const { data: socials } = useTvResources<Schemas.TvExternalIds>(
-		Number(tvId),
-		"external_ids",
-	);
-
-	const { data: watchProviders } = useTvResources<Schemas.WatchProviders>(
-		Number(tvId),
-		"watch/providers",
-	);
-
-	const socialUrls = socials ? getSocialUrls(socials) : {};
+	const socialUrls = tv?.external_ids ? getSocialUrls(tv.external_ids) : {};
+	const watchProviders = tv?.["watch/providers"];
 
 	return (
 		<TvDetailsView
