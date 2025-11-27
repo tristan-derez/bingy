@@ -478,6 +478,9 @@ export namespace Schemas {
 			spoken_languages: SpokenLanguage[];
 			status: string;
 			tagline: string;
+			credits?: MovieCredits;
+			external_ids?: MovieExternalIds;
+			"watch/providers"?: WatchProviders;
 		}
 	>;
 
