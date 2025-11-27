@@ -552,7 +552,7 @@ export namespace Schemas {
 	}>;
 
 	// biome-ignore format: keep union type compact
-	type WatchProviderCountry = Pretty<
+	export type WatchProvidersCountry = Pretty<
         | "AE" | "AL" | "AR" | "AT" | "AU" | "BA" | "BB" | "BE" | "BG" | "BH"
         | "BO" | "BR" | "BS" | "CA" | "CH" | "CL" | "CO" | "CR" | "CV" | "CZ"
         | "DE" | "DK" | "DO" | "EC" | "EE" | "EG" | "ES" | "FI" | "FJ" | "FR"
@@ -581,7 +581,7 @@ export namespace Schemas {
 	}>;
 
 	type WatchProviderResults = Pretty<{
-		[K in WatchProviderCountry]?: CountryWatchProviders;
+		[K in WatchProvidersCountry]?: CountryWatchProviders;
 	}>;
 
 	export type WatchProviders = Pretty<{
@@ -638,7 +638,19 @@ export namespace Schemas {
 		}
 	>;
 
-	type MovieMediaWithCastCredits = Pretty<
+	export type PersonDetailsWithSocials = Pretty<
+		PersonDetails & {
+			external_ids: PersonExternalIds;
+		}
+	>;
+
+	export type PersonDetailsWithCombinedCreditsAndSocials = Pretty<
+		PersonDetailsWithSocials & {
+			combined_credits: PersonCombinedCredits;
+		}
+	>;
+
+	export type MovieMediaWithCastCredits = Pretty<
 		MovieMedia & {
 			order: number;
 			character: string;
@@ -646,7 +658,7 @@ export namespace Schemas {
 		}
 	>;
 
-	type TvMediaWithCastCredits = Pretty<
+	export type TvMediaWithCastCredits = Pretty<
 		Omit<TvMedia, "seasons" | "origin_country" | "episodes"> & {
 			origin_country: string[];
 			credit_id: string;
@@ -656,11 +668,11 @@ export namespace Schemas {
 		}
 	>;
 
-	type MediaWithCastCredits =
+	export type MediaWithCastCredits =
 		| MovieMediaWithCastCredits
 		| TvMediaWithCastCredits;
 
-	type MovieMediaWithCrewCredits = Pretty<
+	export type MovieMediaWithCrewCredits = Pretty<
 		MovieMedia & {
 			department: string;
 			job: string;
@@ -668,7 +680,7 @@ export namespace Schemas {
 		}
 	>;
 
-	type TvMediaWithCrewCredits = Pretty<
+	export type TvMediaWithCrewCredits = Pretty<
 		Omit<TvMedia, "seasons" | "origin_country" | "episodes"> & {
 			first_credit_air_date: string;
 			department: string;
@@ -677,11 +689,11 @@ export namespace Schemas {
 		}
 	>;
 
-	type MediaWithCrewCredits =
+	export type MediaWithCrewCredits =
 		| MovieMediaWithCrewCredits
 		| TvMediaWithCrewCredits;
 
-	type PersonFromCast = Pretty<
+	export type PersonFromCast = Pretty<
 		Omit<Person, "media_type"> & {
 			cast_id: number;
 			credit_id: string;
@@ -690,7 +702,7 @@ export namespace Schemas {
 		}
 	>;
 
-	type PersonFromCrew = Pretty<
+	export type PersonFromCrew = Pretty<
 		Omit<Person, "media_type"> & {
 			credit_id: string;
 			department: string;
@@ -714,7 +726,7 @@ export namespace Schemas {
 		}
 	>;
 
-	type CrewMember = {
+	export type CrewMember = {
 		adult: boolean;
 		gender: number | null;
 		id: number;
@@ -743,13 +755,13 @@ export namespace Schemas {
 		order: number;
 	};
 
-	type Role = Pretty<{
+	export type Role = Pretty<{
 		credit_id: string;
 		character: string;
 		episode_count: number;
 	}>;
 
-	type Job = Pretty<{
+	export type Job = Pretty<{
 		credit_id: string;
 		job: string;
 		episode_count: number;
@@ -853,7 +865,7 @@ export namespace Schemas {
 		data: T[];
 	};
 
-	type MovieTranslationData = Pretty<{
+	export type MovieTranslationData = Pretty<{
 		title: string;
 		overview: string;
 		homepage: string | null;
@@ -861,7 +873,7 @@ export namespace Schemas {
 		tagline: string;
 	}>;
 
-	type SpokenLanguage = {
+	export type SpokenLanguage = {
 		english_name: string;
 		iso_639_1: string;
 		name: string;
@@ -1103,7 +1115,7 @@ export namespace Schemas {
 		tv_season_results: SeasonExtended[];
 	}>;
 
-	type Genre = Pretty<{
+	export type Genre = Pretty<{
 		id: number;
 		name: string;
 	}>;
