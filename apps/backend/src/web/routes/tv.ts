@@ -14,6 +14,7 @@ import {
 	idWithSeasonNumberSchema,
 	languageQuerySchema,
 	paginationQuerySchema,
+	queryParamsAppendToResponse,
 	tvEpisodeGroupId,
 } from "#validators/query-param";
 
@@ -74,14 +75,14 @@ tvRoutes.get(
 tvRoutes.get(
 	"/:id",
 	zValidator("param", idParamSchema),
-	zValidator("query", languageQuerySchema),
+	zValidator("query", queryParamsAppendToResponse),
 	async (c) => {
 		const { id } = c.req.valid("param");
-		const { language } = c.req.valid("query");
+		const { language, append_to_response } = c.req.valid("query");
 
 		try {
 			const tv = await tmdbClient.get("/tv/{series_id}", {
-				query: { language },
+				query: { language, append_to_response },
 				path: { series_id: id },
 			});
 			return serveData(c, tv);
