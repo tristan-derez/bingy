@@ -1,4 +1,4 @@
-import type { MediaWithCastCredits, MediaWithCrewCredits } from "@/types/media";
+import type { Schemas } from "shared";
 
 const BASE_RATING = 7.0;
 const MIN_VOTES_FOR_RELIABILITY = 500;
@@ -9,17 +9,18 @@ export function sortKnownForCredits(person: {
 	name?: string;
 	known_for_department?: string;
 	combined_credits?: {
-		cast: MediaWithCastCredits[];
-		crew: MediaWithCrewCredits[];
+		cast: Schemas.MediaWithCastCredits[];
+		crew: Schemas.MediaWithCrewCredits[];
 	};
-}): (MediaWithCastCredits | MediaWithCrewCredits)[] | null {
+}): (Schemas.MediaWithCastCredits | Schemas.MediaWithCrewCredits)[] | null {
 	const combined = person.combined_credits;
 	if (!combined) return null;
 
 	const isActor = person.known_for_department === "Acting";
-	const rawCredits: (MediaWithCastCredits | MediaWithCrewCredits)[] = isActor
-		? combined.cast
-		: combined.crew;
+	const rawCredits: (
+		| Schemas.MediaWithCastCredits
+		| Schemas.MediaWithCrewCredits
+	)[] = isActor ? combined.cast : combined.crew;
 
 	const dedupeById = <T extends { id: number }>(items: T[]): T[] => {
 		const seen = new Map<number, T>();
@@ -53,7 +54,9 @@ export function sortKnownForCredits(person: {
 		return true;
 	});
 
-	const getScore = (item: MediaWithCastCredits | MediaWithCrewCredits) => {
+	const getScore = (
+		item: Schemas.MediaWithCastCredits | Schemas.MediaWithCrewCredits,
+	) => {
 		const voteCount = item.vote_count || 0;
 		const voteAverage = item.vote_average || 5;
 		const popularity = item.popularity || 0;
