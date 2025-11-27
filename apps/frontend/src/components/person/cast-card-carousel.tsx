@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/user-placeholder.jpg";
 import {
 	Card,
@@ -7,15 +8,8 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 
-interface CastMember {
-	id: number;
-	name: string;
-	character: string;
-	profile_path: string | null;
-}
-
 interface CastCardCarouselProps {
-	person: CastMember;
+	person: Schemas.CastMember;
 }
 
 export const CastCardCarousel = ({ person }: CastCardCarouselProps) => {

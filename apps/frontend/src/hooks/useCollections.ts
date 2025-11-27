@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchCollection } from "@/api/collections";
-import type { CollectionParams } from "@/types/collection";
+import { type CollectionParams, fetchCollection } from "@/api/collections";
 
 export function useCollection(id: number, params?: CollectionParams) {
 	return useQuery({

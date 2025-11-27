@@ -1,13 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import { Star, Timer, User, Users } from "lucide-react";
+import type { Schemas } from "shared";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import type { TvSeasonDetails } from "@/types/season";
 import { formatDate } from "@/utils/format-date";
 
 interface EpisodesContainerProps {
-	episodes: TvSeasonDetails["episodes"];
+	episodes: Schemas.TvSeasonDetails["episodes"];
 }
 
 export function EpisodesContainer({ episodes }: EpisodesContainerProps) {

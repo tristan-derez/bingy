@@ -1,6 +1,6 @@
+import type { Schemas } from "shared";
 import { toast } from "sonner";
 import { useTrendingTodayTv } from "@/hooks/useTv";
-import type { Tv } from "@/types/tv";
 import { LoadingSection } from "../loading/loading-section";
 import { TvCarousel } from "./tv-carousel";
 
@@ -23,7 +23,7 @@ export const TrendingTodayTv = ({ title }: TrendingTodayTvProps) => {
 	const seenIds = new Set<number>();
 
 	const filteredTv =
-		data?.results.filter((tv: Tv) => {
+		data?.results.filter((tv: Schemas.Tv) => {
 			if (seenIds.has(tv.id)) {
 				return false;
 			}

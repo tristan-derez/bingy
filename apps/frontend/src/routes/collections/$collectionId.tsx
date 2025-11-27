@@ -1,9 +1,9 @@
 import { useQueries } from "@tanstack/react-query";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
+import type { Schemas } from "shared";
 import { fetchMovie } from "@/api/movies";
 import { CollectionDetailsView } from "@/components/collections/collection-details";
 import { useCollection } from "@/hooks/useCollections";
-import type { MovieDetails } from "@/types/movie";
 
 export const Route = createFileRoute("/collections/$collectionId")({
 	component: CollectionDetailsContainer,
@@ -21,7 +21,7 @@ function CollectionDetailsContainer() {
 
 	const movieQueries = useQueries({
 		queries:
-			collectionData?.parts?.map((movie: MovieDetails) => ({
+			collectionData?.parts?.map((movie: Schemas.MovieDetails) => ({
 				queryKey: ["movies", movie.id],
 				queryFn: () => fetchMovie(movie.id),
 				enabled: !!collectionData,
@@ -29,7 +29,9 @@ function CollectionDetailsContainer() {
 			})) || [],
 	});
 
-	const moviesData = movieQueries.map((query) => query.data as MovieDetails);
+	const moviesData = movieQueries.map(
+		(query) => query.data as Schemas.MovieDetails,
+	);
 
 	return (
 		<CollectionDetailsView

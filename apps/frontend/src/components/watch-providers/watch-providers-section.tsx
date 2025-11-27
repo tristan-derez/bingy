@@ -1,11 +1,8 @@
-import type {
-	WatchProviderCountry,
-	WatchProviders,
-} from "@/types/watch-providers";
+import type { Schemas } from "shared";
 
 interface WatchProvidersSectionProps {
-	watchProviders: WatchProviders | undefined;
-	region?: WatchProviderCountry;
+	watchProviders: Schemas.WatchProviders | undefined;
+	region?: Schemas.WatchProvidersCountry;
 	className?: string;
 	maxProviders?: number;
 	title?: string;

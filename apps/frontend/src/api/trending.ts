@@ -1,5 +1,4 @@
-import type { TrendingEndpoints } from "@/types/trending";
-import type { TvParams } from "@/types/tv";
+import type { Pretty } from "shared";
 import { apiFetch } from "./fetcher";
 
 export const fetchMultiPagesTrending = async (
@@ -7,7 +6,7 @@ export const fetchMultiPagesTrending = async (
 	time_window: "day" | "week",
 	options: {
 		maxPages: number;
-		params?: TvParams;
+		params?: TrendingParams;
 	},
 ) => {
 	const firstPage = await apiFetch(`/trending/${endpoint}/${time_window}`, {
@@ -35,3 +34,10 @@ export const fetchMultiPagesTrending = async (
 
 	return { ...firstPage.data, results: allResults };
 };
+
+export type TrendingEndpoints = Pretty<"all" | "movie" | "tv" | "person">;
+
+export type TrendingParams = Pretty<{
+	language?: string;
+	page?: number;
+}>;

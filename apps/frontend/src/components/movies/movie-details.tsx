@@ -4,6 +4,7 @@ import { useId } from "react";
 import { FaMoneyBillTrendUp } from "react-icons/fa6";
 import { TbMoneybag } from "react-icons/tb";
 import Flag from "react-world-flags";
+import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -14,9 +15,6 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import type { Collection } from "@/types/collection";
-import type { Company, Country, Genre, MovieDetails } from "@/types/movie";
-import type { WatchProviders } from "@/types/watch-providers";
 import { formatDate } from "@/utils/format-date";
 import { formatRuntime } from "@/utils/format-runtime";
 import { shortenCountryName } from "@/utils/shorten-country-name";
@@ -28,25 +26,13 @@ import { SocialLinks } from "../social-links";
 import { Separator } from "../ui/separator";
 import { WatchProvidersSection } from "../watch-providers/watch-providers-section";
 
-interface CrewMemberInMovieDetails {
-	name: string;
-	roles: Set<string>;
-}
-
-interface CastMemberInMovieDetails {
-	id: number;
-	name: string;
-	character: string;
-	profile_path: string | null;
-}
-
 interface MovieDetailViewProps {
-	movie: MovieDetails | undefined;
-	crew: CrewMemberInMovieDetails[];
-	cast: CastMemberInMovieDetails[];
+	movie: Schemas.MovieDetails | undefined;
+	crew: Array<{ name: string; roles: Set<string> }>;
+	cast: Schemas.CastMember[];
 	socials: Partial<Record<"facebook" | "instagram" | "twitter", string>>;
-	watchProviders: WatchProviders | undefined;
-	collection: Collection | undefined;
+	watchProviders: Schemas.WatchProviders | undefined;
+	collection: Schemas.CollectionDetails | undefined;
 	isLoading: boolean;
 	isError: boolean;
 	onBack: () => void;
@@ -113,7 +99,7 @@ export function MovieDetailView({
 					/>
 				</div>
 
-				<div className="space-y-2 overflow-hidden max-w-full">
+				<div className="flex flex-col gap-4 overflow-hidden max-w-full">
 					<Card className="shadow-none bg-transparent pt-0 xl:p-0 border-none">
 						<CardContent className="xl:p-0">
 							<div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2">
@@ -128,7 +114,7 @@ export function MovieDetailView({
 									)}
 
 									<div className="flex flex-wrap gap-2 mt-2">
-										{movie.genres.map((genre: Genre) => (
+										{movie.genres.map((genre: Schemas.Genre) => (
 											<Badge key={genre.id} variant="secondary">
 												{genre.name}
 											</Badge>
@@ -136,14 +122,15 @@ export function MovieDetailView({
 									</div>
 								</div>
 
-								{Object.keys(socials).length > 0 && (
+								{Object.keys(socials).length > 0 ? (
 									<div className="lg:self-start mt-3 lg:pr-2">
 										<SocialLinks socials={socials} />
 									</div>
-								)}
+								) : null}
 							</div>
 						</CardContent>
 					</Card>
+
 					<Card
 						className={`relative overflow-hidden min-h-[200px] justify-center ${
 							backgroundImage ? "border-none" : ""
@@ -183,24 +170,26 @@ export function MovieDetailView({
 
 						<CardFooter>
 							<div className="flex flex-wrap gap-2">
-								{movie.production_countries.map((country: Country) => (
-									<Badge
-										key={country.iso_3166_1}
-										variant="secondary"
-										className="flex items-center gap-3"
-									>
-										<Flag
-											code={country.iso_3166_1}
-											style={{ width: 18, height: 14 }}
-										/>
-										<span>{shortenCountryName(country.name)}</span>
-									</Badge>
-								))}
+								{movie.production_countries.map(
+									(country: Schemas.ProductionCountry) => (
+										<Badge
+											key={country.iso_3166_1}
+											variant="secondary"
+											className="flex items-center gap-2"
+										>
+											<Flag
+												code={country.iso_3166_1}
+												style={{ width: 18, height: 14 }}
+											/>
+											<span>{shortenCountryName(country.name)}</span>
+										</Badge>
+									),
+								)}
 							</div>
 						</CardFooter>
 					</Card>
 
-					<div className="grid lg:grid-cols-3 gap-3">
+					<div className="grid lg:grid-cols-3 gap-2">
 						<Card>
 							<CardContent className="flex items-center gap-4">
 								<Star className="h-5 w-5 text-yellow-500" />
@@ -247,7 +236,7 @@ export function MovieDetailView({
 							</CardContent>
 						</Card>
 
-						{movie.budget > 0 && (
+						{movie.budget > 0 ? (
 							<Card>
 								<CardContent className="flex items-center gap-4">
 									<TbMoneybag className="h-5 w-5" />
@@ -259,9 +248,9 @@ export function MovieDetailView({
 									</div>
 								</CardContent>
 							</Card>
-						)}
+						) : null}
 
-						{movie.revenue > 0 && (
+						{movie.revenue > 0 ? (
 							<Card>
 								<CardContent className="flex items-center gap-4">
 									<FaMoneyBillTrendUp className="h-5 w-5" />
@@ -273,9 +262,9 @@ export function MovieDetailView({
 									</div>
 								</CardContent>
 							</Card>
-						)}
+						) : null}
 
-						{movie.homepage && (
+						{movie.homepage ? (
 							<Card>
 								<CardContent className=" flex items-center gap-4">
 									<ExternalLink className="h-5 w-5" />
@@ -294,10 +283,10 @@ export function MovieDetailView({
 									</div>
 								</CardContent>
 							</Card>
-						)}
+						) : null}
 					</div>
 
-					{cast.length > 0 && (
+					{cast && cast.length > 0 && (
 						<div className="flex flex-col gap-2">
 							<CastCarousel people={cast} />
 							<Link
@@ -309,27 +298,36 @@ export function MovieDetailView({
 						</div>
 					)}
 
-					{collection && <CollectionCard collection={collection} />}
+					{collection ? <CollectionCard collection={collection} /> : null}
 
-					{movie.production_companies.length > 0 && (
-						<Card>
-							<CardHeader>
-								<CardTitle>Production Companies</CardTitle>
-							</CardHeader>
+					{movie.production_companies &&
+						movie.production_companies.length > 0 && (
+							<Card>
+								<CardHeader>
+									<CardTitle>
+										{`Production Compan${movie.production_companies.length > 1 ? "ies" : "y"}`}
+									</CardTitle>
+								</CardHeader>
 
-							<CardContent className="flex flex-wrap gap-4">
-								{movie.production_companies.map((company: Company) => (
-									<Badge
-										key={company.id}
-										className="flex items-center gap-3"
-										variant="outline"
-									>
-										<span className="font-medium">{company.name}</span>
-									</Badge>
-								))}
-							</CardContent>
-						</Card>
-					)}
+								<CardContent className="flex flex-wrap gap-4">
+									{movie.production_companies.map(
+										(company: Schemas.ProductionCompany) => (
+											<Badge
+												key={company.id}
+												className="flex items-center gap-2"
+												variant="outline"
+											>
+												<Flag
+													code={company.origin_country}
+													style={{ width: 18, height: 14 }}
+												/>
+												<span className="font-medium">{company.name}</span>
+											</Badge>
+										),
+									)}
+								</CardContent>
+							</Card>
+						)}
 				</div>
 			</div>
 		</div>

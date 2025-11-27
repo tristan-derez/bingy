@@ -1,7 +1,7 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
+import type { Schemas } from "shared";
 import { TvEpisodeCreditsView } from "@/components/tv/episodes/episode-credits";
 import { useTvEpisodeResources } from "@/hooks/useTv";
-import type { TvEpisodeCredits } from "@/types/episode";
 
 export const Route = createFileRoute(
 	"/tv/$tvId_/season_/$seasonNumber_/episode_/$episodeNumber_/credits",
@@ -17,7 +17,7 @@ function TvEpisodeCreditsContainer() {
 		data: credits,
 		isLoading,
 		isError,
-	} = useTvEpisodeResources<TvEpisodeCredits>(
+	} = useTvEpisodeResources<Schemas.TvEpisodeCredits>(
 		Number(tvId),
 		Number(seasonNumber),
 		Number(episodeNumber),

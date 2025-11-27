@@ -1,8 +1,8 @@
-import type { CrewPersonInAggregatedTvCredits } from "@/types/person";
+import type { Schemas } from "shared";
 import { CrewCardAggregated } from "./crew-card-aggregated";
 
 interface CrewSectionAggregatedProps {
-	people: CrewPersonInAggregatedTvCredits[];
+	people: Schemas.CrewPersonInAggregatedTvCredits[];
 	title?: string;
 }
 
@@ -12,7 +12,7 @@ export const CrewSectionAggregated = ({
 }: CrewSectionAggregatedProps) => {
 	const byDepartment = new Map<
 		string,
-		Map<number, CrewPersonInAggregatedTvCredits>
+		Map<number, Schemas.CrewPersonInAggregatedTvCredits>
 	>();
 
 	for (const person of people) {

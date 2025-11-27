@@ -1,4 +1,4 @@
-export function formatRuntime(minutes: number): string {
+export function formatRuntime(minutes: number | null): string {
 	if (!minutes || minutes <= 0) return "N/A";
 	const h = Math.floor(minutes / 60);
 	const m = minutes % 60;

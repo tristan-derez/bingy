@@ -1,9 +1,9 @@
-import type { MovieEndpoint, MovieParams, MoviesEndpoint } from "@/types/movie";
+import type { Pretty } from "shared";
 import { apiFetch } from "./fetcher";
 
 export const fetchMovies = async (
 	endpoint: MoviesEndpoint,
-	params?: MovieParams,
+	params?: MoviesParams,
 ) => {
 	const res = await apiFetch(`/movies/${endpoint}`, {
 		method: "GET",
@@ -15,7 +15,7 @@ export const fetchMovies = async (
 export const fetchMultiPagesMovies = async (
 	endpoint: MoviesEndpoint,
 	maxPages: number,
-	params?: MovieParams,
+	params?: MoviesParams,
 ) => {
 	const firstPage = await apiFetch(`/movies/${endpoint}`, {
 		method: "GET",
@@ -43,7 +43,7 @@ export const fetchMultiPagesMovies = async (
 	return { ...firstPage.data, results: allResults };
 };
 
-export const fetchMovie = async (id: number, params?: MovieParams) => {
+export const fetchMovie = async (id: number, params?: MoviesParams) => {
 	const res = await apiFetch(`/movies/${id}`, {
 		method: "GET",
 		query: params,
@@ -54,7 +54,7 @@ export const fetchMovie = async (id: number, params?: MovieParams) => {
 export const fetchMovieResources = async (
 	id: number,
 	endpoint: MovieEndpoint,
-	params?: MovieParams,
+	params?: MoviesParams,
 ) => {
 	const res = await apiFetch(`/movies/${id}/${endpoint}`, {
 		method: "GET",
@@ -62,3 +62,29 @@ export const fetchMovieResources = async (
 	});
 	return res.data;
 };
+
+export type MoviesEndpoint = Pretty<
+	"latest" | "now_playing" | "popular" | "top_rated" | "upcoming"
+>;
+
+export type MovieEndpoint = Pretty<
+	| "alternative_titles"
+	| "credits"
+	| "external_ids"
+	| "images"
+	| "keywords"
+	| "lists"
+	| "recommendations"
+	| "release_dates"
+	| "reviews"
+	| "similar"
+	| "translations"
+	| "videos"
+	| "watch/providers"
+>;
+
+export type MoviesParams = Pretty<{
+	language?: string;
+	page?: number;
+	region?: string;
+}>;

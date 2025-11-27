@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowLeft, Calendar, Clock, Star } from "lucide-react";
+import type { Schemas } from "shared";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
 import { LoadingCentered } from "@/components/loading/loading-centered";
 import { CastCarousel } from "@/components/person/cast-carousel";
@@ -7,19 +8,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import type { TvEpisodeCredits, TvEpisodeDetails } from "@/types/episode";
 import { formatDate } from "@/utils/format-date";
 
-interface CastMember {
-	id: number;
-	name: string;
-	character: string;
-	profile_path: string | null;
-}
-
 interface TvEpisodeDetailViewProps {
-	episode: TvEpisodeDetails | undefined;
-	credits: TvEpisodeCredits | undefined;
+	episode: Schemas.TvEpisodeDetails | undefined;
+	credits: Schemas.TvEpisodeCredits | undefined;
 	tvId: number;
 	isLoading: boolean;
 	isError: boolean;
@@ -78,17 +71,19 @@ export function TvEpisodeDetailsView({
 		? `https://image.tmdb.org/t/p/original${episode.still_path}`
 		: undefined;
 
-	const mergedCast: CastMember[] = credits?.cast ? [...credits.cast] : [];
+	const mergedCast: Schemas.CastMember[] = credits?.cast
+		? credits.cast.map((member) => ({
+				...member,
+				cast_id: member.id,
+			}))
+		: [];
 	if (mergedCast.length < 10 && episode.guest_stars) {
-		const guestsToAdd = episode.guest_stars
-			.slice(0, 10 - mergedCast.length)
-			.map((guest) => ({
-				id: guest.id,
-				name: guest.name,
-				character: guest.character,
-				profile_path: guest.profile_path,
-			}));
-		mergedCast.push(...guestsToAdd);
+		mergedCast.push(
+			...episode.guest_stars.slice(0, 10 - mergedCast.length).map((guest) => ({
+				...guest,
+				cast_id: guest.id,
+			})),
+		);
 	}
 
 	return (

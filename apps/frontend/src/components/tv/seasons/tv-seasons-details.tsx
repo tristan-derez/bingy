@@ -1,12 +1,12 @@
 import { ArrowLeft } from "lucide-react";
+import type { Schemas } from "shared";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
 import { LoadingCentered } from "@/components/loading/loading-centered";
 import { Button } from "@/components/ui/button";
-import type { TvDetails } from "@/types/tv";
 import { SeasonCard } from "./season-card";
 
 interface TvSeasonsDetailsViewProps {
-	tv: TvDetails | undefined;
+	tv: Schemas.TvDetails | undefined;
 	isLoading: boolean;
 	isError: boolean;
 	onBack: () => void;

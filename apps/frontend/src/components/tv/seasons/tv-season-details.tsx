@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowLeft, Calendar, Layers, Star, Timer } from "lucide-react";
+import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
 import { LoadingCentered } from "@/components/loading/loading-centered";
@@ -8,29 +9,17 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { WatchProvidersSection } from "@/components/watch-providers/watch-providers-section";
-import type { CastMember } from "@/types/person";
-import type { TvSeasonDetails } from "@/types/season";
-import type { TvCredits } from "@/types/tv";
-import type { WatchProviders } from "@/types/watch-providers";
 import { EpisodesContainer } from "../episodes/episodes-container";
 
 interface TvSeasonDetailsViewProps {
-	tvSeason: TvSeasonDetails | undefined;
-	credits: TvCredits | undefined;
-	watchProviders: WatchProviders | undefined;
+	tvSeason: Schemas.TvSeasonDetails | undefined;
+	credits: Schemas.TvCredits | undefined;
+	watchProviders: Schemas.WatchProviders | undefined;
 	tvId: number;
 	isLoading: boolean;
 	isError: boolean;
 	onBack: () => void;
 }
-
-type MinimalCast = {
-	id: number;
-	name: string;
-	character: string;
-	profile_path: string | null;
-	order: number;
-};
 
 export function TvSeasonDetailsView({
 	tvSeason,
@@ -65,34 +54,26 @@ export function TvSeasonDetailsView({
 			tvSeason.episodes
 				.flatMap((ep) =>
 					(ep.guest_stars ?? []).map((g) => ({
-						id: g.id,
-						name: g.name,
-						character: g.character,
-						profile_path: g.profile_path,
+						...g,
+						cast_id: g.id,
 					})),
 				)
 				.map((p) => [p.id, p]),
 		).values(),
 	);
 
-	const seasonCastMinimal: MinimalCast[] =
-		(credits?.cast ?? []).map((p: CastMember) => ({
-			id: p.id,
-			name: p.name,
-			character: p.character,
-			profile_path: p.profile_path ?? null,
-			order: typeof p.order === "number" ? p.order : 9999,
+	const seasonCastMinimal: Schemas.CastMember[] =
+		credits?.cast.map((p) => ({
+			...p,
+			cast_id: p.id,
 		})) ?? [];
 
-	const guestStarsMinimal: MinimalCast[] = guestStars.map((g) => ({
-		id: g.id,
-		name: g.name,
-		character: g.character,
-		profile_path: g.profile_path ?? null,
-		order: typeof (g as any).order === "number" ? (g as any).order : 9999,
+	const guestStarsMinimal: Schemas.CastMember[] = guestStars.map((g) => ({
+		...g,
+		cast_id: g.id,
 	}));
 
-	let mergedCast: MinimalCast[] = [];
+	let mergedCast: Schemas.CastMember[] = [];
 
 	if (seasonCastMinimal.length >= 10) {
 		mergedCast = seasonCastMinimal
@@ -102,7 +83,7 @@ export function TvSeasonDetailsView({
 	} else if (seasonCastMinimal.length > 0) {
 		const all = [...seasonCastMinimal, ...guestStarsMinimal];
 
-		const byId = new Map<number, MinimalCast>();
+		const byId = new Map<number, Schemas.CastMember>();
 
 		for (const p of all) {
 			const existing = byId.get(p.id);

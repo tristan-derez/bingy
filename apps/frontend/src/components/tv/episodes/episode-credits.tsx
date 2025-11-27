@@ -1,15 +1,15 @@
 import { ArrowDown, ArrowLeft } from "lucide-react";
 import { useId } from "react";
+import type { Schemas } from "shared";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
 import { LoadingCentered } from "@/components/loading/loading-centered";
 import { CastSectionTv } from "@/components/person/tv/cast-section-tv";
 import { CrewSectionTv } from "@/components/person/tv/crew-section-tv";
 import { Button } from "@/components/ui/button";
-import type { TvEpisodeCredits } from "@/types/episode";
 
 interface TvEpisodeCreditsViewProps {
 	episodeNumber: number;
-	credits: TvEpisodeCredits | undefined;
+	credits: Schemas.TvEpisodeCredits | undefined;
 	isLoading: boolean;
 	isError: boolean;
 	onBack: () => void;

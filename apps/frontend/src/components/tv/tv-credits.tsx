@@ -1,6 +1,6 @@
 import { ArrowDown, ArrowLeft } from "lucide-react";
 import { useId } from "react";
-import type { TvAggregatedCredits } from "@/types/tv";
+import type { Schemas } from "shared";
 import { ResourceNotFound } from "../errors/resource-not-found";
 import { LoadingCentered } from "../loading/loading-centered";
 import { CastSectionAggregated } from "../person/aggregated/cast-section-aggregated";
@@ -8,7 +8,7 @@ import { CrewSectionAggregated } from "../person/aggregated/crew-section-aggrega
 import { Button } from "../ui/button";
 
 interface TvCreditsViewProps {
-	credits: TvAggregatedCredits | undefined;
+	credits: Schemas.TvAggregatedCredits | undefined;
 	isLoading: boolean;
 	isError: boolean;
 	onBack: () => void;

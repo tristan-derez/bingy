@@ -3,12 +3,12 @@ type Pretty<T> = T extends infer O ? { [K in keyof O]: O[K] } : never;
 export namespace Schemas {
 	// biome-ignore format: keep union type compact
 	type BaseCertificationCountry = Pretty<
-		"AU" | "BR" | "CA" | "CA-QC" | "DE" | "ES" | "FR" | "GB" | "HU"
-		| "KR" | "LT" | "NL" | "PH" | "PT" | "RU" | "SK" | "TH" | "US" 
-		| "IT" | "FI" | "MY" | "NZ" | "NO" | "BG" | "MX" | "IN" | "DK"
-		| "SE" | "ID" | "TR" | "AR" | "GR" | "IL" | "TW" | "ZA" | "SG"
-		| "PR" | "VI"
-	>;
+        "AU" | "BR" | "CA" | "CA-QC" | "DE" | "ES" | "FR" | "GB" | "HU"
+        | "KR" | "LT" | "NL" | "PH" | "PT" | "RU" | "SK" | "TH" | "US" 
+        | "IT" | "FI" | "MY" | "NZ" | "NO" | "BG" | "MX" | "IN" | "DK"
+        | "SE" | "ID" | "TR" | "AR" | "GR" | "IL" | "TW" | "ZA" | "SG"
+        | "PR" | "VI"
+    >;
 
 	type MovieOnlyCountry = Pretty<
 		"JP" | "CH" | "HK" | "MO" | "LV" | "LU" | "IE"
@@ -43,9 +43,9 @@ export namespace Schemas {
 
 	// biome-ignore format: keep union type compact
 	export type ExternalId = Pretty<
-		| "imdb_id" | "facebook_id" | "instagram_id" | "tvdb_id"
-		| "tiktok_id" | "twitter_id" | "wikidata_id" | "youtube_id"
-	>
+        | "imdb_id" | "facebook_id" | "instagram_id" | "tvdb_id"
+        | "tiktok_id" | "twitter_id" | "wikidata_id" | "youtube_id"
+    >
 
 	export type MovieInCollection = Pretty<{
 		adult: boolean;
@@ -471,7 +471,7 @@ export namespace Schemas {
 			homepage: string | null;
 			imdb_id: string | null;
 			origin_country: string[];
-			production_company: ProductionCompany[];
+			production_companies: ProductionCompany[];
 			production_countries: ProductionCountry[];
 			revenue: number;
 			runtime: number | null;
@@ -552,18 +552,18 @@ export namespace Schemas {
 	}>;
 
 	// biome-ignore format: keep union type compact
-	type WatchProviderCountry = Pretty<
-		| "AE" | "AL" | "AR" | "AT" | "AU" | "BA" | "BB" | "BE" | "BG" | "BH"
-		| "BO" | "BR" | "BS" | "CA" | "CH" | "CL" | "CO" | "CR" | "CV" | "CZ"
-		| "DE" | "DK" | "DO" | "EC" | "EE" | "EG" | "ES" | "FI" | "FJ" | "FR"
-		| "GB" | "GF" | "GI" | "GR" | "GT" | "HK" | "HN" | "HR" | "HU" | "ID"
-		| "IE" | "IL" | "IN" | "IQ" | "IS" | "IT" | "JM" | "JO" | "JP" | "KR"
-		| "KW" | "LB" | "LI" | "LT" | "LV" | "MD" | "MK" | "MT" | "MU" | "MX"
-		| "MY" | "MZ" | "NL" | "NO" | "NZ" | "OM" | "PA" | "PE" | "PH" | "PK"
-		| "PL" | "PS" | "PT" | "PY" | "QA" | "RO" | "RS" | "RU" | "SA" | "SE"
-		| "SG" | "SI" | "SK" | "SM" | "SV" | "TH" | "TR" | "TT" | "TW" | "UG"
-		| "US" | "UY" | "VE" | "YE" | "ZA"
-	>;
+	export type WatchProvidersCountry = Pretty<
+        | "AE" | "AL" | "AR" | "AT" | "AU" | "BA" | "BB" | "BE" | "BG" | "BH"
+        | "BO" | "BR" | "BS" | "CA" | "CH" | "CL" | "CO" | "CR" | "CV" | "CZ"
+        | "DE" | "DK" | "DO" | "EC" | "EE" | "EG" | "ES" | "FI" | "FJ" | "FR"
+        | "GB" | "GF" | "GI" | "GR" | "GT" | "HK" | "HN" | "HR" | "HU" | "ID"
+        | "IE" | "IL" | "IN" | "IQ" | "IS" | "IT" | "JM" | "JO" | "JP" | "KR"
+        | "KW" | "LB" | "LI" | "LT" | "LV" | "MD" | "MK" | "MT" | "MU" | "MX"
+        | "MY" | "MZ" | "NL" | "NO" | "NZ" | "OM" | "PA" | "PE" | "PH" | "PK"
+        | "PL" | "PS" | "PT" | "PY" | "QA" | "RO" | "RS" | "RU" | "SA" | "SE"
+        | "SG" | "SI" | "SK" | "SM" | "SV" | "TH" | "TR" | "TT" | "TW" | "UG"
+        | "US" | "UY" | "VE" | "YE" | "ZA"
+    >;
 
 	type WatchProvider = Pretty<{
 		logo_path: string | null;
@@ -581,7 +581,7 @@ export namespace Schemas {
 	}>;
 
 	type WatchProviderResults = Pretty<{
-		[K in WatchProviderCountry]?: CountryWatchProviders;
+		[K in WatchProvidersCountry]?: CountryWatchProviders;
 	}>;
 
 	export type WatchProviders = Pretty<{
@@ -626,14 +626,6 @@ export namespace Schemas {
 		}
 	>;
 
-	type AppendToResponseMap = {
-		combined_credits: { combined_credits: PersonCombinedCredits };
-		external_ids: { external_ids: PersonExternalIds };
-		translations: { translations: PersonTranslations };
-	};
-
-	export type AllowedAppends = keyof AppendToResponseMap;
-
 	export type PersonDetails = Pretty<
 		Person & {
 			also_known_as: string[];
@@ -643,13 +635,22 @@ export namespace Schemas {
 			homepage: string | null;
 			imdb_id: string;
 			place_of_birth: string;
-			external_ids?: PersonExternalIds;
-			combined_credits?: PersonCombinedCredits;
-			translations?: PersonTranslations;
 		}
 	>;
 
-	type MovieMediaWithCastCredits = Pretty<
+	export type PersonDetailsWithSocials = Pretty<
+		PersonDetails & {
+			external_ids: PersonExternalIds;
+		}
+	>;
+
+	export type PersonDetailsWithCombinedCreditsAndSocials = Pretty<
+		PersonDetailsWithSocials & {
+			combined_credits: PersonCombinedCredits;
+		}
+	>;
+
+	export type MovieMediaWithCastCredits = Pretty<
 		MovieMedia & {
 			order: number;
 			character: string;
@@ -657,7 +658,7 @@ export namespace Schemas {
 		}
 	>;
 
-	type TvMediaWithCastCredits = Pretty<
+	export type TvMediaWithCastCredits = Pretty<
 		Omit<TvMedia, "seasons" | "origin_country" | "episodes"> & {
 			origin_country: string[];
 			credit_id: string;
@@ -667,11 +668,11 @@ export namespace Schemas {
 		}
 	>;
 
-	type MediaWithCastCredits =
+	export type MediaWithCastCredits =
 		| MovieMediaWithCastCredits
 		| TvMediaWithCastCredits;
 
-	type MovieMediaWithCrewCredits = Pretty<
+	export type MovieMediaWithCrewCredits = Pretty<
 		MovieMedia & {
 			department: string;
 			job: string;
@@ -679,7 +680,7 @@ export namespace Schemas {
 		}
 	>;
 
-	type TvMediaWithCrewCredits = Pretty<
+	export type TvMediaWithCrewCredits = Pretty<
 		Omit<TvMedia, "seasons" | "origin_country" | "episodes"> & {
 			first_credit_air_date: string;
 			department: string;
@@ -688,11 +689,11 @@ export namespace Schemas {
 		}
 	>;
 
-	type MediaWithCrewCredits =
+	export type MediaWithCrewCredits =
 		| MovieMediaWithCrewCredits
 		| TvMediaWithCrewCredits;
 
-	type PersonFromCast = Pretty<
+	export type PersonFromCast = Pretty<
 		Omit<Person, "media_type"> & {
 			cast_id: number;
 			credit_id: string;
@@ -701,7 +702,7 @@ export namespace Schemas {
 		}
 	>;
 
-	type PersonFromCrew = Pretty<
+	export type PersonFromCrew = Pretty<
 		Omit<Person, "media_type"> & {
 			credit_id: string;
 			department: string;
@@ -725,7 +726,7 @@ export namespace Schemas {
 		}
 	>;
 
-	type CrewMember = {
+	export type CrewMember = {
 		adult: boolean;
 		gender: number | null;
 		id: number;
@@ -754,13 +755,13 @@ export namespace Schemas {
 		order: number;
 	};
 
-	type Role = Pretty<{
+	export type Role = Pretty<{
 		credit_id: string;
 		character: string;
 		episode_count: number;
 	}>;
 
-	type Job = Pretty<{
+	export type Job = Pretty<{
 		credit_id: string;
 		job: string;
 		episode_count: number;
@@ -864,7 +865,7 @@ export namespace Schemas {
 		data: T[];
 	};
 
-	type MovieTranslationData = Pretty<{
+	export type MovieTranslationData = Pretty<{
 		title: string;
 		overview: string;
 		homepage: string | null;
@@ -872,7 +873,7 @@ export namespace Schemas {
 		tagline: string;
 	}>;
 
-	type SpokenLanguage = {
+	export type SpokenLanguage = {
 		english_name: string;
 		iso_639_1: string;
 		name: string;
@@ -1114,7 +1115,7 @@ export namespace Schemas {
 		tv_season_results: SeasonExtended[];
 	}>;
 
-	type Genre = Pretty<{
+	export type Genre = Pretty<{
 		id: number;
 		name: string;
 	}>;
@@ -1482,12 +1483,7 @@ export namespace Endpoints {
 		method: "GET";
 		path: "/person/{person_id}";
 		parameters: {
-			query: Partial<{
-				append_to_response:
-					| Schemas.AllowedAppends
-					| `${Schemas.AllowedAppends},${string}`;
-				language: string;
-			}>;
+			query: Partial<{ append_to_response: string; language: string }>;
 			path: Required<{ person_id: number }>;
 		};
 		response: Schemas.PersonDetails;

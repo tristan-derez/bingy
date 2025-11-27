@@ -1,7 +1,7 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
+import type { Schemas } from "shared";
 import { PersonDetailsView } from "@/components/person/person-details";
 import { usePersonDetails } from "@/hooks/usePerson";
-import type { PersonDetails } from "@/types/person";
 
 export const Route = createFileRoute("/person/$personId")({
 	component: RouteComponent,
@@ -15,7 +15,7 @@ function RouteComponent() {
 		data: person,
 		isLoading,
 		isError,
-	} = usePersonDetails<PersonDetails>(Number(personId), {
+	} = usePersonDetails<Schemas.PersonDetails>(Number(personId), {
 		append_to_response: "combined_credits,external_ids,translations",
 		language: "en-US",
 	});

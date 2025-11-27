@@ -1,9 +1,9 @@
-import type { CastMemberForEpisode } from "@/types/person";
+import type { Schemas } from "shared";
 import { CastCardTv } from "./cast-card-tv";
 
 interface CastSectionTvProps {
-	people: CastMemberForEpisode[];
-	guestStars: CastMemberForEpisode[];
+	people: Omit<Schemas.CastMember, "cast_id">[];
+	guestStars: Omit<Schemas.CastMember, "cast_id">[];
 	title?: string;
 }
 

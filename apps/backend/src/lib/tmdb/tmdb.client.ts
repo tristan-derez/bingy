@@ -1,9 +1,4 @@
-import type {
-	EndpointParameters,
-	EndpointPath,
-	Fetcher,
-	Method,
-} from "#types/tmdb";
+import { EndpointParameters, EndpointPath, Fetcher, Method } from "shared";
 import { createApiClient } from "./tmdb";
 
 export class TmdbError extends Error {

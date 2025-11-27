@@ -1,11 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
+import type { Schemas } from "shared";
 import {
 	fetchMovie,
 	fetchMovieResources,
 	fetchMovies,
 	fetchMultiPagesMovies,
+	type MovieEndpoint,
+	type MoviesParams,
 } from "@/api/movies";
-import type { MovieDetails, MovieEndpoint, MovieParams } from "@/types/movie";
 
 export function useLatestMovie() {
 	return useQuery({
@@ -15,7 +17,7 @@ export function useLatestMovie() {
 	});
 }
 
-export function useNowPlayingMovies(params?: MovieParams) {
+export function useNowPlayingMovies(params?: MoviesParams) {
 	return useQuery({
 		queryKey: ["movies", "now_playing", params],
 		queryFn: () => fetchMultiPagesMovies("now_playing", 2, params),
@@ -23,7 +25,7 @@ export function useNowPlayingMovies(params?: MovieParams) {
 	});
 }
 
-export function usePopularMovies(params?: MovieParams) {
+export function usePopularMovies(params?: MoviesParams) {
 	return useQuery({
 		queryKey: ["movies", "popular", params],
 		queryFn: () => fetchMovies("popular", params),
@@ -31,7 +33,7 @@ export function usePopularMovies(params?: MovieParams) {
 	});
 }
 
-export function useTopRatedMovies(params?: MovieParams) {
+export function useTopRatedMovies(params?: MoviesParams) {
 	return useQuery({
 		queryKey: ["movies", "top_rated", params],
 		queryFn: () => fetchMultiPagesMovies("top_rated", 2, params),
@@ -39,7 +41,7 @@ export function useTopRatedMovies(params?: MovieParams) {
 	});
 }
 
-export function useUpcomingMovies(params?: MovieParams) {
+export function useUpcomingMovies(params?: MoviesParams) {
 	return useQuery({
 		queryKey: ["movies", "upcoming", params],
 		queryFn: () => fetchMultiPagesMovies("upcoming", 2, params),
@@ -47,8 +49,8 @@ export function useUpcomingMovies(params?: MovieParams) {
 	});
 }
 
-export function useMovie(id: number, params?: MovieParams) {
-	return useQuery<MovieDetails>({
+export function useMovie(id: number, params?: MoviesParams) {
+	return useQuery<Schemas.MovieDetails>({
 		queryKey: ["movies", id, params],
 		queryFn: () => fetchMovie(id, params),
 		staleTime: 1000 * 60 * 30,
@@ -58,7 +60,7 @@ export function useMovie(id: number, params?: MovieParams) {
 export function useMovieResource<T>(
 	id: number,
 	endpoint: MovieEndpoint,
-	params?: MovieParams,
+	params?: MoviesParams,
 ) {
 	return useQuery<T>({
 		queryKey: ["movies", id, endpoint, params],
