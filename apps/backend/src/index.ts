@@ -10,6 +10,7 @@ import { connection } from "#lib/database";
 import env from "#lib/env";
 import { logger } from "#lib/logger";
 import { serveInternalServerError } from "#lib/responses/error";
+import { cacheMiddleware } from "#web/middlewares/cache";
 import { sessionMiddleware } from "#web/middlewares/session";
 import authRoutes from "#web/routes/auth";
 import certificationRoutes from "#web/routes/certification";
@@ -50,7 +51,6 @@ app.use(
 	}),
 );
 
-const api = new Hono();
 app.use(httpLogger());
 app.use(trimTrailingSlash());
 app.use("/assets/*", serveStatic({ root: "./src" }));
@@ -67,7 +67,9 @@ const pingDB = async () => {
 pingDB();
 
 app.use("*", sessionMiddleware);
+const api = new Hono();
 api.route("/auth", authRoutes);
+api.use("*", cacheMiddleware);
 api.route("/movies", movieRoutes);
 api.route("/tv", tvRoutes);
 api.route("/person", personRoutes);
