@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import type { Schemas } from "shared";
 import { fetchMultiPagesTrending } from "@/api/trending";
 import {
 	fetchMultiPagesTv,
@@ -55,7 +56,7 @@ export function useTrendingWeekTv(params?: TvParams) {
 }
 
 export function useTv(id: number, params?: TvParams) {
-	return useQuery({
+	return useQuery<Schemas.TvDetails>({
 		queryKey: ["tv", id, params],
 		queryFn: () => fetchTvResources(id, { params }),
 		staleTime: 1000 * 60 * 20,
