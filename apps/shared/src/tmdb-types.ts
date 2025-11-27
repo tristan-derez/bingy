@@ -471,7 +471,7 @@ export namespace Schemas {
 			homepage: string | null;
 			imdb_id: string | null;
 			origin_country: string[];
-			production_company: ProductionCompany[];
+			production_companies: ProductionCompany[];
 			production_countries: ProductionCountry[];
 			revenue: number;
 			runtime: number | null;

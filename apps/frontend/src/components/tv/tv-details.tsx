@@ -322,10 +322,12 @@ export function TvDetailsView({
 						</Card>
 					)}
 
-					{tv.production_companies.length > 0 && (
+					{tv.production_companies && tv.production_companies.length > 0 && (
 						<Card>
 							<CardHeader>
-								<CardTitle>Production Companies</CardTitle>
+								<CardTitle>
+									{`Production Compan${tv.production_companies.length > 1 ? "ies" : "y"}`}
+								</CardTitle>
 							</CardHeader>
 
 							<CardContent className="flex flex-wrap gap-4">

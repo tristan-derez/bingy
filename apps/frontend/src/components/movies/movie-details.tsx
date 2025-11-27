@@ -99,7 +99,7 @@ export function MovieDetailView({
 					/>
 				</div>
 
-				<div className="space-y-2 overflow-hidden max-w-full">
+				<div className="flex flex-col gap-4 overflow-hidden max-w-full">
 					<Card className="shadow-none bg-transparent pt-0 xl:p-0 border-none">
 						<CardContent className="xl:p-0">
 							<div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2">
@@ -122,14 +122,15 @@ export function MovieDetailView({
 									</div>
 								</div>
 
-								{Object.keys(socials).length > 0 && (
+								{Object.keys(socials).length > 0 ? (
 									<div className="lg:self-start mt-3 lg:pr-2">
 										<SocialLinks socials={socials} />
 									</div>
-								)}
+								) : null}
 							</div>
 						</CardContent>
 					</Card>
+
 					<Card
 						className={`relative overflow-hidden min-h-[200px] justify-center ${
 							backgroundImage ? "border-none" : ""
@@ -174,7 +175,7 @@ export function MovieDetailView({
 										<Badge
 											key={country.iso_3166_1}
 											variant="secondary"
-											className="flex items-center gap-3"
+											className="flex items-center gap-2"
 										>
 											<Flag
 												code={country.iso_3166_1}
@@ -188,7 +189,7 @@ export function MovieDetailView({
 						</CardFooter>
 					</Card>
 
-					<div className="grid lg:grid-cols-3 gap-3">
+					<div className="grid lg:grid-cols-3 gap-2">
 						<Card>
 							<CardContent className="flex items-center gap-4">
 								<Star className="h-5 w-5 text-yellow-500" />
@@ -235,7 +236,7 @@ export function MovieDetailView({
 							</CardContent>
 						</Card>
 
-						{movie.budget > 0 && (
+						{movie.budget > 0 ? (
 							<Card>
 								<CardContent className="flex items-center gap-4">
 									<TbMoneybag className="h-5 w-5" />
@@ -247,9 +248,9 @@ export function MovieDetailView({
 									</div>
 								</CardContent>
 							</Card>
-						)}
+						) : null}
 
-						{movie.revenue > 0 && (
+						{movie.revenue > 0 ? (
 							<Card>
 								<CardContent className="flex items-center gap-4">
 									<FaMoneyBillTrendUp className="h-5 w-5" />
@@ -261,9 +262,9 @@ export function MovieDetailView({
 									</div>
 								</CardContent>
 							</Card>
-						)}
+						) : null}
 
-						{movie.homepage && (
+						{movie.homepage ? (
 							<Card>
 								<CardContent className=" flex items-center gap-4">
 									<ExternalLink className="h-5 w-5" />
@@ -282,10 +283,10 @@ export function MovieDetailView({
 									</div>
 								</CardContent>
 							</Card>
-						)}
+						) : null}
 					</div>
 
-					{cast.length > 0 && (
+					{cast && cast.length > 0 && (
 						<div className="flex flex-col gap-2">
 							<CastCarousel people={cast} />
 							<Link
@@ -297,29 +298,36 @@ export function MovieDetailView({
 						</div>
 					)}
 
-					{collection && <CollectionCard collection={collection} />}
+					{collection ? <CollectionCard collection={collection} /> : null}
 
-					{movie.production_company.length > 0 && (
-						<Card>
-							<CardHeader>
-								<CardTitle>Production Companies</CardTitle>
-							</CardHeader>
+					{movie.production_companies &&
+						movie.production_companies.length > 0 && (
+							<Card>
+								<CardHeader>
+									<CardTitle>
+										{`Production Compan${movie.production_companies.length > 1 ? "ies" : "y"}`}
+									</CardTitle>
+								</CardHeader>
 
-							<CardContent className="flex flex-wrap gap-4">
-								{movie.production_company.map(
-									(company: Schemas.ProductionCompany) => (
-										<Badge
-											key={company.id}
-											className="flex items-center gap-3"
-											variant="outline"
-										>
-											<span className="font-medium">{company.name}</span>
-										</Badge>
-									),
-								)}
-							</CardContent>
-						</Card>
-					)}
+								<CardContent className="flex flex-wrap gap-4">
+									{movie.production_companies.map(
+										(company: Schemas.ProductionCompany) => (
+											<Badge
+												key={company.id}
+												className="flex items-center gap-2"
+												variant="outline"
+											>
+												<Flag
+													code={company.origin_country}
+													style={{ width: 18, height: 14 }}
+												/>
+												<span className="font-medium">{company.name}</span>
+											</Badge>
+										),
+									)}
+								</CardContent>
+							</Card>
+						)}
 				</div>
 			</div>
 		</div>
