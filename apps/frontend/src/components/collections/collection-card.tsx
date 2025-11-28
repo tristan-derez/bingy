@@ -8,7 +8,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import { useCollection } from "@/hooks/useCollections";
+import { useCollection } from "@/hooks/useCollection";
 
 interface CollectionCardProps {
 	collection: Schemas.MovieDetails["belongs_to_collection"];
