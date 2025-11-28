@@ -19,6 +19,7 @@ import {
 	CardTitle,
 } from "../ui/card";
 import { PersonBiography } from "./person-biography";
+import { PersonTimeline } from "./person-timeline";
 
 interface PersonDetailsViewProps {
 	person: Schemas.PersonDetailsWithCombinedCreditsAndSocials | undefined;
@@ -64,11 +65,11 @@ export const PersonDetailsView = ({
 			</Button>
 
 			<div className="grid xl:grid-cols-[auto_1fr] gap-4 justify-items-center">
-				<div className="flex flex-col gap-2 items-center xl:items-start max-w-[600px]">
+				<div className="flex flex-col gap-2 items-center xl:items-start max-w-[400px]">
 					<img
 						src={imageUrl}
 						alt={person.name}
-						className="rounded-lg shadow-lg w-full max-w-[350px] xl:max-h-[600px]"
+						className="rounded-lg shadow-lg w-full xl:max-h-[600px]"
 						onError={(e) => {
 							const target = e.currentTarget;
 							if (target.src !== fallbackPoster) {
@@ -88,7 +89,7 @@ export const PersonDetailsView = ({
 					) : null}
 				</div>
 
-				<div className="max-w-full w-full space-y-4 overflow-hidden">
+				<div className="max-w-full w-full flex flex-col gap-4 overflow-hidden">
 					<Card className="shadow-none bg-transparent xl:p-0 border-none">
 						<CardContent className="xl:p-0">
 							<div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2">
@@ -162,7 +163,10 @@ export const PersonDetailsView = ({
 						) : null}
 					</Card>
 					{person.combined_credits ? (
-						<MediasCarousel medias={sortedCredits} title="Known For" />
+						<div className="flex flex-col gap-4">
+							<MediasCarousel medias={sortedCredits} title="Known For" />
+							<PersonTimeline combinedCredits={person.combined_credits} />
+						</div>
 					) : null}
 				</div>
 			</div>

@@ -81,7 +81,7 @@ export function TvDetailsView({
 			</Button>
 
 			<div className="grid xl:grid-cols-[auto_1fr] gap-4 justify-items-center">
-				<div className="flex flex-col gap-2 items-center xl:items-start max-w-[600px]">
+				<div className="flex flex-col gap-2 items-center xl:items-start max-w-[400px]">
 					<img
 						src={imageUrl}
 						alt={tv.name}

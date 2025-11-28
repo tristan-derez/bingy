@@ -6,15 +6,15 @@ import {
 	CollapsibleTrigger,
 } from "../ui/collapsible";
 
-interface PersonBiography {
+interface PersonBiographyProps {
 	biography: string;
 }
 
-export function PersonBiography({ biography }: PersonBiography) {
+export const PersonBiography = ({ biography }: PersonBiographyProps) => {
 	const [isCollapsibleOpen, setIsCollapsibleOpen] = useState(false);
 
 	if (!biography) {
-		return <p></p>;
+		return <p>No biography available.</p>;
 	}
 
 	const maxInitialLength = 400;
@@ -66,4 +66,4 @@ export function PersonBiography({ biography }: PersonBiography) {
 			</Collapsible>
 		</>
 	);
-}
+};

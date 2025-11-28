@@ -80,7 +80,7 @@ export function MovieDetailView({
 			</Button>
 
 			<div className="grid xl:grid-cols-[auto_1fr] gap-4 justify-items-center">
-				<div className="flex flex-col gap-2 items-center xl:items-start max-w-[600px]">
+				<div className="flex flex-col gap-2 items-center xl:items-start max-w-[400px]">
 					<img
 						src={imageUrl}
 						alt={movie.title}
@@ -99,7 +99,7 @@ export function MovieDetailView({
 					/>
 				</div>
 
-				<div className="flex flex-col gap-4 overflow-hidden max-w-full">
+				<div className="flex flex-col gap-4 overflow-hidden max-w-full w-full">
 					<Card className="shadow-none bg-transparent pt-0 xl:p-0 border-none">
 						<CardContent className="xl:p-0">
 							<div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2">
