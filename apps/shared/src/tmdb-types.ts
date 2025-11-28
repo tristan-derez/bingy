@@ -687,11 +687,12 @@ export namespace Schemas {
 	>;
 
 	export type TvMediaWithCrewCredits = Pretty<
-		Omit<TvMedia, "seasons" | "origin_country" | "episodes"> & {
+		Omit<TvMedia, "seasons" | "origin_country" | "episodes" | "character"> & {
 			first_credit_air_date: string;
 			department: string;
 			credit_id: string;
 			origin_country: string[];
+			job: string;
 		}
 	>;
 
