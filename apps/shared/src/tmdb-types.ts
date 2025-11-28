@@ -671,6 +671,7 @@ export namespace Schemas {
 			department: string;
 			character: string;
 			first_credit_air_date: string;
+			episode_count: number;
 		}
 	>;
 
