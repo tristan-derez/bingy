@@ -6,11 +6,12 @@ import { showRoutes } from "hono/dev";
 import { logger as httpLogger } from "hono/logger";
 import { trimTrailingSlash } from "hono/trailing-slash";
 import type { auth } from "#lib/auth";
+import { cacheClient } from "#lib/cache-client";
 import { connection } from "#lib/database";
 import env from "#lib/env";
 import { logger } from "#lib/logger";
 import { serveInternalServerError } from "#lib/responses/error";
-import { cache, cacheMiddleware } from "#web/middlewares/cache";
+import { cacheMiddleware } from "#web/middlewares/cache";
 import { sessionMiddleware } from "#web/middlewares/session";
 import authRoutes from "#web/routes/auth";
 import certificationRoutes from "#web/routes/certification";
@@ -27,6 +28,10 @@ import searchRoutes from "#web/routes/search";
 import trendingRoutes from "#web/routes/trending";
 import tvRoutes from "#web/routes/tv";
 import watchProvidersRoutes from "#web/routes/watch-providers";
+
+declare global {
+	var __cacheFlushed: boolean | undefined;
+}
 
 const app = new Hono<{
 	Variables: {
@@ -87,8 +92,11 @@ app.onError((err, c) => {
 });
 
 if (env.NODE_ENV === "development") {
-	await cache.flush();
-	logger.info("Cache flushed on dev startup");
+	if (!global.__cacheFlushed) {
+		await cacheClient.flush();
+		logger.info("Cache flushed on dev startup");
+		global.__cacheFlushed = true;
+	}
 }
 
 const port = Number(env.PORT);
