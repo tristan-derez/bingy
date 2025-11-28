@@ -6,11 +6,11 @@ import {
 	CollapsibleTrigger,
 } from "../ui/collapsible";
 
-interface PersonBiography {
+interface PersonBiographyProps {
 	biography: string;
 }
 
-export function PersonBiography({ biography }: PersonBiography) {
+export const PersonBiography = ({ biography }: PersonBiographyProps) => {
 	const [isCollapsibleOpen, setIsCollapsibleOpen] = useState(false);
 
 	if (!biography) {
@@ -66,4 +66,4 @@ export function PersonBiography({ biography }: PersonBiography) {
 			</Collapsible>
 		</>
 	);
-}
+};
