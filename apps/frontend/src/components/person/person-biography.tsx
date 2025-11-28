@@ -14,7 +14,7 @@ export const PersonBiography = ({ biography }: PersonBiographyProps) => {
 	const [isCollapsibleOpen, setIsCollapsibleOpen] = useState(false);
 
 	if (!biography) {
-		return <p></p>;
+		return <p>No biography available.</p>;
 	}
 
 	const maxInitialLength = 400;
