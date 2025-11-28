@@ -6,10 +6,12 @@ import { showRoutes } from "hono/dev";
 import { logger as httpLogger } from "hono/logger";
 import { trimTrailingSlash } from "hono/trailing-slash";
 import type { auth } from "#lib/auth";
+import { cacheClient } from "#lib/cache-client";
 import { connection } from "#lib/database";
 import env from "#lib/env";
 import { logger } from "#lib/logger";
 import { serveInternalServerError } from "#lib/responses/error";
+import { cacheMiddleware } from "#web/middlewares/cache";
 import { sessionMiddleware } from "#web/middlewares/session";
 import authRoutes from "#web/routes/auth";
 import certificationRoutes from "#web/routes/certification";
@@ -28,7 +30,7 @@ import tvRoutes from "#web/routes/tv";
 import watchProvidersRoutes from "#web/routes/watch-providers";
 
 declare global {
-	var __routesShown: boolean | undefined;
+	var __cacheFlushed: boolean | undefined;
 }
 
 const app = new Hono<{
@@ -50,7 +52,6 @@ app.use(
 	}),
 );
 
-const api = new Hono();
 app.use(httpLogger());
 app.use(trimTrailingSlash());
 app.use("/assets/*", serveStatic({ root: "./src" }));
@@ -67,7 +68,9 @@ const pingDB = async () => {
 pingDB();
 
 app.use("*", sessionMiddleware);
+const api = new Hono();
 api.route("/auth", authRoutes);
+api.use("*", cacheMiddleware);
 api.route("/movies", movieRoutes);
 api.route("/tv", tvRoutes);
 api.route("/person", personRoutes);
@@ -89,12 +92,13 @@ app.onError((err, c) => {
 });
 
 if (env.NODE_ENV === "development") {
-	if (!global.__routesShown) {
-		console.log("Available routes:");
-		showRoutes(app);
-		global.__routesShown = true;
+	if (!global.__cacheFlushed) {
+		await cacheClient.flush();
+		logger.info("Cache flushed on dev startup");
+		global.__cacheFlushed = true;
 	}
 }
+
 const port = Number(env.PORT);
 logger.info(`Server is running on port ${port} and env: ${env.NODE_ENV}`);
 
