@@ -1,5 +1,4 @@
 import { ArrowLeft } from "lucide-react";
-import { useState } from "react";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/user-placeholder.jpg";
 import { calculateAge } from "@/utils/calculate-age";
@@ -19,11 +18,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "../ui/card";
-import {
-	Collapsible,
-	CollapsibleContent,
-	CollapsibleTrigger,
-} from "../ui/collapsible";
+import { PersonBiography } from "./person-biography";
 
 interface PersonDetailsViewProps {
 	person: Schemas.PersonDetailsWithCombinedCreditsAndSocials | undefined;
@@ -38,8 +33,6 @@ export const PersonDetailsView = ({
 	isError,
 	onBack,
 }: PersonDetailsViewProps) => {
-	const [isCollapsibleOpen, setIsCollapsibleOpen] = useState(false);
-
 	if (isLoading) {
 		return <LoadingCentered />;
 	}
@@ -148,44 +141,13 @@ export const PersonDetailsView = ({
 						</CardContent>
 					</Card>
 
-					<Card className="relative overflow-hidden border-none">
+					<Card className="relative overflow-hidden border-none justify-center">
 						<CardHeader className="text-foreground">
 							<CardTitle>Biography</CardTitle>
 						</CardHeader>
 						<CardContent className="text-muted-foreground gap-4">
-							{person.biography ? (
-								(() => {
-									const [firstLine, ...rest] = person.biography.split("\n");
-									const remainingText = rest.join("\n");
-
-									if (!remainingText) {
-										return <p>{firstLine}</p>;
-									}
-
-									return (
-										<>
-											<p>{firstLine}</p>
-											<Collapsible
-												open={isCollapsibleOpen}
-												onOpenChange={setIsCollapsibleOpen}
-											>
-												<CollapsibleTrigger asChild>
-													<Button variant="link" size="sm" className="p-0">
-														{isCollapsibleOpen ? "Show less" : "Show more"}
-													</Button>
-												</CollapsibleTrigger>
-												<CollapsibleContent>
-													<p className="whitespace-pre-line">{remainingText}</p>
-												</CollapsibleContent>
-											</Collapsible>
-										</>
-									);
-								})()
-							) : (
-								<p>No biography found for {person.name}.</p>
-							)}
+							<PersonBiography biography={person.biography} />
 						</CardContent>
-
 						{person.place_of_birth ? (
 							<CardFooter>
 								<div className="flex flex-wrap gap-2">
