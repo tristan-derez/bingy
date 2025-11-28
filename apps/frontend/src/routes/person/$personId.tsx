@@ -15,7 +15,7 @@ function RouteComponent() {
 		data: person,
 		isLoading,
 		isError,
-	} = usePersonDetails<Schemas.PersonDetails>(Number(personId), {
+	} = usePersonDetails<Schemas.PersonDetailsWithCombinedCreditsAndSocials>(Number(personId), {
 		append_to_response: "combined_credits,external_ids,translations",
 		language: "en-US",
 	});
