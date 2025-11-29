@@ -386,7 +386,7 @@ export namespace Schemas {
 		overview: string;
 	}>;
 
-	type Season = Pretty<{
+	export type Season = Pretty<{
 		air_date: string | null;
 		episode_count: number;
 		id: number;
@@ -404,7 +404,7 @@ export namespace Schemas {
 		}
 	>;
 
-	type Episode = Pretty<{
+	export type Episode = Pretty<{
 		id: number;
 		name: string;
 		overview: string;
@@ -446,7 +446,7 @@ export namespace Schemas {
 		}
 	>;
 
-	type TvMedia = Pretty<
+	export type TvMedia = Pretty<
 		BaseMedia & {
 			media_type: "tv";
 			name: string;
@@ -462,7 +462,7 @@ export namespace Schemas {
 		Omit<TvMedia, "episodes" | "seasons">
 	>;
 
-	export type Media = MovieMedia | TvMedia;
+	export type Media = Pretty<MovieMedia | TvMedia>;
 
 	export type MediaMulti = Pretty<Media | PersonExtended>;
 
@@ -990,7 +990,7 @@ export namespace Schemas {
 		credit_type: string;
 		department: string;
 		job: string;
-		media: Media;
+		media: Pretty<Media>;
 		media_type: string;
 		id: string;
 		person: Person;
