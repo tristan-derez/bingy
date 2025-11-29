@@ -83,7 +83,8 @@ export const DepartmentContainer = ({
 												{item.title}
 											</Link>
 											<div className="text-sm text-muted-foreground">
-												{item.episodeCount !== undefined ? (
+												{item.episodeCount !== undefined &&
+												item.episodeCount > 0 ? (
 													<Link
 														to="/tv/$tvId/episodes"
 														params={{ tvId: String(item.id) }}
