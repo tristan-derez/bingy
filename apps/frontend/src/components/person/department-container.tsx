@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { useId } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "../ui/separator";
 
@@ -9,6 +10,7 @@ export type TimelineItem = {
 	role: string;
 	year: string;
 	episodeCount?: number;
+	creditId?: string;
 	fullDate: string | null;
 };
 
@@ -21,6 +23,7 @@ export const DepartmentContainer = ({
 	title,
 	items,
 }: DepartmentContainerProps) => {
+	const id = useId();
 	const itemsByYear = items.reduce<Record<string, TimelineItem[]>>(
 		(acc, item) => {
 			if (!acc[item.year]) acc[item.year] = [];
@@ -52,7 +55,7 @@ export const DepartmentContainer = ({
 					});
 
 					return (
-						<div key={year} className="flex flex-col gap-2">
+						<div key={`${id}-${year}`} className="flex flex-col gap-2">
 							<div className="text-sm font-semibold text-muted-foreground">
 								{year}
 							</div>
@@ -60,7 +63,10 @@ export const DepartmentContainer = ({
 							<Card className="shadow-none border-none rounded-md py-4">
 								<CardContent className="flex flex-col">
 									{sortedItems.map((item, idx) => (
-										<div key={item.id} className="flex flex-col">
+										<div
+											key={item.creditId || `${id}-${item.id}-${idx}`}
+											className="flex flex-col"
+										>
 											<Link
 												to={
 													item.mediaType.toLowerCase() === "movie"
@@ -76,14 +82,22 @@ export const DepartmentContainer = ({
 											>
 												{item.title}
 											</Link>
-
 											<div className="text-sm text-muted-foreground">
-												{item.episodeCount !== undefined
-													? `${item.episodeCount} episode${item.episodeCount > 1 ? "s" : ""} `
-													: ""}
+												{item.episodeCount !== undefined ? (
+													<Link
+														to="/tv/$tvId/episodes"
+														params={{ tvId: String(item.id) }}
+														search={{ credit_id: String(item.creditId) }}
+														className="underline text-foreground"
+													>
+														{item.episodeCount} episode
+														{item.episodeCount > 1 ? "s" : ""}
+													</Link>
+												) : (
+													""
+												)}{" "}
 												as {item.role}
 											</div>
-
 											{idx < sortedItems.length - 1 && (
 												<div className="py-2">
 													<Separator />
