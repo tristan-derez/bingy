@@ -1,9 +1,19 @@
 import type { Schemas } from "shared";
 
-const BASE_RATING = 7.0;
-const MIN_VOTES_FOR_RELIABILITY = 500;
-const LEAD_ROLE_BOOST = 800;
-const MOVIE_ORDER_DECAY_FACTOR = 0.7;
+type Credit = Schemas.MediaWithCastCredits | Schemas.MediaWithCrewCredits;
+
+const WEIGHTS = {
+	BASE_RATING: 7.0,
+	MIN_VOTES: 500,
+	LEAD_BOOST: 800,
+	ORDER_DECAY: 0.7,
+	POPULARITY_FACTOR: 0.5,
+	TV_EPISODE: {
+		MIN_SIGNIFICANT: 5,
+		RECURRING_THRESHOLD: 8,
+		GUEST_SCORE: 1,
+	},
+} as const;
 
 export function sortKnownForCredits(person: {
 	name?: string;
@@ -12,91 +22,145 @@ export function sortKnownForCredits(person: {
 		cast: Schemas.MediaWithCastCredits[];
 		crew: Schemas.MediaWithCrewCredits[];
 	};
-}): (Schemas.MediaWithCastCredits | Schemas.MediaWithCrewCredits)[] | null {
+}): Credit[] | null {
 	const combined = person.combined_credits;
 	if (!combined) return null;
 
 	const isActor = person.known_for_department === "Acting";
-	const rawCredits: (
-		| Schemas.MediaWithCastCredits
-		| Schemas.MediaWithCrewCredits
-	)[] = isActor ? combined.cast : combined.crew;
+	const credits = deduplicateById(
+		(isActor ? combined.cast : combined.crew) as Credit[],
+	);
+	const filtered = filterCredits(credits, isActor, person.name);
+	const scored = filtered.map((credit) => ({
+		credit,
+		score: calculateScore(credit, isActor),
+	}));
 
-	const dedupeById = <T extends { id: number }>(items: T[]): T[] => {
-		const seen = new Map<number, T>();
-		for (const item of items) {
-			if (!seen.has(item.id)) seen.set(item.id, item);
+	scored.sort((a, b) => b.score - a.score);
+
+	return scored.slice(0, 10).map((item) => item.credit);
+}
+
+function deduplicateById<T extends { id: number }>(items: T[]): T[] {
+	const seen = new Map<number, T>();
+	for (const item of items) {
+		if (!seen.has(item.id)) seen.set(item.id, item);
+	}
+	return [...seen.values()];
+}
+
+function filterCredits(
+	credits: Credit[],
+	isActor: boolean,
+	personName?: string,
+): Credit[] {
+	return credits.filter((credit) => {
+		if (isActor && "character" in credit) {
+			return isValidActorCredit(credit.character, personName);
 		}
-		return [...seen.values()];
-	};
-
-	let credits = dedupeById(rawCredits);
-
-	credits = credits.filter((item) => {
-		if (isActor && "character" in item) {
-			const character = item.character?.trim() || "";
-			const name = person.name?.trim() || "";
-			if (!character) return false;
-
-			const lowerChar = character.toLowerCase();
-			if (
-				(name && lowerChar === `${name.toLowerCase()} (voice)`) ||
-				lowerChar.includes("self") ||
-				lowerChar.includes("(uncredited)") ||
-				lowerChar.includes("archive footage")
-			) {
-				return false;
-			}
-		}
-		if ("job" in item) {
-			return item.job && item.job.trim().length > 0;
+		if ("job" in credit) {
+			return Boolean(credit.job?.trim());
 		}
 		return true;
 	});
+}
 
-	const getScore = (
-		item: Schemas.MediaWithCastCredits | Schemas.MediaWithCrewCredits,
-	) => {
-		const voteCount = item.vote_count || 0;
-		const voteAverage = item.vote_average || 5;
-		const popularity = item.popularity || 0;
+function isValidActorCredit(
+	character: string | undefined,
+	personName?: string,
+): boolean {
+	const char = character?.trim().toLowerCase();
+	if (!char) return false;
 
-		const adjustedRating =
-			(voteCount * voteAverage + MIN_VOTES_FOR_RELIABILITY * BASE_RATING) /
-			(voteCount + MIN_VOTES_FOR_RELIABILITY);
+	const name = personName?.trim().toLowerCase();
+	const invalidPatterns = [
+		"self",
+		"(uncredited)",
+		"archive footage",
+		name && `${name} (voice)`,
+	].filter(Boolean);
 
-		let score = voteCount * adjustedRating;
+	return !invalidPatterns.some((pattern) => char.includes(pattern as string));
+}
 
-		if (isActor) {
-			if (item.media_type === "movie" && "order" in item) {
-				const order = item.order || 0;
+function calculateScore(credit: Credit, isActor: boolean): number {
+	const voteCount = credit.vote_count || 0;
+	const voteAverage = credit.vote_average || 5;
+	const popularity = credit.popularity || 0;
 
-				if (order <= 1 && voteCount < MIN_VOTES_FOR_RELIABILITY) {
-					score = score + LEAD_ROLE_BOOST;
-				}
+	const adjustedRating = calculateAdjustedRating(voteCount, voteAverage);
+	const baseScore = voteCount * adjustedRating;
 
-				const decay = 1 + order * MOVIE_ORDER_DECAY_FACTOR;
-				score = score / decay;
-			} else if (item.media_type === "tv" && "episode_count" in item) {
-				// @todo: fetch total episode count for each tv show
-				const epCount = item.episode_count as number;
+	if (isActor) {
+		return applyActorModifiers(baseScore, credit, voteCount, popularity);
+	}
 
-				if (epCount >= 8) {
-					score = score + popularity * 2;
-				} else {
-					score = score * 0.15 + popularity * 5;
-				}
-			}
-		} else {
-			score = score + popularity * 1;
-		}
+	return baseScore + popularity * WEIGHTS.POPULARITY_FACTOR;
+}
 
-		return score;
-	};
+function calculateAdjustedRating(
+	voteCount: number,
+	voteAverage: number,
+): number {
+	return (
+		(voteCount * voteAverage + WEIGHTS.MIN_VOTES * WEIGHTS.BASE_RATING) /
+		(voteCount + WEIGHTS.MIN_VOTES)
+	);
+}
 
-	credits.sort((a, b) => {
-		return getScore(b) - getScore(a);
-	});
+function applyActorModifiers(
+	baseScore: number,
+	credit: Credit,
+	voteCount: number,
+	popularity: number,
+): number {
+	if (credit.media_type === "movie" && "order" in credit) {
+		return applyMovieModifiers(baseScore, credit.order, voteCount);
+	}
 
-	return credits.slice(0, 10);
+	if (credit.media_type === "tv" && "episode_count" in credit) {
+		return applyTVModifiers(
+			baseScore,
+			credit.episode_count as number,
+			popularity,
+		);
+	}
+
+	return baseScore;
+}
+
+function applyMovieModifiers(
+	score: number,
+	order: number | undefined,
+	voteCount: number,
+): number {
+	const billingOrder = order || 0;
+
+	if (billingOrder <= 1 && voteCount < WEIGHTS.MIN_VOTES) {
+		score += WEIGHTS.LEAD_BOOST;
+	}
+
+	const decay = 1 + billingOrder * WEIGHTS.ORDER_DECAY;
+	return score / decay;
+}
+
+function applyTVModifiers(
+	baseScore: number,
+	episodeCount: number,
+	popularity: number,
+): number {
+	if (episodeCount < WEIGHTS.TV_EPISODE.MIN_SIGNIFICANT) {
+		return WEIGHTS.TV_EPISODE.GUEST_SCORE;
+	}
+
+	if (episodeCount >= WEIGHTS.TV_EPISODE.RECURRING_THRESHOLD) {
+		return baseScore + popularity * WEIGHTS.POPULARITY_FACTOR;
+	}
+
+	const ratio =
+		(episodeCount - WEIGHTS.TV_EPISODE.MIN_SIGNIFICANT) /
+		(WEIGHTS.TV_EPISODE.RECURRING_THRESHOLD -
+			WEIGHTS.TV_EPISODE.MIN_SIGNIFICANT);
+
+	return baseScore * ratio + popularity * (ratio * WEIGHTS.POPULARITY_FACTOR);
 }
