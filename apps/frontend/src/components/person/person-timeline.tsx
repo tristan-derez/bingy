@@ -22,9 +22,9 @@ export const PersonTimeline = ({ combinedCredits }: PersonTimelineProps) => {
 
 	return (
 		<div className="flex flex-col gap-2">
-			{actingItems.length > 0 && (
+			{actingItems.length > 0 ? (
 				<DepartmentContainer title="Acting" items={actingItems} />
-			)}
+			) : null}
 
 			{Object.entries(crewByDepartment).map(([department, items]) => (
 				<DepartmentContainer
