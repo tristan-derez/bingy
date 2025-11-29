@@ -1,3 +1,4 @@
+import { useId } from "react";
 import type { Schemas } from "shared";
 import type { TimelineItem } from "./department-container";
 import { DepartmentContainer } from "./department-container";
@@ -7,6 +8,7 @@ interface PersonTimelineProps {
 }
 
 export const PersonTimeline = ({ combinedCredits }: PersonTimelineProps) => {
+	const id = useId();
 	const actingItems = combinedCredits.cast.map(mapToTimelineItem);
 
 	const crewByDepartment = combinedCredits.crew.reduce<
@@ -26,7 +28,7 @@ export const PersonTimeline = ({ combinedCredits }: PersonTimelineProps) => {
 
 			{Object.entries(crewByDepartment).map(([department, items]) => (
 				<DepartmentContainer
-					key={department}
+					key={`${id}-${department}-dept`}
 					title={department}
 					items={items}
 				/>
@@ -52,6 +54,7 @@ const mapToTimelineItem = (
 
 	const episodeCount =
 		"episode_count" in credit ? (credit.episode_count as number) : undefined;
+	const creditId = "credit_id" in credit ? credit.credit_id : undefined;
 
 	return {
 		id: credit.id,
@@ -64,5 +67,6 @@ const mapToTimelineItem = (
 		year: date ? date.getFullYear().toString() : "N/A",
 		fullDate: date ? date.toISOString() : null,
 		episodeCount,
+		creditId,
 	};
 };
