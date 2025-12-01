@@ -20,7 +20,11 @@ import { Dialog, DialogContent, DialogDescription } from "../ui/dialog";
 import { LoaderFive } from "../ui/loader";
 import { SearchItemCombobox } from "./search-item-combobox";
 
-export function SearchCombobox() {
+interface SearchComboboxProps {
+	title?: string;
+}
+
+export function SearchCombobox({ title }: SearchComboboxProps) {
 	const [open, setOpen] = useState(false);
 	const [query, setQuery] = useState("");
 	const [isTyping, setIsTyping] = useState(false);
@@ -95,9 +99,10 @@ export function SearchCombobox() {
 			<Button
 				variant="ghost"
 				onClick={() => setOpen(true)}
-				className="items-center align-center hover:cursor-pointer text-center"
+				className="items-center align-center hover:cursor-pointer gap-2"
 			>
-				<SearchIcon className="mr-2 h-4 w-4" />
+				<SearchIcon className="h-4 w-4" />
+				{title ? <span>{title}</span> : null}
 			</Button>
 
 			<Dialog open={open} onOpenChange={setOpen}>

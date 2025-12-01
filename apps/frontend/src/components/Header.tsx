@@ -114,6 +114,9 @@ export default function Header() {
 							<span className="block">{item.name}</span>
 						</Link>
 					))}
+					{session && (
+						<SearchCombobox title="Search for movies, tv shows or people" />
+					)}
 					<Separator />
 					<div className="flex w-full flex-col gap-4 pt-2">
 						{!session && (
