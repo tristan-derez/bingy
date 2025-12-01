@@ -61,7 +61,7 @@ export const SearchPagination = ({
 	const canGoNext = currentPage < maxPages;
 
 	return (
-		<Pagination>
+		<Pagination className="max-w-[320px] md:max-w-full">
 			<PaginationContent>
 				<PaginationItem>
 					{canGoPrev ? (
@@ -74,7 +74,7 @@ export const SearchPagination = ({
 							)}
 						>
 							<ChevronLeft className="h-4 w-4" />
-							<span>Previous</span>
+							<span className="text-xs md:text-lg">Previous</span>
 						</Link>
 					) : (
 						<span
@@ -84,7 +84,7 @@ export const SearchPagination = ({
 							)}
 						>
 							<ChevronLeft className="h-4 w-4" />
-							<span>Previous</span>
+							<span className="text-xs md:text-lg">Previous</span>
 						</span>
 					)}
 				</PaginationItem>
@@ -104,6 +104,7 @@ export const SearchPagination = ({
 										variant: currentPage === pageNum ? "outline" : "ghost",
 										size: "icon",
 									}),
+									"text-xs md:text-lg",
 								)}
 							>
 								{pageNum}
@@ -122,7 +123,7 @@ export const SearchPagination = ({
 								"gap-1 pr-2.5",
 							)}
 						>
-							<span>Next</span>
+							<span className="text-xs md:text-lg">Next</span>
 							<ChevronRight className="h-4 w-4" />
 						</Link>
 					) : (
@@ -132,7 +133,7 @@ export const SearchPagination = ({
 								"gap-1 pr-2.5 opacity-50 cursor-not-allowed",
 							)}
 						>
-							<span>Next</span>
+							<span className="text-xs md:text-lg">Next</span>
 							<ChevronRight className="h-4 w-4" />
 						</span>
 					)}
