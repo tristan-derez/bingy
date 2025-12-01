@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { z } from "zod";
 import { fetchSearchMulti } from "@/api/search";
 import { SearchForm } from "@/components/forms/search-form";
+import { SearchPagination } from "@/components/search/search-pagination";
 import { SearchResultsContainer } from "@/components/search/search-results-container";
 import { Button } from "@/components/ui/button";
 
@@ -78,6 +79,12 @@ function SearchRoute() {
 				results={data.results}
 				language={language}
 				query={q}
+			/>
+			<SearchPagination
+				currentPage={page}
+				totalPages={data.total_pages}
+				query={q}
+				language={language}
 			/>
 		</div>
 	);
