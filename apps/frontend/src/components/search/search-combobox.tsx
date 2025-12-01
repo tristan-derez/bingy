@@ -109,7 +109,7 @@ export function SearchCombobox({ title }: SearchComboboxProps) {
 				<VisuallyHidden.Root>
 					<DialogTitle>Search command</DialogTitle>
 				</VisuallyHidden.Root>
-				<DialogContent className="p-0 max-w-[400px]">
+				<DialogContent className="p-0 min-w-[320px] max-w-[400px]">
 					<VisuallyHidden.Root>
 						<DialogDescription>Search results</DialogDescription>
 					</VisuallyHidden.Root>
@@ -148,7 +148,7 @@ export function SearchCombobox({ title }: SearchComboboxProps) {
 									</div>
 
 									{showViewAll && (
-										<div className="sticky bottom-0 bg-background rounded-md m-1">
+										<div className="sticky bottom-0 bg-background rounded-md m-1 hover:cursor-pointer">
 											<CommandSeparator />
 											<CommandGroup>
 												<CommandItem
@@ -160,6 +160,7 @@ export function SearchCombobox({ title }: SearchComboboxProps) {
 														});
 														handleSelect();
 													}}
+													className="hover:cursor-pointer"
 												>
 													<span className="w-full text-center font-medium">
 														View all results →

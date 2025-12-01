@@ -17,7 +17,7 @@ export const SearchItemCombobox = ({
 }: SearchItemComboboxProps) => {
 	const navigate = useNavigate();
 
-	const commonClasses = "flex items-center gap-2";
+	const commonClasses = "flex items-center gap-2 hover:cursor-pointer";
 
 	if (item.media_type === "movie") {
 		const m = item as Schemas.MovieMedia;
