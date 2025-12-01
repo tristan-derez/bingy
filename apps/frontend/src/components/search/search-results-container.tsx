@@ -1,22 +1,14 @@
-import {
-	ArrowLeft,
-	FilmIcon,
-	LayoutGridIcon,
-	TvIcon,
-	UserIcon,
-} from "lucide-react";
+import { FilmIcon, LayoutGridIcon, TvIcon, UserIcon } from "lucide-react";
 import { useState } from "react";
 import type { Schemas } from "shared";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { getRelevanceScore } from "@/utils/search-relevance-score";
-import { Button } from "../ui/button";
 import { SearchCard } from "./search-card";
 
 interface SearchResultsContainerProps {
 	results: Schemas.MediaMulti[];
 	language?: string;
 	query: string;
-	onBack: () => void;
 }
 
 type MediaType = "all" | "movie" | "tv" | "person";
@@ -25,7 +17,6 @@ export const SearchResultsContainer = ({
 	results,
 	language = "en-US",
 	query,
-	onBack,
 }: SearchResultsContainerProps) => {
 	const [filter, setFilter] = useState<MediaType>("all");
 
@@ -41,10 +32,6 @@ export const SearchResultsContainer = ({
 
 	return (
 		<div className="container flex flex-col gap-4">
-			<Button onClick={onBack} className="mb-4 max-w-20" variant="outline">
-				<ArrowLeft className="h-4 w-4" /> Back
-			</Button>
-
 			<h1>
 				Search results for:{" "}
 				<span className="font-bold text-muted-foreground">"{query}"</span>
