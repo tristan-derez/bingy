@@ -68,7 +68,7 @@ export function TvEpisodeDetailsView({
 	const crewToShow = Array.from(crewWithRoles.values());
 
 	const backgroundImage = episode.still_path
-		? `https://image.tmdb.org/t/p/original/${episode.still_path}`
+		? `https://image.tmdb.org/t/p/original${episode.still_path}`
 		: undefined;
 
 	const mergedCast: Schemas.CastMember[] = credits?.cast

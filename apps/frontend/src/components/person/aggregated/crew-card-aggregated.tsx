@@ -17,7 +17,7 @@ interface CrewCardAggregatedProps {
 
 export const CrewCardAggregated = ({ person }: CrewCardAggregatedProps) => {
 	const imageUrl = person.profile_path
-		? `https://image.tmdb.org/t/p/w200/${person.profile_path}`
+		? `https://image.tmdb.org/t/p/w200${person.profile_path}`
 		: fallbackPoster;
 
 	const jobText =

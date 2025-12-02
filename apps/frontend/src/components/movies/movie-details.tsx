@@ -66,11 +66,11 @@ export function MovieDetailView({
 	}
 
 	const imageUrl = movie.poster_path
-		? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
+		? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
 		: fallbackPoster;
 
 	const backgroundImage = movie.backdrop_path
-		? `https://image.tmdb.org/t/p/original/${movie.backdrop_path}`
+		? `https://image.tmdb.org/t/p/original${movie.backdrop_path}`
 		: undefined;
 
 	return (

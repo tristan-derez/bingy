@@ -23,10 +23,10 @@ export const SearchCard = ({ item, language }: SearchCardProps) => {
 	const imageUrl =
 		item.media_type === "person"
 			? (item as Schemas.PersonExtended).profile_path
-				? `https://image.tmdb.org/t/p/w500/${(item as Schemas.PersonExtended).profile_path}`
+				? `https://image.tmdb.org/t/p/w500${(item as Schemas.PersonExtended).profile_path}`
 				: fallbackPersonPoster
 			: (item as Schemas.MovieMedia | Schemas.TvMedia).poster_path
-				? `https://image.tmdb.org/t/p/w500/${(item as Schemas.MovieMedia | Schemas.TvMedia).poster_path}`
+				? `https://image.tmdb.org/t/p/w500${(item as Schemas.MovieMedia | Schemas.TvMedia).poster_path}`
 				: fallbackPoster;
 
 	if (item.media_type === "movie") {

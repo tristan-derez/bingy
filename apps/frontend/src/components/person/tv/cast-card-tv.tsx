@@ -17,7 +17,7 @@ interface CastCardTvProps {
 
 export const CastCardTv = ({ person }: CastCardTvProps) => {
 	const imageUrl = person.profile_path
-		? `https://image.tmdb.org/t/p/w200/${person.profile_path}`
+		? `https://image.tmdb.org/t/p/w200${person.profile_path}`
 		: fallbackPoster;
 
 	return (

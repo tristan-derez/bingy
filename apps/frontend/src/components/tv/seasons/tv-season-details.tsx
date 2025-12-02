@@ -105,7 +105,7 @@ export function TvSeasonDetailsView({
 	}
 
 	const imageUrl = tvSeason.poster_path
-		? `https://image.tmdb.org/t/p/w500/${tvSeason.poster_path}`
+		? `https://image.tmdb.org/t/p/w500${tvSeason.poster_path}`
 		: fallbackPoster;
 
 	return (

@@ -17,7 +17,7 @@ interface CastCardAggregatedProps {
 
 export const CastCardAggregated = ({ person }: CastCardAggregatedProps) => {
 	const imageUrl = person.profile_path
-		? `https://image.tmdb.org/t/p/w200/${person.profile_path}`
+		? `https://image.tmdb.org/t/p/w200${person.profile_path}`
 		: fallbackPoster;
 
 	const primaryRole = person.roles.reduce((prev, current) =>

@@ -21,7 +21,7 @@ export function CollectionCard({ collection }: CollectionCardProps) {
 	if (!collectionData?.parts?.length) return null;
 
 	const backgroundImage = collection.backdrop_path
-		? `https://image.tmdb.org/t/p/original/${collection.backdrop_path}`
+		? `https://image.tmdb.org/t/p/original${collection.backdrop_path}`
 		: undefined;
 
 	return (

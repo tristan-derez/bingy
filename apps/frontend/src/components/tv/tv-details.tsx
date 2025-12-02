@@ -67,11 +67,11 @@ export function TvDetailsView({
 	}
 
 	const imageUrl = tv.poster_path
-		? `https://image.tmdb.org/t/p/w500/${tv.poster_path}`
+		? `https://image.tmdb.org/t/p/w500${tv.poster_path}`
 		: fallbackPoster;
 
 	const backgroundImage = tv.backdrop_path
-		? `https://image.tmdb.org/t/p/original/${tv.backdrop_path}`
+		? `https://image.tmdb.org/t/p/original${tv.backdrop_path}`
 		: undefined;
 
 	return (

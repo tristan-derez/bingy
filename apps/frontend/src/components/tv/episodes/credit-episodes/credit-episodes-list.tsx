@@ -41,7 +41,7 @@ export const CreditEpisodesList = ({
 					<img
 						src={
 							posterPath
-								? `https://image.tmdb.org/t/p/w200/${posterPath}`
+								? `https://image.tmdb.org/t/p/w200${posterPath}`
 								: fallbackPoster
 						}
 						alt={showName}

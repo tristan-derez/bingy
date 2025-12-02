@@ -17,7 +17,7 @@ interface CrewCardTvProps {
 
 export const CrewCardTv = ({ person }: CrewCardTvProps) => {
 	const imageUrl = person.profile_path
-		? `https://image.tmdb.org/t/p/w200/${person.profile_path}`
+		? `https://image.tmdb.org/t/p/w200${person.profile_path}`
 		: fallbackPoster;
 
 	return (
