@@ -56,7 +56,7 @@ export const CreditEpisodesList = ({
 						<CardContent className="xl:p-0">
 							<div className="flex flex-col gap-2">
 								<Link to="/tv/$tvId" params={{ tvId: tvId.toString() }}>
-									<h1 className="text-4xl font-bold leading-tight">
+									<h1 className="text-4xl font-bold leading-relaxed">
 										{showName}
 									</h1>
 								</Link>

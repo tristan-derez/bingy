@@ -33,13 +33,13 @@ export const CastCardCarousel = ({ person }: CastCardCarouselProps) => {
 				</div>
 				<CardHeader className="flex-grow justify-between">
 					<CardTitle
-						className="text-base leading-tight line-clamp-1"
+						className="text-base leading-relaxed line-clamp-1"
 						title={person.name}
 					>
 						{person.name}
 					</CardTitle>
 					<CardDescription
-						className="text-sm leading-tight line-clamp-1 mt-1"
+						className="text-sm leading-relaxed line-clamp-1 mt-1"
 						title={person.character}
 					>
 						{person.character ? person.character : "N/A"}

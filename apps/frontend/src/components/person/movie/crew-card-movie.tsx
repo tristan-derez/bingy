@@ -39,13 +39,13 @@ export const CrewCardMovie = ({ person }: CrewCardMovieProps) => {
 			<Card className="w-full min-w-60 pt-10 px-2">
 				<CardHeader className="text-center pt-0">
 					<CardTitle
-						className="text-base leading-tight line-clamp-1"
+						className="text-base leading-relaxed line-clamp-1"
 						title={person.name}
 					>
 						{person.name}
 					</CardTitle>
 					<CardDescription
-						className="text-sm leading-tight mt-1 line-clamp-1"
+						className="text-sm leading-relaxed mt-1 line-clamp-1"
 						title={person.job}
 					>
 						{person.job ? person.job : "N/A"}

@@ -47,8 +47,8 @@ export function WatchProvidersSection({
 							/>
 						)}
 						<div className="flex flex-col h-10 justify-center">
-							<span className="text-sm leading-tight">Now Streaming</span>
-							<span className="text-sm font-bold leading-tight">
+							<span className="text-sm leading-relaxed">Now Streaming</span>
+							<span className="text-sm font-bold leading-relaxed">
 								{provider.provider_name}
 							</span>
 						</div>

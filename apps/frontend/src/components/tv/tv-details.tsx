@@ -105,7 +105,7 @@ export function TvDetailsView({
 						<CardContent className="xl:p-0">
 							<div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2">
 								<div className="flex flex-col gap-2">
-									<h1 className="text-4xl font-bold leading-tight">
+									<h1 className="text-4xl font-bold leading-relaxed">
 										{tv.name}
 									</h1>
 									{tv.tagline && (

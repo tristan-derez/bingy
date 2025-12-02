@@ -32,7 +32,7 @@ function App() {
 	return (
 		<CenteredLayout>
 			<div className="flex flex-col items-center gap-8 text-center max-w-4xl">
-				<h1 className="text-4xl md:text-6xl font-bold leading-tight">
+				<h1 className="text-4xl md:text-6xl font-bold leading-relaxed">
 					<strong className="inline-block">Track what you watch.</strong>
 					<br />
 					<SparklesText
