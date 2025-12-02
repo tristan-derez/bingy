@@ -124,6 +124,7 @@ export type TvEndPoints = Pretty<
 >;
 
 export type TvSeasonEndpoints = Pretty<
+	| ""
 	| "aggregate_credits"
 	| "credits"
 	| "external_ids"
@@ -134,7 +135,7 @@ export type TvSeasonEndpoints = Pretty<
 >;
 
 export type TvEpisodeEndpoints = Pretty<
-	"credits" | "external_ids" | "images" | "translations" | "videos"
+	"" | "credits" | "external_ids" | "images" | "translations" | "videos"
 >;
 
 export type TvParams = Pretty<{
