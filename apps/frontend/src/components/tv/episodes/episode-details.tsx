@@ -3,6 +3,7 @@ import { ArrowLeft, Calendar, Clock, Star } from "lucide-react";
 import type { Schemas } from "shared";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
 import { LoadingCentered } from "@/components/loading/loading-centered";
+import { MediaOverview } from "@/components/medias/overview";
 import { CastCarousel } from "@/components/person/cast-carousel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -119,10 +120,8 @@ export function TvEpisodeDetailsView({
 					<CardHeader>
 						<CardTitle>Overview</CardTitle>
 					</CardHeader>
-					<CardContent className="space-y-4">
-						<p className="max-w-1/2 whitespace-pre-line">
-							{episode.overview ? episode.overview : "No overview available."}
-						</p>
+					<CardContent className="flex flex-col gap-4">
+						<MediaOverview overview={episode.overview} />
 
 						{crewToShow.length > 0 && (
 							<>

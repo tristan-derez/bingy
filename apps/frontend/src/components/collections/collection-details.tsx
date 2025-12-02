@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { ResourceNotFound } from "../errors/resource-not-found";
 import { LoadingCentered } from "../loading/loading-centered";
+import { MediaOverview } from "../medias/overview";
 import { MovieCarousel } from "../movies/movie-carousel";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
@@ -131,15 +132,9 @@ export function CollectionDetailsView({
 									))}
 								</CardDescription>
 							</CardHeader>
-							<CardContent className="p-0 w-full xl:max-w-2/3 flex flex-col gap-4">
-								<div>
-									<h2 className="text-semi-bold text-md">Overview:</h2>
-									<p className="mt-2">
-										{collectionData.overview
-											? collectionData.overview
-											: "No overview available."}
-									</p>
-								</div>
+							<CardContent className="p-0 flex flex-col gap-4">
+								<h2 className="text-semi-bold text-md">Overview:</h2>
+								<MediaOverview overview={collectionData.overview} />
 								{collectionStats.totalRevenue > 0 && (
 									<div className="flex gap-2">
 										<h3 className="text-semi-bold text-md">Revenue:</h3>

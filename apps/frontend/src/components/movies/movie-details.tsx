@@ -21,6 +21,7 @@ import { shortenCountryName } from "@/utils/shorten-country-name";
 import { CollectionCard } from "../collections/collection-card";
 import { ResourceNotFound } from "../errors/resource-not-found";
 import { LoadingCentered } from "../loading/loading-centered";
+import { MediaOverview } from "../medias/overview";
 import { CastCarousel } from "../person/cast-carousel";
 import { SocialLinks } from "../social-links";
 import { Separator } from "../ui/separator";
@@ -152,9 +153,7 @@ export function MovieDetailView({
 						</CardHeader>
 
 						<CardContent className="flex flex-col gap-4">
-							<p className="w-full xl:w-2/3">
-								{movie.overview ? movie.overview : "No overview available."}
-							</p>
+							<MediaOverview overview={movie.overview} />
 							<Separator />
 							{crew.length > 0 && (
 								<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
