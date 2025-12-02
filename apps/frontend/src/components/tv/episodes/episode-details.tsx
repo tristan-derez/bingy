@@ -105,7 +105,7 @@ export function TvEpisodeDetailsView({
 					style={
 						backgroundImage
 							? {
-									backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url(${backgroundImage})`,
+									backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(${backgroundImage})`,
 									backgroundSize: "cover",
 									backgroundPosition: "center",
 								}
