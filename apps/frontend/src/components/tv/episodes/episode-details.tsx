@@ -68,7 +68,7 @@ export function TvEpisodeDetailsView({
 	const crewToShow = Array.from(crewWithRoles.values());
 
 	const backgroundImage = episode.still_path
-		? `https://image.tmdb.org/t/p/original${episode.still_path}`
+		? `https://image.tmdb.org/t/p/original/${episode.still_path}`
 		: undefined;
 
 	const mergedCast: Schemas.CastMember[] = credits?.cast
@@ -195,7 +195,7 @@ export function TvEpisodeDetailsView({
 				</div>
 
 				{mergedCast.length > 0 && (
-					<div className="flex flex-col gap-2">
+					<div className="flex flex-col gap-2 overflow-hidden">
 						<CastCarousel people={mergedCast} />
 						<Link
 							to="/tv/$tvId/season/$seasonNumber/episode/$episodeNumber/credits"

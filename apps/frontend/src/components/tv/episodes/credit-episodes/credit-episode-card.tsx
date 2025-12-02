@@ -31,7 +31,7 @@ export const CreditEpisodeCard = ({
 	isGuestAppearance,
 }: CreditEpisodeCardProps) => {
 	const backgroundImage = episode.still_path
-		? `https://image.tmdb.org/t/p/w500${episode.still_path}`
+		? `https://image.tmdb.org/t/p/w500/${episode.still_path}`
 		: null;
 
 	return (

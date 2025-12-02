@@ -41,7 +41,11 @@ export function WatchProvidersSection({
 					>
 						{provider.logo_path && (
 							<img
-								src={`https://image.tmdb.org/t/p/original${provider.logo_path}`}
+								src={
+									provider.logo_path
+										? `https://image.tmdb.org/t/p/original/${provider.logo_path}`
+										: undefined
+								}
 								alt={provider.provider_name}
 								className="w-10 h-10 rounded"
 							/>

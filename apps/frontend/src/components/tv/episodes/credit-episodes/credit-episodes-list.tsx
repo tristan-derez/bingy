@@ -39,7 +39,11 @@ export const CreditEpisodesList = ({
 			<div className="grid xl:grid-cols-[auto_1fr] gap-4 justify-items-center">
 				<div className="flex flex-col gap-2 items-center xl:items-start max-w-[400px]">
 					<img
-						src={`https://image.tmdb.org/t/p/w200${posterPath}`}
+						src={
+							posterPath
+								? `https://image.tmdb.org/t/p/w200/${posterPath}`
+								: fallbackPoster
+						}
 						alt={showName}
 						className="rounded-md"
 						onError={(e) => {

@@ -73,11 +73,11 @@ export function CollectionDetailsView({
 	}).format(collectionStats.totalRevenue);
 
 	const backgroundImage = collectionData.backdrop_path
-		? `https://image.tmdb.org/t/p/original${collectionData.backdrop_path}`
+		? `https://image.tmdb.org/t/p/original/${collectionData.backdrop_path}`
 		: undefined;
 
 	const posterImage = collectionData.poster_path
-		? `https://image.tmdb.org/t/p/w200${collectionData.poster_path}`
+		? `https://image.tmdb.org/t/p/w200/${collectionData.poster_path}`
 		: fallbackPoster;
 
 	return (

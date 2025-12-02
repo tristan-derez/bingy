@@ -55,7 +55,7 @@ export const PersonDetailsView = ({
 	const sortedCredits = sortKnownForCredits(person);
 
 	const imageUrl = person?.profile_path
-		? `https://image.tmdb.org/t/p/w500${person.profile_path}`
+		? `https://image.tmdb.org/t/p/w500/${person.profile_path}`
 		: fallbackPoster;
 
 	return (
