@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { formatDate } from "@/utils/format-date";
+import { formatRuntime } from "@/utils/format-runtime";
 
 interface TvEpisodeDetailViewProps {
 	episode: Schemas.TvEpisodeDetails | undefined;
@@ -165,11 +166,9 @@ export function TvEpisodeDetailsView({
 							<Clock className="h-5 w-5" />
 							<div>
 								<p className="text-xl xl:text-2xl font-bold">
-									{episode.runtime || "N/A"}
+									{formatRuntime(episode.runtime)}
 								</p>
-								<p className="text-sm text-muted-foreground">
-									{episode.runtime ? "minutes" : "Runtime"}
-								</p>
+								<p className="text-sm text-muted-foreground">Runtime</p>
 							</div>
 						</CardContent>
 					</Card>

@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { formatDate } from "@/utils/format-date";
+import { formatRuntime } from "@/utils/format-runtime";
 
 interface EpisodesContainerProps {
 	episodes: Schemas.TvSeasonDetails["episodes"];
@@ -49,9 +50,7 @@ export function EpisodesContainer({ episodes }: EpisodesContainerProps) {
 									{episode.runtime && episode.runtime > 0 ? (
 										<Badge className="flex items-center gap-1 border-none self-center">
 											<Timer className="w-3 h-3" />
-											{episode.runtime > 59
-												? `${Math.floor(episode.runtime / 60)}h ${episode.runtime % 60}m`
-												: `${episode.runtime}m`}
+											{formatRuntime(episode.runtime)}
 										</Badge>
 									) : null}
 									{episode.vote_average > 0 ? (

@@ -66,7 +66,7 @@ export const CreditEpisodeCard = ({
 						</Link>
 						{episode.runtime ? (
 							<Badge variant="secondary">
-								{formatRuntime(episode.runtime)} min
+								{formatRuntime(episode.runtime)}
 							</Badge>
 						) : null}
 						{isGuestAppearance ? (
