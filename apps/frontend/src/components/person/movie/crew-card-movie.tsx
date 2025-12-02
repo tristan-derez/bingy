@@ -10,7 +10,6 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { Button } from "../../ui/button";
-import { Separator } from "../../ui/separator";
 
 interface CrewCardMovieProps {
 	person: Schemas.CrewMember;
@@ -36,23 +35,22 @@ export const CrewCardMovie = ({ person }: CrewCardMovieProps) => {
 				<AvatarFallback>{person.name.slice(0, 2).toUpperCase()}</AvatarFallback>
 			</Avatar>
 
-			<Card className="w-full min-w-60 pt-10 px-2">
-				<CardHeader className="text-center pt-0">
+			<Card className="w-full min-w-60 mt-2 px-2 gap-2">
+				<CardHeader className="text-center pt-0 pb-2">
 					<CardTitle
-						className="text-base leading-tight line-clamp-1"
+						className="text-base leading-relaxed line-clamp-1"
 						title={person.name}
 					>
 						{person.name}
 					</CardTitle>
 					<CardDescription
-						className="text-sm leading-tight mt-1 line-clamp-1"
+						className="text-sm leading-relaxed line-clamp-1"
 						title={person.job}
 					>
 						{person.job ? person.job : "N/A"}
 					</CardDescription>
 				</CardHeader>
 				<CardContent className="text-center pt-0 gap-4 flex flex-col">
-					<Separator />
 					<Button asChild>
 						<Link
 							to="/person/$personId"

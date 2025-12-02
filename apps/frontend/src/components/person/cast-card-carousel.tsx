@@ -14,13 +14,13 @@ interface CastCardCarouselProps {
 
 export const CastCardCarousel = ({ person }: CastCardCarouselProps) => {
 	const imageUrl = person.profile_path
-		? `https://image.tmdb.org/t/p/w200${person.profile_path}`
+		? `https://image.tmdb.org/t/p/w500${person.profile_path}`
 		: fallbackPoster;
 
 	return (
 		<Link to="/person/$personId" params={{ personId: person.id.toString() }}>
-			<Card className="w-full min-w-42 lg:min-w-60 min-h-[250px]  overflow-hidden pt-0 select-none">
-				<div className="w-full h-[250px]">
+			<Card className="w-full min-w-42 lg:min-w-60 min-h-[250px]  overflow-hidden pt-0 select-none gap-4 pb-4">
+				<div className="aspect-[3/4] w-full overflow-hidden">
 					<img
 						src={imageUrl}
 						alt={person.name}
@@ -31,15 +31,15 @@ export const CastCardCarousel = ({ person }: CastCardCarouselProps) => {
 						className="h-full w-full object-cover"
 					/>
 				</div>
-				<CardHeader className="flex-grow justify-between">
+				<CardHeader className="flex-grow justify-between gap-2">
 					<CardTitle
-						className="text-base leading-tight line-clamp-1"
+						className="text-base leading-relaxed line-clamp-1"
 						title={person.name}
 					>
 						{person.name}
 					</CardTitle>
 					<CardDescription
-						className="text-sm leading-tight line-clamp-1 mt-1"
+						className="text-sm leading-relaxed line-clamp-1 mt-1"
 						title={person.character}
 					>
 						{person.character ? person.character : "N/A"}

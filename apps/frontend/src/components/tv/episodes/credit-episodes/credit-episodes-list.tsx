@@ -39,7 +39,11 @@ export const CreditEpisodesList = ({
 			<div className="grid xl:grid-cols-[auto_1fr] gap-4 justify-items-center">
 				<div className="flex flex-col gap-2 items-center xl:items-start max-w-[400px]">
 					<img
-						src={`https://image.tmdb.org/t/p/w200${posterPath}`}
+						src={
+							posterPath
+								? `https://image.tmdb.org/t/p/original${posterPath}`
+								: fallbackPoster
+						}
 						alt={showName}
 						className="rounded-md"
 						onError={(e) => {
@@ -56,7 +60,7 @@ export const CreditEpisodesList = ({
 						<CardContent className="xl:p-0">
 							<div className="flex flex-col gap-2">
 								<Link to="/tv/$tvId" params={{ tvId: tvId.toString() }}>
-									<h1 className="text-4xl font-bold leading-tight">
+									<h1 className="text-4xl font-bold leading-relaxed">
 										{showName}
 									</h1>
 								</Link>
@@ -74,7 +78,9 @@ export const CreditEpisodesList = ({
 							key={episode.id}
 							episode={episode}
 							tvId={tvId}
-							isGuestAppearance={guestEpisodeIds.has(episode.id)}
+							isGuestAppearance={
+								character ? guestEpisodeIds.has(episode.id) : false
+							}
 						/>
 					))}
 				</div>

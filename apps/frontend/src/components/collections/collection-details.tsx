@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { ResourceNotFound } from "../errors/resource-not-found";
 import { LoadingCentered } from "../loading/loading-centered";
+import { MediaOverview } from "../medias/overview";
 import { MovieCarousel } from "../movies/movie-carousel";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
@@ -77,7 +78,7 @@ export function CollectionDetailsView({
 		: undefined;
 
 	const posterImage = collectionData.poster_path
-		? `https://image.tmdb.org/t/p/w200${collectionData.poster_path}`
+		? `https://image.tmdb.org/t/p/w500${collectionData.poster_path}`
 		: fallbackPoster;
 
 	return (
@@ -92,7 +93,7 @@ export function CollectionDetailsView({
 					style={
 						backgroundImage
 							? {
-									backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url(${backgroundImage})`,
+									backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(${backgroundImage})`,
 									backgroundSize: "cover",
 									backgroundPosition: "center",
 								}
@@ -104,7 +105,7 @@ export function CollectionDetailsView({
 							<img
 								src={posterImage}
 								alt={`${collectionData.name} poster`}
-								className="rounded-lg shadow-lg w-1/2 xl:w-auto xl:max-h-[600px]"
+								className="rounded-lg shadow-lg xl:w-auto xl:max-h-[600px]"
 								onError={(e) => {
 									const target = e.currentTarget;
 									if (target.src !== fallbackPoster) {
@@ -131,13 +132,9 @@ export function CollectionDetailsView({
 									))}
 								</CardDescription>
 							</CardHeader>
-							<CardContent className="p-0 w-1/2 flex flex-col gap-4">
-								<div>
-									<h2 className="text-semi-bold text-md">Overview:</h2>
-									{collectionData.overview && (
-										<p className="mt-2">{collectionData.overview}</p>
-									)}
-								</div>
+							<CardContent className="p-0 flex flex-col gap-4">
+								<h2 className="text-semi-bold text-md">Overview:</h2>
+								<MediaOverview overview={collectionData.overview} />
 								{collectionStats.totalRevenue > 0 && (
 									<div className="flex gap-2">
 										<h3 className="text-semi-bold text-md">Revenue:</h3>

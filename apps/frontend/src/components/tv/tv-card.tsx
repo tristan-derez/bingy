@@ -18,13 +18,13 @@ interface TvCardProps {
 
 export const TvCard = ({ tvShow }: TvCardProps) => {
 	const imageUrl = tvShow.poster_path
-		? `https://image.tmdb.org/t/p/w300${tvShow.poster_path}`
+		? `https://image.tmdb.org/t/p/w500${tvShow.poster_path}`
 		: fallbackPoster;
 
 	return (
 		<Link to="/tv/$tvId" params={{ tvId: tvShow.id.toString() }}>
-			<Card className="w-full max-w-80 overflow-hidden pt-0 flex flex-col select-none">
-				<div className="relative h-40 w-full overflow-hidden">
+			<Card className="w-full h-full overflow-hidden pt-0 flex flex-col select-none gap-2 shadow-none pb-4">
+				<div className="relative aspect-[2/3] w-full overflow-hidden">
 					<img
 						src={imageUrl}
 						alt={tvShow.name}
@@ -42,16 +42,14 @@ export const TvCard = ({ tvShow }: TvCardProps) => {
 						</Badge>
 					)}
 				</div>
-
 				<CardHeader>
 					<CardTitle className="line-clamp-1 leading-normal">
 						{tvShow.name}
 					</CardTitle>
 				</CardHeader>
-
-				<CardContent className="space-y-3 flex-grow">
+				<CardContent className="flex flex-col gap-4 flex-grow">
 					<p className="text-sm text-muted-foreground line-clamp-3 leading-normal min-h-[4rem]">
-						{tvShow.overview}
+						{tvShow.overview ? tvShow.overview : "No overview available."}
 					</p>
 
 					<div className="flex items-center gap-4 text-sm">
@@ -70,7 +68,6 @@ export const TvCard = ({ tvShow }: TvCardProps) => {
 						</div>
 					</div>
 				</CardContent>
-
 				<CardFooter className="text-sm text-muted-foreground">
 					<div className="flex items-center gap-1">
 						<Calendar className="h-4 w-4" />
@@ -79,7 +76,7 @@ export const TvCard = ({ tvShow }: TvCardProps) => {
 								? formatDate(tvShow.first_air_date, "en-US", {
 										year: "numeric",
 										month: "short",
-										day: "numeric",
+										day: "2-digit",
 									})
 								: "N/A"}
 						</span>

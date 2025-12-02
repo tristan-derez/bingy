@@ -36,11 +36,15 @@ export const CreditEpisodeCard = ({
 
 	return (
 		<Card
-			className="relative overflow-hidden min-h-[200px] border-none rounded-md"
+			className={`relative overflow-hidden min-h-[200px] rounded-md ${
+				backgroundImage
+					? "text-dark-card-foreground border-none"
+					: "text-foreground border"
+			}`}
 			style={
 				backgroundImage
 					? {
-							backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url(${backgroundImage})`,
+							backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(${backgroundImage})`,
 							backgroundSize: "cover",
 							backgroundPosition: "center",
 						}
@@ -62,29 +66,29 @@ export const CreditEpisodeCard = ({
 						</Link>
 						{episode.runtime ? (
 							<Badge variant="secondary">
-								{formatRuntime(episode.runtime)} min
+								{formatRuntime(episode.runtime)}
 							</Badge>
 						) : null}
 						{isGuestAppearance ? (
 							<Badge variant="default">Guest Appearance</Badge>
 						) : null}
 					</div>
-					<div className="text-sm text-dark-card-foreground whitespace-nowrap">
+					<div className="text-sm whitespace-nowrap">
 						{episode.season_number}x{episode.episode_number}
 					</div>
 				</div>
-				<CardDescription className="text-dark-card-foreground max-w-2/3">
+				<CardDescription className="w-full xl:max-w-2/3">
 					{episode.overview || "No overview available."}
 				</CardDescription>
 			</CardHeader>
 			<CardContent className="flex flex-col gap-1 mt-auto">
 				{episode.air_date ? (
-					<div className="text-sm text-dark-card-foreground">
+					<div className="text-sm">
 						{new Date(episode.air_date) > new Date() ? "Airs " : "Aired "}
 						{formatDate(episode.air_date)}
 					</div>
 				) : (
-					<p className="text-sm text-dark-card-foreground">Not aired yet</p>
+					<p className="text-sm">Not aired yet</p>
 				)}
 			</CardContent>
 		</Card>

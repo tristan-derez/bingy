@@ -56,7 +56,7 @@ export const MovieCarousel = ({ movies, title }: MovieCarouselProps) => {
 						{movies.map((movie) => (
 							<div
 								key={`${carouselId}-${movie.id}`}
-								className="min-w-80 md:min-w-60 gap-4"
+								className="flex-[0_0_calc(100vw-3rem)] md:flex-[0_0_300px]"
 							>
 								<MovieCard movie={movie} />
 							</div>
@@ -65,6 +65,7 @@ export const MovieCarousel = ({ movies, title }: MovieCarouselProps) => {
 				</div>
 				<CarouselGradient show={showGradient} />
 			</div>
+
 			{showButtons ? (
 				<div className="flex items-center gap-2">
 					<PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />

@@ -109,7 +109,7 @@ export const SearchItemCombobox = ({
 						<AvatarImage
 							src={
 								item.profile_path
-									? `https://image.tmdb.org/t/p/w500/${item.profile_path}`
+									? `https://image.tmdb.org/t/p/w500${item.profile_path}`
 									: undefined
 							}
 							alt={item.name}

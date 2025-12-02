@@ -105,7 +105,7 @@ export function TvDetailsView({
 						<CardContent className="xl:p-0">
 							<div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2">
 								<div className="flex flex-col gap-2">
-									<h1 className="text-4xl font-bold leading-tight">
+									<h1 className="text-4xl font-bold leading-relaxed">
 										{tv.name}
 									</h1>
 									{tv.tagline && (
@@ -135,7 +135,7 @@ export function TvDetailsView({
 						style={
 							backgroundImage
 								? {
-										backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url(${backgroundImage})`,
+										backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(${backgroundImage})`,
 										backgroundSize: "cover",
 										backgroundPosition: "center",
 									}
@@ -147,7 +147,9 @@ export function TvDetailsView({
 						</CardHeader>
 
 						<CardContent className="space-y-4 text-dark-card-foreground gap-4">
-							<p className="max-w-2/3">{tv.overview}</p>
+							<p className="w-full xl:max-w-2/3">
+								{tv.overview ? tv.overview : "No overview available."}
+							</p>
 							<Separator />
 							{tv.created_by.length > 0 && (
 								<div className="grid grid-cols-1 md:grid-cols-3 gap-4">

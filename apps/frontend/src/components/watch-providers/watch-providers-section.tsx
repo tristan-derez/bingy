@@ -41,14 +41,18 @@ export function WatchProvidersSection({
 					>
 						{provider.logo_path && (
 							<img
-								src={`https://image.tmdb.org/t/p/original${provider.logo_path}`}
+								src={
+									provider.logo_path
+										? `https://image.tmdb.org/t/p/original${provider.logo_path}`
+										: undefined
+								}
 								alt={provider.provider_name}
 								className="w-10 h-10 rounded"
 							/>
 						)}
 						<div className="flex flex-col h-10 justify-center">
-							<span className="text-sm leading-tight">Now Streaming</span>
-							<span className="text-sm font-bold leading-tight">
+							<span className="text-sm leading-relaxed">Now Streaming</span>
+							<span className="text-sm font-bold leading-relaxed">
 								{provider.provider_name}
 							</span>
 						</div>

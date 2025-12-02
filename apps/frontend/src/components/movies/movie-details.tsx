@@ -21,6 +21,7 @@ import { shortenCountryName } from "@/utils/shorten-country-name";
 import { CollectionCard } from "../collections/collection-card";
 import { ResourceNotFound } from "../errors/resource-not-found";
 import { LoadingCentered } from "../loading/loading-centered";
+import { MediaOverview } from "../medias/overview";
 import { CastCarousel } from "../person/cast-carousel";
 import { SocialLinks } from "../social-links";
 import { Separator } from "../ui/separator";
@@ -104,7 +105,7 @@ export function MovieDetailView({
 						<CardContent className="xl:p-0">
 							<div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2">
 								<div className="flex flex-col gap-2">
-									<h1 className="text-4xl font-bold leading-tight">
+									<h1 className="text-4xl font-bold leading-relaxed">
 										{movie.title}
 									</h1>
 									{movie.tagline && (
@@ -133,24 +134,26 @@ export function MovieDetailView({
 
 					<Card
 						className={`relative overflow-hidden min-h-[200px] justify-center ${
-							backgroundImage ? "border-none" : ""
+							backgroundImage
+								? "text-dark-card-foreground border-none"
+								: "text-foreground border"
 						}`}
 						style={
 							backgroundImage
 								? {
-										backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url(${backgroundImage})`,
+										backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(${backgroundImage})`,
 										backgroundSize: "cover",
 										backgroundPosition: "center",
 									}
 								: undefined
 						}
 					>
-						<CardHeader className="text-dark-card-foreground">
+						<CardHeader>
 							<CardTitle>Overview</CardTitle>
 						</CardHeader>
 
-						<CardContent className="space-y-4 text-dark-card-foreground">
-							<p>{movie.overview}</p>
+						<CardContent className="flex flex-col gap-4">
+							<MediaOverview overview={movie.overview} />
 							<Separator />
 							{crew.length > 0 && (
 								<div className="grid grid-cols-1 md:grid-cols-3 gap-4">

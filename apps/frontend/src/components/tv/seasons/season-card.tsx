@@ -13,7 +13,7 @@ export function SeasonCard({
 	tvId: number;
 }) {
 	const imageUrl = season.poster_path
-		? `https://image.tmdb.org/t/p/w200${season.poster_path}`
+		? `https://image.tmdb.org/t/p/w500${season.poster_path}`
 		: fallbackPoster;
 
 	return (

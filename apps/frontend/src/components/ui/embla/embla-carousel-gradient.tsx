@@ -33,6 +33,6 @@ export const CarouselGradient = ({ show }: { show: boolean }) => {
 	if (!show) return null;
 
 	return (
-		<div className="pointer-events-none absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-background to-transparent" />
+		<div className="pointer-events-none absolute right-0 top-0 h-full w-0 bg-gradient-to-l from-background to-transparent md:w-12" />
 	);
 };

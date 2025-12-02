@@ -15,7 +15,7 @@ const isCastCredit = (
 
 export const MediaCard = ({ media }: MediaCardProps) => {
 	const imageUrl = media.poster_path
-		? `https://image.tmdb.org/t/p/w300${media.poster_path}`
+		? `https://image.tmdb.org/t/p/w500${media.poster_path}`
 		: fallbackPoster;
 
 	const title = media.media_type === "movie" ? media.title : media.name;
@@ -30,8 +30,8 @@ export const MediaCard = ({ media }: MediaCardProps) => {
 
 	return (
 		<Link to={linkTo} params={linkParams}>
-			<Card className="w-full min-w-42 lg:min-w-60 min-h-[350px]  overflow-hidden pt-0 select-none">
-				<div className="w-full h-[320px]">
+			<Card className="w-full h-full overflow-hidden pt-0 flex flex-col select-none gap-2 shadow-none pb-4">
+				<div className="relative aspect-[2/3] w-full overflow-hidden">
 					<img
 						src={imageUrl}
 						alt={title}
@@ -44,11 +44,8 @@ export const MediaCard = ({ media }: MediaCardProps) => {
 						}}
 					/>
 				</div>
-				<CardHeader className="flex-grow justify-between">
-					<CardTitle
-						className="text-base leading-relaxed line-clamp-1"
-						title={title}
-					>
+				<CardHeader>
+					<CardTitle className="line-clamp-1 leading-normal" title={title}>
 						{title}
 					</CardTitle>
 					{role ? (

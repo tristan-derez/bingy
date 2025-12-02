@@ -3,12 +3,14 @@ import { ArrowLeft, Calendar, Clock, Star } from "lucide-react";
 import type { Schemas } from "shared";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
 import { LoadingCentered } from "@/components/loading/loading-centered";
+import { MediaOverview } from "@/components/medias/overview";
 import { CastCarousel } from "@/components/person/cast-carousel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { formatDate } from "@/utils/format-date";
+import { formatRuntime } from "@/utils/format-runtime";
 
 interface TvEpisodeDetailViewProps {
 	episode: Schemas.TvEpisodeDetails | undefined;
@@ -101,11 +103,15 @@ export function TvEpisodeDetailsView({
 				</div>
 
 				<Card
-					className="relative overflow-hidden min-h-[300px] justify-center"
+					className={`relative overflow-hidden min-h-[300px] justify-center ${
+						backgroundImage
+							? "text-dark-card-foreground border-none"
+							: "text-foreground border"
+					}`}
 					style={
 						backgroundImage
 							? {
-									backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url(${backgroundImage})`,
+									backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(${backgroundImage})`,
 									backgroundSize: "cover",
 									backgroundPosition: "center",
 								}
@@ -115,10 +121,8 @@ export function TvEpisodeDetailsView({
 					<CardHeader>
 						<CardTitle>Overview</CardTitle>
 					</CardHeader>
-					<CardContent className="space-y-4 text-dark-card-foreground">
-						<p className="max-w-1/2 whitespace-pre-line">
-							{episode.overview ? episode.overview : "No overview available."}
-						</p>
+					<CardContent className="flex flex-col gap-4">
+						<MediaOverview overview={episode.overview} />
 
 						{crewToShow.length > 0 && (
 							<>
@@ -162,11 +166,9 @@ export function TvEpisodeDetailsView({
 							<Clock className="h-5 w-5" />
 							<div>
 								<p className="text-xl xl:text-2xl font-bold">
-									{episode.runtime || "N/A"}
+									{formatRuntime(episode.runtime)}
 								</p>
-								<p className="text-sm text-muted-foreground">
-									{episode.runtime ? "minutes" : "Runtime"}
-								</p>
+								<p className="text-sm text-muted-foreground">Runtime</p>
 							</div>
 						</CardContent>
 					</Card>
@@ -191,7 +193,7 @@ export function TvEpisodeDetailsView({
 				</div>
 
 				{mergedCast.length > 0 && (
-					<div className="flex flex-col gap-2">
+					<div className="flex flex-col gap-2 overflow-hidden">
 						<CastCarousel people={mergedCast} />
 						<Link
 							to="/tv/$tvId/season/$seasonNumber/episode/$episodeNumber/credits"
