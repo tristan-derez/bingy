@@ -39,7 +39,7 @@ export const CastCarousel = ({ people }: CastCarouselProps) => {
 	return (
 		<section className="flex flex-col gap-4">
 			<div className="relative">
-				<div className="overflow-hidden hover:cursor-grab" ref={emblaRef}>
+				<div className="hover:cursor-grab" ref={emblaRef}>
 					<div className="flex gap-4">
 						{people.map((person) => (
 							<div key={person.id}>
