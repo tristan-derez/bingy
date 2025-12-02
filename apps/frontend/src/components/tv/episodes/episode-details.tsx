@@ -101,7 +101,11 @@ export function TvEpisodeDetailsView({
 				</div>
 
 				<Card
-					className="relative overflow-hidden min-h-[300px] justify-center"
+					className={`relative overflow-hidden min-h-[300px] justify-center ${
+						backgroundImage
+							? "text-dark-card-foreground border-none"
+							: "text-foreground border"
+					}`}
 					style={
 						backgroundImage
 							? {
@@ -115,7 +119,7 @@ export function TvEpisodeDetailsView({
 					<CardHeader>
 						<CardTitle>Overview</CardTitle>
 					</CardHeader>
-					<CardContent className="space-y-4 text-dark-card-foreground">
+					<CardContent className="space-y-4">
 						<p className="max-w-1/2 whitespace-pre-line">
 							{episode.overview ? episode.overview : "No overview available."}
 						</p>
