@@ -68,6 +68,10 @@ export const CreditEpisodesContainer = ({
 	);
 
 	const allEpisodes = [...(episodes ?? []), ...seasonEpisodes].sort((a, b) => {
+		// season 0 is a special season (making-of etc...) so it goes last in the list
+		if (a.season_number === 0 && b.season_number !== 0) return 1;
+		if (b.season_number === 0 && a.season_number !== 0) return -1;
+
 		if (a.season_number !== b.season_number) {
 			return a.season_number - b.season_number;
 		}
