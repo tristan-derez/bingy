@@ -18,7 +18,7 @@ interface MovieCardProps {
 
 export const MovieCard = ({ movie }: MovieCardProps) => {
 	const imageUrl = movie.poster_path
-		? `https://image.tmdb.org/t/p/w300${movie.poster_path}`
+		? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
 		: fallbackPoster;
 
 	return (

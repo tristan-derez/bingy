@@ -78,7 +78,7 @@ export function CollectionDetailsView({
 		: undefined;
 
 	const posterImage = collectionData.poster_path
-		? `https://image.tmdb.org/t/p/w200${collectionData.poster_path}`
+		? `https://image.tmdb.org/t/p/w500${collectionData.poster_path}`
 		: fallbackPoster;
 
 	return (

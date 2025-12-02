@@ -18,7 +18,7 @@ interface TvCardProps {
 
 export const TvCard = ({ tvShow }: TvCardProps) => {
 	const imageUrl = tvShow.poster_path
-		? `https://image.tmdb.org/t/p/w300${tvShow.poster_path}`
+		? `https://image.tmdb.org/t/p/w500${tvShow.poster_path}`
 		: fallbackPoster;
 
 	return (
