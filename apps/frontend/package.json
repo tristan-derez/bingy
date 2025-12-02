@@ -10,7 +10,8 @@
 		"test": "vitest run",
 		"format": "biome format",
 		"lint": "biome lint",
-		"check": "biome check"
+		"check": "biome check",
+		"machine-translate": "inlang machine translate --project project.inlang"
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^5.2.2",
@@ -75,6 +76,8 @@
 		"typescript": "^5.7.2",
 		"vite": "^6.3.5",
 		"vitest": "^3.0.5",
-		"web-vitals": "^4.2.4"
+		"web-vitals": "^4.2.4",
+		"@inlang/paraglide-js": "2.5.0",
+		"@inlang/cli": "^3.0.0"
 	}
 }
