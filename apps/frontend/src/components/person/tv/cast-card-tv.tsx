@@ -10,7 +10,6 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { Button } from "../../ui/button";
-import { Separator } from "../../ui/separator";
 
 interface CastCardTvProps {
 	person: Pretty<Omit<Schemas.CastMember, "cast_id">>;
@@ -18,7 +17,7 @@ interface CastCardTvProps {
 
 export const CastCardTv = ({ person }: CastCardTvProps) => {
 	const imageUrl = person.profile_path
-		? `https://image.tmdb.org/t/p/w200${person.profile_path}`
+		? `https://image.tmdb.org/t/p/w200/${person.profile_path}`
 		: fallbackPoster;
 
 	return (
@@ -36,8 +35,8 @@ export const CastCardTv = ({ person }: CastCardTvProps) => {
 				<AvatarFallback>{person.name.slice(0, 2).toUpperCase()}</AvatarFallback>
 			</Avatar>
 
-			<Card className="w-full min-w-60 pt-10 px-2">
-				<CardHeader className="text-center pt-0">
+			<Card className="w-full min-w-60 mt-2 px-2 gap-2">
+				<CardHeader className="text-center pt-0 pb-2">
 					<CardTitle
 						className="text-base leading-relaxed line-clamp-1"
 						title={person.name}
@@ -45,15 +44,14 @@ export const CastCardTv = ({ person }: CastCardTvProps) => {
 						{person.name}
 					</CardTitle>
 					<CardDescription
-						className="text-sm leading-relaxed mt-1 line-clamp-1"
+						className="text-sm leading-relaxed line-clamp-1"
 						title={person.character}
 					>
 						{person.character ? person.character : "N/A"}
 					</CardDescription>
 				</CardHeader>
 
-				<CardContent className="text-center pt-0 gap-4 flex flex-col">
-					<Separator />
+				<CardContent className="text-center pt-0 flex flex-col">
 					<Button asChild>
 						<Link to="/">See more</Link>
 					</Button>
