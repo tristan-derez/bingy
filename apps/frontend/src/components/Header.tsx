@@ -2,6 +2,7 @@ import { Link, useRouteContext } from "@tanstack/react-router";
 
 import { useState } from "react";
 import { ProfileDropdown } from "./profile-dropdown";
+import { SearchCombobox } from "./search/search-combobox";
 import {
 	MobileNav,
 	MobileNavHeader,
@@ -68,7 +69,10 @@ export default function Header() {
 		<Navbar>
 			<NavBody>
 				<NavbarLogo />
-				<NavItems items={navItems} />
+				<div className="flex items-center gap-2">
+					<NavItems items={navItems} />
+					{session && <SearchCombobox />}
+				</div>
 				<div className="flex items-center gap-4">
 					{!session && (
 						<>
@@ -110,6 +114,9 @@ export default function Header() {
 							<span className="block">{item.name}</span>
 						</Link>
 					))}
+					{session && (
+						<SearchCombobox title="Search for movies, tv shows or people" />
+					)}
 					<Separator />
 					<div className="flex w-full flex-col gap-4 pt-2">
 						{!session && (
