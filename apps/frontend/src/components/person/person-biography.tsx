@@ -11,7 +11,7 @@ interface PersonBiographyProps {
 }
 
 export const PersonBiography = ({ biography }: PersonBiographyProps) => {
-	const [isCollapsibleOpen, setIsCollapsibleOpen] = useState(false);
+	const [isExpanded, setIsExpanded] = useState(false);
 
 	if (!biography) {
 		return <p>No biography available.</p>;
@@ -54,12 +54,14 @@ export const PersonBiography = ({ biography }: PersonBiographyProps) => {
 	return (
 		<>
 			<p className="whitespace-pre-line">{displayText}</p>
-			<Collapsible open={isCollapsibleOpen} onOpenChange={setIsCollapsibleOpen}>
-				<CollapsibleTrigger asChild>
-					<Button variant="link" size="sm" className="p-0">
-						{isCollapsibleOpen ? "Show less" : "Show more"}
-					</Button>
-				</CollapsibleTrigger>
+			<Collapsible open={isExpanded} onOpenChange={setIsExpanded}>
+				<div className={isExpanded ? "hidden" : ""}>
+					<CollapsibleTrigger asChild>
+						<Button variant="link" size="sm" className="p-0">
+							Show more
+						</Button>
+					</CollapsibleTrigger>
+				</div>
 				<CollapsibleContent>
 					<p className="whitespace-pre-line">{hiddenText}</p>
 				</CollapsibleContent>
