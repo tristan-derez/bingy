@@ -104,7 +104,7 @@ export function CollectionDetailsView({
 							<img
 								src={posterImage}
 								alt={`${collectionData.name} poster`}
-								className="rounded-lg shadow-lg w-1/2 xl:w-auto xl:max-h-[600px]"
+								className="rounded-lg shadow-lg xl:w-auto xl:max-h-[600px]"
 								onError={(e) => {
 									const target = e.currentTarget;
 									if (target.src !== fallbackPoster) {
@@ -131,12 +131,14 @@ export function CollectionDetailsView({
 									))}
 								</CardDescription>
 							</CardHeader>
-							<CardContent className="p-0 w-1/2 flex flex-col gap-4">
+							<CardContent className="p-0 w-full xl:max-w-2/3 flex flex-col gap-4">
 								<div>
 									<h2 className="text-semi-bold text-md">Overview:</h2>
-									{collectionData.overview && (
-										<p className="mt-2">{collectionData.overview}</p>
-									)}
+									<p className="mt-2">
+										{collectionData.overview
+											? collectionData.overview
+											: "No overview available."}
+									</p>
 								</div>
 								{collectionStats.totalRevenue > 0 && (
 									<div className="flex gap-2">

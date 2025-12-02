@@ -147,7 +147,9 @@ export function TvDetailsView({
 						</CardHeader>
 
 						<CardContent className="space-y-4 text-dark-card-foreground gap-4">
-							<p className="max-w-2/3">{tv.overview}</p>
+							<p className="w-full xl:max-w-2/3">
+								{tv.overview ? tv.overview : "No overview available."}
+							</p>
 							<Separator />
 							{tv.created_by.length > 0 && (
 								<div className="grid grid-cols-1 md:grid-cols-3 gap-4">

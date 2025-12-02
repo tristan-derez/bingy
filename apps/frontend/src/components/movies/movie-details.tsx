@@ -152,7 +152,7 @@ export function MovieDetailView({
 						</CardHeader>
 
 						<CardContent className="flex flex-col gap-4">
-							<p>
+							<p className="w-full xl:w-2/3">
 								{movie.overview ? movie.overview : "No overview available."}
 							</p>
 							<Separator />

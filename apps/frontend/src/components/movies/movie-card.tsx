@@ -51,7 +51,7 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
 
 				<CardContent className="flex flex-col gap-4 flex-grow">
 					<p className="text-sm text-muted-foreground line-clamp-3 leading-normal min-h-[4rem]">
-						{movie.overview}
+						{movie.overview ? movie.overview : "No overview available."}
 					</p>
 
 					<div className="flex items-center gap-4 text-sm">

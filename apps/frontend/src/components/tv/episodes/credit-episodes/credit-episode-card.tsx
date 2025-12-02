@@ -77,7 +77,7 @@ export const CreditEpisodeCard = ({
 						{episode.season_number}x{episode.episode_number}
 					</div>
 				</div>
-				<CardDescription className="max-w-2/3">
+				<CardDescription className="w-full xl:max-w-2/3">
 					{episode.overview || "No overview available."}
 				</CardDescription>
 			</CardHeader>
