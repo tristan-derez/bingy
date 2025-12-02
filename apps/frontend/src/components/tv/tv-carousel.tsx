@@ -56,7 +56,7 @@ export const TvCarousel = ({ tvShows, title }: TvCarouselProps) => {
 						{tvShows.map((tv: Schemas.Tv) => (
 							<div
 								key={`${carouselId}-${tv.id}`}
-								className="min-w-80 md:min-w-60 gap-4"
+								className="flex-[0_0_calc(100vw-3rem)] md:flex-[0_0_300px]"
 							>
 								<TvCard tvShow={tv} />
 							</div>
