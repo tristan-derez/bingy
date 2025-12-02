@@ -74,7 +74,9 @@ export const CreditEpisodesList = ({
 							key={episode.id}
 							episode={episode}
 							tvId={tvId}
-							isGuestAppearance={guestEpisodeIds.has(episode.id)}
+							isGuestAppearance={
+								character ? guestEpisodeIds.has(episode.id) : false
+							}
 						/>
 					))}
 				</div>
