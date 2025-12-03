@@ -111,5 +111,9 @@
 	"toast_system_joke": "On suit les ordres de ton système !",
 	"btn_light_mode": "Clair",
 	"btn_dark_mode": "Sombre",
-	"btn_system_mode": "Système"
+	"btn_system_mode": "Système",
+	"toast_success_text_copied": "{x} copié dans le presse-papier",
+	"dialog_title_qr_code": "Authentification à double facteur",
+	"dialog_desc_qr_code": "Scannez le code QR avec votre application d'authentification, puis entrez le code à 6 chiffres.",
+	"dialog_instruction_qr_code": "Ou configurez manuellement avec le secret:"
 }

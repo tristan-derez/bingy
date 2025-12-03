@@ -111,5 +111,9 @@
 	"toast_system_joke": "Following your system's lead!",
 	"btn_light_mode": "Light",
 	"btn_dark_mode": "Dark",
-	"btn_system_mode": "System"
+	"btn_system_mode": "System",
+	"toast_success_text_copied": "{x} copied to clipboard",
+	"dialog_title_qr_code": "Two-factor authentication",
+	"dialog_desc_qr_code": "Scan the QR code with your authenticator app, then enter the 6-digit code",
+	"dialog_instruction_qr_code": "Or setup manually with the secret:"
 }
