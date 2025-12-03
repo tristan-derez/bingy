@@ -115,5 +115,9 @@
 	"toast_success_text_copied": "{x} copié dans le presse-papier",
 	"dialog_title_qr_code": "Authentification à double facteur",
 	"dialog_desc_qr_code": "Scannez le code QR avec votre application d'authentification, puis entrez le code à 6 chiffres.",
-	"dialog_instruction_qr_code": "Ou configurez manuellement avec le secret:"
+	"dialog_instruction_qr_code": "Ou configurez manuellement avec le secret:",
+	"dialog_title_two_factor": "Authentification à double facteur",
+	"dialog_desc_two_factor": "Entrez le code à 6 chiffres provenant de votre application d'authentification.",
+	"dialog_btn_verifying": "Vérification...",
+	"dialog_btn_verify": "Vérifier"
 }

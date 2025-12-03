@@ -115,5 +115,9 @@
 	"toast_success_text_copied": "{x} copied to clipboard",
 	"dialog_title_qr_code": "Two-factor authentication",
 	"dialog_desc_qr_code": "Scan the QR code with your authenticator app, then enter the 6-digit code",
-	"dialog_instruction_qr_code": "Or setup manually with the secret:"
+	"dialog_instruction_qr_code": "Or setup manually with the secret:",
+	"dialog_title_two_factor": "Two-factor authentication",
+	"dialog_desc_two_factor": "Enter the 6-digit code from your authenticator app",
+	"dialog_btn_verifying": "Verifying...",
+	"dialog_btn_verify": "Verify"
 }
