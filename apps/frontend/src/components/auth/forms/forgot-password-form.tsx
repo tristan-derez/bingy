@@ -24,6 +24,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 import { config } from "@/lib/env";
+import { m } from "@/paraglide/messages";
 import { forgotPasswordFormSchema } from "@/schemas/password/forgot-password-form-schema";
 
 interface ForgotPasswordFormProps {
@@ -52,25 +53,14 @@ export function ForgotPasswordForm({ email }: ForgotPasswordFormProps) {
 				redirectTo: `${config.appUrl}/reset-password`,
 			});
 
-			if (error) {
-				toast.error(error.message || "Could not send the email, try again!");
-			}
+			error && toast.error(m.email_not_send);
 
-			if (data?.status) {
+			if (data && data.status) {
 				navigate({ to: "/signin" });
-				toast.success(
-					"If an account exists with that email, you'll receive password reset instructions shortly.",
-				);
+				toast.success(m.forgot_password_email_sent());
 			}
 		} catch (err) {
-			const message =
-				err instanceof Error
-					? err.message.includes("Failed to fetch")
-						? "Something went wrong. Try again later."
-						: err.message
-					: "Something went wrong. Try again later.";
-
-			toast.error(message);
+			toast.error(m.toast_generic_error());
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -79,9 +69,9 @@ export function ForgotPasswordForm({ email }: ForgotPasswordFormProps) {
 	return (
 		<Card className="mx-auto max-w-sm min-w-[420px]">
 			<CardHeader>
-				<CardTitle className="text-2xl">Reset password</CardTitle>
+				<CardTitle className="text-2xl">{m.forgot_password_title()}</CardTitle>
 				<CardDescription>
-					<p>Enter your email below.</p>
+					<p>{m.forgot_password_desc()}</p>
 				</CardDescription>
 			</CardHeader>
 			<CardContent>
@@ -96,7 +86,9 @@ export function ForgotPasswordForm({ email }: ForgotPasswordFormProps) {
 								name="email"
 								render={({ field }) => (
 									<FormItem className="grid gap-2">
-										<FormLabel htmlFor="email">Email</FormLabel>
+										<FormLabel htmlFor="email">
+											{m.form_email_label()}
+										</FormLabel>
 										<FormControl>
 											<Input
 												id={`${id}-email`}
@@ -117,10 +109,10 @@ export function ForgotPasswordForm({ email }: ForgotPasswordFormProps) {
 								{isSubmitting ? (
 									<span className="flex items-center justify-center gap-2">
 										<Loader2 className="animate-spin h-4 w-4" />
-										Sending reset password email
+										{m.btn_sending_email()}
 									</span>
 								) : (
-									"Reset password"
+									m.forgot_password_title()
 								)}
 							</Button>
 						</fieldset>

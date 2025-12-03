@@ -1,4 +1,18 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"example_message": "Bonjour, {username}"
+	"delete_account_title": "Supprimer le compte",
+	"two_factor_title": "Double authentification",
+	"btn_disable_twofactor": "Désactiver la 2FA",
+	"btn_disabling_twofactor": "Désactivation...",
+	"toast_success_disable_twofactor": "La double authentification a été désactivée avec succès.",
+	"toast_error_disable_twofactor": "Échec de la désactivation de la double authentification. Veuillez réessayer.",
+	"toast_generic_error": "Une erreur s'est produite. Veuillez réessayer plus tard.",
+	"toast_email_sent_account_delete": "Un e-mail de confirmation vient de vous être envoyé. Veuillez consulter votre boîte de réception et suivre le lien fourni afin de confirmer la suppression de votre compte.",
+	"delete_account_short_desc": "Cette action est définitive. Vous recevrez un e-mail pour confirmer la suppression.",
+	"form_password_field": "Mot de passe",
+	"dialog_confirm_action": "Êtes-vous certain ?",
+	"dialog_cancel_action": "Annuler",
+	"dialog_delete_account_warning": "Cette action est irréversible. Cela entraînera la suppression de votre compte et de ses données de nos serveurs. Vous recevrez un e-mail de confirmation avec un lien pour compléter la suppression. Votre compte restera actif tant que vous n'aurez pas confirmé via le lien dans l'email.",
+	"btn_delete_account_confirm": "Envoi e-mail…",
+	"two_factor_disable_short_desc": "Désactiver la double authentification"
 }

@@ -25,6 +25,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 import { config } from "@/lib/env";
+import { m } from "@/paraglide/messages";
 import { updateEmailSchema } from "@/schemas/update-email-schema";
 
 export function UpdateEmailForm() {
@@ -51,28 +52,23 @@ export function UpdateEmailForm() {
 			});
 
 			if (error) {
-				toast.error(error.message || "Failed to change your email");
+				toast.error(m.toast_error_update_email());
 				return;
 			}
 
 			if (data) {
 				if (data.status) {
 					toast.success(
-						`Verification email sent to ${user.email}. Please check your inbox.`,
+						m.toast_success_update_email_confirmation_needed({
+							userEmail: user.email,
+						}),
 					);
 				} else {
-					toast.success("Email changed successfully.");
+					toast.success(m.toast_success_update_email());
 				}
 			}
 		} catch (err) {
-			const message =
-				err instanceof Error
-					? err.message.includes("Failed to fetch")
-						? "Something went wrong. Try again later."
-						: err.message
-					: "Something went wrong. Try again later.";
-
-			toast.error(message);
+			toast.error(m.toast_generic_error());
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -81,19 +77,19 @@ export function UpdateEmailForm() {
 		<div className="grid gap-2">
 			<div>
 				<p className="text-md font-semibold leading-none tracking-tight">
-					Email
+					{m.update_email_title()}
 				</p>
 				<p className="text-sm text-muted-foreground mt-1.5">
 					{user.emailVerified
-						? "A verification email will be sent to your current email to approve the change."
-						: "Your email will be updated immediately as your current email isn't verified."}
+						? m.update_email_desc_email_verified()
+						: m.update_email_desc()}
 				</p>
 			</div>
 			<label
 				htmlFor={`${id}-currentEmail`}
 				className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
 			>
-				Current email
+				{m.form_current_email_label()}
 			</label>
 			<Input
 				id={`${id}-currentEmail`}
@@ -105,17 +101,16 @@ export function UpdateEmailForm() {
 			<Dialog open={open} onOpenChange={setOpen}>
 				<DialogTrigger asChild>
 					<Button variant="default" className="mt-2">
-						Update email
+						{m.btn_update_email()}
 					</Button>
 				</DialogTrigger>
 				<DialogContent>
 					<DialogHeader>
-						<DialogTitle>Update your email address</DialogTitle>
+						<DialogTitle>{m.dialog_title_update_email()}</DialogTitle>
 						<DialogDescription>
-							Enter your new email address below.{" "}
 							{user.emailVerified
-								? "A verification link will be sent to your current email."
-								: "Your email will be updated immediately."}
+								? m.dialog_desc_update_email_verified()
+								: m.dialog_desc_update_email()}
 						</DialogDescription>
 					</DialogHeader>
 					<Form {...form}>
@@ -123,7 +118,7 @@ export function UpdateEmailForm() {
 							<fieldset disabled={isSubmitting} className="grid gap-2">
 								<FormItem className="grid gap-2">
 									<FormLabel htmlFor={`${id}-currentEmail`}>
-										Current email
+										{m.form_current_email_label()}
 									</FormLabel>
 									<FormControl>
 										<Input
@@ -140,7 +135,9 @@ export function UpdateEmailForm() {
 									name="newEmail"
 									render={({ field }) => (
 										<FormItem className="grid gap-2">
-											<FormLabel htmlFor="newPassword">New email</FormLabel>
+											<FormLabel htmlFor="newEmail">
+												{m.form_new_email_label()}
+											</FormLabel>
 											<FormControl>
 												<Input
 													id={`${id}-newEmail`}
@@ -161,10 +158,10 @@ export function UpdateEmailForm() {
 									{isSubmitting ? (
 										<span className="flex items-center justify-center gap-2">
 											<Loader2 className="animate-spin h-4 w-4" />
-											Updating email...
+											{m.btn_updating_email()}
 										</span>
 									) : (
-										"Update email"
+										m.btn_update_email()
 									)}
 								</Button>
 							</fieldset>

@@ -29,6 +29,7 @@ import { OAuthButton } from "@/components/ui/oauth-button";
 import { SeparatorWithText } from "@/components/ui/separator-text";
 import { authClient } from "@/lib/auth-client";
 import { config } from "@/lib/env";
+import { m } from "@/paraglide/messages";
 import { signinFormSchema } from "@/schemas/signin-form-schema";
 import { TwoFactorDialog } from "../two-factor.dialog";
 
@@ -64,28 +65,19 @@ export function SignInForm() {
 						if (context.data.twoFactorRedirect) {
 							setShowDialog(true);
 						} else if (context.data.user.emailVerified === "false") {
-							toast.success("Please verify your email");
+							toast.success(m.toast_email_not_verified_new_user());
 							navigate({ to: "/welcome" });
 						} else if (context.data.user.emailVerified) {
 							navigate({ to: "/dashboard" });
 						}
 					},
-					async onError(context) {
-						toast.error(
-							context.error.message || "Oops! Request failed, try again.",
-						);
+					async onError() {
+						toast.error(m.toast_generic_error());
 					},
 				},
 			);
 		} catch (err) {
-			const message =
-				err instanceof Error
-					? err.message.includes("Failed to fetch")
-						? "Something went wrong. Try again later."
-						: err.message
-					: "Something went wrong. Try again later.";
-
-			toast.error(message);
+			toast.error(m.toast_generic_error());
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -100,11 +92,7 @@ export function SignInForm() {
 				newUserCallbackURL: `${config.appUrl}/welcome`,
 			});
 		} catch (err) {
-			toast.error(
-				err instanceof Error
-					? err.message
-					: "Something went wrong. Try again later.",
-			);
+			toast.error(m.toast_generic_error());
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -118,25 +106,21 @@ export function SignInForm() {
 			});
 
 			if (error?.message === "Invalid two factor cookie") {
-				toast.error("Invalid code. Try again.");
+				toast.error(m.toast_error_invalid_code());
 				return;
 			} else if (error) {
-				toast.error(error.message);
+				toast.error(m.toast_generic_error());
 				return;
 			}
 
 			if (data) {
-				toast.success(`Welcome back, ${data.user.name}!`);
+				toast.success(m.welcome_back_message({ username: data.user.name }));
 				setShowDialog(false);
 				form.reset();
 				navigate({ to: "/dashboard" });
 			}
 		} catch (err) {
-			const message =
-				err instanceof Error
-					? err.message
-					: "Failed to verify code. Try again.";
-			toast.error(message);
+			toast.error(m.toast_error_signin_invalid_code());
 		}
 	};
 
@@ -150,10 +134,10 @@ export function SignInForm() {
 					<CardHeader>
 						<CardTitle className="text-2xl">Sign in</CardTitle>
 						<CardDescription>
-							<p>
-								Welcome back! Your entertainment hub is waiting. <br />
-								Just sign in to get going.
-							</p>
+							<div className="flex flex-col gap-1">
+								<p>{m.signin_desc_one()}</p>
+								<p>{m.signin_desc_two()}</p>
+							</div>
 						</CardDescription>
 					</CardHeader>
 					<CardContent className="grid gap-4 pt-2">
@@ -169,7 +153,9 @@ export function SignInForm() {
 											name="email"
 											render={({ field }) => (
 												<FormItem className="grid gap-2">
-													<FormLabel htmlFor={`${id}-email`}>Email</FormLabel>
+													<FormLabel htmlFor={`${id}-email`}>
+														{m.form_email_label()}
+													</FormLabel>
 													<FormControl>
 														<Input
 															id={`${id}-email`}
@@ -191,7 +177,7 @@ export function SignInForm() {
 												<FormItem className="grid gap-2">
 													<div className="flex items-center">
 														<FormLabel htmlFor={`${id}-password`}>
-															Password
+															{m.form_password_label()}
 														</FormLabel>
 														<Link
 															to={"/forgot-password"}
@@ -202,7 +188,7 @@ export function SignInForm() {
 															}
 															className="ml-auto inline-block text-xs underline"
 														>
-															Forgot your password?
+															{m.signin_forgot_password()}
 														</Link>
 													</div>
 													<Input
@@ -222,17 +208,17 @@ export function SignInForm() {
 											{isSubmitting ? (
 												<span className="flex items-center justify-center gap-2">
 													<Loader2 className="animate-spin h-4 w-4" />
-													Signing in
+													{m.btn_signing_in()}
 												</span>
 											) : (
-												"Sign in"
+												m.btn_signin()
 											)}
 											{lastMethod === "email" && (
 												<Badge
 													variant="secondary"
 													className="absolute right-2 rounded-md"
 												>
-													Last used
+													{m.signin_last_method_badge()}
 												</Badge>
 											)}
 										</Button>
@@ -245,16 +231,16 @@ export function SignInForm() {
 						<div className="flex gap-2">
 							<OAuthButton
 								icon={FcGoogle}
-								label="Sign in with Google"
+								label={m.signin_with_provider({ provider: "Google" })}
 								text="Google"
 								lastMethod={lastMethod === "google"}
 								onClick={() => handleOAuthSignIn("google")}
 							/>
 						</div>
-						<div className="mt-4 text-center text-sm">
-							Don&apos;t have an account?{" "}
+						<div className="flex justify-center text-sm gap-1">
+							<span>{m.signin_no_account()}</span>
 							<Link to="/signup" className="underline">
-								Sign up
+								{m.signin_no_account_link()}
 							</Link>
 						</div>
 					</CardContent>

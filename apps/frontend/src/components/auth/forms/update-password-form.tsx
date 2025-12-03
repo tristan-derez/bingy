@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
+import { m } from "@/paraglide/messages";
 import { updatePasswordFormSchema } from "@/schemas/password/update-password";
 
 export function UpdatePasswordForm() {
@@ -58,23 +59,16 @@ export function UpdatePasswordForm() {
 			});
 
 			if (error) {
-				toast.error(error.message || "Failed to reset password. Try again.");
+				toast.error(m.toast_error_update_password());
 				return;
 			}
 
 			if (data) {
-				toast.success("Password reset successfully!");
+				toast.success(m.toast_success_update_password());
 				setIsSuccess(true);
 			}
 		} catch (err) {
-			const message =
-				err instanceof Error
-					? err.message.includes("Failed to fetch")
-						? "Something went wrong. Try again later."
-						: err.message
-					: "Something went wrong. Try again later.";
-
-			toast.error(message);
+			toast.error(m.toast_generic_error());
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -84,27 +78,26 @@ export function UpdatePasswordForm() {
 		<div className="grid gap-2">
 			<div>
 				<p className="text-md font-semibold leading-none tracking-tight">
-					Password
+					{m.update_password_title()}
 				</p>
 				<p className="text-sm text-muted-foreground mt-1.5">
 					{!hasPassword
-						? "Google accounts require password reset via the sign-in page."
-						: "This will log you out of all other sessions."}
+						? m.update_password_desc_oauth({ providers: "Google" })
+						: m.update_password_desc()}
 				</p>
 			</div>
 			{hasPassword && (
 				<Dialog open={open} onOpenChange={setOpen}>
 					<DialogTrigger asChild>
 						<Button variant="default" className="mt-2">
-							Update password
+							{m.btn_update_password()}
 						</Button>
 					</DialogTrigger>
 					<DialogContent>
 						<DialogHeader>
-							<DialogTitle>This will update your password</DialogTitle>
+							<DialogTitle>{m.dialog_title_update_password()}</DialogTitle>
 							<DialogDescription>
-								Enter your current password and choose a new one. Your new
-								password must be at least 8 characters long.
+								{m.dialog_desc_update_password()}
 							</DialogDescription>
 						</DialogHeader>
 						<Form {...form}>
@@ -115,8 +108,8 @@ export function UpdatePasswordForm() {
 										name="currentPassword"
 										render={({ field }) => (
 											<FormItem className="grid gap-2">
-												<FormLabel htmlFor="newPassword">
-													Current password
+												<FormLabel htmlFor="currentPassword">
+													{m.form_current_password_label()}
 												</FormLabel>
 												<FormControl>
 													<Input
@@ -137,7 +130,7 @@ export function UpdatePasswordForm() {
 										render={({ field }) => (
 											<FormItem className="grid gap-2">
 												<FormLabel htmlFor="newPassword">
-													New password
+													{m.form_new_password_label()}
 												</FormLabel>
 												<FormControl>
 													<Input
@@ -159,10 +152,10 @@ export function UpdatePasswordForm() {
 										{isSubmitting ? (
 											<span className="flex items-center justify-center gap-2">
 												<Loader2 className="animate-spin h-4 w-4" />
-												Updating password
+												{m.btn_updating_password()}
 											</span>
 										) : (
-											"Reset password"
+											m.btn_update_password()
 										)}
 									</Button>
 								</fieldset>

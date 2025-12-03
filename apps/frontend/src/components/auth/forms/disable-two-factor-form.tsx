@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
+import { m } from "@/paraglide/messages";
 import { twoFactorSchema } from "@/schemas/two-factor-schema";
 
 export function DisableTwoFactorForm() {
@@ -40,25 +41,13 @@ export function DisableTwoFactorForm() {
 			});
 
 			if (data) {
-				toast.success("Two factor authentication disabled successfully");
+				toast.success(m.toast_success_disable_twofactor());
 				navigate({ to: "/settings" });
 			}
 
-			if (error) {
-				toast.error(
-					error.message ||
-						"Failed to disable two-factor authentication. Try again.",
-				);
-			}
+			error && toast.error(m.toast_error_disable_twofactor());
 		} catch (err) {
-			const message =
-				err instanceof Error
-					? err.message.includes("Failed to fetch")
-						? "Something went wrong. Try again later."
-						: err.message
-					: "Something went wrong. Try again later.";
-
-			toast.error(message);
+			toast.error(m.toast_generic_error());
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -68,10 +57,10 @@ export function DisableTwoFactorForm() {
 		<div className="grid gap-2">
 			<div>
 				<p className="text-md font-semibold leading-none tracking-tight">
-					Two factor authentication
+					{m.two_factor_title()}
 				</p>
 				<p className="text-sm text-muted-foreground mt-1.5">
-					Disable two factor authentication.
+					{m.btn_disable_twofactor()}
 				</p>
 			</div>
 
@@ -83,7 +72,9 @@ export function DisableTwoFactorForm() {
 							name="password"
 							render={({ field }) => (
 								<FormItem className="grid gap-2">
-									<FormLabel htmlFor={`${id}-password`}>Password</FormLabel>
+									<FormLabel htmlFor={`${id}-password`}>
+										{m.form_password_label()}
+									</FormLabel>
 									<FormControl>
 										<Input
 											id={`${id}-password`}
@@ -104,10 +95,10 @@ export function DisableTwoFactorForm() {
 							{isSubmitting ? (
 								<span className="flex items-center justify-center gap-2">
 									<Loader2 className="animate-spin h-4 w-4" />
-									Disabling...
+									{m.btn_disabling_twofactor()}
 								</span>
 							) : (
-								"Disable Two-Factor"
+								m.btn_disable_twofactor()
 							)}
 						</Button>
 					</fieldset>

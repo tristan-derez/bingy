@@ -1,5 +1,6 @@
 import type { IconType } from "react-icons";
 import { Badge } from "@/components/ui/badge";
+import { m } from "@/paraglide/messages";
 import { Button } from "./button";
 import {
 	Tooltip,
@@ -43,7 +44,7 @@ function OAuthButton({
 								variant="secondary"
 								className="absolute right-2 rounded-md"
 							>
-								Last used
+								{m.signin_last_method_badge()}
 							</Badge>
 						)}
 					</Button>
