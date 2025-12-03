@@ -15,6 +15,7 @@ import {
 	InputOTPSeparator,
 	InputOTPSlot,
 } from "@/components/ui/input-otp";
+import { m } from "@/paraglide/messages";
 
 export function TwoFactorDialog({
 	open,
@@ -38,10 +39,8 @@ export function TwoFactorDialog({
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Two-Factor Authentication</DialogTitle>
-					<DialogDescription>
-						Enter the 6-digit code from your authenticator app
-					</DialogDescription>
+					<DialogTitle>{m.dialog_title_two_factor()}</DialogTitle>
+					<DialogDescription>{m.dialog_desc_two_factor()}</DialogDescription>
 				</DialogHeader>
 				<div className="flex flex-col items-center mt-4 gap-8 w-full">
 					<div className="flex justify-center">
@@ -74,10 +73,10 @@ export function TwoFactorDialog({
 						{isVerifying ? (
 							<span className="flex items-center justify-center gap-2">
 								<Loader2 className="animate-spin h-4 w-4" />
-								Verifying
+								{m.dialog_btn_verifying()}
 							</span>
 						) : (
-							"Verify"
+							m.dialog_btn_verify()
 						)}
 					</Button>
 				</div>
