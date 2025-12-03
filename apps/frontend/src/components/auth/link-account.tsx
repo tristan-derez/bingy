@@ -4,6 +4,7 @@ import { FcGoogle } from "react-icons/fc";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { config } from "@/lib/env";
+import { m } from "@/paraglide/messages";
 import { OAuthButton } from "../ui/oauth-button";
 
 export function LinkAccountComponent() {
@@ -17,9 +18,14 @@ export function LinkAccountComponent() {
 
 	const getButtonText = () => {
 		if (isLoading) {
-			return googleConnected ? "Unlinking..." : "Linking...";
+			return googleConnected
+				? m.btn_unlinking_account()
+				: m.btn_linking_account();
 		}
-		return googleConnected ? "Unlink Google" : "Link to Google";
+
+		return googleConnected
+			? m.btn_unlink_account({ provider: "Google" })
+			: m.btn_link_account({ provider: "Google" });
 	};
 
 	const handleLinkAccount = async (provider: "google") => {
@@ -28,12 +34,12 @@ export function LinkAccountComponent() {
 
 			if (googleConnected) {
 				if ((connections?.data?.length ?? 0) <= 1) {
-					toast.error("You cannot unlink your only account.");
+					toast.error(m.toast_error_unlink_account());
 					return;
 				}
 
 				await authClient.unlinkAccount({ providerId: provider });
-				toast.success("Google account unlinked.");
+				toast.success(m.toast_success_unlink_account({ provider: "Google" }));
 				navigate({ to: "/settings" });
 			} else {
 				await authClient.linkSocial({
@@ -43,11 +49,7 @@ export function LinkAccountComponent() {
 				});
 			}
 		} catch (err) {
-			toast.error(
-				err instanceof Error
-					? err.message
-					: "Something went wrong. Try again later.",
-			);
+			toast.error(m.toast_generic_error());
 		} finally {
 			setIsLoading(false);
 		}
@@ -59,20 +61,19 @@ export function LinkAccountComponent() {
 				{googleConnected ? (
 					<>
 						<p className="text-md font-semibold leading-none tracking-tight">
-							Linked accounts
+							{m.unlink_account_title()}
 						</p>
 						<p className="text-sm text-muted-foreground mt-1.5">
-							Feel free to unlink accounts, but make sure you always have at
-							least one way to sign in.
+							{m.unlink_account_desc()}
 						</p>
 					</>
 				) : (
 					<>
 						<p className="text-md font-semibold leading-none tracking-tight">
-							Link accounts
+							{m.link_account_title()}
 						</p>
 						<p className="text-sm text-muted-foreground mt-1.5">
-							Link your account to a provider.
+							{m.link_account_desc()}
 						</p>
 					</>
 				)}
