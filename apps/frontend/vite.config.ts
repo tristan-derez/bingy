@@ -13,6 +13,9 @@ export default defineConfig({
 		paraglideVitePlugin({
 			project: "./project.inlang",
 			outdir: "./src/paraglide",
+			outputStructure: "message-modules",
+			cookieName: "PARAGLIDE_LOCALE",
+			strategy: ["cookie", "preferredLanguage", "baseLocale"],
 		}),
 		tanstackRouter({ autoCodeSplitting: true }),
 		viteReact(),
