@@ -1,6 +1,7 @@
 import { Link, useRouteContext } from "@tanstack/react-router";
 
 import { useState } from "react";
+import { LocaleSwitcher } from "./locale-switcher";
 import { ProfileDropdown } from "./profile-dropdown";
 import { SearchCombobox } from "./search/search-combobox";
 import {
@@ -84,6 +85,7 @@ export default function Header() {
 							</NavbarButton>
 						</>
 					)}
+					<LocaleSwitcher />
 					{session && (
 						<ProfileDropdown
 							session={{ ...session.session, user: session.user }}
