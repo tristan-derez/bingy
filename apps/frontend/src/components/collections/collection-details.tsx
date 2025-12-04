@@ -73,6 +73,17 @@ export function CollectionDetailsView({
 		maximumFractionDigits: 0,
 	}).format(collectionStats.totalRevenue);
 
+	const totalBudget = moviesData.reduce((sum, movie) => {
+		return sum + (movie?.budget ?? 0);
+	}, 0);
+
+	const formattedBudget = new Intl.NumberFormat("en-US", {
+		style: "currency",
+		currency: "USD",
+		minimumFractionDigits: 0,
+		maximumFractionDigits: 0,
+	}).format(totalBudget);
+
 	const backgroundImage = collectionData.backdrop_path
 		? `https://image.tmdb.org/t/p/original${collectionData.backdrop_path}`
 		: undefined;
@@ -130,7 +141,7 @@ export function CollectionDetailsView({
 									))}
 								</CardDescription>
 							</CardHeader>
-							<CardContent className="p-0 flex flex-col gap-4">
+							<CardContent className="p-0 flex flex-col gap-2">
 								<h2 className="text-semi-bold text-md">
 									{m.collection_details_title()}
 								</h2>
@@ -138,14 +149,24 @@ export function CollectionDetailsView({
 									overview={collectionData.overview}
 									bg={backgroundImage}
 								/>
-								{collectionStats.totalRevenue > 0 && (
+
+								{totalBudget > 0 ? (
+									<div className="flex gap-2">
+										<h3 className="text-semi-bold text-md">
+											{m.collection_details_budget()}
+										</h3>
+										<p>{formattedBudget}</p>
+									</div>
+								) : null}
+
+								{collectionStats.totalRevenue > 0 ? (
 									<div className="flex gap-2">
 										<h3 className="text-semi-bold text-md">
 											{m.collection_details_revenue()}
 										</h3>
 										<p>{formattedRevenue}</p>
 									</div>
-								)}
+								) : null}
 							</CardContent>
 						</div>
 					</div>
