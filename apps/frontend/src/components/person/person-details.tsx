@@ -185,14 +185,16 @@ export const PersonDetailsView = ({
 					</Card>
 					{person.combined_credits ? (
 						<div className="flex flex-col gap-4">
-							<MediasCarousel
-								medias={sortedCredits}
-								title={
-									person.gender === 1
-										? m.person_known_for_female()
-										: m.person_known_for_male()
-								}
-							/>
+							{sortedCredits && sortedCredits.length > 0 ? (
+								<MediasCarousel
+									medias={sortedCredits}
+									title={
+										person.gender === 1
+											? m.person_known_for_female()
+											: m.person_known_for_male()
+									}
+								/>
+							) : null}
 							<PersonTimeline combinedCredits={person.combined_credits} />
 						</div>
 					) : null}
