@@ -7,6 +7,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { formatRuntime } from "@/utils/format-runtime";
 
@@ -70,7 +71,7 @@ export const CreditEpisodeCard = ({
 							</Badge>
 						) : null}
 						{isGuestAppearance ? (
-							<Badge variant="default">Guest Appearance</Badge>
+							<Badge variant="default">{m.badge_credit_episode_guest()}</Badge>
 						) : null}
 					</div>
 					<div className="text-sm whitespace-nowrap">

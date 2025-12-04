@@ -228,7 +228,7 @@ export function SignUpForm() {
 						</form>
 					</Form>
 					<div className="grid gap-4">
-						<SeparatorWithText text="Or continue with" />
+						<SeparatorWithText text={m.signup_separator_text()} />
 						<div className="flex gap-2">
 							<OAuthButton
 								icon={FcGoogle}

@@ -132,7 +132,7 @@ export function SignInForm() {
 					className="py-4 md:px-2 min-w-sm md:min-w-md"
 				>
 					<CardHeader>
-						<CardTitle className="text-2xl">Sign in</CardTitle>
+						<CardTitle className="text-2xl">{m.signin_title()}</CardTitle>
 						<CardDescription>
 							<div className="flex flex-col gap-1">
 								<p>{m.signin_desc_one()}</p>
@@ -227,7 +227,7 @@ export function SignInForm() {
 							</form>
 						</Form>
 
-						<SeparatorWithText text="Or continue with" />
+						<SeparatorWithText text={m.signin_separator_text()} />
 						<div className="flex gap-2">
 							<OAuthButton
 								icon={FcGoogle}
