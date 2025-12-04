@@ -77,7 +77,7 @@ export function ModeToggle({ duration = 700 }: ModeToggleProps) {
 				className={`flex items-center gap-2 w-28 ${theme === "light" ? "hover:cursor-not-allowed" : ""}`}
 			>
 				<FaSun className="h-4 w-4" />
-				Light
+				{m.btn_light_mode()}
 			</Button>
 
 			<Button
@@ -86,7 +86,7 @@ export function ModeToggle({ duration = 700 }: ModeToggleProps) {
 				className={`flex items-center gap-2 w-28 ${theme === "dark" ? "hover:cursor-not-allowed" : ""}`}
 			>
 				<FaMoon className="h-4 w-4" />
-				Dark
+				{m.btn_dark_mode()}
 			</Button>
 
 			<Button
@@ -95,7 +95,7 @@ export function ModeToggle({ duration = 700 }: ModeToggleProps) {
 				className={`flex items-center gap-2 w-28 ${theme === "system" ? "hover:cursor-not-allowed" : ""}`}
 			>
 				<GrSystem className="h-4 w-4" />
-				System
+				{m.btn_system_mode()}
 			</Button>
 		</div>
 	);
