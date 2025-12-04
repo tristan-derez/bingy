@@ -248,5 +248,6 @@
 	"search_toggle_aria_label_movies": "Films uniquement",
 	"search_toggle_aria_label_tv": "Séries TV uniquement",
 	"search_toggle_aria_label_people": "Personnes uniquement",
-	"btn_back": "Retour"
+	"btn_back": "Retour",
+	"collection_details_budget": "Budget:"
 }
