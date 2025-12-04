@@ -24,9 +24,11 @@ export function TvSeasonCreditsView({
 	onBack,
 }: TvSeasonCreditsViewProps) {
 	const crewSectionId = useId();
+
 	if (isLoading) {
 		return <LoadingCentered />;
 	}
+
 	if (isError || !credits) {
 		return (
 			<ResourceNotFound
@@ -36,34 +38,48 @@ export function TvSeasonCreditsView({
 			/>
 		);
 	}
+
 	return (
 		<div className="container scroll-smooth">
 			<div className="mb-4 flex justify-between">
 				<Button onClick={onBack} variant="outline">
 					<ArrowLeft className="h-4 w-4" /> Back
 				</Button>
-				<Button asChild variant="outline">
-					<a
-						href={`#${crewSectionId}`}
-						onClick={(e) => {
-							e.preventDefault();
-							document.getElementById(crewSectionId)?.scrollIntoView({
-								behavior: "smooth",
-								block: "start",
-							});
-						}}
-					>
-						{m.btn_jump_to_crew()}
-						<ArrowDown className="h-4 w-4" />
-					</a>
-				</Button>
+				{credits.crew.length > 0 ? (
+					<Button asChild variant="outline">
+						<a
+							href={`#${crewSectionId}`}
+							onClick={(e) => {
+								e.preventDefault();
+								document.getElementById(crewSectionId)?.scrollIntoView({
+									behavior: "smooth",
+									block: "start",
+								});
+							}}
+						>
+							{m.btn_jump_to_crew()}
+							<ArrowDown className="h-4 w-4" />
+						</a>
+					</Button>
+				) : null}
 			</div>
 			<div className="flex flex-col gap-8 mt-8 text-center md:text-left">
-				<h2 className="text-2xl font-bold">Season {seasonNumber}</h2>
-				<CastSectionAggregated people={credits.cast} />
-				<div id={crewSectionId} className="scroll-mt-26 lg:scroll-mt-30">
-					<CrewSectionAggregated people={credits.crew} />
-				</div>
+				<h2 className="text-2xl font-bold">
+					{seasonNumber === 0
+						? m.season_credits_special()
+						: m.season_credits_title({ seasonNumber: seasonNumber })}
+				</h2>
+				{credits.cast.length > 0 ? (
+					<CastSectionAggregated people={credits.cast} />
+				) : null}
+				{credits.crew.length > 0 ? (
+					<div id={crewSectionId} className="scroll-mt-26 lg:scroll-mt-30">
+						<CrewSectionAggregated people={credits.crew} />
+					</div>
+				) : null}
+				{credits.cast.length === 0 && credits.crew.length === 0 ? (
+					<p className="text-center">{m.season_credits_no_results()}</p>
+				) : null}
 			</div>
 		</div>
 	);

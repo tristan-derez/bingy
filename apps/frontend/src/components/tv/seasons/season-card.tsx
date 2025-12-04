@@ -1,8 +1,11 @@
 import { Link } from "@tanstack/react-router";
+import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { localeWithRegionAtom } from "@/lib/atoms/locale";
+import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 
 export function SeasonCard({
@@ -12,6 +15,7 @@ export function SeasonCard({
 	season: Schemas.TvDetails["seasons"][number];
 	tvId: number;
 }) {
+	const localeWithRegion = useAtomValue(localeWithRegionAtom);
 	const imageUrl = season.poster_path
 		? `https://image.tmdb.org/t/p/w500${season.poster_path}`
 		: fallbackPoster;
@@ -30,20 +34,26 @@ export function SeasonCard({
 						<div className="flex items-center gap-3">
 							<CardTitle>
 								{season.season_number === 0
-									? "Specials"
-									: `Season ${season.season_number}`}
+									? m.season_card_special_season()
+									: m.season_card_season({
+											seasonNumber: season.season_number,
+										})}
 							</CardTitle>
 							<Badge className="text-sm">
 								{season.air_date
-									? formatDate(season.air_date, "en-US", {
+									? formatDate(season.air_date, localeWithRegion, {
 											year: "numeric",
 										})
 									: "N/A"}
 							</Badge>
 						</div>
 						<Badge variant="outline">
-							{season.episode_count}{" "}
-							{season.episode_count === 1 ? "Episode" : "Episodes"}
+							<span>
+								{season.episode_count}{" "}
+								{season.episode_count > 1
+									? m.season_card_episodes_badge()
+									: m.season_card_episode_badge()}
+							</span>
 						</Badge>
 					</div>
 				</CardHeader>
@@ -60,15 +70,18 @@ export function SeasonCard({
 								}
 							}}
 						/>
-						<div className="flex-1 space-y-2">
+						<div className="flex-1 gap-2">
 							{season.name
-								? season.name !== `Season ${season.season_number}` &&
+								? season.name !==
+										m.season_card_season({
+											seasonNumber: season.season_number,
+										}) &&
 									season.season_number !== 0 && (
 										<h3 className="font-semibold">{season.name}</h3>
 									)
 								: null}
 							<p className="text-muted-foreground xl:line-clamp-9">
-								{season.overview ? season.overview : "No overview available."}
+								{season.overview ? season.overview : m.overview_none()}
 							</p>
 						</div>
 					</div>
