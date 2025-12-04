@@ -1,11 +1,14 @@
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { useNavigate } from "@tanstack/react-router";
+import { useAtomValue } from "jotai";
 import { SearchIcon } from "lucide-react";
 import { VisuallyHidden } from "radix-ui";
 import { useEffect, useState } from "react";
 import type { Schemas } from "shared";
 import { Button } from "@/components/ui/button";
 import { useSearchQuery } from "@/hooks/useSearch";
+import { localeWithRegionAtom } from "@/lib/atoms/locale";
+import { m } from "@/paraglide/messages";
 import { getRelevanceScore } from "@/utils/search-relevance-score";
 import {
 	Command,
@@ -29,9 +32,11 @@ export function SearchCombobox({ title }: SearchComboboxProps) {
 	const [query, setQuery] = useState("");
 	const [isTyping, setIsTyping] = useState(false);
 	const navigate = useNavigate();
+	const localeWithRegion = useAtomValue(localeWithRegionAtom);
 
-	const { data, isLoading, isFetching } =
-		useSearchQuery<Schemas.PaginatedResponse<Schemas.MediaMulti>>(query);
+	const { data, isLoading, isFetching } = useSearchQuery<
+		Schemas.PaginatedResponse<Schemas.MediaMulti>
+	>(query, { language: localeWithRegion });
 
 	const results = data?.results ?? [];
 
@@ -109,30 +114,33 @@ export function SearchCombobox({ title }: SearchComboboxProps) {
 				<VisuallyHidden.Root>
 					<DialogTitle>Search command</DialogTitle>
 				</VisuallyHidden.Root>
-				<DialogContent className="p-0 min-w-[320px] max-w-[400px]">
+				<DialogContent className="p-0 max-w-[400px] rounded-lg">
 					<VisuallyHidden.Root>
 						<DialogDescription>Search results</DialogDescription>
 					</VisuallyHidden.Root>
 					<Command shouldFilter={false}>
 						<CommandInput
-							placeholder="Search movies, TV shows, people..."
+							placeholder={m.search_combobox_input_placeholder()}
 							value={query}
 							onValueChange={setQuery}
+							className="placeholder:text-ellipsis"
 						/>
 
 						<CommandList className="flex flex-col max-h-[400px]">
-							{!query && <CommandEmpty>Start typing to search...</CommandEmpty>}
+							{!query && (
+								<CommandEmpty>{m.search_combobox_empty()}</CommandEmpty>
+							)}
 
 							{query && loading && (
 								<CommandEmpty>
 									<div className="flex w-full py-4 justify-center">
-										<LoaderFive text="Searching..." />
+										<LoaderFive text={m.loader_text_searching()} />
 									</div>
 								</CommandEmpty>
 							)}
 
 							{query && !loading && !hasResults && (
-								<CommandEmpty>No results found.</CommandEmpty>
+								<CommandEmpty>{m.search_combobox_no_results()}</CommandEmpty>
 							)}
 
 							{query && !loading && hasResults && (
@@ -156,14 +164,18 @@ export function SearchCombobox({ title }: SearchComboboxProps) {
 													onSelect={() => {
 														navigate({
 															to: "/search",
-															search: { q: query, language: "en-US", page: 1 },
+															search: {
+																q: query,
+																language: localeWithRegion,
+																page: 1,
+															},
 														});
 														handleSelect();
 													}}
 													className="hover:cursor-pointer"
 												>
 													<span className="w-full text-center font-medium">
-														View all results →
+														{m.btn_view_all()} →
 													</span>
 												</CommandItem>
 											</CommandGroup>
