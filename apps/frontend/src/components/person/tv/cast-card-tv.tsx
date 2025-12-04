@@ -54,7 +54,12 @@ export const CastCardTv = ({ person }: CastCardTvProps) => {
 
 				<CardContent className="text-center pt-0 flex flex-col">
 					<Button asChild>
-						<Link to="/">{m.btn_see_more()}</Link>
+						<Link
+							to="/person/$personId"
+							params={{ personId: person.id.toString() }}
+						>
+							{m.btn_see_more()}
+						</Link>
 					</Button>
 				</CardContent>
 			</Card>

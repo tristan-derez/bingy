@@ -30,8 +30,8 @@ export function TvEpisodeCreditsView({
 	if (isError || !credits) {
 		return (
 			<ResourceNotFound
-				title="Oops!"
-				description="Credits are not available at the moment"
+				title={m.episode_credits_not_found_title()}
+				description={m.episode_credits_not_found_desc()}
 				onBack={onBack}
 			/>
 		);
@@ -62,7 +62,9 @@ export function TvEpisodeCreditsView({
 				) : null}
 			</div>
 			<div className="flex flex-col gap-8 mt-8 text-center md:text-left">
-				<h2 className="text-2xl font-bold">Episode {episodeNumber}</h2>
+				<h2 className="text-2xl font-bold">
+					{m.episode_credits_title({ episodeNumber: episodeNumber })}
+				</h2>
 				{credits.cast ? (
 					<CastSectionTv
 						people={credits.cast}
