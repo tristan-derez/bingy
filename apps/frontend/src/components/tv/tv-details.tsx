@@ -24,6 +24,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { shortenCountryName } from "@/utils/shorten-country-name";
 import { ResourceNotFound } from "../errors/resource-not-found";
@@ -290,7 +291,7 @@ export function TvDetailsView({
 						<div className="flex flex-col gap-2">
 							<CastCarousel people={cast} />
 							<Link to="/tv/$tvId/credits" params={{ tvId: tv.id.toString() }}>
-								See full cast and crew
+								{m.link_text_full_credits()}
 							</Link>
 						</div>
 					)}

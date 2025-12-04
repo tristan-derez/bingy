@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { useAtomValue } from "jotai";
 import { ArrowLeft, Calendar, Clock, Star } from "lucide-react";
 import type { Schemas } from "shared";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
@@ -9,6 +10,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { localeWithRegionAtom } from "@/lib/atoms/locale";
+import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { formatRuntime } from "@/utils/format-runtime";
 
@@ -29,6 +32,7 @@ export function TvEpisodeDetailsView({
 	isError,
 	onBack,
 }: TvEpisodeDetailViewProps) {
+	const localeWithRegion = useAtomValue(localeWithRegionAtom);
 	if (isLoading) {
 		return <LoadingCentered />;
 	}
@@ -36,8 +40,8 @@ export function TvEpisodeDetailsView({
 	if (isError || !episode) {
 		return (
 			<ResourceNotFound
-				title="Episode Not Found"
-				description="The episode you're looking for could not be found."
+				title={m.episode_details_not_found_title()}
+				description={m.episode_details_not_found_desc()}
 				onBack={onBack}
 			/>
 		);
@@ -90,15 +94,19 @@ export function TvEpisodeDetailsView({
 
 	return (
 		<div className="container">
-			<Button onClick={onBack} className="mb-4" variant="outline">
+			<Button onClick={onBack} variant="outline">
 				<ArrowLeft className="h-4 w-4" /> Back
 			</Button>
 
-			<div className="space-y-4">
-				<div>
-					<h1 className="text-4xl font-bold mb-2">{episode.name}</h1>
+			<div className="flex flex-col gap-4 pt-4">
+				<div className="flex flex-col gap-2">
+					<h1 className="text-4xl font-bold">{episode.name}</h1>
 					{episode.name !== `Episode ${episode.episode_number}` && (
-						<Badge variant="secondary">Episode {episode.episode_number}</Badge>
+						<Badge variant="secondary" className="self-start">
+							{m.badge_episode_number({
+								episodeNumber: episode.episode_number,
+							})}
+						</Badge>
 					)}
 				</div>
 
@@ -119,7 +127,7 @@ export function TvEpisodeDetailsView({
 					}
 				>
 					<CardHeader>
-						<CardTitle>Overview</CardTitle>
+						<CardTitle>{m.episode_details_overview_title()}</CardTitle>
 					</CardHeader>
 					<CardContent className="flex flex-col gap-4">
 						<MediaOverview overview={episode.overview} bg={backgroundImage} />
@@ -145,21 +153,21 @@ export function TvEpisodeDetailsView({
 				</Card>
 
 				<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-					<Card>
-						<CardContent className="flex items-center gap-4">
-							<Star className="h-5 w-5 text-yellow-500" />
-							<div>
-								<p className="text-xl xl:text-2xl font-bold">
-									{episode.vote_count > 0
-										? episode.vote_average.toFixed(1)
-										: "N/R"}
-								</p>
-								<p className="text-sm text-muted-foreground">
-									{episode.vote_count} votes
-								</p>
-							</div>
-						</CardContent>
-					</Card>
+					{episode.vote_count > 0 ? (
+						<Card>
+							<CardContent className="flex items-center gap-4">
+								<Star className="h-5 w-5 text-yellow-500" />
+								<div>
+									<p className="text-xl xl:text-2xl font-bold">
+										{episode.vote_average.toFixed(1)}
+									</p>
+									<p className="text-sm text-muted-foreground">
+										{episode.vote_count} votes
+									</p>
+								</div>
+							</CardContent>
+						</Card>
+					) : null}
 
 					<Card>
 						<CardContent className="flex items-center gap-4">
@@ -168,7 +176,9 @@ export function TvEpisodeDetailsView({
 								<p className="text-xl xl:text-2xl font-bold">
 									{formatRuntime(episode.runtime)}
 								</p>
-								<p className="text-sm text-muted-foreground">Runtime</p>
+								<p className="text-sm text-muted-foreground">
+									{m.episode_details_runtime_text()}
+								</p>
 							</div>
 						</CardContent>
 					</Card>
@@ -179,14 +189,16 @@ export function TvEpisodeDetailsView({
 							<div>
 								<p className="text-xl xl:text-2xl font-bold">
 									{episode.air_date
-										? formatDate(episode.air_date, "en-US", {
+										? formatDate(episode.air_date, localeWithRegion, {
 												year: "numeric",
 												month: "short",
 												day: "numeric",
 											})
 										: "N/A"}
 								</p>
-								<p className="text-sm text-muted-foreground">Air Date</p>
+								<p className="text-sm text-muted-foreground">
+									{m.episode_details_air_date()}
+								</p>
 							</div>
 						</CardContent>
 					</Card>
@@ -203,7 +215,7 @@ export function TvEpisodeDetailsView({
 								episodeNumber: episode.episode_number.toString(),
 							}}
 						>
-							See full cast and crew
+							{m.link_text_full_credits()}
 						</Link>
 					</div>
 				)}

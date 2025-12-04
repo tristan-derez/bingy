@@ -1,9 +1,12 @@
 import { Link } from "@tanstack/react-router";
+import { useAtomValue } from "jotai";
 import { Star, Timer, User, Users } from "lucide-react";
 import type { Schemas } from "shared";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { localeWithRegionAtom } from "@/lib/atoms/locale";
+import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { formatRuntime } from "@/utils/format-runtime";
 
@@ -12,12 +15,13 @@ interface EpisodesContainerProps {
 }
 
 export function EpisodesContainer({ episodes }: EpisodesContainerProps) {
+	const localeWithRegion = useAtomValue(localeWithRegionAtom);
 	return (
 		<Card>
 			<CardHeader>
-				<CardTitle>Episodes</CardTitle>
+				<CardTitle>{m.episodes_container_title()}</CardTitle>
 			</CardHeader>
-			<CardContent className="space-y-4">
+			<CardContent className="flex flex-col gap-4">
 				{episodes.map((episode, index) => (
 					<div key={episode.id}>
 						{index > 0 ? <Separator className="my-4" /> : null}
@@ -38,7 +42,7 @@ export function EpisodesContainer({ episodes }: EpisodesContainerProps) {
 									</h3>
 									{episode.air_date ? (
 										<p className="text-sm text-muted-foreground">
-											{formatDate(episode.air_date, "en-US", {
+											{formatDate(episode.air_date, localeWithRegion, {
 												year: "numeric",
 												month: "short",
 												day: "numeric",
@@ -71,13 +75,14 @@ export function EpisodesContainer({ episodes }: EpisodesContainerProps) {
 								{episode.crew?.length > 0 ? (
 									<span className="flex items-center gap-1">
 										<Users className="h-3 w-3" />
-										{episode.crew.length} crew
+										{episode.crew.length} {m.episodes_container_crew_text()}
 									</span>
 								) : null}
 								{episode.guest_stars?.length > 0 ? (
 									<span className="flex items-center gap-1">
 										<User className="h-3 w-3" />
-										{episode.guest_stars.length} guest stars
+										{episode.guest_stars.length}{" "}
+										{m.episodes_container_guest_stars()}
 									</span>
 								) : null}
 							</div>

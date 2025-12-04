@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { WatchProvidersSection } from "@/components/watch-providers/watch-providers-section";
+import { m } from "@/paraglide/messages";
 import { EpisodesContainer } from "../episodes/episodes-container";
 
 interface TvSeasonDetailsViewProps {
@@ -242,7 +243,7 @@ export function TvSeasonDetailsView({
 									seasonNumber: tvSeason.season_number.toString(),
 								}}
 							>
-								See full cast and crew
+								{m.link_text_full_credits()}
 							</Link>
 						</div>
 					)}
