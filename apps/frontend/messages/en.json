@@ -127,5 +127,7 @@
 	"collection_details_revenue": "Revenue:",
 	"collection_details_title": "Overview",
 	"btn_show_more": "Show more",
-	"overview_none": "No overview available"
+	"overview_none": "No overview available",
+	"error_page_not_found": "The page you're looking for doesn't exist or has been moved.",
+	"btn_go_home": "Go home"
 }

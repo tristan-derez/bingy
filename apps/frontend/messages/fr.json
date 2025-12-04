@@ -127,5 +127,7 @@
 	"collection_details_revenue": "Recettes:",
 	"collection_details_title": "Résumé",
 	"btn_show_more": "Voir plus",
-	"overview_none": "Pas de résumé disponible."
+	"overview_none": "Pas de résumé disponible.",
+	"error_page_not_found": "La page que vous recherchez n'existe pas ou a été déplacée.",
+	"btn_go_home": "Retourner à l'accueil"
 }
