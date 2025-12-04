@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { useAtomValue } from "jotai";
 import { ArrowLeft, Calendar, Layers, Star, Timer } from "lucide-react";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
@@ -10,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { WatchProvidersSection } from "@/components/watch-providers/watch-providers-section";
+import { localeWithRegionAtom } from "@/lib/atoms/locale";
 import { m } from "@/paraglide/messages";
 import { EpisodesContainer } from "../episodes/episodes-container";
 
@@ -32,6 +34,7 @@ export function TvSeasonDetailsView({
 	isError,
 	onBack,
 }: TvSeasonDetailsViewProps) {
+	const localeWithRegion = useAtomValue(localeWithRegionAtom);
 	if (isLoading) {
 		return <LoadingCentered />;
 	}
@@ -39,8 +42,8 @@ export function TvSeasonDetailsView({
 	if (isError || !tvSeason) {
 		return (
 			<ResourceNotFound
-				title="Season Not Found"
-				description="The season you're looking for could not be found."
+				title={m.season_details_not_found_title()}
+				description={m.season_details_not_found_desc()}
 				onBack={onBack}
 			/>
 		);
@@ -145,7 +148,10 @@ export function TvSeasonDetailsView({
 										{tvSeason.name}
 									</h1>
 									{tvSeason.episodes.some((ep) => ep.runtime) && (
-										<Badge variant="default" className="w-fit shrink-0 gap-1">
+										<Badge
+											variant="default"
+											className="w-fit gap-1 self-center"
+										>
 											<Timer className="h-4 w-4" />
 											<span>
 												{(
@@ -160,9 +166,13 @@ export function TvSeasonDetailsView({
 									)}
 								</div>
 								{tvSeason.name.toLowerCase() !==
-								`season ${tvSeason.season_number}` ? (
+								m.season_details_season_badge({
+									seasonNumber: tvSeason.season_number,
+								}) ? (
 									<Badge variant="secondary" className="w-fit">
-										Season {tvSeason.season_number}
+										{m.season_details_season_badge({
+											seasonNumber: tvSeason.season_number,
+										})}
 									</Badge>
 								) : null}
 							</div>
@@ -171,7 +181,7 @@ export function TvSeasonDetailsView({
 
 					<Card>
 						<CardHeader>
-							<CardTitle>Overview</CardTitle>
+							<CardTitle>{m.season_details_overview_title()}</CardTitle>
 						</CardHeader>
 						<CardContent>
 							<MediaOverview overview={tvSeason.overview} />
@@ -188,7 +198,9 @@ export function TvSeasonDetailsView({
 											? tvSeason.vote_average.toFixed(1)
 											: "N/R"}
 									</p>
-									<p className="text-sm text-muted-foreground">Rating</p>
+									<p className="text-sm text-muted-foreground">
+										{m.season_details_rating()}
+									</p>
 								</div>
 							</CardContent>
 						</Card>
@@ -200,7 +212,7 @@ export function TvSeasonDetailsView({
 									<p className="text-xl xl:text-2xl font-bold">
 										{tvSeason.air_date
 											? new Date(tvSeason.air_date).toLocaleDateString(
-													"en-US",
+													localeWithRegion,
 													{
 														year: "numeric",
 														month: "short",
@@ -209,7 +221,9 @@ export function TvSeasonDetailsView({
 												)
 											: "N/A"}
 									</p>
-									<p className="text-sm text-muted-foreground">Air Date</p>
+									<p className="text-sm text-muted-foreground">
+										{m.season_details_air_date()}
+									</p>
 								</div>
 							</CardContent>
 						</Card>
@@ -222,7 +236,9 @@ export function TvSeasonDetailsView({
 										{tvSeason.episodes.length}
 									</p>
 									<p className="text-sm text-muted-foreground">
-										{tvSeason.episodes.length === 1 ? "Episode" : "Episodes"}
+										{tvSeason.episodes.length > 1
+											? m.season_details_episodes()
+											: m.season_details_episode()}
 									</p>
 								</div>
 							</CardContent>
@@ -252,7 +268,9 @@ export function TvSeasonDetailsView({
 						<Card>
 							<CardHeader>
 								<CardTitle>
-									{`Network${tvSeason.networks.length > 1 ? "s" : ""}`}
+									{tvSeason.networks.length > 1
+										? m.season_details_networks()
+										: m.season_details_network()}
 								</CardTitle>
 							</CardHeader>
 							<CardContent className="flex flex-wrap gap-4">
