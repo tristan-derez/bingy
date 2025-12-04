@@ -83,7 +83,7 @@ export const DepartmentContainer = ({
 											>
 												{item.title}
 											</Link>
-											<div className="text-sm text-muted-foreground">
+											<div className="flex flex-row text-sm text-muted-foreground gap-1">
 												{item.episodeCount !== undefined &&
 												item.episodeCount > 0 ? (
 													<Link
