@@ -178,6 +178,11 @@
 	"person_director_female": "Director",
 	"person_biography": "Biography",
 	"person_place_of_birth": "Born in {place}",
-	"person_known_for_male": "Connu pour",
-	"person_known_for_female": "Connue pour"
+	"person_known_for_male": "Known for",
+	"person_known_for_female": "Known for",
+	"person_role_unknown": "Unknown",
+	"search_movie_badge": "Movie",
+	"search_tv_badge": "TV Show",
+	"search_person_badge": "Person",
+	"person_as": "as"
 }

@@ -173,5 +173,16 @@
 	"person_biography": "Biographie",
 	"person_place_of_birth": "Lieu de naissance: {place}",
 	"person_known_for_male": "Connu pour",
-	"person_known_for_female": "Connue pour"
+	"person_known_for_female": "Connue pour",
+	"person_role_unknown": "Non renseigné",
+	"search_movie_badge": "Film",
+	"search_tv_badge": "Série TV",
+	"search_person_badge": "Personne",
+	"person_as": "en tant que",
+	"movies_now_playing_title": "Films à l'affiche",
+	"movies_popular_title": "Films populaires",
+	"movies_upcoming_title": "Films à venir",
+	"movies_toprated_title": "Films les mieux notés",
+	"error_failed_to_load": "{title} n'a pas pu etre chargé",
+	"collection_carousel_title": "Films dans la saga ({number})"
 }
