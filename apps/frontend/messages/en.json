@@ -129,5 +129,10 @@
 	"btn_show_more": "Show more",
 	"overview_none": "No overview available",
 	"error_page_not_found": "The page you're looking for doesn't exist or has been moved.",
-	"btn_go_home": "Go home"
+	"btn_go_home": "Go home",
+	"form_search_placeholder": "Search again...",
+	"btn_form_search": "Search",
+	"search_error_invalid": "Invalid input",
+	"search_error_empty": "Search cannot be empty",
+	"search_error_too_long": "Search cannot exceed 300 characters"
 }

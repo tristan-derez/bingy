@@ -129,5 +129,10 @@
 	"btn_show_more": "Voir plus",
 	"overview_none": "Pas de résumé disponible.",
 	"error_page_not_found": "La page que vous recherchez n'existe pas ou a été déplacée.",
-	"btn_go_home": "Retourner à l'accueil"
+	"btn_go_home": "Retourner à l'accueil",
+	"form_search_placeholder": "Rechercher à nouveau...",
+	"btn_form_search": "Rechercher",
+	"search_error_invalid": "Entrée invalide",
+	"search_error_empty": "La recherche ne peut pas être vide",
+	"search_error_too_long": "La recherche ne peut pas dépasser {number} caractères"
 }
