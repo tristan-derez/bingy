@@ -157,5 +157,6 @@
 	"movies_popular_title": "Films populaires",
 	"movies_upcoming_title": "Prochaines sorties",
 	"movies_toprated_title": "Films les mieux notés",
-	"error_failed_to_load": "{title} n'ont pas pu etre chargés"
+	"error_failed_to_load": "{title} n'ont pas pu etre chargés",
+	"collection_carousel_title": "Films de la saga ({number})"
 }
