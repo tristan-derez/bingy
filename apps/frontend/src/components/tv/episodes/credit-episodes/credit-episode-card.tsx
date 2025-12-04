@@ -81,7 +81,11 @@ export const CreditEpisodeCard = ({
 						{episode.season_number}x{episode.episode_number}
 					</div>
 				</div>
-				<CardDescription className="w-full xl:max-w-2/3">
+				<CardDescription
+					className={`w-full xl:max-w-2/3 ${
+						backgroundImage ? "text-dark-card-foreground" : "text-foreground"
+					}`}
+				>
 					{episode.overview || m.overview_none()}
 				</CardDescription>
 			</CardHeader>
