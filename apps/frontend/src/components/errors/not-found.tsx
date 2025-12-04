@@ -1,6 +1,7 @@
 import { useNavigate } from "@tanstack/react-router";
 import cuteAnimal404 from "@/assets/not-found/404-cute-animal.png";
 import { Button } from "@/components/ui/button";
+import { m } from "@/paraglide/messages";
 import { CenteredLayout } from "../layout/centered-layout";
 
 export function NotFoundComponent() {
@@ -20,10 +21,12 @@ export function NotFoundComponent() {
 					<div className="space-y-4">
 						<h1 className="text-4xl font-bold text-center">Oops!</h1>
 						<p className="text-lg text-center text-muted-foreground">
-							The page you're looking for doesn't exist or has been moved.
+							{m.error_page_not_found()}
 						</p>
 						<div className="text-lg text-center">
-							<Button onClick={() => navigate({ to: "/" })}>Go home</Button>
+							<Button onClick={() => navigate({ to: "/" })}>
+								{m.btn_go_home()}
+							</Button>
 						</div>
 					</div>
 				</div>
