@@ -153,7 +153,7 @@ export function MovieDetailView({
 						</CardHeader>
 
 						<CardContent className="flex flex-col gap-4">
-							<MediaOverview overview={movie.overview} />
+							<MediaOverview overview={movie.overview} bg={backgroundImage} />
 							<Separator />
 							{crew.length > 0 && (
 								<div className="grid grid-cols-1 md:grid-cols-3 gap-4">

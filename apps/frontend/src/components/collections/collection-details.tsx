@@ -8,6 +8,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import { m } from "@/paraglide/messages";
 import { ResourceNotFound } from "../errors/resource-not-found";
 import { LoadingCentered } from "../loading/loading-centered";
 import { MediaOverview } from "../medias/overview";
@@ -37,8 +38,8 @@ export function CollectionDetailsView({
 	if (isError || !collectionData) {
 		return (
 			<ResourceNotFound
-				title="Collection Not Found"
-				description="The collection you're looking for could not be found."
+				title={m.error_title_not_found({ object: "Collection" })}
+				description={m.error_desc_not_found({ object: "The collection" })}
 				onBack={onBack}
 			/>
 		);
@@ -100,12 +101,12 @@ export function CollectionDetailsView({
 							: undefined
 					}
 				>
-					<div className="flex flex-col md:flex-row gap-6 p-6 items-start">
-						<div className="flex justify-center xl:justify-start">
+					<div className="flex flex-col md:flex-row gap-6 p-6 items-center md:items-start">
+						<div className="flex justify-center md:justify-start">
 							<img
 								src={posterImage}
 								alt={`${collectionData.name} poster`}
-								className="rounded-lg shadow-lg xl:w-auto xl:max-h-[600px]"
+								className="rounded-lg shadow-lg w-48 h-auto"
 								onError={(e) => {
 									const target = e.currentTarget;
 									if (target.src !== fallbackPoster) {
@@ -133,11 +134,18 @@ export function CollectionDetailsView({
 								</CardDescription>
 							</CardHeader>
 							<CardContent className="p-0 flex flex-col gap-4">
-								<h2 className="text-semi-bold text-md">Overview:</h2>
-								<MediaOverview overview={collectionData.overview} />
+								<h2 className="text-semi-bold text-md">
+									{m.collection_details_title()}
+								</h2>
+								<MediaOverview
+									overview={collectionData.overview}
+									bg={backgroundImage}
+								/>
 								{collectionStats.totalRevenue > 0 && (
 									<div className="flex gap-2">
-										<h3 className="text-semi-bold text-md">Revenue:</h3>
+										<h3 className="text-semi-bold text-md">
+											{m.collection_details_revenue()}
+										</h3>
 										<p>{formattedRevenue}</p>
 									</div>
 								)}
