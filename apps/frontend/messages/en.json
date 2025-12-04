@@ -119,5 +119,13 @@
 	"dialog_title_two_factor": "Two-factor authentication",
 	"dialog_desc_two_factor": "Enter the 6-digit code from your authenticator app",
 	"dialog_btn_verifying": "Verifying...",
-	"dialog_btn_verify": "Verify"
+	"dialog_btn_verify": "Verify",
+	"collection_card_desc": "Part of a collection with {numberOfMovies} movies",
+	"btn_view_collection": "VIEW THE COLLECTION",
+	"error_desc_not_found": "{object} you're looking for could not be found.",
+	"error_title_not_found": "{object} not found",
+	"collection_details_revenue": "Revenue:",
+	"collection_details_title": "Overview",
+	"btn_show_more": "Show more",
+	"overview_none": "No overview available"
 }
