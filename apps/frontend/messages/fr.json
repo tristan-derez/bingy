@@ -239,5 +239,6 @@
 	"season_details_episodes": "Episodes",
 	"season_details_episode": "Episode",
 	"season_details_networks": "Distributeurs",
-	"season_details_network": "Distributeur"
+	"season_details_network": "Distributeur",
+	"watch_providers_text": "En streaming"
 }

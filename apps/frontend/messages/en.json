@@ -239,5 +239,6 @@
 	"season_details_episodes": "Episodes",
 	"season_details_episode": "Episode",
 	"season_details_networks": "Networks",
-	"season_details_network": "Network"
+	"season_details_network": "Network",
+	"watch_providers_text": "Now streaming"
 }
