@@ -38,8 +38,8 @@ export function CollectionDetailsView({
 	if (isError || !collectionData) {
 		return (
 			<ResourceNotFound
-				title={m.error_title_not_found({ object: "Collection" })}
-				description={m.error_desc_not_found({ object: "The collection" })}
+				title={m.error_title_not_found_collection()}
+				description={m.error_desc_not_found_collection()}
 				onBack={onBack}
 			/>
 		);
@@ -155,7 +155,9 @@ export function CollectionDetailsView({
 				</Card>
 
 				<MovieCarousel
-					title={`Movies in Collection (${collectionData.parts.length})`}
+					title={m.collection_carousel_title({
+						number: collectionData.parts.length,
+					})}
 					movies={collectionData.parts}
 				/>
 			</div>
