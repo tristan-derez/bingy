@@ -208,5 +208,8 @@
 	"credit_episodes_container_episodes_not_found_title": "No episodes found",
 	"credit_episodes_container_episodes_not_found_desc": "No episode information is available for this credit.",
 	"credit_episodes_list_as": "as {role}",
-	"credit_episodes_list_unknown_role": "Unknown"
+	"credit_episodes_list_unknown_role": "Unknown",
+	"episode_credits_not_found_title": "Oops!",
+	"episode_credits_not_found_desc": "Credits are not available at the moment",
+	"episode_credits_title": "Episode {episodeNumber}"
 }

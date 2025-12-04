@@ -208,5 +208,8 @@
 	"credit_episodes_container_episodes_not_found_title": "Episodes introuvables",
 	"credit_episodes_container_episodes_not_found_desc": "Episodes avec ce credit indisponibles",
 	"credit_episodes_list_as": "en tant que {role}",
-	"credit_episodes_list_unknown_role": "Non renseigné"
+	"credit_episodes_list_unknown_role": "Non renseigné",
+	"episode_credits_not_found_title": "Oops!",
+	"episode_credits_not_found_desc": "Les crédits de cet épisode ne sont pas disponible.",
+	"episode_credits_title": "Episode {episodeNumber}"
 }
