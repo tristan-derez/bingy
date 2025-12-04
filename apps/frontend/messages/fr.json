@@ -199,5 +199,14 @@
 	"search_toggle_group_item_person": "Personnes",
 	"search_container_no_results_text": "Pas de résultat pour cette recherche.",
 	"badge_credit_episode_guest": "Guest",
-	"signin_separator_text": "Ou continuer avec"
+	"signin_separator_text": "Ou continuer avec",
+	"credit_episode_card_airs_text": "Diffusion le {date}",
+	"credit_episode_card_aired_text": "Diffusé le {date}",
+	"credit_episode_card_not_aired_text": "Date de diffusion inconnue",
+	"credit_episodes_container_wrong_type_title": "Mauvais type de média",
+	"credit_episodes_container_wrong_type_desc": "L'id fourni n'est pas associable à une série TV",
+	"credit_episodes_container_episodes_not_found_title": "Episodes introuvables",
+	"credit_episodes_container_episodes_not_found_desc": "Episodes avec ce credit indisponibles",
+	"credit_episodes_list_as": "en tant que {role}",
+	"credit_episodes_list_unknown_role": "Non renseigné"
 }

@@ -199,5 +199,14 @@
 	"search_toggle_group_item_person": "People",
 	"search_container_no_results_text": "No results found for this query.",
 	"badge_credit_episode_guest": "Guest Appearance",
-	"signin_separator_text": "Or continue with"
+	"signin_separator_text": "Or continue with",
+	"credit_episode_card_airs_text": "Airs {date}",
+	"credit_episode_card_aired_text": "Aired {date}",
+	"credit_episode_card_not_aired_text": "Air date unknown",
+	"credit_episodes_container_wrong_type_title": "Invalid media type",
+	"credit_episodes_container_wrong_type_desc": "This credit is not for a TV show.",
+	"credit_episodes_container_episodes_not_found_title": "No episodes found",
+	"credit_episodes_container_episodes_not_found_desc": "No episode information is available for this credit.",
+	"credit_episodes_list_as": "as {role}",
+	"credit_episodes_list_unknown_role": "Unknown"
 }
