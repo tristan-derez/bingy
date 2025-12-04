@@ -2,6 +2,7 @@ import { FilmIcon, LayoutGridIcon, TvIcon, UserIcon } from "lucide-react";
 import { useState } from "react";
 import type { Schemas } from "shared";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { m } from "@/paraglide/messages";
 import { getRelevanceScore } from "@/utils/search-relevance-score";
 import { SearchCard } from "./search-card";
 
@@ -31,7 +32,7 @@ export const SearchResultsContainer = ({
 	return (
 		<div className="container flex flex-col gap-4">
 			<h1>
-				Search results for:{" "}
+				{m.search_container_results_for()}{" "}
 				<span className="font-bold text-muted-foreground">"{query}"</span>
 			</h1>
 			<ToggleGroup
@@ -82,7 +83,7 @@ export const SearchResultsContainer = ({
 
 			{filteredResults.length === 0 ? (
 				<div className="text-center text-muted-foreground py-8">
-					No results found
+					{m.search_container_no_results_text()}
 				</div>
 			) : null}
 		</div>
