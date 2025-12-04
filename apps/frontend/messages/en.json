@@ -247,5 +247,6 @@
 	"search_toggle_aria_label_all": "All results",
 	"search_toggle_aria_label_movies": "Movies only",
 	"search_toggle_aria_label_tv": "TV Shows only",
-	"search_toggle_aria_label_people": "People only"
+	"search_toggle_aria_label_people": "People only",
+	"btn_back": "Back"
 }

@@ -151,7 +151,7 @@
 	"movie_details_production_company": "Société de production",
 	"movie_details_production_companies": "Sociétés de production",
 	"btn_see_more": "Voir plus",
-	"btn_jump_to_crew": "Aller à l'équipe de production",
+	"btn_jump_to_crew": "Voir l'équipe",
 	"title_crew": "Equipe de production",
 	"link_text_full_credits": "Voir le casting complet et l'équipe de production",
 	"roles_text": "{primaryRole} (+{numberOfOtherRoles} de plus)",
@@ -247,5 +247,6 @@
 	"search_toggle_aria_label_all": "Tous les résultats",
 	"search_toggle_aria_label_movies": "Films uniquement",
 	"search_toggle_aria_label_tv": "Séries TV uniquement",
-	"search_toggle_aria_label_people": "Personnes uniquement"
+	"search_toggle_aria_label_people": "Personnes uniquement",
+	"btn_back": "Retour"
 }
