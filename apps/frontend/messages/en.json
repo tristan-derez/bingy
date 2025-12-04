@@ -220,5 +220,14 @@
 	"episode_details_air_date": "Air Date",
 	"episodes_container_title": "Episodes",
 	"episodes_container_crew_text": "crew",
-	"episodes_container_guest_stars": "guest stars"
+	"episodes_container_guest_stars": "guest stars",
+	"season_card_episode_badge": "Episode",
+	"season_card_episodes_badge": "Episodes",
+	"season_card_special_season": "Specials",
+	"season_card_season": "Season {seasonNumber}",
+	"season_credits_not_found_title": "Oops!",
+	"season_credits_not_found_desc": "Credits are not available at the moment",
+	"season_credits_title": "Season {seasonNumber}",
+	"season_credits_special": "Specials",
+	"season_credits_no_results": "No credits found."
 }
