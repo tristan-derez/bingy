@@ -122,7 +122,7 @@ export function TvEpisodeDetailsView({
 						<CardTitle>Overview</CardTitle>
 					</CardHeader>
 					<CardContent className="flex flex-col gap-4">
-						<MediaOverview overview={episode.overview} />
+						<MediaOverview overview={episode.overview} bg={backgroundImage} />
 
 						{crewToShow.length > 0 && (
 							<>

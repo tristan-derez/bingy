@@ -135,11 +135,11 @@ export function TvSeasonDetailsView({
 					/>
 				</div>
 
-				<div className="max-w-full space-y-4 overflow-hidden">
+				<div className="w-full flex flex-col gap-4 overflow-hidden justify-start">
 					<Card className="shadow-none bg-transparent xl:p-0 border-none">
 						<CardContent className="xl:p-0">
 							<div className="flex flex-col gap-2">
-								<div className="flex items-center justify-between gap-3">
+								<div className="flex justify-between gap-3">
 									<h1 className="text-4xl font-bold leading-relaxed">
 										{tvSeason.name}
 									</h1>
