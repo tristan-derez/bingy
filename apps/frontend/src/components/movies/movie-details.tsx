@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { useAtomValue } from "jotai";
 import { ArrowLeft, Calendar, Clock, ExternalLink, Star } from "lucide-react";
 import { useId } from "react";
 import { FaMoneyBillTrendUp } from "react-icons/fa6";
@@ -15,6 +16,8 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import { localeWithRegionAtom } from "@/lib/atoms/locale";
+import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { formatRuntime } from "@/utils/format-runtime";
 import { shortenCountryName } from "@/utils/shorten-country-name";
@@ -51,6 +54,7 @@ export function MovieDetailView({
 	onBack,
 }: MovieDetailViewProps) {
 	const id = useId();
+	const localeWithRegion = useAtomValue(localeWithRegionAtom);
 
 	if (isLoading) {
 		return <LoadingCentered />;
@@ -59,8 +63,8 @@ export function MovieDetailView({
 	if (isError || !movie) {
 		return (
 			<ResourceNotFound
-				title="Movie Not Found"
-				description="The movie you're looking for could not be found."
+				title={m.error_title_not_found_movie()}
+				description={m.error_desc_not_found_movie()}
 				onBack={onBack}
 			/>
 		);
@@ -149,9 +153,8 @@ export function MovieDetailView({
 						}
 					>
 						<CardHeader>
-							<CardTitle>Overview</CardTitle>
+							<CardTitle>{m.movie_details_title()}</CardTitle>
 						</CardHeader>
-
 						<CardContent className="flex flex-col gap-4">
 							<MediaOverview overview={movie.overview} bg={backgroundImage} />
 							<Separator />
@@ -170,7 +173,6 @@ export function MovieDetailView({
 								</div>
 							)}
 						</CardContent>
-
 						<CardFooter>
 							<div className="flex flex-wrap gap-2">
 								{movie.production_countries.map(
@@ -193,21 +195,21 @@ export function MovieDetailView({
 					</Card>
 
 					<div className="grid lg:grid-cols-3 gap-2">
-						<Card>
-							<CardContent className="flex items-center gap-4">
-								<Star className="h-5 w-5 text-yellow-500" />
-								<div>
-									<p className="text-xl xl:text-2xl font-bold">
-										{movie.vote_count > 0
-											? movie.vote_average.toFixed(1)
-											: "No rating"}
-									</p>
-									<p className="text-sm text-muted-foreground">
-										{movie.vote_count} votes
-									</p>
-								</div>
-							</CardContent>
-						</Card>
+						{movie.vote_count ? (
+							<Card>
+								<CardContent className="flex items-center gap-4">
+									<Star className="h-5 w-5 text-yellow-500" />
+									<div>
+										<p className="text-xl xl:text-2xl font-bold">
+											{movie.vote_average.toFixed(1)}
+										</p>
+										<p className="text-sm text-muted-foreground">
+											{movie.vote_count} votes
+										</p>
+									</div>
+								</CardContent>
+							</Card>
+						) : null}
 
 						<Card>
 							<CardContent className="flex items-center gap-4">
@@ -215,14 +217,16 @@ export function MovieDetailView({
 								<div>
 									<p className="text-xl xl:text-2xl font-bold">
 										{movie.release_date
-											? formatDate(movie.release_date, "en-US", {
+											? formatDate(movie.release_date, localeWithRegion, {
 													day: "numeric",
 													month: "short",
-													year: "2-digit",
+													year: "numeric",
 												})
 											: "N/A"}
 									</p>
-									<p className="text-sm text-muted-foreground">Release Date</p>
+									<p className="text-sm text-muted-foreground">
+										{m.movie_details_release_date()}
+									</p>
 								</div>
 							</CardContent>
 						</Card>
@@ -234,7 +238,9 @@ export function MovieDetailView({
 									<p className="text-xl xl:text-2xl font-bold">
 										{formatRuntime(movie.runtime)}
 									</p>
-									<p className="text-sm text-muted-foreground">Runtime</p>
+									<p className="text-sm text-muted-foreground">
+										{m.movie_details_runtime()}
+									</p>
 								</div>
 							</CardContent>
 						</Card>
@@ -247,7 +253,9 @@ export function MovieDetailView({
 										<p className="text-xl xl:text-2xl font-bold">
 											${movie.budget.toLocaleString()}
 										</p>
-										<p className="text-sm text-muted-foreground">Budget</p>
+										<p className="text-sm text-muted-foreground">
+											{m.movie_details_budget()}
+										</p>
 									</div>
 								</CardContent>
 							</Card>
@@ -261,7 +269,9 @@ export function MovieDetailView({
 										<p className="text-xl xl:text-2xl font-bold">
 											${movie.revenue.toLocaleString()}
 										</p>
-										<p className="text-sm text-muted-foreground">Revenue</p>
+										<p className="text-sm text-muted-foreground">
+											{m.movie_details_revenue()}
+										</p>
 									</div>
 								</CardContent>
 							</Card>
@@ -279,10 +289,12 @@ export function MovieDetailView({
 												rel="noopener noreferrer"
 												className="hover:underline"
 											>
-												Visit
+												{m.btn_visit_movie_details_homepage()}
 											</a>
 										</p>
-										<p className="text-sm text-muted-foreground">Homepage</p>
+										<p className="text-sm text-muted-foreground">
+											{m.movie_details_homepage()}
+										</p>
 									</div>
 								</CardContent>
 							</Card>
@@ -296,7 +308,7 @@ export function MovieDetailView({
 								to="/movies/$movieId/credits"
 								params={{ movieId: movie.id.toString() }}
 							>
-								See full cast and crew
+								{m.link_text_full_credits_movie()}
 							</Link>
 						</div>
 					)}
@@ -308,7 +320,9 @@ export function MovieDetailView({
 							<Card>
 								<CardHeader>
 									<CardTitle>
-										{`Production Compan${movie.production_companies.length > 1 ? "ies" : "y"}`}
+										{movie.production_companies.length > 1
+											? m.movie_details_production_companies()
+											: m.movie_details_production_company()}
 									</CardTitle>
 								</CardHeader>
 

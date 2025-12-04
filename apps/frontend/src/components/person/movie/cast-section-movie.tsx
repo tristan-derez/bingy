@@ -1,4 +1,5 @@
 import type { Schemas } from "shared";
+import { m } from "@/paraglide/messages";
 import { CastCard } from "./cast-card-movie";
 
 interface CastSectionMovieProps {
@@ -8,7 +9,7 @@ interface CastSectionMovieProps {
 
 export const CastSectionMovie = ({
 	people,
-	title = "Cast",
+	title = m.title_cast(),
 }: CastSectionMovieProps) => {
 	const uniquePeople = Array.from(
 		new Map(people.map((person) => [person.id, person])).values(),

@@ -1,6 +1,7 @@
 import { ArrowDown, ArrowLeft } from "lucide-react";
 import { useId } from "react";
 import type { Schemas } from "shared";
+import { m } from "@/paraglide/messages";
 import { ResourceNotFound } from "../errors/resource-not-found";
 import { LoadingCentered } from "../loading/loading-centered";
 import { CastSectionMovie } from "../person/movie/cast-section-movie";
@@ -50,7 +51,7 @@ export function MovieCreditsView({
 							});
 						}}
 					>
-						Jump to Crew
+						{m.btn_jump_to_crew_movie()}
 						<ArrowDown className="h-4 w-4" />
 					</a>
 				</Button>

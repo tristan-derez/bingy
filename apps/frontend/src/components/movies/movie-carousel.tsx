@@ -10,6 +10,7 @@ import {
 	CarouselGradient,
 	useCarouselGradient,
 } from "@/components/ui/embla/embla-carousel-gradient";
+import { m } from "@/paraglide/messages";
 import { MovieCard } from "./movie-card";
 
 interface MovieCarouselProps {
@@ -39,7 +40,7 @@ export const MovieCarousel = ({ movies, title }: MovieCarouselProps) => {
 			<div className="min-h-[404px] flex flex-col">
 				<h2 className="text-xl font-semibold">{title}</h2>
 				<div className="flex-1 flex items-center justify-center">
-					<p>No movies available at the moment</p>
+					<p>{m.text_no_movies()}</p>
 				</div>
 			</div>
 		);
