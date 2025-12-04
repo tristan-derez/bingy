@@ -229,5 +229,15 @@
 	"season_credits_not_found_desc": "Credits are not available at the moment",
 	"season_credits_title": "Season {seasonNumber}",
 	"season_credits_special": "Specials",
-	"season_credits_no_results": "No credits found."
+	"season_credits_no_results": "No credits found.",
+	"season_details_not_found_title": "Season not found",
+	"season_details_not_found_desc": "The season you're looking for could not be found",
+	"season_details_season_badge": "Season {seasonNumber}",
+	"season_details_overview_title": "Overview",
+	"season_details_rating": "Rating",
+	"season_details_air_date": "Air Date",
+	"season_details_episodes": "Episodes",
+	"season_details_episode": "Episode",
+	"season_details_networks": "Networks",
+	"season_details_network": "Network"
 }
