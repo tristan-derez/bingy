@@ -1,6 +1,7 @@
 import type { Schemas } from "shared";
 import { toast } from "sonner";
 import { useUpcomingMovies } from "@/hooks/useMovies";
+import { m } from "@/paraglide/messages";
 import { LoadingSection } from "../loading/loading-section";
 import { MovieCarousel } from "./movie-carousel";
 
@@ -16,7 +17,7 @@ export const UpcomingMovies = ({ title }: UpcomingMoviesProps) => {
 	}
 
 	if (error) {
-		toast.error(`Failed to load ${title}`);
+		toast.error(m.error_failed_to_load({ title: title }));
 		return null;
 	}
 
