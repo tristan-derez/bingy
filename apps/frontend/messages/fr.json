@@ -152,5 +152,10 @@
 	"movie_details_homepage": "Site officiel",
 	"btn_visit_movie_details_homepage": "En savoir plus",
 	"movie_details_production_company": "Société de production",
-	"movie_details_production_companies": "Sociétés de production"
+	"movie_details_production_companies": "Sociétés de production",
+	"movies_now_playing_title": "Films à l'affiche",
+	"movies_popular_title": "Films populaires",
+	"movies_upcoming_title": "Prochaines sorties",
+	"movies_toprated_title": "Films les mieux notés",
+	"error_failed_to_load": "{title} n'ont pas pu etre chargés"
 }

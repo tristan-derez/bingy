@@ -152,5 +152,10 @@
 	"movie_details_homepage": "Homepage",
 	"btn_visit_movie_details_homepage": "Visit",
 	"movie_details_production_company": "Production company",
-	"movie_details_production_companies": "Production companies"
+	"movie_details_production_companies": "Production companies",
+	"movies_now_playing_title": "Movies In Theaters Now",
+	"movies_popular_title": "Popular Movies",
+	"movies_upcoming_title": "Upcoming Movies",
+	"movies_toprated_title": "Top Rated Movies",
+	"error_failed_to_load": "Failed to load {title}"
 }
