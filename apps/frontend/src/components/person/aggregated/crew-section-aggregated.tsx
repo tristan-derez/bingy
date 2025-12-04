@@ -1,4 +1,5 @@
 import type { Schemas } from "shared";
+import { m } from "@/paraglide/messages";
 import { CrewCardAggregated } from "./crew-card-aggregated";
 
 interface CrewSectionAggregatedProps {
@@ -8,7 +9,7 @@ interface CrewSectionAggregatedProps {
 
 export const CrewSectionAggregated = ({
 	people,
-	title = "Crew",
+	title = m.title_crew(),
 }: CrewSectionAggregatedProps) => {
 	const byDepartment = new Map<
 		string,

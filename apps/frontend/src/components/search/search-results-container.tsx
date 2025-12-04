@@ -7,7 +7,6 @@ import { SearchCard } from "./search-card";
 
 interface SearchResultsContainerProps {
 	results: Schemas.MediaMulti[];
-	language?: string;
 	query: string;
 }
 
@@ -15,7 +14,6 @@ type MediaType = "all" | "movie" | "tv" | "person";
 
 export const SearchResultsContainer = ({
 	results,
-	language = "en-US",
 	query,
 }: SearchResultsContainerProps) => {
 	const [filter, setFilter] = useState<MediaType>("all");
@@ -78,11 +76,7 @@ export const SearchResultsContainer = ({
 
 			<div className="flex flex-col gap-2">
 				{filteredResults.map((item) => (
-					<SearchCard
-						key={`${item.media_type}-${item.id}`}
-						item={item}
-						language={language}
-					/>
+					<SearchCard key={`${item.media_type}-${item.id}`} item={item} />
 				))}
 			</div>
 

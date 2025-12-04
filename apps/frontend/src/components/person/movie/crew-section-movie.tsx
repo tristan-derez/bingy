@@ -9,7 +9,7 @@ interface CrewSectionMovieProps {
 
 export const CrewSectionMovie = ({
 	people,
-	title = m.title_crew_movie(),
+	title = m.title_crew(),
 }: CrewSectionMovieProps) => {
 	const byDepartment = new Map<
 		string,

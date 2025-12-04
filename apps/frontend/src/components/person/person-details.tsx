@@ -1,6 +1,9 @@
+import { useAtomValue } from "jotai";
 import { ArrowLeft } from "lucide-react";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/user-placeholder.jpg";
+import { localeWithRegionAtom } from "@/lib/atoms/locale";
+import { m } from "@/paraglide/messages";
 import { calculateAge } from "@/utils/calculate-age";
 import { formatDate } from "@/utils/format-date";
 import { getSocialUrls } from "@/utils/social-urls";
@@ -34,6 +37,8 @@ export const PersonDetailsView = ({
 	isError,
 	onBack,
 }: PersonDetailsViewProps) => {
+	const localeWithRegion = useAtomValue(localeWithRegionAtom);
+
 	if (isLoading) {
 		return <LoadingCentered />;
 	}
@@ -41,8 +46,8 @@ export const PersonDetailsView = ({
 	if (isError || !person) {
 		return (
 			<ResourceNotFound
-				title="Person Not Found"
-				description="The person you're looking for could not be found."
+				title={m.error_title_not_found_person()}
+				description={m.error_desc_not_found_person()}
 				onBack={onBack}
 			/>
 		);
@@ -99,22 +104,36 @@ export const PersonDetailsView = ({
 									</h1>
 									{person.birthday ? (
 										<div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-muted-foreground">
-											<div className="flex items-center gap-2">
-												<span>{formatDate(person.birthday, "en-US")}</span>
+											<div className="flex items-center gap-1">
+												<span>
+													{formatDate(person.birthday, localeWithRegion)}
+												</span>
 												{!person.deathday && (
 													<span>
-														({calculateAge(person.birthday)} years old)
+														(
+														{m.person_age({
+															age: calculateAge(person.birthday),
+														})}
+														)
 													</span>
 												)}
 											</div>
 											{person.deathday && (
 												<>
 													<span className="hidden sm:inline">-</span>
-													<div className="flex items-center gap-2">
-														<span>{formatDate(person.deathday, "en-US")}</span>
+													<div className="flex items-center gap-1">
 														<span>
-															(aged{" "}
-															{calculateAge(person.birthday, person.deathday)})
+															{formatDate(person.deathday, localeWithRegion)}
+														</span>
+														<span>
+															(
+															{m.person_death_age({
+																age: calculateAge(
+																	person.birthday,
+																	person.deathday,
+																),
+															})}
+															)
 														</span>
 													</div>
 												</>
@@ -124,12 +143,14 @@ export const PersonDetailsView = ({
 									<p>
 										{person.known_for_department === "Acting"
 											? person.gender === 1
-												? "Actress"
-												: "Actor"
+												? m.person_actress()
+												: m.person_actor()
 											: person.known_for_department === "Writing"
-												? "Writer"
+												? m.person_writer()
 												: person.known_for_department === "Directing"
-													? "Director"
+													? person.gender === 1
+														? m.person_director_female()
+														: m.person_director_male()
 													: person.known_for_department}
 									</p>
 								</div>
@@ -144,7 +165,7 @@ export const PersonDetailsView = ({
 
 					<Card className="relative overflow-hidden border-none justify-center">
 						<CardHeader className="text-foreground">
-							<CardTitle>Biography</CardTitle>
+							<CardTitle>{m.person_biography()}</CardTitle>
 						</CardHeader>
 						<CardContent className="text-muted-foreground gap-4">
 							<PersonBiography biography={person.biography} />
@@ -156,7 +177,7 @@ export const PersonDetailsView = ({
 										variant="secondary"
 										className="flex items-center gap-2"
 									>
-										Born in {person.place_of_birth}
+										{m.person_place_of_birth({ place: person.place_of_birth })}
 									</Badge>
 								</div>
 							</CardFooter>
@@ -164,7 +185,14 @@ export const PersonDetailsView = ({
 					</Card>
 					{person.combined_credits ? (
 						<div className="flex flex-col gap-4">
-							<MediasCarousel medias={sortedCredits} title="Known For" />
+							<MediasCarousel
+								medias={sortedCredits}
+								title={
+									person.gender === 1
+										? m.person_known_for_female()
+										: m.person_known_for_male()
+								}
+							/>
 							<PersonTimeline combinedCredits={person.combined_credits} />
 						</div>
 					) : null}

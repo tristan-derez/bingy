@@ -6,6 +6,7 @@ import { LoadingCentered } from "@/components/loading/loading-centered";
 import { CastSectionTv } from "@/components/person/tv/cast-section-tv";
 import { CrewSectionTv } from "@/components/person/tv/crew-section-tv";
 import { Button } from "@/components/ui/button";
+import { m } from "@/paraglide/messages";
 
 interface TvEpisodeCreditsViewProps {
 	episodeNumber: number;
@@ -54,7 +55,7 @@ export function TvEpisodeCreditsView({
 								});
 							}}
 						>
-							Jump to Crew
+							{m.btn_jump_to_crew()}
 							<ArrowDown className="h-4 w-4" />
 						</a>
 					</Button>

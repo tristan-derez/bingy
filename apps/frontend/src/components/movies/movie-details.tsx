@@ -308,7 +308,7 @@ export function MovieDetailView({
 								to="/movies/$movieId/credits"
 								params={{ movieId: movie.id.toString() }}
 							>
-								{m.link_text_full_credits_movie()}
+								{m.link_text_full_credits()}
 							</Link>
 						</div>
 					)}

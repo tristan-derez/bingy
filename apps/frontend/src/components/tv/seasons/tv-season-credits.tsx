@@ -6,6 +6,7 @@ import { LoadingCentered } from "@/components/loading/loading-centered";
 import { CastSectionAggregated } from "@/components/person/aggregated/cast-section-aggregated";
 import { CrewSectionAggregated } from "@/components/person/aggregated/crew-section-aggregated";
 import { Button } from "@/components/ui/button";
+import { m } from "@/paraglide/messages";
 
 interface TvSeasonCreditsViewProps {
 	seasonNumber: number;
@@ -52,7 +53,7 @@ export function TvSeasonCreditsView({
 							});
 						}}
 					>
-						Jump to Crew
+						{m.btn_jump_to_crew()}
 						<ArrowDown className="h-4 w-4" />
 					</a>
 				</Button>

@@ -1,4 +1,5 @@
 import type { Schemas } from "shared";
+import { m } from "@/paraglide/messages";
 import { CastCardAggregated } from "./cast-card-aggregated";
 
 interface CastSectionAggregatedProps {
@@ -8,7 +9,7 @@ interface CastSectionAggregatedProps {
 
 export const CastSectionAggregated = ({
 	people,
-	title = "Cast",
+	title = m.title_cast(),
 }: CastSectionAggregatedProps) => {
 	const uniquePeople = Array.from(
 		new Map(people.map((person) => [person.id, person])).values(),

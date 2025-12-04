@@ -51,7 +51,7 @@ export function MovieCreditsView({
 							});
 						}}
 					>
-						{m.btn_jump_to_crew_movie()}
+						{m.btn_jump_to_crew()}
 						<ArrowDown className="h-4 w-4" />
 					</a>
 				</Button>

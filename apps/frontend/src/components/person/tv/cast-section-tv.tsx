@@ -1,4 +1,5 @@
 import type { Schemas } from "shared";
+import { m } from "@/paraglide/messages";
 import { CastCardTv } from "./cast-card-tv";
 
 interface CastSectionTvProps {
@@ -10,7 +11,7 @@ interface CastSectionTvProps {
 export const CastSectionTv = ({
 	people,
 	guestStars,
-	title = "Cast",
+	title = m.title_cast(),
 }: CastSectionTvProps) => {
 	const merged = [...people, ...guestStars];
 

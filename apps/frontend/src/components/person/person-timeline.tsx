@@ -1,5 +1,6 @@
 import { useId } from "react";
 import type { Schemas } from "shared";
+import { m } from "@/paraglide/messages";
 import type { TimelineItem } from "./department-container";
 import { DepartmentContainer } from "./department-container";
 
@@ -63,7 +64,7 @@ const mapToTimelineItem = (
 		role:
 			("character" in credit ? credit.character : "") ||
 			("job" in credit ? credit.job : "") ||
-			"Unknown",
+			m.person_role_unknown(),
 		year: date ? date.getFullYear().toString() : "N/A",
 		fullDate: date ? date.toISOString() : null,
 		episodeCount,

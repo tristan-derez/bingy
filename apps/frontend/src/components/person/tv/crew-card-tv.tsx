@@ -9,6 +9,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import { m } from "@/paraglide/messages";
 import { Button } from "../../ui/button";
 
 interface CrewCardTvProps {
@@ -52,7 +53,7 @@ export const CrewCardTv = ({ person }: CrewCardTvProps) => {
 				</CardHeader>
 				<CardContent className="text-center pt-0 gap-4 flex flex-col">
 					<Button asChild>
-						<Link to="/">See more</Link>
+						<Link to="/">{m.btn_see_more()}</Link>
 					</Button>
 				</CardContent>
 			</Card>

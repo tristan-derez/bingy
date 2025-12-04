@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useId } from "react";
 import { Card, CardContent } from "@/components/ui/card";
+import { m } from "@/paraglide/messages";
 import { Separator } from "../ui/separator";
 
 export type TimelineItem = {
@@ -60,7 +61,7 @@ export const DepartmentContainer = ({
 								{year}
 							</div>
 
-							<Card className="shadow-none border-none rounded-md py-4">
+							<Card className="shadow-none rounded-md py-4">
 								<CardContent className="flex flex-col">
 									{sortedItems.map((item, idx) => (
 										<div
@@ -91,13 +92,16 @@ export const DepartmentContainer = ({
 														search={{ credit_id: String(item.creditId) }}
 														className="underline text-foreground"
 													>
-														{item.episodeCount} episode
-														{item.episodeCount > 1 ? "s" : ""}
+														{item.episodeCount}{" "}
+														{item.episodeCount > 1
+															? m.department_container_episodes()
+															: m.department_container_episode()}
 													</Link>
-												) : (
-													""
-												)}{" "}
-												as {item.role}
+												) : null}
+												<div className="flex flex-row gap-1">
+													<p>{m.person_as()}</p>
+													<p>{item.role}</p>
+												</div>
 											</div>
 											{idx < sortedItems.length - 1 && (
 												<div className="py-2">
