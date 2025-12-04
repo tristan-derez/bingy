@@ -1,5 +1,4 @@
 import { useAtomValue } from "jotai";
-import { ArrowLeft } from "lucide-react";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/user-placeholder.jpg";
 import { localeWithRegionAtom } from "@/lib/atoms/locale";
@@ -12,8 +11,8 @@ import { ResourceNotFound } from "../errors/resource-not-found";
 import { LoadingCentered } from "../loading/loading-centered";
 import { MediasCarousel } from "../medias/medias-carousel";
 import { SocialLinks } from "../social-links";
+import { BackButton } from "../ui/back-button";
 import { Badge } from "../ui/badge";
-import { Button } from "../ui/button";
 import {
 	Card,
 	CardContent,
@@ -65,11 +64,9 @@ export const PersonDetailsView = ({
 
 	return (
 		<div className="container">
-			<Button onClick={onBack} className="mb-4" variant="outline">
-				<ArrowLeft className="h-4 w-4" /> Back
-			</Button>
+			<BackButton onBack={onBack} />
 
-			<div className="grid xl:grid-cols-[auto_1fr] gap-4 justify-items-center">
+			<div className="grid xl:grid-cols-[auto_1fr] pt-2 gap-4 justify-items-center">
 				<div className="flex flex-col gap-2 items-center xl:items-start max-w-[400px]">
 					<img
 						src={imageUrl}

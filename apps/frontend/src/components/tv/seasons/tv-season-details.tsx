@@ -1,14 +1,14 @@
 import { Link } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
-import { ArrowLeft, Calendar, Layers, Star, Timer } from "lucide-react";
+import { Calendar, Layers, Star, Timer } from "lucide-react";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
 import { LoadingCentered } from "@/components/loading/loading-centered";
 import { MediaOverview } from "@/components/medias/overview";
 import { CastCarousel } from "@/components/person/cast-carousel";
+import { BackButton } from "@/components/ui/back-button";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { WatchProvidersSection } from "@/components/watch-providers/watch-providers-section";
 import { localeWithRegionAtom } from "@/lib/atoms/locale";
@@ -115,11 +115,9 @@ export function TvSeasonDetailsView({
 
 	return (
 		<div className="container">
-			<Button onClick={onBack} className="mb-4" variant="outline">
-				<ArrowLeft className="h-4 w-4" /> Back
-			</Button>
+			<BackButton onBack={onBack} />
 
-			<div className="grid xl:grid-cols-[auto_1fr] gap-4 justify-items-center">
+			<div className="grid xl:grid-cols-[auto_1fr] gap-4 pt-2 justify-items-center">
 				<div className="flex flex-col gap-2 items-center xl:items-start max-w-[600px]">
 					<img
 						src={imageUrl}

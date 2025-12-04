@@ -1,13 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
-import { ArrowLeft, Calendar, Clock, Star } from "lucide-react";
+import { Calendar, Clock, Star } from "lucide-react";
 import type { Schemas } from "shared";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
 import { LoadingCentered } from "@/components/loading/loading-centered";
 import { MediaOverview } from "@/components/medias/overview";
 import { CastCarousel } from "@/components/person/cast-carousel";
+import { BackButton } from "@/components/ui/back-button";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { localeWithRegionAtom } from "@/lib/atoms/locale";
@@ -94,9 +94,7 @@ export function TvEpisodeDetailsView({
 
 	return (
 		<div className="container">
-			<Button onClick={onBack} variant="outline">
-				<ArrowLeft className="h-4 w-4" /> Back
-			</Button>
+			<BackButton onBack={onBack} />
 
 			<div className="flex flex-col gap-4 pt-4">
 				<div className="flex flex-col gap-2">

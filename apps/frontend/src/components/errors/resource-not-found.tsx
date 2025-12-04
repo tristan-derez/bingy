@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
-import { AlertCircle, ArrowLeft, HomeIcon } from "lucide-react";
+import { AlertCircle, HomeIcon } from "lucide-react";
 import { CenteredLayout } from "../layout/centered-layout";
+import { BackButton } from "../ui/back-button";
 import { Button } from "../ui/button";
 import {
 	Card,
@@ -32,9 +33,8 @@ export function ResourceNotFound({
 					<CardDescription>{description}</CardDescription>
 				</CardHeader>
 				<CardContent className="flex flex-col gap-2">
-					<Button onClick={onBack} variant="outline" className="w-full">
-						<ArrowLeft className="h-4 w-4" /> Back
-					</Button>
+					<BackButton onBack={onBack} style="w-full" />
+
 					<Button asChild variant="outline" className="w-full">
 						<Link to="/">
 							<HomeIcon className="h-4 w-4" /> Home

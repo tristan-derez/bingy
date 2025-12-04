@@ -1,8 +1,7 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowLeft } from "lucide-react";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
-import { Button } from "@/components/ui/button";
+import { BackButton } from "@/components/ui/back-button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { m } from "@/paraglide/messages";
@@ -34,11 +33,9 @@ export const CreditEpisodesList = ({
 	const role = character || job || m.credit_episodes_list_unknown_role();
 	return (
 		<div className="container">
-			<Button onClick={onBack} className="mb-4" variant="outline">
-				<ArrowLeft className="h-4 w-4" /> Back
-			</Button>
+			<BackButton onBack={onBack} />
 
-			<div className="grid xl:grid-cols-[auto_1fr] gap-4 justify-items-center">
+			<div className="grid xl:grid-cols-[auto_1fr] gap-4 pt-2 justify-items-center">
 				<div className="flex flex-col gap-2 items-center xl:items-start max-w-[400px]">
 					<img
 						src={

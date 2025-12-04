@@ -1,6 +1,5 @@
 import { Link } from "@tanstack/react-router";
 import {
-	ArrowLeft,
 	Calendar,
 	CheckCircle,
 	Clapperboard,
@@ -16,7 +15,7 @@ import Flag from "react-world-flags";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+
 import {
 	Card,
 	CardContent,
@@ -31,6 +30,7 @@ import { ResourceNotFound } from "../errors/resource-not-found";
 import { LoadingCentered } from "../loading/loading-centered";
 import { CastCarousel } from "../person/cast-carousel";
 import { SocialLinks } from "../social-links";
+import { BackButton } from "../ui/back-button";
 import { Separator } from "../ui/separator";
 import { WatchProvidersSection } from "../watch-providers/watch-providers-section";
 
@@ -77,11 +77,9 @@ export function TvDetailsView({
 
 	return (
 		<div className="container">
-			<Button onClick={onBack} className="mb-4" variant="outline">
-				<ArrowLeft className="h-4 w-4" /> Back
-			</Button>
+			<BackButton onBack={onBack} />
 
-			<div className="grid xl:grid-cols-[auto_1fr] gap-4 justify-items-center">
+			<div className="grid xl:grid-cols-[auto_1fr] gap-4 pt-2 justify-items-center">
 				<div className="flex flex-col gap-2 items-center xl:items-start max-w-[400px]">
 					<img
 						src={imageUrl}

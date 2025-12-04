@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
-import { ArrowLeft, Calendar, Clock, ExternalLink, Star } from "lucide-react";
+import { Calendar, Clock, ExternalLink, Star } from "lucide-react";
 import { useId } from "react";
 import { FaMoneyBillTrendUp } from "react-icons/fa6";
 import { TbMoneybag } from "react-icons/tb";
@@ -8,7 +8,6 @@ import Flag from "react-world-flags";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
 	Card,
 	CardContent,
@@ -27,6 +26,7 @@ import { LoadingCentered } from "../loading/loading-centered";
 import { MediaOverview } from "../medias/overview";
 import { CastCarousel } from "../person/cast-carousel";
 import { SocialLinks } from "../social-links";
+import { BackButton } from "../ui/back-button";
 import { Separator } from "../ui/separator";
 import { WatchProvidersSection } from "../watch-providers/watch-providers-section";
 
@@ -80,11 +80,9 @@ export function MovieDetailView({
 
 	return (
 		<div className="container">
-			<Button onClick={onBack} className="mb-4" variant="outline">
-				<ArrowLeft className="h-4 w-4" /> Back
-			</Button>
+			<BackButton onBack={onBack} />
 
-			<div className="grid xl:grid-cols-[auto_1fr] gap-4 justify-items-center">
+			<div className="grid xl:grid-cols-[auto_1fr] gap-4 pt-2 justify-items-center">
 				<div className="flex flex-col gap-2 items-center xl:items-start max-w-[400px]">
 					<img
 						src={imageUrl}

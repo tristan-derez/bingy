@@ -1,4 +1,3 @@
-import { ArrowLeft } from "lucide-react";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import {
@@ -13,8 +12,8 @@ import { ResourceNotFound } from "../errors/resource-not-found";
 import { LoadingCentered } from "../loading/loading-centered";
 import { MediaOverview } from "../medias/overview";
 import { MovieCarousel } from "../movies/movie-carousel";
+import { BackButton } from "../ui/back-button";
 import { Badge } from "../ui/badge";
-import { Button } from "../ui/button";
 
 interface CollectionDetailsViewProps {
 	collectionData: Schemas.CollectionDetails | undefined;
@@ -84,11 +83,9 @@ export function CollectionDetailsView({
 
 	return (
 		<div className="container">
-			<Button onClick={onBack} className="mb-4" variant="outline">
-				<ArrowLeft className="h-4 w-4" /> Back
-			</Button>
+			<BackButton onBack={onBack} />
 
-			<div className="flex flex-col gap-4">
+			<div className="flex flex-col gap-4 pt-2">
 				<Card
 					className="relative overflow-hidden min-h-[200px] justify-center text-dark-card-foreground"
 					style={

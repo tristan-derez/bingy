@@ -1,12 +1,11 @@
-import { ArrowDown, ArrowLeft } from "lucide-react";
 import { useId } from "react";
 import type { Schemas } from "shared";
-import { m } from "@/paraglide/messages";
+import { ScrollToCrewButton } from "../credits/scroll-to-crew-button";
 import { ResourceNotFound } from "../errors/resource-not-found";
 import { LoadingCentered } from "../loading/loading-centered";
 import { CastSectionAggregated } from "../person/aggregated/cast-section-aggregated";
 import { CrewSectionAggregated } from "../person/aggregated/crew-section-aggregated";
-import { Button } from "../ui/button";
+import { BackButton } from "../ui/back-button";
 
 interface TvCreditsViewProps {
 	credits: Schemas.TvAggregatedCredits | undefined;
@@ -37,24 +36,11 @@ export function TvCreditsView({
 	return (
 		<div className="container scroll-smooth">
 			<div className="mb-4 flex justify-between">
-				<Button onClick={onBack} variant="outline">
-					<ArrowLeft className="h-4 w-4" /> Back
-				</Button>
-				<Button asChild variant="outline">
-					<a
-						href={`#${crewSectionId}`}
-						onClick={(e) => {
-							e.preventDefault();
-							document.getElementById(crewSectionId)?.scrollIntoView({
-								behavior: "smooth",
-								block: "start",
-							});
-						}}
-					>
-						{m.btn_jump_to_crew()}
-						<ArrowDown className="h-4 w-4" />
-					</a>
-				</Button>
+				<BackButton onBack={onBack} />
+
+				{credits.crew.length > 0 && credits.cast.length > 0 ? (
+					<ScrollToCrewButton crewSectionId={crewSectionId} />
+				) : null}
 			</div>
 			<div className="flex flex-col gap-8 mt-8 text-center md:text-left">
 				<CastSectionAggregated people={credits.cast} />
