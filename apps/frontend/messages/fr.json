@@ -191,5 +191,11 @@
 	"btn_view_all": "Voir tous les résultats",
 	"search_combobox_empty": "Commence à écrire pour chercher...",
 	"search_pagination_previous": "Précédent",
-	"search_pagination_next": "Suivant"
+	"search_pagination_next": "Suivant",
+	"search_container_results_for": "Résultats pour:",
+	"search_toggle_group_item_all": "Tout",
+	"search_toggle_group_item_movies": "Films",
+	"search_toggle_group_item_tv": "Séries TV",
+	"search_toggle_group_item_person": "Personnes",
+	"search_container_no_results_text": "Pas de résultat pour cette recherche."
 }

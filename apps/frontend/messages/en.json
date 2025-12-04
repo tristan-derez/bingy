@@ -191,5 +191,11 @@
 	"btn_view_all": "View all results",
 	"search_combobox_empty": "Start typing to search...",
 	"search_pagination_previous": "Previous",
-	"search_pagination_next": "Next"
+	"search_pagination_next": "Next",
+	"search_container_results_for": "Search results for:",
+	"search_toggle_group_item_all": "All",
+	"search_toggle_group_item_movies": "Movies",
+	"search_toggle_group_item_tv": "TV Shows",
+	"search_toggle_group_item_person": "People",
+	"search_container_no_results_text": "No results found for this query."
 }
