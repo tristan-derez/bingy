@@ -197,5 +197,7 @@
 	"search_toggle_group_item_movies": "Films",
 	"search_toggle_group_item_tv": "Séries TV",
 	"search_toggle_group_item_person": "Personnes",
-	"search_container_no_results_text": "Pas de résultat pour cette recherche."
+	"search_container_no_results_text": "Pas de résultat pour cette recherche.",
+	"badge_credit_episode_guest": "Guest",
+	"signin_separator_text": "Ou continuer avec"
 }

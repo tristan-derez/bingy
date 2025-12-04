@@ -197,5 +197,7 @@
 	"search_toggle_group_item_movies": "Movies",
 	"search_toggle_group_item_tv": "TV Shows",
 	"search_toggle_group_item_person": "People",
-	"search_container_no_results_text": "No results found for this query."
+	"search_container_no_results_text": "No results found for this query.",
+	"badge_credit_episode_guest": "Guest Appearance",
+	"signin_separator_text": "Or continue with"
 }
