@@ -184,5 +184,12 @@
 	"search_movie_badge": "Movie",
 	"search_tv_badge": "TV Show",
 	"search_person_badge": "Person",
-	"person_as": "as"
+	"person_as": "as",
+	"search_combobox_input_placeholder": "Search movies, shows or people...",
+	"loader_text_searching": "Searching...",
+	"search_combobox_no_results": "No results found.",
+	"btn_view_all": "View all results",
+	"search_combobox_empty": "Start typing to search...",
+	"search_pagination_previous": "Previous",
+	"search_pagination_next": "Next"
 }
