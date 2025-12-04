@@ -34,12 +34,21 @@ function SettingsPage() {
 		toast.error("Email doesn't match", {
 			id: "email-doesnt-match-toast",
 			duration: Infinity,
-		})
+			closeButton: true,
+		});
+	}
+
+	if (error === "account_already_linked_to_different_user") {
+		toast.error("Account is already linked to a different user", {
+			id: "account_already_linked_toast",
+			duration: Infinity,
+			closeButton: true,
+		});
 	}
 
 	return (
 		<div className="flex w-full max-w-md flex-col gap-6">
 			<SettingsComponent />
 		</div>
-	)
+	);
 }
