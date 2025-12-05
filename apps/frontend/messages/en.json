@@ -446,5 +446,7 @@
 	"dropdown_profile_text": "Profile",
 	"dropdown_settings_text": "Settings",
 	"dropdown_support_text": "Support",
-	"dropdown_logout_text": "Log out"
+	"dropdown_logout_text": "Log out",
+	"header_btn_sign_in": "Sign In",
+	"header_btn_get_started": "Get Started"
 }
