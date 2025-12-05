@@ -6,7 +6,7 @@
 	"btn_disabling_twofactor": "Disabling 2FA...",
 	"toast_success_disable_twofactor": "Two-factor authentication disabled successfully.",
 	"toast_error_disable_twofactor": "Failed to disable two-factor authentication. Try again.",
-	"toast_generic_error": "Something went wrong. Try again later.",
+	"toast_error_generic": "Something went wrong. Try again later.",
 	"toast_email_sent_account_delete": "An email has been sent. Check your inbox and click on the link to confirm account deletion",
 	"dialog_confirm_action": "Are you absolutely sure?",
 	"dialog_cancel_action": "Cancel",
@@ -135,7 +135,6 @@
 	"search_error_too_long": "Search cannot exceed 300 characters",
 	"text_no_rating": "No rating",
 	"text_not_announced": "N/A",
-	"text_no_movies": "No movies available at the moment",
 	"title_cast": "Cast",
 	"movie_details_title": "Overview",
 	"error_desc_not_found_collection": "The collection you're looking for could not be found.",
@@ -148,8 +147,16 @@
 	"movie_details_revenue": "Revenue",
 	"movie_details_homepage": "Homepage",
 	"btn_visit_movie_details_homepage": "Visit",
-	"movie_details_production_company": "Production company",
-	"movie_details_production_companies": "Production companies",
+	"movie_details_production_companies": [
+		{
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Company",
+				"countPlural=other": "Companies"
+			}
+		}
+	],
 	"movies_now_playing_title": "Movies In Theaters Now",
 	"movies_popular_title": "Popular Movies",
 	"movies_upcoming_title": "Upcoming Movies",
@@ -171,15 +178,62 @@
 	"error_desc_not_found_person": "The person you're looking for could not be found.",
 	"person_age": "{age} years old",
 	"person_death_age": "aged {age}",
-	"person_actor": "Actor",
-	"person_actress": "Actress",
-	"person_writer": "Writer",
-	"person_director_male": "Director",
-	"person_director_female": "Director",
+	"person_actor": [
+		{
+			"declarations": ["input gender"],
+			"selectors": ["gender"],
+			"match": {
+				"gender=male": "Actor",
+				"gender=female": "Actress",
+				"gender=*": "Actor"
+			}
+		}
+	],
+	"person_writer": [
+		{
+			"declarations": ["input gender"],
+			"selectors": ["gender"],
+			"match": {
+				"gender=male": "Writer",
+				"gender=female": "Writer",
+				"gender=*": "Writer"
+			}
+		}
+	],
+	"person_director": [
+		{
+			"declarations": ["input gender"],
+			"selectors": ["gender"],
+			"match": {
+				"gender=male": "Director",
+				"gender=female": "Director",
+				"gender=*": "Director"
+			}
+		}
+	],
 	"person_biography": "Biography",
-	"person_place_of_birth": "Born in {place}",
-	"person_known_for_male": "Known for",
-	"person_known_for_female": "Known for",
+	"person_place_of_birth": [
+		{
+			"declarations": ["input gender", "input place"],
+			"selectors": ["gender"],
+			"match": {
+				"gender=male": "Born in {place}",
+				"gender=female": "Born in {place}",
+				"gender=*": "Born in {place}"
+			}
+		}
+	],
+	"person_known_for": [
+		{
+			"declarations": ["input gender"],
+			"selectors": ["gender"],
+			"match": {
+				"gender=male": "Known for",
+				"gender=female": "Known for",
+				"gender=*": "Known for"
+			}
+		}
+	],
 	"person_role_unknown": "Unknown",
 	"search_movie_badge": "Movie",
 	"search_tv_badge": "TV Show",
@@ -221,8 +275,16 @@
 	"episodes_container_title": "Episodes",
 	"episodes_container_crew_text": "crew",
 	"episodes_container_guest_stars": "guest stars",
-	"season_card_episode_badge": "Episode",
-	"season_card_episodes_badge": "Episodes",
+	"season_card_episode_badge": [
+		{
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Episode",
+				"countPlural=other": "Episodes"
+			}
+		}
+	],
 	"season_card_special_season": "Specials",
 	"season_card_season": "Season {seasonNumber}",
 	"season_credits_not_found_title": "Oops!",
@@ -236,10 +298,26 @@
 	"season_details_overview_title": "Overview",
 	"season_details_rating": "Rating",
 	"season_details_air_date": "Air Date",
-	"season_details_episodes": "Episodes",
-	"season_details_episode": "Episode",
-	"season_details_networks": "Networks",
-	"season_details_network": "Network",
+	"season_details_episodes": [
+		{
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Episode",
+				"countPlural=other": "Episodes"
+			}
+		}
+	],
+	"season_details_networks": [
+		{
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Network",
+				"countPlural=other": "Networks"
+			}
+		}
+	],
 	"watch_providers_text": "Now streaming",
 	"seasons_details_seasons": "Seasons",
 	"seasons_details_not_found_title": "TV Show seasons not found",
@@ -250,5 +328,13 @@
 	"search_toggle_aria_label_people": "People only",
 	"btn_back": "Back",
 	"collection_details_budget": "Budget:",
-	"toast_error_not_found_generic": "Failed to load ${title}"
+	"toast_error_not_found_generic": "Failed to load ${title}",
+	"person_born_country": "Born in {country}",
+	"movie_credits_not_found_title": "Oops!",
+	"movie_credits_not_found_desc": "Movie credits are not available at the moment.",
+	"tv_credits_not_found_title": "Oops!",
+	"tv_credits_not_found_desc": "TV credits are not available at the moment.",
+	"tv_details_not_found_title": "TV show not found",
+	"tv_details_not_found_desc": "The TV show you're looking for could not be found.",
+	"tv_details_overview": "Overview"
 }
