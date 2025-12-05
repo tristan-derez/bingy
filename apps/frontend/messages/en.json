@@ -413,5 +413,17 @@
 	"tv_details_homepage": "Homepage",
 	"toast_error_email_doesnt_match_settings_page": "OAuth provider email doesn't match the one for your account.",
 	"toast_error_already_linked_settings_page": "Account is already linked to a different user.",
-	"toast_error_generic_error_settings_page": "An error occured. Try again later."
+	"toast_error_generic_error_settings_page": "An error occured. Try again later.",
+	"toast_success_email_sent_title_welcome_page": "Verification email sent!",
+	"toast_success_email_sent_desc_welcome_page": "Please check your inbox.",
+	"toast_error_email_failed_welcome_page": "Failed to resend an email.",
+	"toast_error_token_expired_welcome_page": "Link expired",
+	"toast_error_token_expired_cancel_label_welcome_page": "Resend an email",
+	"welcome_page_greetings": "Welcome {username}",
+	"welcome_page_verification_required_title": "Email verification required",
+	"welcome_page_verification_required_desc": "Please check your inbox and verify your email address to access all features.",
+	"welcome_page_btn_sending": "Sending...",
+	"welcome_page_btn_resend": "Resend email",
+	"welcome_page_email_verified_text": "You're all set!",
+	"welcome_page_email_not_verified_text": "You're almost ready!"
 }

@@ -413,5 +413,17 @@
 	"tv_details_homepage": "Site officiel",
 	"toast_error_email_doesnt_match_settings_page": "L'email ne correspond pas à l'email du compte.",
 	"toast_error_already_linked_settings_page": "Ce compte est déjà utilisé par un autre utilisateur.",
-	"toast_error_generic_error_settings_page": "Une erreur est survenue. Réessayez plus tard."
+	"toast_error_generic_error_settings_page": "Une erreur est survenue. Réessayez plus tard.",
+	"toast_success_email_sent_title_welcome_page": "Email de vérification envoyé!",
+	"toast_success_email_sent_desc_welcome_page": "Merci de vérifier votre boite mail",
+	"toast_error_email_failed_welcome_page": "L'envoi d'un nouvel e-mail a echoué.",
+	"toast_error_token_expired_welcome_page": "Le lien a expiré",
+	"toast_error_token_expired_cancel_label_welcome_page": "Recevoir un nouvel e-mail",
+	"welcome_page_greetings": "Bienvenue {username}",
+	"welcome_page_verification_required_title": "La vérification de votre adresse e-mail est requise",
+	"welcome_page_verification_required_desc": "Veuillez vérifier votre boîte de réception et confirmer votre adresse e-mail pour accéder à toutes les fonctionnalités.",
+	"welcome_page_btn_sending": "Envoi...",
+	"welcome_page_btn_resend": "Renvoyer un e-mail",
+	"welcome_page_email_verified_text": "Tout est prêt !",
+	"welcome_page_email_not_verified_text": "Vous y êtes presque !"
 }
