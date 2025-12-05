@@ -437,5 +437,9 @@
 	"landing_page_title_whats_next": "vos découvertes.",
 	"landing_page_desc": "Suivez tous les films et séries que vous regardez, notez ce que vous avez vu, gérez votre liste de favoris et découvrez ce que vos amis aiment, le tout au même endroit.",
 	"landing_page_btn_search": "Rechercher",
-	"landing_page_btn_get_started": "Commencer"
+	"landing_page_btn_get_started": "Commencer",
+	"tv_series_top_rated_title": "Séries TV les mieux notées",
+	"tv_series_trending_today_title": "Séries TV en tendance aujourd'hui",
+	"tv_series_trending_week_title": "Séries TV en tendance cette semaine",
+	"tv_series_popular_title": "Séries TV populaires"
 }
