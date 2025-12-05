@@ -1,6 +1,7 @@
 import type { Schemas } from "shared";
 import { toast } from "sonner";
 import { useTopRatedTv } from "@/hooks/useTv";
+import { m } from "@/paraglide/messages";
 import { LoadingSection } from "../loading/loading-section";
 import { TvCarousel } from "./tv-carousel";
 
@@ -16,7 +17,7 @@ export const TopRatedTv = ({ title }: TopRatedTvProps) => {
 	}
 
 	if (error) {
-		toast.error(`Failed to load ${title}`);
+		toast.error(m.toast_error_not_found_generic({ title }));
 		return null;
 	}
 

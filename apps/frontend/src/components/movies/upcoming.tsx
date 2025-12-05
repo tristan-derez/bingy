@@ -17,7 +17,7 @@ export const UpcomingMovies = ({ title }: UpcomingMoviesProps) => {
 	}
 
 	if (error) {
-		toast.error(m.error_failed_to_load({ title: title }));
+		toast.error(m.error_failed_to_load({ title }));
 		return null;
 	}
 
