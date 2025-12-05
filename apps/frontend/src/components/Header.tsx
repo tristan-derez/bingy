@@ -1,7 +1,7 @@
 import { Link, useRouteContext } from "@tanstack/react-router";
 
 import { useState } from "react";
-import { LocaleSwitcher } from "./locale-switcher";
+import { LocaleRegionDropdown } from "./locale-region-dropdown";
 import { ProfileDropdown } from "./profile-dropdown";
 import { SearchCombobox } from "./search/search-combobox";
 import {
@@ -72,7 +72,7 @@ export default function Header() {
 				<NavbarLogo />
 				<div className="flex items-center gap-2">
 					<NavItems items={navItems} />
-					{session && <SearchCombobox />}
+					<SearchCombobox />
 				</div>
 				<div className="flex items-center gap-4">
 					{!session && (
@@ -85,7 +85,7 @@ export default function Header() {
 							</NavbarButton>
 						</>
 					)}
-					<LocaleSwitcher />
+					<LocaleRegionDropdown />
 					{session && (
 						<ProfileDropdown
 							session={{ ...session.session, user: session.user }}
@@ -116,9 +116,9 @@ export default function Header() {
 							<span className="block">{item.name}</span>
 						</Link>
 					))}
-					{session && (
-						<SearchCombobox title="Search for movies, tv shows or people" />
-					)}
+
+					<SearchCombobox title="Search for movies, tv shows or people" />
+
 					<Separator />
 					<div className="flex w-full flex-col gap-4 pt-2">
 						{!session && (
