@@ -8,7 +8,7 @@ import { PiUserFill } from "react-icons/pi";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
-
+import { m } from "@/paraglide/messages";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import {
 	DropdownMenu,
@@ -39,7 +39,7 @@ export const ProfileDropdown = ({
 
 	const logout = async () => {
 		onLinkClick?.();
-		toast.success("You have been successfully logged out. Come back soon!");
+		toast.success(m.toast_success_logout());
 		await authClient.signOut();
 		router.invalidate().finally(() => {
 			navigate({ to: "/" });
@@ -62,12 +62,9 @@ export const ProfileDropdown = ({
 								<div className="text-sm font-medium tracking-tight leading-tight text-foreground">
 									{session.user.name}
 								</div>
-								<div className="text-xs tracking-tight leading-tight text-muted-foreground">
-									{session.user.email}
-								</div>
 							</div>
 							<div className="relative">
-								<div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 via-pink-500 to-orange-400 p-0.5">
+								<div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 via-pink-500 to-orange-400 p-0.5">
 									<div className="w-full h-full rounded-full overflow-hidden bg-card">
 										<Avatar className="w-full h-full object-cover rounded-full">
 											<AvatarImage
@@ -129,43 +126,30 @@ export const ProfileDropdown = ({
 						)}
 					>
 						<DropdownMenuItem asChild>
-							<Link
-								to="/profile"
-								className="flex items-center gap-2 text-foreground"
-								onClick={onLinkClick}
-							>
+							<Link to="/profile" onClick={onLinkClick}>
 								<PiUserFill />
-								Profile
+								{m.dropdown_profile_text()}
 							</Link>
 						</DropdownMenuItem>
 						<DropdownMenuItem asChild>
-							<Link
-								to="/settings"
-								className="flex items-center gap-2 text-foreground"
-								onClick={onLinkClick}
-							>
+							<Link to="/settings" onClick={onLinkClick}>
 								<IoSettingsSharp />
-								Settings
+								{m.dropdown_settings_text()}
 							</Link>
 						</DropdownMenuItem>
 						<DropdownMenuSeparator className="bg-border" />
 						<DropdownMenuItem>
-							<FaGithub className="mr-2 text-foreground" />
-							<a
-								href="https://github.com/tristan-derez/bingy"
-								className="text-foreground"
-							>
-								GitHub
-							</a>
+							<FaGithub />
+							<a href="https://github.com/tristan-derez/bingy">GitHub</a>
 						</DropdownMenuItem>
 						<DropdownMenuItem>
-							<MdSupport className="mr-2 text-foreground" />
-							<span className="text-foreground">Support</span>
+							<MdSupport />
+							<span>{m.dropdown_support_text()}</span>
 						</DropdownMenuItem>
 						<DropdownMenuSeparator className="bg-border" />
 						<DropdownMenuItem onSelect={logout}>
-							<IoLogOutSharp className="mr-2 text-foreground" />
-							<span className="text-foreground">Log out</span>
+							<IoLogOutSharp />
+							<span>{m.dropdown_logout_text()}</span>
 						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</div>
