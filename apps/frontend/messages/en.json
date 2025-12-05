@@ -431,5 +431,11 @@
 	"header_link_home": "Home",
 	"header_link_dashboard": "Dashboard",
 	"header_link_movies": "Movies",
-	"header_link_tv_shows": "TV Shows"
+	"header_link_tv_shows": "TV Shows",
+	"landing_page_title": "Track what you watch.",
+	"landing_page_title_discover": "Discover",
+	"landing_page_title_whats_next": "what's next.",
+	"landing_page_desc": "Track every movie and show you watch, rate what you've seen, manage your watchlist, and discover what your friends are loving—all in one place.",
+	"landing_page_btn_search": "Search",
+	"landing_page_btn_get_started": "Get Started"
 }

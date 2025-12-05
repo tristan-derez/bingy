@@ -431,5 +431,11 @@
 	"header_link_home": "Accueil",
 	"header_link_dashboard": "Dashboard",
 	"header_link_movies": "Films",
-	"header_link_tv_shows": "Séries TV"
+	"header_link_tv_shows": "Séries TV",
+	"landing_page_title": "Vos films et séries, organisés.",
+	"landing_page_title_discover": "Partagez",
+	"landing_page_title_whats_next": "vos découvertes.",
+	"landing_page_desc": "Suivez tous les films et séries que vous regardez, notez ce que vous avez vu, gérez votre liste de favoris et découvrez ce que vos amis aiment, le tout au même endroit.",
+	"landing_page_btn_search": "Rechercher",
+	"landing_page_btn_get_started": "Commencer"
 }
