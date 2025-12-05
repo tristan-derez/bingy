@@ -149,13 +149,8 @@
 	"btn_visit_movie_details_homepage": "En savoir plus",
 	"movie_details_production_companies": [
 		{
-			"declarations": [
-				"input count",
-				"local countPlural = count: plural"
-			],
-			"selectors": [
-				"countPlural"
-			],
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
 			"match": {
 				"countPlural=one": "Société de production",
 				"countPlural=other": "Sociétés de production"
@@ -179,12 +174,8 @@
 	"person_death_age": "à {age} ans",
 	"person_actor": [
 		{
-			"declarations": [
-				"input gender"
-			],
-			"selectors": [
-				"gender"
-			],
+			"declarations": ["input gender"],
+			"selectors": ["gender"],
 			"match": {
 				"gender=male": "Acteur",
 				"gender=female": "Actrice",
@@ -194,12 +185,8 @@
 	],
 	"person_writer": [
 		{
-			"declarations": [
-				"input gender"
-			],
-			"selectors": [
-				"gender"
-			],
+			"declarations": ["input gender"],
+			"selectors": ["gender"],
 			"match": {
 				"gender=male": "Scénariste",
 				"gender=female": "Scénariste",
@@ -209,12 +196,8 @@
 	],
 	"person_director": [
 		{
-			"declarations": [
-				"input gender"
-			],
-			"selectors": [
-				"gender"
-			],
+			"declarations": ["input gender"],
+			"selectors": ["gender"],
 			"match": {
 				"gender=male": "Réalisateur",
 				"gender=female": "Réalisatrice",
@@ -225,13 +208,8 @@
 	"person_biography": "Biographie",
 	"person_place_of_birth": [
 		{
-			"declarations": [
-				"input gender",
-				"input place"
-			],
-			"selectors": [
-				"gender"
-			],
+			"declarations": ["input gender", "input place"],
+			"selectors": ["gender"],
 			"match": {
 				"gender=male": "Né à {place}",
 				"gender=female": "Née à {place}",
@@ -241,12 +219,8 @@
 	],
 	"person_known_for": [
 		{
-			"declarations": [
-				"input gender"
-			],
-			"selectors": [
-				"gender"
-			],
+			"declarations": ["input gender"],
+			"selectors": ["gender"],
 			"match": {
 				"gender=male": "Connu pour",
 				"gender=female": "Connue pour",
@@ -303,13 +277,8 @@
 	"episodes_container_guest_stars": "guest stars",
 	"season_card_episode_badge": [
 		{
-			"declarations": [
-				"input count",
-				"local countPlural = count: plural"
-			],
-			"selectors": [
-				"countPlural"
-			],
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
 			"match": {
 				"countPlural=one": "Episode",
 				"countPlural=other": "Episodes"
@@ -331,13 +300,8 @@
 	"season_details_air_date": "Date de diffusion",
 	"season_details_episodes": [
 		{
-			"declarations": [
-				"input count",
-				"local countPlural = count: plural"
-			],
-			"selectors": [
-				"countPlural"
-			],
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
 			"match": {
 				"countPlural=one": "Episode",
 				"countPlural=other": "Episodes"
@@ -346,13 +310,8 @@
 	],
 	"season_details_networks": [
 		{
-			"declarations": [
-				"input count",
-				"local countPlural = count: plural"
-			],
-			"selectors": [
-				"countPlural"
-			],
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
 			"match": {
 				"countPlural=one": "Distributeur",
 				"countPlural=other": "Distributeurs"
@@ -380,12 +339,8 @@
 	"tv_details_overview": "Résumé",
 	"tv_details_creator": [
 		{
-			"declarations": [
-				"input gender"
-			],
-			"selectors": [
-				"gender"
-			],
+			"declarations": ["input gender"],
+			"selectors": ["gender"],
 			"match": {
 				"gender=male": "Créateur",
 				"gender=female": "Créatrice",
@@ -402,9 +357,7 @@
 				"input voteCount",
 				"local countPlural = count: plural"
 			],
-			"selectors": [
-				"countPlural"
-			],
+			"selectors": ["countPlural"],
 			"match": {
 				"countPlural=one": "{voteCount} vote",
 				"countPlural=other": "{voteCount} votes"
@@ -413,13 +366,8 @@
 	],
 	"tv_details_seasons": [
 		{
-			"declarations": [
-				"input count",
-				"local countPlural = count: plural"
-			],
-			"selectors": [
-				"countPlural"
-			],
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
 			"match": {
 				"countPlural=one": "Saison",
 				"countPlural=other": "Saisons"
@@ -428,13 +376,8 @@
 	],
 	"tv_details_episodes": [
 		{
-			"declarations": [
-				"input count",
-				"local countPlural = count: plural"
-			],
-			"selectors": [
-				"countPlural"
-			],
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
 			"match": {
 				"countPlural=one": "Épisode au total",
 				"countPlural=other": "Épisodes au total"
@@ -448,13 +391,8 @@
 	"tv_details_status_pilot": "Pilote",
 	"tv_details_networks": [
 		{
-			"declarations": [
-				"input count",
-				"local countPlural = count: plural"
-			],
-			"selectors": [
-				"countPlural"
-			],
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
 			"match": {
 				"countPlural=one": "Distributeur",
 				"countPlural=other": "Distributeurs"
@@ -463,13 +401,8 @@
 	],
 	"tv_details_companies": [
 		{
-			"declarations": [
-				"input count",
-				"local countPlural = count: plural"
-			],
-			"selectors": [
-				"countPlural"
-			],
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
 			"match": {
 				"countPlural=one": "Société de production",
 				"countPlural=other": "Sociétés de production"
