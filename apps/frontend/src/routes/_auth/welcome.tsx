@@ -1,6 +1,5 @@
 import {
 	createFileRoute,
-	redirect,
 	useRouteContext,
 	useRouter,
 	useSearch,
@@ -21,20 +20,10 @@ const welcomeSearchSchema = z.object({
 
 export const Route = createFileRoute("/_auth/welcome")({
 	validateSearch: welcomeSearchSchema,
-	beforeLoad: ({ context }) => {
-		if (!context.session) {
-			throw redirect({
-				to: "/signin",
-				search: {
-					redirect: "/welcome",
-				},
-			});
-		}
-	},
-	component: Welcome,
+	component: WelcomePage,
 });
 
-export function Welcome() {
+export function WelcomePage() {
 	const { session } = useRouteContext({ from: "__root__" });
 
 	if (!session) {

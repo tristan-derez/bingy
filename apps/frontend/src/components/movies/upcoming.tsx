@@ -1,6 +1,8 @@
+import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
 import { toast } from "sonner";
 import { useUpcomingMovies } from "@/hooks/useMovies";
+import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { LoadingSection } from "../loading/loading-section";
 import { MovieCarousel } from "./movie-carousel";
@@ -10,7 +12,13 @@ interface UpcomingMoviesProps {
 }
 
 export const UpcomingMovies = ({ title }: UpcomingMoviesProps) => {
-	const { data, isLoading, error } = useUpcomingMovies({ region: "US" });
+	const localeRegion = useAtomValue(localeRegionAtom);
+	const region = useAtomValue(regionAtom);
+
+	const { data, isLoading, error } = useUpcomingMovies({
+		region,
+		language: localeRegion,
+	});
 
 	if (isLoading) {
 		return <LoadingSection title={title} />;

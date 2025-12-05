@@ -1,7 +1,9 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
 import { TvDetailsView } from "@/components/tv/tv-details";
 import { useTv } from "@/hooks/useTv";
+import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
 import { getSocialUrls } from "@/utils/social-urls";
 
 export const Route = createFileRoute("/tv/$tvId")({
@@ -11,6 +13,8 @@ export const Route = createFileRoute("/tv/$tvId")({
 function TvDetailsContainer() {
 	const router = useRouter();
 	const { tvId } = Route.useParams();
+	const localeRegion = useAtomValue(localeRegionAtom);
+	const region = useAtomValue(regionAtom);
 
 	const {
 		data: tv,
@@ -18,6 +22,8 @@ function TvDetailsContainer() {
 		isError,
 	} = useTv(Number(tvId), {
 		append_to_response: "aggregate_credits,external_ids,watch/providers",
+		language: localeRegion,
+		region,
 	});
 
 	const cast: Schemas.CastMember[] =

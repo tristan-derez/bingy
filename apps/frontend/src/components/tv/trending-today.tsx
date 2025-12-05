@@ -1,6 +1,8 @@
+import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
 import { toast } from "sonner";
 import { useTrendingTodayTv } from "@/hooks/useTv";
+import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { LoadingSection } from "../loading/loading-section";
 import { TvCarousel } from "./tv-carousel";
@@ -10,7 +12,13 @@ interface TrendingTodayTvProps {
 }
 
 export const TrendingTodayTv = ({ title }: TrendingTodayTvProps) => {
-	const { data, isLoading, error } = useTrendingTodayTv();
+	const localeRegion = useAtomValue(localeRegionAtom);
+	const region = useAtomValue(regionAtom);
+
+	const { data, isLoading, error } = useTrendingTodayTv({
+		region,
+		language: localeRegion,
+	});
 
 	if (isLoading) {
 		return <LoadingSection title={title} />;

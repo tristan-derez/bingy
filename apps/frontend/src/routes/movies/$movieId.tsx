@@ -1,16 +1,19 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { useAtomValue } from "jotai";
 import { MovieDetailView } from "@/components/movies/movie-details";
 import { useMovie } from "@/hooks/useMovies";
+import { localeRegionAtom } from "@/lib/atoms/region";
 import { getRole } from "@/utils/excluded-jobs";
 import { getSocialUrls } from "@/utils/social-urls";
 
 export const Route = createFileRoute("/movies/$movieId")({
-	component: MovieDetailsContainer,
+	component: MovieDetailsPage,
 });
 
-function MovieDetailsContainer() {
+function MovieDetailsPage() {
 	const router = useRouter();
 	const { movieId } = Route.useParams();
+	const localeRegion = useAtomValue(localeRegionAtom);
 
 	const {
 		data: movie,
@@ -18,6 +21,7 @@ function MovieDetailsContainer() {
 		isError,
 	} = useMovie(Number(movieId), {
 		append_to_response: "credits,external_ids,watch/providers",
+		language: localeRegion,
 	});
 
 	const crewWithRoles =

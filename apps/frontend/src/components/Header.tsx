@@ -1,6 +1,7 @@
 import { Link, useRouteContext } from "@tanstack/react-router";
 
 import { useState } from "react";
+import { m } from "@/paraglide/messages";
 import { LocaleRegionDropdown } from "./locale-region-dropdown";
 import { ProfileDropdown } from "./profile-dropdown";
 import { SearchCombobox } from "./search/search-combobox";
@@ -23,39 +24,27 @@ export default function Header() {
 
 	const allNavItems = [
 		{
-			name: "Home",
+			name: m.header_link_home(),
 			link: "/",
 			requiresAuth: false,
 			hideWhenAuth: true,
 		},
 		{
-			name: "Dashboard",
+			name: m.header_link_dashboard(),
 			link: "/dashboard",
 			requiresAuth: true,
 			hideWhenAuth: false,
 		},
 		{
-			name: "Features",
-			link: "/features" as const,
-			requiresAuth: false,
-			hideWhenAuth: true,
-		},
-		{
-			name: "Contact",
-			link: "/contact" as const,
-			requiresAuth: false,
-			hideWhenAuth: true,
-		},
-		{
-			name: "Movies",
+			name: m.header_link_movies(),
 			link: "/movies" as const,
-			requiresAuth: true,
+			requiresAuth: false,
 			hideWhenAuth: false,
 		},
 		{
-			name: "TV",
+			name: m.header_link_tv_shows(),
 			link: "/tv" as const,
-			requiresAuth: true,
+			requiresAuth: false,
 			hideWhenAuth: false,
 		},
 	] as const;

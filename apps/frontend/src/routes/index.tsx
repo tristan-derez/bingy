@@ -55,7 +55,7 @@ function App() {
 						variant="outline"
 						className="transition-transform hover:scale-105 h-11"
 						onClick={() => {
-							navigate({ to: "/features" });
+							navigate({ to: "/" });
 						}}
 					>
 						View Features

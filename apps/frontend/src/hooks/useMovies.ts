@@ -11,7 +11,7 @@ import {
 
 export function useLatestMovie() {
 	return useQuery({
-		queryKey: ["movies", "latest"],
+		queryKey: ["movie", "latest"],
 		queryFn: () => fetchMovies("latest"),
 		staleTime: 1000 * 60 * 10,
 	});
@@ -51,7 +51,7 @@ export function useUpcomingMovies(params?: MoviesParams) {
 
 export function useMovie(id: number, params?: MoviesParams) {
 	return useQuery<Schemas.MovieDetails>({
-		queryKey: ["movies", id, params],
+		queryKey: ["movie", id, params],
 		queryFn: () => fetchMovie(id, params),
 		staleTime: 1000 * 60 * 30,
 	});
@@ -63,7 +63,7 @@ export function useMovieResource<T>(
 	params?: MoviesParams,
 ) {
 	return useQuery<T>({
-		queryKey: ["movies", id, endpoint, params],
+		queryKey: ["movie", id, endpoint, params],
 		queryFn: () => fetchMovieResources(id, endpoint, params),
 		staleTime: 1000 * 60 * 10,
 	});

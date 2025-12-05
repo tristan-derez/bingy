@@ -15,6 +15,7 @@ interface PopularTvProps {
 export const PopularTv = ({ title }: PopularTvProps) => {
 	const localeWithRegion = useAtomValue(localeAtom);
 	const region = useAtomValue(regionAtom);
+
 	const { data, isLoading, error } = usePopularTv({
 		language: localeWithRegion,
 		region,

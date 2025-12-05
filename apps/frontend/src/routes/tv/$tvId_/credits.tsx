@@ -1,15 +1,19 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
 import { TvCreditsView } from "@/components/tv/tv-credits";
 import { useTvResources } from "@/hooks/useTv";
+import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
 
 export const Route = createFileRoute("/tv/$tvId_/credits")({
-	component: TvCreditsContainer,
+	component: TvCreditsPage,
 });
 
-function TvCreditsContainer() {
+function TvCreditsPage() {
 	const { tvId } = Route.useParams();
 	const router = useRouter();
+	const localeRegion = useAtomValue(localeRegionAtom);
+	const region = useAtomValue(regionAtom);
 
 	const {
 		data: credits,
@@ -18,6 +22,7 @@ function TvCreditsContainer() {
 	} = useTvResources<Schemas.TvAggregatedCredits>(
 		Number(tvId),
 		"aggregate_credits",
+		{ language: localeRegion, region },
 	);
 
 	return (

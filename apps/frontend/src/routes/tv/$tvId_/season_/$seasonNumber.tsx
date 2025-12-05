@@ -1,15 +1,19 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
 import { TvSeasonDetailsView } from "@/components/tv/seasons/tv-season-details";
 import { useTvSeasonResources } from "@/hooks/useTv";
+import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
 
 export const Route = createFileRoute("/tv/$tvId_/season_/$seasonNumber")({
-	component: TvSeasonDetailsContainer,
+	component: TvSeasonDetailsPage,
 });
 
-function TvSeasonDetailsContainer() {
+function TvSeasonDetailsPage() {
 	const router = useRouter();
 	const { tvId, seasonNumber } = Route.useParams();
+	const localeRegion = useAtomValue(localeRegionAtom);
+	const region = useAtomValue(regionAtom);
 
 	const {
 		data: tvSeason,
@@ -19,18 +23,21 @@ function TvSeasonDetailsContainer() {
 		Number(tvId),
 		Number(seasonNumber),
 		"",
+		{ language: localeRegion, region },
 	);
 
 	const { data: credits } = useTvSeasonResources<Schemas.TvCredits>(
 		Number(tvId),
 		Number(seasonNumber),
 		"credits",
+		{ language: localeRegion, region },
 	);
 
 	const { data: watchProviders } = useTvSeasonResources<Schemas.WatchProviders>(
 		Number(tvId),
 		Number(seasonNumber),
 		"watch/providers",
+		{ language: localeRegion, region },
 	);
 
 	return (
