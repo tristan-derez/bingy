@@ -1,6 +1,9 @@
+import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
 import { toast } from "sonner";
 import { useTrendingWeekTv } from "@/hooks/useTv";
+import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
+import { m } from "@/paraglide/messages";
 import { LoadingSection } from "../loading/loading-section";
 import { TvCarousel } from "./tv-carousel";
 
@@ -9,14 +12,20 @@ interface TrendingWeekTvProps {
 }
 
 export const TrendingWeekTv = ({ title }: TrendingWeekTvProps) => {
-	const { data, isLoading, error } = useTrendingWeekTv();
+	const localeRegion = useAtomValue(localeRegionAtom);
+	const region = useAtomValue(regionAtom);
+
+	const { data, isLoading, error } = useTrendingWeekTv({
+		language: localeRegion,
+		region,
+	});
 
 	if (isLoading) {
 		return <LoadingSection title={title} />;
 	}
 
 	if (error) {
-		toast.error(`Failed to load ${title}`);
+		toast.error(m.toast_error_not_found_generic({ title }));
 		return null;
 	}
 

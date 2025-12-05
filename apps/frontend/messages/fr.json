@@ -1,0 +1,450 @@
+{
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"delete_account_title": "Supprimer le compte",
+	"two_factor_title": "Double authentification",
+	"btn_disable_twofactor": "Désactiver la 2FA",
+	"btn_disabling_twofactor": "Désactivation...",
+	"toast_success_disable_twofactor": "La double authentification a été désactivée avec succès.",
+	"toast_error_disable_twofactor": "Échec de la désactivation de la double authentification. Veuillez réessayer.",
+	"toast_error_generic": "Une erreur s'est produite. Veuillez réessayer plus tard.",
+	"toast_email_sent_account_delete": "Un e-mail de confirmation vient de vous être envoyé. Veuillez consulter votre boîte de réception et suivre le lien fourni afin de confirmer la suppression de votre compte.",
+	"delete_account_short_desc": "Cette action est définitive. Vous recevrez un e-mail pour confirmer la suppression.",
+	"dialog_confirm_action": "Êtes-vous certain ?",
+	"dialog_cancel_action": "Annuler",
+	"dialog_delete_account_warning": "Cette action est irréversible. Cela entraînera la suppression de votre compte et de ses données de nos serveurs. Vous recevrez un e-mail de confirmation avec un lien pour compléter la suppression. Votre compte restera actif tant que vous n'aurez pas confirmé via le lien dans l'email.",
+	"two_factor_disable_short_desc": "Désactiver la double authentification",
+	"toast_success_enable_twofactor": "Double authentification activée! ",
+	"toast_error_invalid_code": "Code invalide. Réessayez.  ",
+	"toast_error_qr_code": "Erreur lors de la recuperation du QR code. Réessayez.\n",
+	"toast_error_enable_twofactor": "Erreur lors de l'activation de la double authentification.Réessayez.",
+	"two_factor_enable_short_desc": "Activer la double authentification. Pour cela, vous devrez télécharger une application d'authentification telle que Ente Auth ou Proton Auth.",
+	"btn_enabling_two_factor": "Activation 2FA...",
+	"btn_enable_two_factor": "Activer 2FA",
+	"email_not_verified": "Veuillez d'abord vérifier votre adresse e-mail",
+	"email_not_send": "Impossible d'envoyer l'e-mail, réessayez. ",
+	"forgot_password_email_sent": "Si un compte existe avec cette adresse e-mail, vous recevrez sous peu les instructions pour réinitialiser votre mot de passe.",
+	"forgot_password_title": "Réinitialiser le mot de passe",
+	"forgot_password_desc": "Entrez votre adresse e-mail ci-dessous.",
+	"form_email_label": "E-mail",
+	"form_password_label": "Mot de passe",
+	"btn_sending_email": "Envoi de l'e-mail...",
+	"btn_reset_password": "Réinitialiser le mot de passe",
+	"toast_success_reset_password": "Réinitialisation du mot de passe réussie !",
+	"toast_error_reset_password": "Échec de la réinitialisation du mot de passe. Réessayez.",
+	"reset_password_title": "Réinitialiser le mot de passe",
+	"reset_password_desc": "Entrez votre nouveau mot de passe ci-dessous :",
+	"form_new_password_label": "Nouveau mot de passe",
+	"btn_resetting_password": "Réinitialisation du mot de passe...",
+	"welcome_back_message": "Bonjour, {username} !",
+	"toast_error_signin_invalid_code": "Échec de la vérification du code. Réessayez !",
+	"signin_title": "Se connecter",
+	"signin_forgot_password": "Mot de passe oublié ?",
+	"btn_signing_in": "Connexion en cours...",
+	"btn_signin": "Se connecter",
+	"signin_last_method_badge": "Dernière utilisation",
+	"signin_no_account": "Vous n'avez pas de compte ?",
+	"signin_no_account_link": "Inscrivez-vous",
+	"toast_email_not_verified_new_user": "Veuillez vérifier votre adresse e-mail",
+	"signin_with_provider": "Connectez-vous avec {provider}",
+	"toast_success_signup": "Veuillez vérifier votre boîte de réception à l'adresse {userEmail}",
+	"toast_loading_signup": "Redirection vers {provider}",
+	"toast_error_signup_oauth": "Une erreur s'est produite lors de la connexion à {provider}. Veuillez réessayer !",
+	"signin_desc_one": "Ravi de vous revoir ! Votre univers cinema vous attend.",
+	"signin_desc_two": "Connectez-vous.",
+	"signup_title": "Créer un compte",
+	"signup_desc_one": "Suivez et organisez vos films et séries préférés en un seul endroit. Inscrivez-vous dès maintenant, c'est gratuit !",
+	"signup_username_tooltip": "Votre nom d'utilisateur est public",
+	"signup_password_tooltip": "8 caractères minimum",
+	"btn_registering_signup": "Création du compte...",
+	"btn_signup": "Inscrivez-vous",
+	"signup_with_provider": "Inscrivez-vous avec {provider}",
+	"signup_separator_text": "Ou continuer avec",
+	"signup_already_account": "Vous avez déjà un compte ?",
+	"signup_already_account_link": "Se connecter",
+	"signup_username_label": "Nom d'utilisateur",
+	"form_username_label": "Nom d'utilisateur",
+	"toast_error_update_email": "Échec de la modification de votre adresse e-mail",
+	"toast_success_update_email_confirmation_needed": "Un e-mail de vérification a été envoyé à {userEmail}. Veuillez vérifier votre boîte de réception.",
+	"toast_success_update_email": "L'adresse e-mail a été modifiée avec succès",
+	"update_email_title": "E-mail",
+	"update_email_desc_email_verified": "Un e-mail de vérification sera envoyé à votre adresse e-mail actuelle afin d'approuver la modification.",
+	"update_email_desc": "Votre adresse e-mail sera immédiatement mise à jour, car votre adresse actuelle n'est pas vérifiée.",
+	"form_current_email_label": "E-mail actuel",
+	"btn_update_email": "Mettre à jour l'adresse e-mail",
+	"dialog_title_update_email": "Mettre à jour l'adresse e-mail",
+	"dialog_desc_update_email_verified": "Entrez votre nouvelle adresse e-mail ci-dessous. Un lien de vérification sera envoyé à votre adresse e-mail actuelle.",
+	"dialog_desc_update_email": "Entrez votre nouvelle adresse e-mail ci-dessous. Votre adresse e-mail sera immédiatement mise à jour.",
+	"form_new_email_label": "Nouvel e-mail",
+	"btn_updating_email": "Mise à jour de l'e-mail...",
+	"toast_error_update_password": "Échec de la mise à jour du mot de passe. Réessayez !",
+	"toast_success_update_password": "Mot de passe mis à jour avec succès !",
+	"update_password_title": "Mot de passe",
+	"update_password_desc_oauth": "Les comptes {providers} nécessitent une réinitialisation du mot de passe via la page de connexion.",
+	"update_password_desc": "Cela vous déconnectera de toutes les autres sessions.",
+	"btn_update_password": "Mettre à jour le mot de passe",
+	"btn_updating_password": "Mise à jour du mot de passe...",
+	"dialog_title_update_password": "Cela mettra à jour votre mot de passe",
+	"dialog_desc_update_password": "Entrez votre mot de passe actuel et choisissez-en un nouveau. Votre nouveau mot de passe doit comporter au moins 8 caractères.",
+	"form_current_password_label": "Mot de passe actuel",
+	"btn_linking_account": "Association en cours...",
+	"btn_unlinking_account": "Dissociation en cours...",
+	"btn_unlink_account": "Dissocier {provider}",
+	"toast_error_unlink_account": "Vous ne pouvez pas dissocier votre seul compte.",
+	"toast_success_unlink_account": "Compte {provider} dissocié.",
+	"btn_link_account": "Associer {provider}",
+	"link_account_title": "Lier des comptes ",
+	"link_account_desc": "Connectez plusieurs comptes pour faciliter la connexion.",
+	"unlink_account_title": "Comptes liés",
+	"unlink_account_desc": "Vous pouvez dissocier les comptes que vous n'utilisez plus.",
+	"settings_tabs_trigger_account": "Compte",
+	"settings_tab_trigger_display": "Affichage",
+	"settings_card_title_account": "Modifier les paramètres du compte",
+	"settings_card_desc_account": "Gérez votre adresse e-mail, votre mot de passe et vos paramètres de sécurité.",
+	"settings_card_title_display": "Modifier les paramètres d'affichage",
+	"settings_card_desc_display": "Choisissez votre thème préféré",
+	"toast_light_joke": "Que la lumière brille dans les ténèbres",
+	"toast_light_joke_two": "Que la lumière soit !",
+	"toast_light_joke_three": "Les ténèbres passent toujours, et la lumière revient",
+	"toast_dark_joke": "Bienvenue du côté obscur !",
+	"toast_dark_joke_two": "Ainsi, les ténèbres seront la lumière",
+	"toast_dark_joke_three": " En mode incognito loin du soleil !",
+	"toast_system_joke": "On suit les ordres de ton système !",
+	"btn_light_mode": "Clair",
+	"btn_dark_mode": "Sombre",
+	"btn_system_mode": "Système",
+	"toast_success_text_copied": "{x} copié dans le presse-papier",
+	"dialog_title_qr_code": "Authentification à double facteur",
+	"dialog_desc_qr_code": "Scannez le code QR avec votre application d'authentification, puis entrez le code à 6 chiffres.",
+	"dialog_instruction_qr_code": "Ou configurez manuellement avec le secret:",
+	"dialog_title_two_factor": "Authentification à double facteur",
+	"dialog_desc_two_factor": "Entrez le code à 6 chiffres provenant de votre application d'authentification.",
+	"dialog_btn_verifying": "Vérification...",
+	"dialog_btn_verify": "Vérifier",
+	"collection_card_desc": "Ce film fait partie d'une saga comprenant {numberOfMovies} films",
+	"btn_view_collection": "VOIR LA SAGA COMPLÈTE",
+	"collection_details_revenue": "Recettes:",
+	"collection_details_title": "Résumé",
+	"btn_show_more": "Voir plus",
+	"overview_none": "Pas de résumé disponible.",
+	"error_page_not_found": "La page que vous recherchez n'existe pas ou a été déplacée.",
+	"btn_go_home": "Retourner à l'accueil",
+	"form_search_placeholder": "Rechercher à nouveau...",
+	"btn_form_search": "Rechercher",
+	"search_error_invalid": "Entrée invalide",
+	"search_error_empty": "La recherche ne peut pas être vide",
+	"search_error_too_long": "La recherche ne peut pas dépasser {number} caractères",
+	"text_no_rating": "N/R",
+	"text_not_announced": "N/C",
+	"title_cast": "Casting",
+	"movie_details_title": "Résumé",
+	"error_desc_not_found_collection": "La Saga recherchée est introuvable.",
+	"error_title_not_found_collection": "Saga introuvable",
+	"error_title_not_found_movie": "Film non trouvé",
+	"error_desc_not_found_movie": "Le film recherché est introuvable.",
+	"movie_details_release_date": "Date de sortie",
+	"movie_details_runtime": "Durée",
+	"movie_details_budget": "Budget",
+	"movie_details_revenue": "Recettes",
+	"movie_details_homepage": "Site officiel",
+	"btn_visit_movie_details_homepage": "En savoir plus",
+	"movie_details_production_companies": [
+		{
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Société de production",
+				"countPlural=other": "Sociétés de production"
+			}
+		}
+	],
+	"btn_see_more": "Voir plus",
+	"btn_jump_to_crew": "Voir l'équipe",
+	"title_crew": "Equipe de production",
+	"link_text_full_credits": "Voir le casting complet et l'équipe de production",
+	"roles_text": "{primaryRole} (+{numberOfOtherRoles} de plus)",
+	"role_text": "{primaryRole}",
+	"person_card_tv_episodes": "episodes",
+	"person_card_tv_episode": "episode",
+	"department_container_episodes": "episodes",
+	"department_container_episode": "episode",
+	"person_biography_missing": "Pas de biographie disponible.",
+	"error_title_not_found_person": "Personne non trouvée",
+	"error_desc_not_found_person": "La personne recherchée est introuvable",
+	"person_age": "{age} ans",
+	"person_death_age": "à {age} ans",
+	"person_actor": [
+		{
+			"declarations": ["input gender"],
+			"selectors": ["gender"],
+			"match": {
+				"gender=male": "Acteur",
+				"gender=female": "Actrice",
+				"gender=*": "Acteur"
+			}
+		}
+	],
+	"person_writer": [
+		{
+			"declarations": ["input gender"],
+			"selectors": ["gender"],
+			"match": {
+				"gender=male": "Scénariste",
+				"gender=female": "Scénariste",
+				"gender=*": "Scénariste"
+			}
+		}
+	],
+	"person_director": [
+		{
+			"declarations": ["input gender"],
+			"selectors": ["gender"],
+			"match": {
+				"gender=male": "Réalisateur",
+				"gender=female": "Réalisatrice",
+				"gender=*": "Réalisateur"
+			}
+		}
+	],
+	"person_biography": "Biographie",
+	"person_place_of_birth": [
+		{
+			"declarations": ["input gender", "input place"],
+			"selectors": ["gender"],
+			"match": {
+				"gender=male": "Né à {place}",
+				"gender=female": "Née à {place}",
+				"gender=*": "Né à {place}"
+			}
+		}
+	],
+	"person_known_for": [
+		{
+			"declarations": ["input gender"],
+			"selectors": ["gender"],
+			"match": {
+				"gender=male": "Connu pour",
+				"gender=female": "Connue pour",
+				"gender=*": "Connu pour"
+			}
+		}
+	],
+	"person_role_unknown": "Non renseigné",
+	"search_movie_badge": "Film",
+	"search_tv_badge": "Série TV",
+	"search_person_badge": "Personne",
+	"person_as": "en tant que",
+	"movies_now_playing_title": "Films à l'affiche",
+	"movies_popular_title": "Films populaires",
+	"movies_upcoming_title": "Films à venir",
+	"movies_toprated_title": "Films les mieux notés",
+	"error_failed_to_load": "{title} n'a pas pu etre chargé",
+	"collection_carousel_title": "Films dans la saga ({number})",
+	"search_combobox_input_placeholder": "Cherche un film, une série ou une personne...",
+	"loader_text_searching": "Recherche...",
+	"search_combobox_no_results": "Pas de résultats",
+	"btn_view_all": "Voir tous les résultats",
+	"search_combobox_empty": "Commence à écrire pour chercher...",
+	"search_pagination_previous": "Précédent",
+	"search_pagination_next": "Suivant",
+	"search_container_results_for": "Résultats pour:",
+	"search_toggle_group_item_all": "Tout",
+	"search_toggle_group_item_movies": "Films",
+	"search_toggle_group_item_tv": "Séries TV",
+	"search_toggle_group_item_person": "Personnes",
+	"search_container_no_results_text": "Pas de résultat pour cette recherche.",
+	"badge_credit_episode_guest": "Guest",
+	"signin_separator_text": "Ou continuer avec",
+	"credit_episode_card_airs_text": "Diffusion le {date}",
+	"credit_episode_card_aired_text": "Diffusé le {date}",
+	"credit_episode_card_not_aired_text": "Date de diffusion inconnue",
+	"credit_episodes_container_wrong_type_title": "Mauvais type de média",
+	"credit_episodes_container_wrong_type_desc": "L'id fourni n'est pas associable à une série TV",
+	"credit_episodes_container_episodes_not_found_title": "Episodes introuvables",
+	"credit_episodes_container_episodes_not_found_desc": "Episodes avec ce credit indisponibles",
+	"credit_episodes_list_as": "en tant que {role}",
+	"credit_episodes_list_unknown_role": "Non renseigné",
+	"episode_credits_not_found_title": "Oops!",
+	"episode_credits_not_found_desc": "Les crédits de cet épisode ne sont pas disponible.",
+	"episode_credits_title": "Episode {episodeNumber}",
+	"episode_details_not_found_title": "Episode introuvable",
+	"episode_details_not_found_desc": "L'épisode recherchée est indisponible.",
+	"badge_episode_number": "Episode {episodeNumber}",
+	"episode_details_overview_title": "Résumé",
+	"episode_details_runtime_text": "Durée",
+	"episode_details_air_date": "Date de diffusion",
+	"episodes_container_title": "Episodes",
+	"episodes_container_crew_text": "membres de l'équipe de production",
+	"episodes_container_guest_stars": "guest stars",
+	"season_card_episode_badge": [
+		{
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Episode",
+				"countPlural=other": "Episodes"
+			}
+		}
+	],
+	"season_card_special_season": "Bonus",
+	"season_card_season": "Saison {seasonNumber}",
+	"season_credits_not_found_title": "Oops!",
+	"season_credits_not_found_desc": "Les credits de cette saison ne sont pas disponibles pour le moment.",
+	"season_credits_title": "Saison {seasonNumber}",
+	"season_credits_special": "Bonus",
+	"season_credits_no_results": "Aucun credits disponible pour le moment.",
+	"season_details_not_found_title": "Saison introuvable",
+	"season_details_not_found_desc": "La saison demandée n'est disponible pour le moment",
+	"season_details_season_badge": "Saison {seasonNumber}",
+	"season_details_overview_title": "Résumé",
+	"season_details_rating": "Votes",
+	"season_details_air_date": "Date de diffusion",
+	"season_details_episodes": [
+		{
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Episode",
+				"countPlural=other": "Episodes"
+			}
+		}
+	],
+	"season_details_networks": [
+		{
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Distributeur",
+				"countPlural=other": "Distributeurs"
+			}
+		}
+	],
+	"watch_providers_text": "En streaming",
+	"seasons_details_seasons": "Toutes les saisons",
+	"seasons_details_not_found_title": "Saisons introuvables",
+	"seasons_details_not_found_desc": "Les saisons demandées ne sont pas disponibles pour le moment",
+	"search_toggle_aria_label_all": "Tous les résultats",
+	"search_toggle_aria_label_movies": "Films uniquement",
+	"search_toggle_aria_label_tv": "Séries TV uniquement",
+	"search_toggle_aria_label_people": "Personnes uniquement",
+	"btn_back": "Retour",
+	"collection_details_budget": "Budget:",
+	"toast_error_not_found_generic": "Failed to load ${title}",
+	"person_born_country": "{country}",
+	"movie_credits_not_found_title": "Oops!",
+	"movie_credits_not_found_desc": "Les crédits de ce film ne sont pas disponibles pour le moment.",
+	"tv_credits_not_found_title": "Oops!",
+	"tv_credits_not_found_desc": "Les crédits de cette série ne sont pas disponibles pour le moment.",
+	"tv_details_not_found_title": "Série indisponible",
+	"tv_details_not_found_desc": "La série demandée n'est pas disponible pour le moment.",
+	"tv_details_overview": "Résumé",
+	"tv_details_creator": [
+		{
+			"declarations": ["input gender"],
+			"selectors": ["gender"],
+			"match": {
+				"gender=male": "Créateur",
+				"gender=female": "Créatrice",
+				"gender=*": "Créateur"
+			}
+		}
+	],
+	"tv_details_first_aired": "Première diffusion",
+	"tv_details_status": "Statut",
+	"tv_details_votes": [
+		{
+			"declarations": [
+				"input count",
+				"input voteCount",
+				"local countPlural = count: plural"
+			],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "{voteCount} vote",
+				"countPlural=other": "{voteCount} votes"
+			}
+		}
+	],
+	"tv_details_seasons": [
+		{
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Saison",
+				"countPlural=other": "Saisons"
+			}
+		}
+	],
+	"tv_details_episodes": [
+		{
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Épisode au total",
+				"countPlural=other": "Épisodes au total"
+			}
+		}
+	],
+	"tv_details_status_in_production": "En production",
+	"tv_details_status_returning_series": "En cours",
+	"tv_details_status_canceled": "Annulée",
+	"tv_details_status_ended": "Terminée",
+	"tv_details_status_pilot": "Pilote",
+	"tv_details_networks": [
+		{
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Distributeur",
+				"countPlural=other": "Distributeurs"
+			}
+		}
+	],
+	"tv_details_companies": [
+		{
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Société de production",
+				"countPlural=other": "Sociétés de production"
+			}
+		}
+	],
+	"tv_details_btn_visit": "En savoir plus",
+	"tv_details_homepage": "Site officiel",
+	"toast_error_email_doesnt_match_settings_page": "L'email ne correspond pas à l'email du compte.",
+	"toast_error_already_linked_settings_page": "Ce compte est déjà utilisé par un autre utilisateur.",
+	"toast_error_generic_error_settings_page": "Une erreur est survenue. Réessayez plus tard.",
+	"toast_success_email_sent_title_welcome_page": "Email de vérification envoyé!",
+	"toast_success_email_sent_desc_welcome_page": "Merci de vérifier votre boite mail",
+	"toast_error_email_failed_welcome_page": "L'envoi d'un nouvel e-mail a echoué.",
+	"toast_error_token_expired_welcome_page": "Le lien a expiré",
+	"toast_error_token_expired_cancel_label_welcome_page": "Recevoir un nouvel e-mail",
+	"welcome_page_greetings": "Bienvenue {username}",
+	"welcome_page_verification_required_title": "La vérification de votre adresse e-mail est requise",
+	"welcome_page_verification_required_desc": "Veuillez vérifier votre boîte de réception et confirmer votre adresse e-mail pour accéder à toutes les fonctionnalités.",
+	"welcome_page_btn_sending": "Envoi...",
+	"welcome_page_btn_resend": "Renvoyer un e-mail",
+	"welcome_page_email_verified_text": "Tout est prêt !",
+	"welcome_page_email_not_verified_text": "Vous y êtes presque !",
+	"goodbye_page_title": "Triste de vous voir partir. Au revoir !",
+	"goodbye_page_btn_go_home": "Retourner à l'accueil",
+	"header_link_home": "Accueil",
+	"header_link_dashboard": "Dashboard",
+	"header_link_movies": "Films",
+	"header_link_tv_shows": "Séries TV",
+	"landing_page_title": "Vos films et séries, organisés.",
+	"landing_page_title_discover": "Partagez",
+	"landing_page_title_whats_next": "vos découvertes.",
+	"landing_page_desc": "Suivez tous les films et séries que vous regardez, notez ce que vous avez vu, gérez votre liste de favoris et découvrez ce que vos amis aiment, le tout au même endroit.",
+	"landing_page_btn_search": "Rechercher",
+	"landing_page_btn_get_started": "Commencer",
+	"tv_series_top_rated_title": "Séries TV les mieux notées",
+	"tv_series_trending_today_title": "Séries TV en tendance aujourd'hui",
+	"tv_series_trending_week_title": "Séries TV en tendance cette semaine",
+	"tv_series_popular_title": "Séries TV populaires",
+	"toast_success_logout": "Vous etes bien déconnecté.",
+	"dropdown_profile_text": "Profil",
+	"dropdown_settings_text": "Paramètres",
+	"dropdown_support_text": "Assistance",
+	"dropdown_logout_text": "Se déconnecter"
+}

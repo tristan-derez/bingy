@@ -1,11 +1,12 @@
-import { ArrowDown, ArrowLeft } from "lucide-react";
 import { useId } from "react";
 import type { Schemas } from "shared";
+import { m } from "@/paraglide/messages";
+import { ScrollToCrewButton } from "../credits/scroll-to-crew-button";
 import { ResourceNotFound } from "../errors/resource-not-found";
 import { LoadingCentered } from "../loading/loading-centered";
 import { CastSectionMovie } from "../person/movie/cast-section-movie";
 import { CrewSectionMovie } from "../person/movie/crew-section-movie";
-import { Button } from "../ui/button";
+import { BackButton } from "../ui/back-button";
 
 interface MovieCreditsViewProps {
 	credits: Schemas.MovieCredits | undefined;
@@ -27,8 +28,8 @@ export function MovieCreditsView({
 	if (isError || !credits) {
 		return (
 			<ResourceNotFound
-				title="Oops!"
-				description="Credits are not available at the moment"
+				title={m.movie_credits_not_found_title()}
+				description={m.movie_credits_not_found_desc()}
 				onBack={onBack}
 			/>
 		);
@@ -36,24 +37,10 @@ export function MovieCreditsView({
 	return (
 		<div className="container scroll-smooth">
 			<div className="mb-4 flex justify-between">
-				<Button onClick={onBack} variant="outline">
-					<ArrowLeft className="h-4 w-4" /> Back
-				</Button>
-				<Button asChild variant="outline">
-					<a
-						href={`#${crewSectionId}`}
-						onClick={(e) => {
-							e.preventDefault();
-							document.getElementById(crewSectionId)?.scrollIntoView({
-								behavior: "smooth",
-								block: "start",
-							});
-						}}
-					>
-						Jump to Crew
-						<ArrowDown className="h-4 w-4" />
-					</a>
-				</Button>
+				<BackButton onBack={onBack} />
+				{credits.crew.length > 0 && credits.cast.length > 0 ? (
+					<ScrollToCrewButton crewSectionId={crewSectionId} />
+				) : null}
 			</div>
 			<div className="flex flex-col gap-8 mt-8 text-center md:text-left">
 				<CastSectionMovie people={credits.cast} />

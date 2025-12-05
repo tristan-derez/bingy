@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
+import { m } from "@/paraglide/messages";
 import { twoFactorSchema } from "@/schemas/two-factor-schema";
 import { SetupTwoFactorDialog } from "../setup-two-factor-dialog";
 
@@ -46,10 +47,7 @@ export function EnableTwoFactorForm() {
 				});
 
 			if (enableError) {
-				toast.error(
-					enableError.message ||
-						"Failed to enable two-factor authentication. Try again.",
-				);
+				toast.error(enableError.message || m.toast_error_enable_twofactor());
 				return;
 			}
 
@@ -60,7 +58,7 @@ export function EnableTwoFactorForm() {
 					});
 
 				if (totpError) {
-					toast.error(totpError.message || "Failed to get QR code. Try again.");
+					toast.error(totpError.message || m.toast_error_invalid_code());
 					return;
 				}
 
@@ -70,14 +68,7 @@ export function EnableTwoFactorForm() {
 				}
 			}
 		} catch (err) {
-			const message =
-				err instanceof Error
-					? err.message.includes("Failed to fetch")
-						? "Something went wrong. Try again later."
-						: err.message
-					: "Something went wrong. Try again later.";
-
-			toast.error(message);
+			toast.error(m.toast_error_generic());
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -91,7 +82,7 @@ export function EnableTwoFactorForm() {
 			});
 
 			if (error?.message === "Invalid two factor cookie") {
-				toast.error("Invalid code. Try again.");
+				toast.error(m.toast_error_invalid_code());
 				return;
 			} else if (error) {
 				toast.error(error.message);
@@ -99,17 +90,13 @@ export function EnableTwoFactorForm() {
 			}
 
 			if (data) {
-				toast.success("Two-factor authentication enabled successfully!");
+				toast.success(m.toast_success_enable_twofactor());
 				setShowDialog(false);
 				form.reset();
 				navigate({ to: "/settings" });
 			}
 		} catch (err) {
-			const message =
-				err instanceof Error
-					? err.message
-					: "Failed to verify code. Try again.";
-			toast.error(message);
+			toast.error(m.toast_error_generic());
 		}
 	};
 
@@ -118,11 +105,10 @@ export function EnableTwoFactorForm() {
 			<div className="grid gap-2">
 				<div>
 					<p className="text-md font-semibold leading-none tracking-tight">
-						Two factor authentication
+						{m.two_factor_title()}
 					</p>
 					<p className="text-sm text-muted-foreground mt-1.5">
-						Enable two factor authentication. This will require you to download
-						an authenticator app such as Ente Auth or Authy.
+						{m.two_factor_enable_short_desc()}
 					</p>
 				</div>
 
@@ -137,7 +123,9 @@ export function EnableTwoFactorForm() {
 								name="password"
 								render={({ field }) => (
 									<FormItem className="grid gap-2">
-										<FormLabel htmlFor={`${id}-password`}>Password</FormLabel>
+										<FormLabel htmlFor={`${id}-password`}>
+											{m.form_password_label()}
+										</FormLabel>
 										<FormControl>
 											<Input
 												id={`${id}-password`}
@@ -159,15 +147,15 @@ export function EnableTwoFactorForm() {
 								{isSubmitting ? (
 									<span className="flex items-center justify-center gap-2">
 										<Loader2 className="animate-spin h-4 w-4" />
-										Enabling...
+										{m.btn_enabling_two_factor()}
 									</span>
 								) : (
-									"Enable Two-Factor"
+									m.btn_enable_two_factor()
 								)}
 							</Button>
 							{!session?.user?.emailVerified && (
 								<p className="text-sm text-gray-500 mt-2">
-									Please verify your email first
+									{m.email_not_verified()}
 								</p>
 							)}
 						</fieldset>

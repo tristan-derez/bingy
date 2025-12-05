@@ -1,7 +1,10 @@
 import { Link } from "@tanstack/react-router";
+import { useAtomValue } from "jotai";
 import { Calendar, Star, Users } from "lucide-react";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
+import { localeRegionAtom } from "@/lib/atoms/region";
+import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { Badge } from "../ui/badge";
 import {
@@ -17,6 +20,7 @@ interface MovieCardProps {
 }
 
 export const MovieCard = ({ movie }: MovieCardProps) => {
+	const localeRegion = useAtomValue(localeRegionAtom);
 	const imageUrl = movie.poster_path
 		? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
 		: fallbackPoster;
@@ -51,24 +55,22 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
 
 				<CardContent className="flex flex-col gap-4 flex-grow">
 					<p className="text-sm text-muted-foreground line-clamp-3 leading-normal min-h-[4rem]">
-						{movie.overview ? movie.overview : "No overview available."}
+						{movie.overview ? movie.overview : m.overview_none()}
 					</p>
-
-					<div className="flex items-center gap-4 text-sm">
-						<div className="flex items-center gap-1">
-							<Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-							<span className="font-medium">
-								{movie.vote_count > 0
-									? movie.vote_average.toFixed(1)
-									: "No rating"}
-							</span>
+					{movie.vote_count > 0 ? (
+						<div className="flex items-center gap-4 text-sm">
+							<div className="flex items-center gap-1">
+								<Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+								<span className="font-medium">
+									{movie.vote_average.toFixed(1)}
+								</span>
+							</div>
+							<div className="flex items-center gap-1 text-muted-foreground">
+								<Users className="h-4 w-4" />
+								<span>{movie.vote_count.toLocaleString()}</span>
+							</div>
 						</div>
-
-						<div className="flex items-center gap-1 text-muted-foreground">
-							<Users className="h-4 w-4" />
-							<span>{movie.vote_count.toLocaleString()}</span>
-						</div>
-					</div>
+					) : null}
 				</CardContent>
 
 				<CardFooter className="text-sm text-muted-foreground">
@@ -76,12 +78,12 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
 						<Calendar className="h-4 w-4" />
 						<span>
 							{movie.release_date
-								? formatDate(movie.release_date, "en-US", {
+								? formatDate(movie.release_date, localeRegion, {
 										month: "short",
 										year: "numeric",
 										day: "2-digit",
 									})
-								: "N/A"}
+								: m.text_not_announced()}
 						</span>
 					</div>
 				</CardFooter>

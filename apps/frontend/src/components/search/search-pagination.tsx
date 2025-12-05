@@ -8,6 +8,7 @@ import {
 	PaginationItem,
 } from "@/components/ui/pagination";
 import { cn } from "@/lib/utils";
+import { m } from "@/paraglide/messages";
 
 interface SearchPaginationProps {
 	currentPage: number;
@@ -74,7 +75,9 @@ export const SearchPagination = ({
 							)}
 						>
 							<ChevronLeft className="h-4 w-4" />
-							<span className="text-xs md:text-lg">Previous</span>
+							<span className="text-xs md:text-lg">
+								{m.search_pagination_previous()}
+							</span>
 						</Link>
 					) : (
 						<span
@@ -84,7 +87,9 @@ export const SearchPagination = ({
 							)}
 						>
 							<ChevronLeft className="h-4 w-4" />
-							<span className="text-xs md:text-lg">Previous</span>
+							<span className="text-xs md:text-lg">
+								{m.search_pagination_previous()}
+							</span>
 						</span>
 					)}
 				</PaginationItem>
@@ -123,7 +128,9 @@ export const SearchPagination = ({
 								"gap-1 pr-2.5",
 							)}
 						>
-							<span className="text-xs md:text-lg">Next</span>
+							<span className="text-xs md:text-lg">
+								{m.search_pagination_next()}
+							</span>
 							<ChevronRight className="h-4 w-4" />
 						</Link>
 					) : (
@@ -133,7 +140,9 @@ export const SearchPagination = ({
 								"gap-1 pr-2.5 opacity-50 cursor-not-allowed",
 							)}
 						>
-							<span className="text-xs md:text-lg">Next</span>
+							<span className="text-xs md:text-lg">
+								{m.search_pagination_next()}
+							</span>
 							<ChevronRight className="h-4 w-4" />
 						</span>
 					)}

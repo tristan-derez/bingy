@@ -3,6 +3,7 @@ import type { Schemas } from "shared";
 import { fetchTvSeasonResources } from "@/api/tv";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
 import { LoadingCentered } from "@/components/loading/loading-centered";
+import { m } from "@/paraglide/messages";
 import { CreditEpisodesList } from "./credit-episodes-list";
 
 interface CreditEpisodesContainerProps {
@@ -18,8 +19,8 @@ export const CreditEpisodesContainer = ({
 	if (creditDetails.media.media_type !== "tv") {
 		return (
 			<ResourceNotFound
-				title="Invalid media type"
-				description="This credit is not for a TV show."
+				title={m.credit_episodes_container_wrong_type_title()}
+				description={m.credit_episodes_container_wrong_type_desc()}
 				onBack={onBack}
 			/>
 		);
@@ -81,8 +82,8 @@ export const CreditEpisodesContainer = ({
 	if (allEpisodes.length === 0) {
 		return (
 			<ResourceNotFound
-				title="No episodes found"
-				description="No episode information is available for this credit."
+				title={m.credit_episodes_container_episodes_not_found_title()}
+				description={m.credit_episodes_container_episodes_not_found_title()}
 				onBack={onBack}
 			/>
 		);

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { Particles } from "@/components/ui/particles";
 import { SparklesText } from "@/components/ui/sparkles-text";
+import { m } from "@/paraglide/messages";
 
 export const Route = createFileRoute("/")({
 	component: App,
@@ -33,21 +34,19 @@ function App() {
 		<CenteredLayout>
 			<div className="flex flex-col items-center gap-8 text-center max-w-4xl">
 				<h1 className="text-4xl md:text-6xl font-bold leading-relaxed">
-					<strong className="inline-block">Track what you watch.</strong>
+					<strong className="inline-block">{m.landing_page_title()}</strong>
 					<br />
 					<SparklesText
 						sparklesCount={5}
 						className="inline-block text-4xl md:text-6xl"
 					>
-						Discover
+						{m.landing_page_title_discover()}
 					</SparklesText>
-					<strong> what's next.</strong>
+					<strong> {m.landing_page_title_whats_next()}</strong>
 				</h1>
 
 				<p className="text-lg md:text-xl text-muted-foreground max-w-2xl">
-					Track every movie and show you watch, rate what you've seen, manage
-					your watchlist, and discover what your friends are loving—all in one
-					place
+					{m.landing_page_desc()}
 				</p>
 
 				<div className="flex gap-4">
@@ -55,10 +54,10 @@ function App() {
 						variant="outline"
 						className="transition-transform hover:scale-105 h-11"
 						onClick={() => {
-							navigate({ to: "/features" });
+							navigate({ to: "/" });
 						}}
 					>
-						View Features
+						{m.landing_page_btn_search()}
 					</Button>
 
 					<HoverBorderGradient
@@ -69,7 +68,7 @@ function App() {
 						}}
 						as="button"
 					>
-						Get Started <FaArrowRight />
+						{m.landing_page_btn_get_started()} <FaArrowRight />
 					</HoverBorderGradient>
 				</div>
 			</div>

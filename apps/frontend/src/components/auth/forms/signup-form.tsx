@@ -35,6 +35,7 @@ import {
 } from "@/components/ui/tooltip";
 import { authClient } from "@/lib/auth-client";
 import { config } from "@/lib/env";
+import { m } from "@/paraglide/messages";
 import { signUpFormSchema } from "@/schemas/signup-form-schema";
 import { getRandomAvatarUrl } from "@/utils/avatar-generator";
 
@@ -67,15 +68,14 @@ export function SignUpForm() {
 				callbackURL: `${config.appUrl}/welcome`,
 			});
 
-			if (error) {
-				toast.error(error.message || "Oops! Request failed, try again.");
-			} else if (data?.user) {
+			if (data && data.user) {
 				toast.success(`Please verify your email at ${data.user.email}`);
 				navigate({ to: "/welcome" });
 			}
+
+			error && toast.error(m.toast_error_generic());
 		} catch (err) {
-			console.error("Sign up error:", err);
-			toast.error("Something went wrong. Please try again.");
+			toast.error(m.toast_error_generic());
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -96,7 +96,6 @@ export function SignUpForm() {
 					? err.message
 					: "Something went wrong with Google sign-in. Please try again!";
 			toast.error(message, { id: "oauth" });
-			console.error("OAuth sign up error:", message);
 		}
 	};
 
@@ -109,12 +108,9 @@ export function SignUpForm() {
 				className="py-4 md:px-2 min-w-sm md:min-w-md"
 			>
 				<CardHeader>
-					<CardTitle className="text-2xl">Create an account</CardTitle>
+					<CardTitle className="text-2xl">{m.signup_title()}</CardTitle>
 					<CardDescription>
-						<p>
-							Track and organize your favorite movies and TV shows in one place.
-							Sign up now, it's free!
-						</p>
+						<p>{m.signup_desc_one()}</p>
 					</CardDescription>
 				</CardHeader>
 				<CardContent className="grid gap-4 pt-2">
@@ -131,21 +127,16 @@ export function SignUpForm() {
 										render={({ field }) => (
 											<FormItem className="grid gap-2">
 												<div className="flex items-center">
-													<FormLabel htmlFor={`${id}-username`}>Name</FormLabel>
+													<FormLabel htmlFor={`${id}-username`}>
+														{m.signup_username_label()}
+													</FormLabel>
 													<TooltipProvider>
 														<Tooltip>
 															<TooltipTrigger className="ml-2">
 																<FaCircleInfo className="w-4 h-4" />
 															</TooltipTrigger>
 															<TooltipContent>
-																<p>
-																	This is how you will be called by the app.
-																</p>
-																<p>
-																	Feel free to go with a pseudonym, your full
-																	name, or just your first name—totally up to
-																	you!
-																</p>
+																<p>{m.signup_username_tooltip()}</p>
 															</TooltipContent>
 														</Tooltip>
 													</TooltipProvider>
@@ -154,7 +145,7 @@ export function SignUpForm() {
 													<Input
 														id={`${id}-username`}
 														type="text"
-														autoComplete="name"
+														autoComplete="username"
 														placeholder="Jack Doe"
 														required
 														{...field}
@@ -169,7 +160,9 @@ export function SignUpForm() {
 										name="email"
 										render={({ field }) => (
 											<FormItem className="grid gap-2">
-												<FormLabel htmlFor={`${id}-email`}>Email</FormLabel>
+												<FormLabel htmlFor={`${id}-email`}>
+													{m.form_email_label()}
+												</FormLabel>
 												<FormControl>
 													<Input
 														id={`${id}-email`}
@@ -191,7 +184,7 @@ export function SignUpForm() {
 											<FormItem className="grid gap-2">
 												<div className="flex items-center">
 													<FormLabel htmlFor={`${id}-password`}>
-														Password
+														{m.form_password_label()}
 													</FormLabel>
 													<TooltipProvider>
 														<Tooltip>
@@ -199,17 +192,7 @@ export function SignUpForm() {
 																<FaCircleInfo className="w-4 h-4" />
 															</TooltipTrigger>
 															<TooltipContent>
-																<p>
-																	Your password should meet ONE of these
-																	requirements:
-																</p>
-																<div>
-																	<p>- 15 or more characters</p>
-																	<p>
-																		- At least 8 characters with uppercase,
-																		lowercase and a number
-																	</p>
-																</div>
+																{m.signup_password_tooltip()}
 															</TooltipContent>
 														</Tooltip>
 													</TooltipProvider>
@@ -234,10 +217,10 @@ export function SignUpForm() {
 										{isRegistering ? (
 											<span className="flex items-center justify-center gap-2">
 												<Loader2 className="animate-spin h-4 w-4" />
-												Creating account
+												{m.btn_registering_signup()}
 											</span>
 										) : (
-											"Sign up"
+											m.btn_signup()
 										)}
 									</Button>
 								</div>
@@ -245,20 +228,20 @@ export function SignUpForm() {
 						</form>
 					</Form>
 					<div className="grid gap-4">
-						<SeparatorWithText text="Or continue with" />
+						<SeparatorWithText text={m.signup_separator_text()} />
 						<div className="flex gap-2">
 							<OAuthButton
 								icon={FcGoogle}
-								label="Sign up with Google"
+								label={m.signup_with_provider({ provider: "Google" })}
 								text="Google"
 								onClick={() => handleOAuthRegister("google")}
 							/>
 						</div>
 					</div>
-					<div className="mt-4 text-center text-sm">
-						Already have an account?{" "}
+					<div className="flex gap-1 justify-center text-sm">
+						<span>{m.signup_already_account()}</span>
 						<Link to="/signin" className="underline">
-							Sign in
+							{m.signup_already_account_link()}
 						</Link>
 					</div>
 				</CardContent>

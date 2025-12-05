@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { fetchSearchMulti } from "@/api/search";
 
-export function useSearchQuery<T>(query: string, language = "en-US") {
+export function useSearchQuery<T>(query: string, { language = "en-US" }) {
 	const [debouncedQuery, setDebouncedQuery] = useState(query);
 
 	useEffect(() => {

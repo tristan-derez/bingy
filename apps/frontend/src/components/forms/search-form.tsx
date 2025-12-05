@@ -2,6 +2,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { m } from "@/paraglide/messages";
 import { searchFormSchema } from "@/schemas/search-form-schema";
 
 interface SearchFormProps {
@@ -20,7 +21,15 @@ export function SearchForm({ initialQuery }: SearchFormProps) {
 		const result = searchFormSchema.safeParse({ newQuery: query });
 		if (!result.success) {
 			const firstIssue = result.error.issues[0];
-			setError(firstIssue?.message ?? "Invalid input");
+			if (firstIssue.message === "Search cannot be empty") {
+				setError(m.search_error_empty());
+				return;
+			} else if (firstIssue.message === "Search cannot exceed 300 characters") {
+				setError(m.search_error_too_long({ number: 300 }));
+				return;
+			}
+
+			setError(m.search_error_invalid());
 			return;
 		}
 
@@ -48,7 +57,7 @@ export function SearchForm({ initialQuery }: SearchFormProps) {
 							setError(null);
 						}
 					}}
-					placeholder="Search again..."
+					placeholder={m.form_search_placeholder()}
 					className="flex rounded-md px-2 py-1"
 				/>
 				<Button
@@ -56,7 +65,7 @@ export function SearchForm({ initialQuery }: SearchFormProps) {
 					variant="secondary"
 					className="bg-brand hover:bg-brand/95 px-4 py-1 rounded-md text-dark-card-foreground font-bold"
 				>
-					Search
+					{m.btn_form_search()}
 				</Button>
 			</div>
 			{error ? <p className="text-red-500 text-sm">{error}</p> : null}

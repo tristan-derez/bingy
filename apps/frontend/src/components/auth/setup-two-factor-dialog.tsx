@@ -16,6 +16,7 @@ import {
 	InputOTPSeparator,
 	InputOTPSlot,
 } from "@/components/ui/input-otp";
+import { m } from "@/paraglide/messages";
 
 export function SetupTwoFactorDialog({
 	open,
@@ -43,18 +44,15 @@ export function SetupTwoFactorDialog({
 
 	const copyText = () => {
 		navigator.clipboard.writeText(secret);
-		toast.success("Secret copied to clipboard");
+		toast.success(m.toast_success_text_copied({ x: "Secret" }));
 	};
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent className="max-h-[90vh] overflow-y-auto">
 				<DialogHeader>
-					<DialogTitle>Two-Factor Authentication</DialogTitle>
-					<DialogDescription>
-						Scan the QR code with your authenticator app, then enter the 6-digit
-						code
-					</DialogDescription>
+					<DialogTitle>{m.dialog_title_qr_code()}</DialogTitle>
+					<DialogDescription>{m.dialog_desc_qr_code()}</DialogDescription>
 				</DialogHeader>
 				<div className="flex flex-col items-center gap-4">
 					{totpUri && (
@@ -65,7 +63,7 @@ export function SetupTwoFactorDialog({
 					{secret && (
 						<div className="text-center w-full px-2">
 							<p className="text-sm text-muted-foreground">
-								Or setup manually with the secret:
+								{m.dialog_instruction_qr_code()}
 							</p>
 							<Button
 								variant="ghost"

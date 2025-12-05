@@ -2,12 +2,12 @@ import { FilmIcon, LayoutGridIcon, TvIcon, UserIcon } from "lucide-react";
 import { useState } from "react";
 import type { Schemas } from "shared";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { m } from "@/paraglide/messages";
 import { getRelevanceScore } from "@/utils/search-relevance-score";
 import { SearchCard } from "./search-card";
 
 interface SearchResultsContainerProps {
 	results: Schemas.MediaMulti[];
-	language?: string;
 	query: string;
 }
 
@@ -15,7 +15,6 @@ type MediaType = "all" | "movie" | "tv" | "person";
 
 export const SearchResultsContainer = ({
 	results,
-	language = "en-US",
 	query,
 }: SearchResultsContainerProps) => {
 	const [filter, setFilter] = useState<MediaType>("all");
@@ -33,7 +32,7 @@ export const SearchResultsContainer = ({
 	return (
 		<div className="container flex flex-col gap-4">
 			<h1>
-				Search results for:{" "}
+				{m.search_container_results_for()}{" "}
 				<span className="font-bold text-muted-foreground">"{query}"</span>
 			</h1>
 			<ToggleGroup
@@ -44,51 +43,47 @@ export const SearchResultsContainer = ({
 			>
 				<ToggleGroupItem
 					value="all"
-					aria-label="All results"
+					aria-label={m.search_toggle_aria_label_all()}
 					className="hover:cursor-pointer"
 				>
 					<LayoutGridIcon className="h-4 w-4" />
-					All
+					{m.search_toggle_group_item_all()}
 				</ToggleGroupItem>
 				<ToggleGroupItem
 					value="movie"
-					aria-label="Movies"
+					aria-label={m.search_toggle_aria_label_movies()}
 					className="hover:cursor-pointer"
 				>
 					<FilmIcon className="h-4 w-4" />
-					Movies
+					{m.search_toggle_group_item_movies()}
 				</ToggleGroupItem>
 				<ToggleGroupItem
 					value="tv"
-					aria-label="TV Shows"
+					aria-label={m.search_toggle_aria_label_people()}
 					className="hover:cursor-pointer"
 				>
 					<TvIcon className="h-4 w-4" />
-					TV Shows
+					{m.search_toggle_group_item_tv()}
 				</ToggleGroupItem>
 				<ToggleGroupItem
-					value="person"
+					value={m.search_toggle_aria_label_people()}
 					aria-label="People"
 					className="hover:cursor-pointer"
 				>
 					<UserIcon className="h-4 w-4" />
-					People
+					{m.search_toggle_group_item_person()}
 				</ToggleGroupItem>
 			</ToggleGroup>
 
 			<div className="flex flex-col gap-2">
 				{filteredResults.map((item) => (
-					<SearchCard
-						key={`${item.media_type}-${item.id}`}
-						item={item}
-						language={language}
-					/>
+					<SearchCard key={`${item.media_type}-${item.id}`} item={item} />
 				))}
 			</div>
 
 			{filteredResults.length === 0 ? (
 				<div className="text-center text-muted-foreground py-8">
-					No results found
+					{m.search_container_no_results_text()}
 				</div>
 			) : null}
 		</div>

@@ -9,6 +9,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import { m } from "@/paraglide/messages";
 import { Button } from "../../ui/button";
 
 interface CrewCardAggregatedProps {
@@ -55,7 +56,10 @@ export const CrewCardAggregated = ({ person }: CrewCardAggregatedProps) => {
 						{jobText}
 					</CardDescription>
 					<CardDescription className="text-xs text-muted-foreground pb-2">
-						{person.total_episode_count} episodes
+						{person.total_episode_count}{" "}
+						{person.total_episode_count > 1
+							? m.person_card_tv_episodes()
+							: m.person_card_tv_episode()}
 					</CardDescription>
 				</CardHeader>
 
@@ -65,7 +69,7 @@ export const CrewCardAggregated = ({ person }: CrewCardAggregatedProps) => {
 							to="/person/$personId"
 							params={{ personId: person.id.toString() }}
 						>
-							See more
+							{m.btn_see_more()}
 						</Link>
 					</Button>
 				</CardContent>

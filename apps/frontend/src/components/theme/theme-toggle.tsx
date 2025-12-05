@@ -4,6 +4,7 @@ import { FaMoon, FaSun } from "react-icons/fa";
 import { GrSystem } from "react-icons/gr";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { m } from "@/paraglide/messages";
 import { useTheme } from "./use-theme";
 
 interface ModeToggleProps {
@@ -52,21 +53,16 @@ export function ModeToggle({ duration = 700 }: ModeToggleProps) {
 
 		const messages: Record<typeof newTheme, string[]> = {
 			light: [
-				"Let light shine out of darkness",
-				"Welcome to the bright side! Don't forget your sunglasses 😎",
-				"Let there be light!",
-				"The darkness always passes, and the light comes back",
+				m.toast_light_joke(),
+				m.toast_light_joke_two(),
+				m.toast_light_joke_three(),
 			],
 			dark: [
-				"Welcome to the dark side!",
-				"So the darkness shall be the light",
-				"Going incognito from the sun!",
+				m.toast_dark_joke(),
+				m.toast_dark_joke_two(),
+				m.toast_dark_joke_three(),
 			],
-			system: [
-				"Following your system's lead!",
-				"Passing the buck to your OS... classic move!",
-				"I'm just here for the ride, your OS is driving",
-			],
+			system: [m.toast_system_joke()],
 		};
 
 		const choices = messages[newTheme];
@@ -81,7 +77,7 @@ export function ModeToggle({ duration = 700 }: ModeToggleProps) {
 				className={`flex items-center gap-2 w-28 ${theme === "light" ? "hover:cursor-not-allowed" : ""}`}
 			>
 				<FaSun className="h-4 w-4" />
-				Light
+				{m.btn_light_mode()}
 			</Button>
 
 			<Button
@@ -90,7 +86,7 @@ export function ModeToggle({ duration = 700 }: ModeToggleProps) {
 				className={`flex items-center gap-2 w-28 ${theme === "dark" ? "hover:cursor-not-allowed" : ""}`}
 			>
 				<FaMoon className="h-4 w-4" />
-				Dark
+				{m.btn_dark_mode()}
 			</Button>
 
 			<Button
@@ -99,7 +95,7 @@ export function ModeToggle({ duration = 700 }: ModeToggleProps) {
 				className={`flex items-center gap-2 w-28 ${theme === "system" ? "hover:cursor-not-allowed" : ""}`}
 			>
 				<GrSystem className="h-4 w-4" />
-				System
+				{m.btn_system_mode()}
 			</Button>
 		</div>
 	);

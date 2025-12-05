@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
+import { m } from "@/paraglide/messages";
 
 export const Route = createFileRoute("/goodbye")({
 	component: GoodByePage,
@@ -10,8 +11,10 @@ function GoodByePage() {
 	return (
 		<div>
 			<div className="grid gap-4 text-center">
-				<p>Hey! goodbye!</p>
-				<Button onClick={() => navigate({ to: "/" })}>Return to home</Button>
+				<p>{m.goodbye_page_title()}</p>
+				<Button onClick={() => navigate({ to: "/" })}>
+					{m.goodbye_page_btn_go_home()}
+				</Button>
 			</div>
 		</div>
 	);

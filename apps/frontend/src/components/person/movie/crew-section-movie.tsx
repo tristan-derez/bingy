@@ -1,4 +1,5 @@
 import type { Schemas } from "shared";
+import { m } from "@/paraglide/messages";
 import { CrewCardMovie } from "./crew-card-movie";
 
 interface CrewSectionMovieProps {
@@ -8,7 +9,7 @@ interface CrewSectionMovieProps {
 
 export const CrewSectionMovie = ({
 	people,
-	title = "Crew",
+	title = m.title_crew(),
 }: CrewSectionMovieProps) => {
 	const byDepartment = new Map<
 		string,

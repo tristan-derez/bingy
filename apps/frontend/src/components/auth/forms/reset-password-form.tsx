@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
+import { m } from "@/paraglide/messages";
 import { resetPasswordFormSchema } from "@/schemas/password/reset-password-form-schema";
 
 interface ResetPasswordFormProps {
@@ -51,23 +52,14 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
 				token,
 			});
 
-			if (error) {
-				toast.error(error.message || "Failed to reset password. Try again.");
-			}
+			error && toast.error(m.toast_error_reset_password());
 
 			if (data) {
-				toast.success("Password reset successfully!");
+				toast.success(m.toast_success_reset_password());
 				navigate({ to: "/signin" });
 			}
 		} catch (err) {
-			const message =
-				err instanceof Error
-					? err.message.includes("Failed to fetch")
-						? "Something went wrong. Try again later."
-						: err.message
-					: "Something went wrong. Try again later.";
-
-			toast.error(message);
+			toast.error(m.toast_error_generic());
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -76,9 +68,9 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
 	return (
 		<Card className="mx-auto max-w-sm min-w-[420px]">
 			<CardHeader>
-				<CardTitle className="text-2xl">Reset password</CardTitle>
+				<CardTitle className="text-2xl">{m.reset_password_title()}</CardTitle>
 				<CardDescription>
-					<p>Enter your new password below.</p>
+					<p>{m.reset_password_desc()}</p>
 				</CardDescription>
 			</CardHeader>
 			<CardContent>
@@ -93,7 +85,9 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
 								name="newPassword"
 								render={({ field }) => (
 									<FormItem className="grid gap-2">
-										<FormLabel htmlFor="newPassword">New password</FormLabel>
+										<FormLabel htmlFor="newPassword">
+											{m.form_new_password_label()}
+										</FormLabel>
 										<FormControl>
 											<Input
 												id={`${id}-newPassword`}
@@ -114,10 +108,10 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
 								{isSubmitting ? (
 									<span className="flex items-center justify-center gap-2">
 										<Loader2 className="animate-spin h-4 w-4" />
-										Resetting password...
+										{m.btn_resetting_password()}
 									</span>
 								) : (
-									"Reset password"
+									m.btn_reset_password()
 								)}
 							</Button>
 						</fieldset>

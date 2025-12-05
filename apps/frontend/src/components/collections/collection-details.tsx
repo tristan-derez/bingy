@@ -1,4 +1,3 @@
-import { ArrowLeft } from "lucide-react";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import {
@@ -8,12 +7,13 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import { m } from "@/paraglide/messages";
 import { ResourceNotFound } from "../errors/resource-not-found";
 import { LoadingCentered } from "../loading/loading-centered";
 import { MediaOverview } from "../medias/overview";
 import { MovieCarousel } from "../movies/movie-carousel";
+import { BackButton } from "../ui/back-button";
 import { Badge } from "../ui/badge";
-import { Button } from "../ui/button";
 
 interface CollectionDetailsViewProps {
 	collectionData: Schemas.CollectionDetails | undefined;
@@ -37,8 +37,8 @@ export function CollectionDetailsView({
 	if (isError || !collectionData) {
 		return (
 			<ResourceNotFound
-				title="Collection Not Found"
-				description="The collection you're looking for could not be found."
+				title={m.error_title_not_found_collection()}
+				description={m.error_desc_not_found_collection()}
 				onBack={onBack}
 			/>
 		);
@@ -73,6 +73,17 @@ export function CollectionDetailsView({
 		maximumFractionDigits: 0,
 	}).format(collectionStats.totalRevenue);
 
+	const totalBudget = moviesData.reduce((sum, movie) => {
+		return sum + (movie?.budget ?? 0);
+	}, 0);
+
+	const formattedBudget = new Intl.NumberFormat("en-US", {
+		style: "currency",
+		currency: "USD",
+		minimumFractionDigits: 0,
+		maximumFractionDigits: 0,
+	}).format(totalBudget);
+
 	const backgroundImage = collectionData.backdrop_path
 		? `https://image.tmdb.org/t/p/original${collectionData.backdrop_path}`
 		: undefined;
@@ -83,11 +94,9 @@ export function CollectionDetailsView({
 
 	return (
 		<div className="container">
-			<Button onClick={onBack} className="mb-4" variant="outline">
-				<ArrowLeft className="h-4 w-4" /> Back
-			</Button>
+			<BackButton onBack={onBack} />
 
-			<div className="flex flex-col gap-4">
+			<div className="flex flex-col gap-4 pt-2">
 				<Card
 					className="relative overflow-hidden min-h-[200px] justify-center text-dark-card-foreground"
 					style={
@@ -100,12 +109,12 @@ export function CollectionDetailsView({
 							: undefined
 					}
 				>
-					<div className="flex flex-col md:flex-row gap-6 p-6 items-start">
-						<div className="flex justify-center xl:justify-start">
+					<div className="flex flex-col md:flex-row gap-6 p-6 items-center md:items-start">
+						<div className="flex justify-center md:justify-start">
 							<img
 								src={posterImage}
 								alt={`${collectionData.name} poster`}
-								className="rounded-lg shadow-lg xl:w-auto xl:max-h-[600px]"
+								className="rounded-lg shadow-lg w-48 h-auto"
 								onError={(e) => {
 									const target = e.currentTarget;
 									if (target.src !== fallbackPoster) {
@@ -132,22 +141,41 @@ export function CollectionDetailsView({
 									))}
 								</CardDescription>
 							</CardHeader>
-							<CardContent className="p-0 flex flex-col gap-4">
-								<h2 className="text-semi-bold text-md">Overview:</h2>
-								<MediaOverview overview={collectionData.overview} />
-								{collectionStats.totalRevenue > 0 && (
+							<CardContent className="p-0 flex flex-col gap-2">
+								<h2 className="text-semi-bold text-md">
+									{m.collection_details_title()}
+								</h2>
+								<MediaOverview
+									overview={collectionData.overview}
+									bg={backgroundImage}
+								/>
+
+								{totalBudget > 0 ? (
 									<div className="flex gap-2">
-										<h3 className="text-semi-bold text-md">Revenue:</h3>
+										<h3 className="text-semi-bold text-md">
+											{m.collection_details_budget()}
+										</h3>
+										<p>{formattedBudget}</p>
+									</div>
+								) : null}
+
+								{collectionStats.totalRevenue > 0 ? (
+									<div className="flex gap-2">
+										<h3 className="text-semi-bold text-md">
+											{m.collection_details_revenue()}
+										</h3>
 										<p>{formattedRevenue}</p>
 									</div>
-								)}
+								) : null}
 							</CardContent>
 						</div>
 					</div>
 				</Card>
 
 				<MovieCarousel
-					title={`Movies in Collection (${collectionData.parts.length})`}
+					title={m.collection_carousel_title({
+						number: collectionData.parts.length,
+					})}
 					movies={collectionData.parts}
 				/>
 			</div>

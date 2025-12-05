@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { m } from "@/paraglide/messages";
 import { Button } from "../ui/button";
 import {
 	Collapsible,
@@ -14,7 +15,7 @@ export const PersonBiography = ({ biography }: PersonBiographyProps) => {
 	const [isExpanded, setIsExpanded] = useState(false);
 
 	if (!biography) {
-		return <p>No biography available.</p>;
+		return <p>{m.person_biography_missing()}</p>;
 	}
 
 	const maxInitialLength = 400;
@@ -58,7 +59,7 @@ export const PersonBiography = ({ biography }: PersonBiographyProps) => {
 				<div className={isExpanded ? "hidden" : ""}>
 					<CollapsibleTrigger asChild>
 						<Button variant="link" size="sm" className="p-0">
-							Show more
+							{m.btn_see_more()}
 						</Button>
 					</CollapsibleTrigger>
 				</div>

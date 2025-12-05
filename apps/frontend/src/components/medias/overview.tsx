@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { m } from "@/paraglide/messages";
 import { Button } from "../ui/button";
 import {
 	Collapsible,
@@ -8,19 +9,25 @@ import {
 
 interface MediaOverviewProps {
 	overview: string;
+	bg?: string;
 }
 
-export const MediaOverview = ({ overview }: MediaOverviewProps) => {
+export const MediaOverview = ({ overview, bg }: MediaOverviewProps) => {
 	const [isExpanded, setIsExpanded] = useState(false);
+	const textColor = bg ? "text-dark-card-foreground" : "text-foreground";
 
 	if (!overview) {
-		return <p>No overview available.</p>;
+		return <p className={textColor}>{m.overview_none()}</p>;
 	}
 
 	const maxInitialLength = 250;
 
 	if (overview.length <= maxInitialLength) {
-		return <p className="w-full xl:w-2/3 whitespace-pre-line">{overview}</p>;
+		return (
+			<p className={`w-full xl:w-2/3 whitespace-pre-line ${textColor}`}>
+				{overview}
+			</p>
+		);
 	}
 
 	const textUpToLimit = overview.slice(0, maxInitialLength);
@@ -39,17 +46,21 @@ export const MediaOverview = ({ overview }: MediaOverviewProps) => {
 
 	return (
 		<>
-			<p className="w-full xl:w-2/3 whitespace-pre-line">{displayText}</p>
+			<p className={`w-full xl:w-2/3 whitespace-pre-line ${textColor}`}>
+				{displayText}
+			</p>
 			<Collapsible open={isExpanded} onOpenChange={setIsExpanded}>
 				<div className={isExpanded ? "hidden" : ""}>
 					<CollapsibleTrigger asChild>
-						<Button variant="link" size="sm" className="p-0">
-							Show more
+						<Button variant="link" size="sm" className={`p-0 ${textColor}`}>
+							{m.btn_show_more()}
 						</Button>
 					</CollapsibleTrigger>
 				</div>
 				<CollapsibleContent>
-					<p className="w-full xl:w-2/3 whitespace-pre-line">{hiddenText}</p>
+					<p className={`w-full xl:w-2/3 whitespace-pre-line ${textColor}`}>
+						{hiddenText}
+					</p>
 				</CollapsibleContent>
 			</Collapsible>
 		</>

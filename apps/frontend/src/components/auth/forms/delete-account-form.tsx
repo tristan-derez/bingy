@@ -17,6 +17,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
 import { config } from "@/lib/env";
+import { m } from "@/paraglide/messages";
 import { deleteAccountSchema } from "@/schemas/delete-account-schema";
 import {
 	Form,
@@ -49,15 +50,13 @@ export function DeleteAccountForm() {
 			});
 
 			if (data) {
-				toast.success("An email has been sent to confirm account deletion.");
+				toast.success(m.toast_email_sent_account_delete());
 				setOpen(false);
 			}
 
-			if (error) {
-				toast.error(error.message || "Oops! Request failed, try again.");
-			}
+			error && toast.error(m.toast_error_generic());
 		} catch (err) {
-			toast.error(err instanceof Error ? err.message : "Unexpected error");
+			toast.error(m.toast_error_generic());
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -66,28 +65,24 @@ export function DeleteAccountForm() {
 	return (
 		<div className="grid gap-2">
 			<p className="text-md font-semibold leading-none tracking-tight">
-				Delete account
+				{m.delete_account_title()}
 			</p>
 			<p className="text-sm text-muted-foreground mt-1.5">
-				This action is permanent. You’ll receive a confirmation email to
-				complete the deletion.
+				{m.delete_account_short_desc()}
 			</p>
 
 			<AlertDialog open={open} onOpenChange={setOpen}>
 				<AlertDialogTrigger asChild>
 					<Button variant="destructive" className="mt-2">
-						Delete Account
+						{m.delete_account_title()}
 					</Button>
 				</AlertDialogTrigger>
 
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+						<AlertDialogTitle>{m.dialog_confirm_action()}</AlertDialogTitle>
 						<AlertDialogDescription>
-							This action cannot be undone. This will permanently delete your
-							account and remove your data from our servers. You'll receive a
-							confirmation email with a link to complete the deletion. Your
-							account will remain active until you confirm via email.
+							{m.dialog_delete_account_warning()}
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 
@@ -101,7 +96,9 @@ export function DeleteAccountForm() {
 								name="password"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel htmlFor="password">Password</FormLabel>
+										<FormLabel htmlFor="password">
+											{m.form_password_label()}
+										</FormLabel>
 										<FormControl>
 											<Input
 												id={`${id}-password`}
@@ -117,15 +114,17 @@ export function DeleteAccountForm() {
 							/>
 
 							<AlertDialogFooter>
-								<AlertDialogCancel>Cancel</AlertDialogCancel>
+								<AlertDialogCancel>
+									{m.dialog_cancel_action()}
+								</AlertDialogCancel>
 								<Button type="submit" disabled={isSubmitting}>
 									{isSubmitting ? (
 										<span className="flex items-center justify-center gap-2">
 											<Loader2 className="animate-spin h-4 w-4" />
-											Sending confirmation email
+											{m.btn_sending_email()}
 										</span>
 									) : (
-										"Delete Account"
+										m.delete_account_title()
 									)}
 								</Button>
 							</AlertDialogFooter>

@@ -9,6 +9,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import { m } from "@/paraglide/messages";
 import { Button } from "../../ui/button";
 
 interface CrewCardMovieProps {
@@ -56,7 +57,7 @@ export const CrewCardMovie = ({ person }: CrewCardMovieProps) => {
 							to="/person/$personId"
 							params={{ personId: person.id.toString() }}
 						>
-							See more
+							{m.btn_see_more()}
 						</Link>
 					</Button>
 				</CardContent>

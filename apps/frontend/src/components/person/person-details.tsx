@@ -1,6 +1,8 @@
-import { ArrowLeft } from "lucide-react";
+import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/user-placeholder.jpg";
+import { localeRegionAtom } from "@/lib/atoms/region";
+import { m } from "@/paraglide/messages";
 import { calculateAge } from "@/utils/calculate-age";
 import { formatDate } from "@/utils/format-date";
 import { getSocialUrls } from "@/utils/social-urls";
@@ -9,8 +11,8 @@ import { ResourceNotFound } from "../errors/resource-not-found";
 import { LoadingCentered } from "../loading/loading-centered";
 import { MediasCarousel } from "../medias/medias-carousel";
 import { SocialLinks } from "../social-links";
+import { BackButton } from "../ui/back-button";
 import { Badge } from "../ui/badge";
-import { Button } from "../ui/button";
 import {
 	Card,
 	CardContent,
@@ -34,6 +36,8 @@ export const PersonDetailsView = ({
 	isError,
 	onBack,
 }: PersonDetailsViewProps) => {
+	const localeRegion = useAtomValue(localeRegionAtom);
+
 	if (isLoading) {
 		return <LoadingCentered />;
 	}
@@ -41,8 +45,8 @@ export const PersonDetailsView = ({
 	if (isError || !person) {
 		return (
 			<ResourceNotFound
-				title="Person Not Found"
-				description="The person you're looking for could not be found."
+				title={m.error_title_not_found_person()}
+				description={m.error_desc_not_found_person()}
 				onBack={onBack}
 			/>
 		);
@@ -60,11 +64,9 @@ export const PersonDetailsView = ({
 
 	return (
 		<div className="container">
-			<Button onClick={onBack} className="mb-4" variant="outline">
-				<ArrowLeft className="h-4 w-4" /> Back
-			</Button>
+			<BackButton onBack={onBack} />
 
-			<div className="grid xl:grid-cols-[auto_1fr] gap-4 justify-items-center">
+			<div className="grid xl:grid-cols-[auto_1fr] pt-2 gap-4 justify-items-center">
 				<div className="flex flex-col gap-2 items-center xl:items-start max-w-[400px]">
 					<img
 						src={imageUrl}
@@ -99,22 +101,34 @@ export const PersonDetailsView = ({
 									</h1>
 									{person.birthday ? (
 										<div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-muted-foreground">
-											<div className="flex items-center gap-2">
-												<span>{formatDate(person.birthday, "en-US")}</span>
+											<div className="flex items-center gap-1">
+												<span>{formatDate(person.birthday, localeRegion)}</span>
 												{!person.deathday && (
 													<span>
-														({calculateAge(person.birthday)} years old)
+														(
+														{m.person_age({
+															age: calculateAge(person.birthday),
+														})}
+														)
 													</span>
 												)}
 											</div>
 											{person.deathday && (
 												<>
 													<span className="hidden sm:inline">-</span>
-													<div className="flex items-center gap-2">
-														<span>{formatDate(person.deathday, "en-US")}</span>
+													<div className="flex items-center gap-1">
 														<span>
-															(aged{" "}
-															{calculateAge(person.birthday, person.deathday)})
+															{formatDate(person.deathday, localeRegion)}
+														</span>
+														<span>
+															(
+															{m.person_death_age({
+																age: calculateAge(
+																	person.birthday,
+																	person.deathday,
+																),
+															})}
+															)
 														</span>
 													</div>
 												</>
@@ -123,13 +137,15 @@ export const PersonDetailsView = ({
 									) : null}
 									<p>
 										{person.known_for_department === "Acting"
-											? person.gender === 1
-												? "Actress"
-												: "Actor"
+											? m.person_actor({
+													gender: person.gender === 1 ? "female" : "male",
+												})
 											: person.known_for_department === "Writing"
-												? "Writer"
+												? m.person_writer({ gender: "*" })
 												: person.known_for_department === "Directing"
-													? "Director"
+													? m.person_director({
+															gender: person.gender === 1 ? "female" : "male",
+														})
 													: person.known_for_department}
 									</p>
 								</div>
@@ -144,7 +160,7 @@ export const PersonDetailsView = ({
 
 					<Card className="relative overflow-hidden border-none justify-center">
 						<CardHeader className="text-foreground">
-							<CardTitle>Biography</CardTitle>
+							<CardTitle>{m.person_biography()}</CardTitle>
 						</CardHeader>
 						<CardContent className="text-muted-foreground gap-4">
 							<PersonBiography biography={person.biography} />
@@ -156,7 +172,14 @@ export const PersonDetailsView = ({
 										variant="secondary"
 										className="flex items-center gap-2"
 									>
-										Born in {person.place_of_birth}
+										{person.place_of_birth.includes(",")
+											? m.person_place_of_birth({
+													gender: person.gender === 1 ? "female" : "male",
+													place: person.place_of_birth,
+												})
+											: m.person_born_country({
+													country: person.place_of_birth,
+												})}
 									</Badge>
 								</div>
 							</CardFooter>
@@ -164,7 +187,14 @@ export const PersonDetailsView = ({
 					</Card>
 					{person.combined_credits ? (
 						<div className="flex flex-col gap-4">
-							<MediasCarousel medias={sortedCredits} title="Known For" />
+							{sortedCredits && sortedCredits.length > 0 ? (
+								<MediasCarousel
+									medias={sortedCredits}
+									title={m.person_known_for({
+										gender: person.gender === 1 ? "female" : "male",
+									})}
+								/>
+							) : null}
 							<PersonTimeline combinedCredits={person.combined_credits} />
 						</div>
 					) : null}

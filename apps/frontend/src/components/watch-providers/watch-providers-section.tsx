@@ -1,4 +1,5 @@
 import type { Schemas } from "shared";
+import { m } from "@/paraglide/messages";
 
 interface WatchProvidersSectionProps {
 	watchProviders: Schemas.WatchProviders | undefined;
@@ -51,7 +52,9 @@ export function WatchProvidersSection({
 							/>
 						)}
 						<div className="flex flex-col h-10 justify-center">
-							<span className="text-sm leading-relaxed">Now Streaming</span>
+							<span className="text-sm leading-relaxed">
+								{m.watch_providers_text()}
+							</span>
 							<span className="text-sm font-bold leading-relaxed">
 								{provider.provider_name}
 							</span>

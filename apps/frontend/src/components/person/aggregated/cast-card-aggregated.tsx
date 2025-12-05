@@ -9,6 +9,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import { m } from "@/paraglide/messages";
 import { Button } from "../../ui/button";
 
 interface CastCardAggregatedProps {
@@ -26,8 +27,11 @@ export const CastCardAggregated = ({ person }: CastCardAggregatedProps) => {
 
 	const roleText =
 		person.roles.length > 1
-			? `${primaryRole.character} (+${person.roles.length - 1} more)`
-			: primaryRole.character;
+			? m.roles_text({
+					primaryRole: primaryRole.character,
+					numberOfOtherRoles: person.roles.length,
+				})
+			: m.role_text({ primaryRole: primaryRole.character });
 
 	return (
 		<div className="relative pt-8">
@@ -59,7 +63,10 @@ export const CastCardAggregated = ({ person }: CastCardAggregatedProps) => {
 						{roleText}
 					</CardDescription>
 					<CardDescription className="text-xs text-muted-foreground pb-2">
-						{person.total_episode_count} episodes
+						{person.total_episode_count}{" "}
+						{person.total_episode_count > 1
+							? m.person_card_tv_episodes()
+							: m.person_card_tv_episode()}
 					</CardDescription>
 				</CardHeader>
 
@@ -69,7 +76,7 @@ export const CastCardAggregated = ({ person }: CastCardAggregatedProps) => {
 							to="/person/$personId"
 							params={{ personId: person.id.toString() }}
 						>
-							See more
+							{m.btn_see_more()}
 						</Link>
 					</Button>
 				</CardContent>

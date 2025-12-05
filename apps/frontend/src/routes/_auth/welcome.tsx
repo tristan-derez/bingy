@@ -9,9 +9,10 @@ import { toast } from "sonner";
 import z from "zod";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { authClient } from "@/lib/auth-client";
 import { config } from "@/lib/env";
+import { m } from "@/paraglide/messages";
 
 const welcomeSearchSchema = z.object({
 	error: z.string().optional(),
@@ -19,11 +20,16 @@ const welcomeSearchSchema = z.object({
 
 export const Route = createFileRoute("/_auth/welcome")({
 	validateSearch: welcomeSearchSchema,
-	component: Welcome,
+	component: WelcomePage,
 });
 
-export function Welcome() {
+export function WelcomePage() {
 	const { session } = useRouteContext({ from: "__root__" });
+
+	if (!session) {
+		return null;
+	}
+
 	const [isPending, setIsPending] = useState(false);
 	const router = useRouter();
 	const error = useSearch({
@@ -34,47 +40,51 @@ export function Welcome() {
 	const handleResendEmail = async () => {
 		try {
 			setIsPending(true);
-			if (session?.user) {
+			if (session.user) {
 				await authClient.sendVerificationEmail({
 					email: session.user.email,
 					callbackURL: `${config.appUrl}/welcome`,
-				})
-				toast.success("Verification email sent!", {
-					description: "Please check your inbox.",
-				})
+				});
+				toast.success(m.toast_success_email_sent_title_welcome_page(), {
+					description: m.toast_success_email_sent_desc_welcome_page(),
+				});
 			}
 
 			await router.navigate({
 				replace: true,
-			})
+			});
 		} catch (error) {
-			toast.error("Failed to resend", { description: String(error) });
+			toast.error(m.toast_error_email_failed_welcome_page());
 		} finally {
 			setIsPending(false);
 		}
-	}
+	};
 
-	if (error === "token_expired" && session?.user.emailVerified === false) {
+	if (error === "token_expired" && session.user.emailVerified === false) {
 		toast.error("Link expired", {
 			id: "token-expired-toast",
 			duration: Infinity,
-			cancel: { label: "Resend email", onClick: handleResendEmail },
-		})
+			cancel: {
+				label: m.toast_error_token_expired_cancel_label_welcome_page(),
+				onClick: handleResendEmail,
+			},
+			closeButton: true,
+		});
 	}
 
 	return (
-		<div className="space-y-6">
-			<h1 className="text-3xl font-bold mt-2">Welcome {session?.user.name}!</h1>
-
-			<Card className="max-w-lg mx-auto p-6">
-				{session?.user && !session.user.emailVerified && (
+		<div className="flex flex-col gap-6">
+			<h1 className="text-3xl font-bold mt-2">
+				{m.welcome_page_greetings({ username: session.user.name })}
+			</h1>
+			{!session.user.emailVerified ? (
+				<Card className="max-w-lg">
 					<Alert className="mb-6">
-						<AlertTitle>Email verification required</AlertTitle>
+						<AlertTitle>
+							{m.welcome_page_verification_required_title()}
+						</AlertTitle>
 						<AlertDescription>
-							<p>
-								Please check your inbox and verify your email address to access
-								all features.
-							</p>
+							<p>{m.welcome_page_verification_required_desc()}</p>
 							<Button
 								variant="outline"
 								size="sm"
@@ -82,37 +92,23 @@ export function Welcome() {
 								disabled={isPending}
 								className="mt-2"
 							>
-								{isPending ? "Sending..." : "Resend Email"}
+								{isPending
+									? m.welcome_page_btn_sending()
+									: m.welcome_page_btn_resend()}
 							</Button>
 						</AlertDescription>
 					</Alert>
-				)}
-
-				<div className="text-center">
-					<p className="text-lg font-medium mb-4">
-						{session?.user?.emailVerified
-							? "You're all set! 🎉"
-							: "You're almost ready! 🚀"}
-					</p>
-
-					{session?.user?.emailVerified ? (
-						<div>
-							<p className="mb-4">Ready to start building your collection?</p>
-							<Button className="w-full mb-3">Add Your First Movie</Button>
-							<Button variant="outline" className="w-full">
-								Browse Popular Titles
-							</Button>
-						</div>
-					) : (
-						<div>
-							<p className="mb-4">
-								Once verified, you'll be able to add movies, create watchlists,
-								and get personalized recommendations.
-							</p>
-						</div>
-					)}
-				</div>
+				</Card>
+			) : null}
+			<Card>
+				<CardHeader>
+					<CardTitle>
+						{session.user.emailVerified
+							? m.welcome_page_email_verified_text()
+							: m.welcome_page_email_not_verified_text()}
+					</CardTitle>
+				</CardHeader>
 			</Card>
 		</div>
-	)
+	);
 }

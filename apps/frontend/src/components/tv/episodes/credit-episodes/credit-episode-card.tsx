@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { useAtomValue } from "jotai";
 import { Badge } from "@/components/ui/badge";
 import {
 	Card,
@@ -7,6 +8,8 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import { localeRegionAtom } from "@/lib/atoms/region";
+import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { formatRuntime } from "@/utils/format-runtime";
 
@@ -30,6 +33,7 @@ export const CreditEpisodeCard = ({
 	tvId,
 	isGuestAppearance,
 }: CreditEpisodeCardProps) => {
+	const localeRegion = useAtomValue(localeRegionAtom);
 	const backgroundImage = episode.still_path
 		? `https://image.tmdb.org/t/p/w500${episode.still_path}`
 		: null;
@@ -70,25 +74,34 @@ export const CreditEpisodeCard = ({
 							</Badge>
 						) : null}
 						{isGuestAppearance ? (
-							<Badge variant="default">Guest Appearance</Badge>
+							<Badge variant="default">{m.badge_credit_episode_guest()}</Badge>
 						) : null}
 					</div>
 					<div className="text-sm whitespace-nowrap">
 						{episode.season_number}x{episode.episode_number}
 					</div>
 				</div>
-				<CardDescription className="w-full xl:max-w-2/3">
-					{episode.overview || "No overview available."}
+				<CardDescription
+					className={`w-full xl:max-w-2/3 ${
+						backgroundImage ? "text-dark-card-foreground" : "text-foreground"
+					}`}
+				>
+					{episode.overview || m.overview_none()}
 				</CardDescription>
 			</CardHeader>
 			<CardContent className="flex flex-col gap-1 mt-auto">
 				{episode.air_date ? (
 					<div className="text-sm">
-						{new Date(episode.air_date) > new Date() ? "Airs " : "Aired "}
-						{formatDate(episode.air_date)}
+						{new Date(episode.air_date) > new Date()
+							? m.credit_episode_card_airs_text({
+									date: formatDate(episode.air_date, localeRegion),
+								})
+							: m.credit_episode_card_aired_text({
+									date: formatDate(episode.air_date, localeRegion),
+								})}
 					</div>
 				) : (
-					<p className="text-sm">Not aired yet</p>
+					<p className="text-sm">{m.credit_episode_card_not_aired_text()}</p>
 				)}
 			</CardContent>
 		</Card>

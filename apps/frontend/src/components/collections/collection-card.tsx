@@ -9,6 +9,7 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { useCollection } from "@/hooks/useCollection";
+import { m } from "@/paraglide/messages";
 
 interface CollectionCardProps {
 	collection: Schemas.MovieDetails["belongs_to_collection"];
@@ -40,7 +41,9 @@ export function CollectionCard({ collection }: CollectionCardProps) {
 			<CardHeader>
 				<CardTitle>{collection.name}</CardTitle>
 				<CardDescription>
-					Part of a collection with {collectionData.parts.length} movies
+					{m.collection_card_desc({
+						numberOfMovies: collectionData.parts.length,
+					})}
 				</CardDescription>
 			</CardHeader>
 			<CardContent>
@@ -53,7 +56,7 @@ export function CollectionCard({ collection }: CollectionCardProps) {
 						to="/collections/$collectionId"
 						params={{ collectionId: collection.id.toString() }}
 					>
-						VIEW THE COLLECTION
+						{m.btn_view_collection()}
 					</Link>
 				</Button>
 			</CardContent>

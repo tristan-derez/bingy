@@ -1,0 +1,450 @@
+{
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"delete_account_title": "Delete account",
+	"two_factor_title": "Two-Factor authentication",
+	"btn_disable_twofactor": "Disable 2FA",
+	"btn_disabling_twofactor": "Disabling 2FA...",
+	"toast_success_disable_twofactor": "Two-factor authentication disabled successfully.",
+	"toast_error_disable_twofactor": "Failed to disable two-factor authentication. Try again.",
+	"toast_error_generic": "Something went wrong. Try again later.",
+	"toast_email_sent_account_delete": "An email has been sent. Check your inbox and click on the link to confirm account deletion",
+	"dialog_confirm_action": "Are you absolutely sure?",
+	"dialog_cancel_action": "Cancel",
+	"delete_account_short_desc": "This action is permanent. You’ll receive a confirmation email to complete the deletion.",
+	"dialog_delete_account_warning": "This action cannot be undone. This will permanently delete your account and remove your data from our servers. You'll receive a confirmation email with a link to complete the deletion. Your account will remain active until you confirm via email.",
+	"toast_success_enable_twofactor": "Two-factor authentication enabled successfully!",
+	"toast_error_invalid_code": "Invalid code. Try again.",
+	"toast_error_qr_code": "Failed to get QR code. Try again.",
+	"toast_error_enable_twofactor": "Failed to enable two-factor authentication. Try again.",
+	"two_factor_disable_short_desc": "Disable two-factor authentication.",
+	"two_factor_enable_short_desc": "Enable two factor authentication. This will require you to download an authenticator app such as Ente Auth or Proton Auth",
+	"btn_enabling_two_factor": "Enabling 2FA...",
+	"btn_enable_two_factor": "Enable 2FA",
+	"email_not_verified": "Please verify your email first",
+	"email_not_send": "Could not send the email, try again!",
+	"forgot_password_email_sent": "If an account exists with that email, you'll receive password reset instructions shortly.",
+	"forgot_password_title": "Reset password",
+	"forgot_password_desc": "Enter your email below.",
+	"form_email_label": "Email",
+	"form_password_label": "Password",
+	"btn_sending_email": "Sending email…",
+	"btn_reset_password": "Reset password",
+	"toast_success_reset_password": "Password reset successfully!",
+	"toast_error_reset_password": "Failed to reset password. Try again!",
+	"reset_password_title": "Reset password",
+	"reset_password_desc": "Enter your new password below:",
+	"form_new_password_label": "New password",
+	"btn_resetting_password": "Resetting password...",
+	"welcome_back_message": "Welcome back, {username}",
+	"toast_error_signin_invalid_code": "Failed to verify code. Try again!",
+	"signin_title": "Sign in",
+	"signin_forgot_password": "Forgot your password?",
+	"btn_signing_in": "Signing in...",
+	"btn_signin": "Sign in",
+	"signin_last_method_badge": "Last used",
+	"signin_no_account": "Don't have an accout?",
+	"signin_no_account_link": "Sign up",
+	"toast_email_not_verified_new_user": "Please verify your email",
+	"signin_with_provider": "Sign in with {provider}",
+	"toast_success_signup": "Please verify your inbox at {userEmail}",
+	"toast_loading_signup": "Redirecting to {provider}",
+	"toast_error_signup_oauth": "Something went wrong with {provider} sign-in. Please try again!",
+	"signin_desc_one": "Welcome back! Your entertainment hub is waiting.",
+	"signin_desc_two": "Just sign in to get going.",
+	"signup_title": "Create an account",
+	"signup_desc_one": "Track and organize your favorite movies and TV shows in one place. Sign up now, it's free!",
+	"signup_username_tooltip": "Your username is public",
+	"signup_password_tooltip": "Minimum 8 characters",
+	"btn_registering_signup": "Creating account...",
+	"btn_signup": "Sign up",
+	"signup_with_provider": "Sign up with {provider}",
+	"signup_separator_text": "Or continue with",
+	"signup_already_account": "Already have an account?",
+	"signup_already_account_link": "Sign in",
+	"signup_username_label": "Username",
+	"form_username_label": "Username",
+	"toast_error_update_email": "Failed to change your email.",
+	"toast_success_update_email_confirmation_needed": "Verification email sent to {userEmail}. Please check your inbox.",
+	"toast_success_update_email": "Email changed successfully",
+	"update_email_title": "Email",
+	"update_email_desc_email_verified": "A verification email will be sent to your current email to approve the change.",
+	"update_email_desc": "Your email will be updated immediately as your current email isn't verified.",
+	"form_current_email_label": "Current email",
+	"btn_update_email": "Update email",
+	"dialog_title_update_email": "Update email",
+	"dialog_desc_update_email_verified": "Enter your new email address below. A verification link will be sent to your current email.",
+	"dialog_desc_update_email": "Enter your new email address below. Your email will be updated immediately.",
+	"form_new_email_label": "New email",
+	"btn_updating_email": "Updating email...",
+	"toast_error_update_password": "Failed to update password. Try again!",
+	"toast_success_update_password": "Password updated successfully!",
+	"update_password_title": "Password",
+	"update_password_desc_oauth": "{providers} accounts require password reset via the sign-in page",
+	"update_password_desc": "This will log you out of all other sessions",
+	"btn_update_password": "Update password",
+	"btn_updating_password": "Updating password...",
+	"dialog_title_update_password": "This will update your password",
+	"dialog_desc_update_password": "Enter your current password and choose a new one. Your new password must be at least 8 characters long.",
+	"form_current_password_label": "Current password",
+	"btn_linking_account": "Linking...",
+	"btn_unlinking_account": "Unlinking...",
+	"btn_unlink_account": "Unlink {provider}",
+	"toast_error_unlink_account": "You cannot unlink your only account.",
+	"toast_success_unlink_account": "{provider} account unlinked.",
+	"btn_link_account": "Link {provider}",
+	"link_account_title": "Link accounts",
+	"link_account_desc": "Connect multiple accounts for easier sign-in options.",
+	"unlink_account_title": "Linked accounts",
+	"unlink_account_desc": "You can unlink accounts you no longer use.",
+	"settings_tabs_trigger_account": "Account",
+	"settings_tab_trigger_display": "Display",
+	"settings_card_title_account": "Edit account",
+	"settings_card_desc_account": "Manage your email, password, and security settings.",
+	"settings_card_title_display": "Edit display",
+	"settings_card_desc_display": "Select your preferred theme",
+	"toast_light_joke": "Let light shine out of darkness",
+	"toast_light_joke_two": "Let there be light!",
+	"toast_light_joke_three": "The darkness always passes, and the light comes back",
+	"toast_dark_joke": "Welcome to the dark side!",
+	"toast_dark_joke_two": "So the darkness shall be the light",
+	"toast_dark_joke_three": "Going incognito from the sun!",
+	"toast_system_joke": "Following your system's lead!",
+	"btn_light_mode": "Light",
+	"btn_dark_mode": "Dark",
+	"btn_system_mode": "System",
+	"toast_success_text_copied": "{x} copied to clipboard",
+	"dialog_title_qr_code": "Two-factor authentication",
+	"dialog_desc_qr_code": "Scan the QR code with your authenticator app, then enter the 6-digit code",
+	"dialog_instruction_qr_code": "Or setup manually with the secret:",
+	"dialog_title_two_factor": "Two-factor authentication",
+	"dialog_desc_two_factor": "Enter the 6-digit code from your authenticator app",
+	"dialog_btn_verifying": "Verifying...",
+	"dialog_btn_verify": "Verify",
+	"collection_card_desc": "Part of a collection with {numberOfMovies} movies",
+	"btn_view_collection": "VIEW THE COLLECTION",
+	"collection_details_revenue": "Revenue:",
+	"collection_details_title": "Overview",
+	"btn_show_more": "Show more",
+	"overview_none": "No overview available",
+	"error_page_not_found": "The page you're looking for doesn't exist or has been moved.",
+	"btn_go_home": "Go home",
+	"form_search_placeholder": "Search again...",
+	"btn_form_search": "Search",
+	"search_error_invalid": "Invalid input",
+	"search_error_empty": "Search cannot be empty",
+	"search_error_too_long": "Search cannot exceed 300 characters",
+	"text_no_rating": "No rating",
+	"text_not_announced": "N/A",
+	"title_cast": "Cast",
+	"movie_details_title": "Overview",
+	"error_desc_not_found_collection": "The collection you're looking for could not be found.",
+	"error_title_not_found_collection": "Collection not found",
+	"error_title_not_found_movie": "Movie not found",
+	"error_desc_not_found_movie": "The movie you're looking for could not be found.",
+	"movie_details_release_date": "Release Date",
+	"movie_details_runtime": "Runtime",
+	"movie_details_budget": "Budget",
+	"movie_details_revenue": "Revenue",
+	"movie_details_homepage": "Homepage",
+	"btn_visit_movie_details_homepage": "Visit",
+	"movie_details_production_companies": [
+		{
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Company",
+				"countPlural=other": "Companies"
+			}
+		}
+	],
+	"movies_now_playing_title": "Movies In Theaters Now",
+	"movies_popular_title": "Popular Movies",
+	"movies_upcoming_title": "Upcoming Movies",
+	"movies_toprated_title": "Top Rated Movies",
+	"error_failed_to_load": "Failed to load {title}",
+	"collection_carousel_title": "Movies in Collection ({number})",
+	"btn_see_more": "See more",
+	"title_crew": "Crew",
+	"btn_jump_to_crew": "Jump to crew",
+	"link_text_full_credits": "See full cast and crew",
+	"roles_text": "{primaryRole} (+{numberOfOtherRoles} more)",
+	"role_text": "{primaryRole}",
+	"person_card_tv_episodes": "episodes",
+	"person_card_tv_episode": "episode",
+	"department_container_episodes": "episodes",
+	"department_container_episode": "episode",
+	"person_biography_missing": "No biography available.",
+	"error_title_not_found_person": "Person not found",
+	"error_desc_not_found_person": "The person you're looking for could not be found.",
+	"person_age": "{age} years old",
+	"person_death_age": "aged {age}",
+	"person_actor": [
+		{
+			"declarations": ["input gender"],
+			"selectors": ["gender"],
+			"match": {
+				"gender=male": "Actor",
+				"gender=female": "Actress",
+				"gender=*": "Actor"
+			}
+		}
+	],
+	"person_writer": [
+		{
+			"declarations": ["input gender"],
+			"selectors": ["gender"],
+			"match": {
+				"gender=male": "Writer",
+				"gender=female": "Writer",
+				"gender=*": "Writer"
+			}
+		}
+	],
+	"person_director": [
+		{
+			"declarations": ["input gender"],
+			"selectors": ["gender"],
+			"match": {
+				"gender=male": "Director",
+				"gender=female": "Director",
+				"gender=*": "Director"
+			}
+		}
+	],
+	"person_biography": "Biography",
+	"person_place_of_birth": [
+		{
+			"declarations": ["input gender", "input place"],
+			"selectors": ["gender"],
+			"match": {
+				"gender=male": "Born in {place}",
+				"gender=female": "Born in {place}",
+				"gender=*": "Born in {place}"
+			}
+		}
+	],
+	"person_known_for": [
+		{
+			"declarations": ["input gender"],
+			"selectors": ["gender"],
+			"match": {
+				"gender=male": "Known for",
+				"gender=female": "Known for",
+				"gender=*": "Known for"
+			}
+		}
+	],
+	"person_role_unknown": "Unknown",
+	"search_movie_badge": "Movie",
+	"search_tv_badge": "TV Show",
+	"search_person_badge": "Person",
+	"person_as": "as",
+	"search_combobox_input_placeholder": "Search movies, shows or people...",
+	"loader_text_searching": "Searching...",
+	"search_combobox_no_results": "No results found.",
+	"btn_view_all": "View all results",
+	"search_combobox_empty": "Start typing to search...",
+	"search_pagination_previous": "Previous",
+	"search_pagination_next": "Next",
+	"search_container_results_for": "Search results for:",
+	"search_toggle_group_item_all": "All",
+	"search_toggle_group_item_movies": "Movies",
+	"search_toggle_group_item_tv": "TV Shows",
+	"search_toggle_group_item_person": "People",
+	"search_container_no_results_text": "No results found for this query.",
+	"badge_credit_episode_guest": "Guest Appearance",
+	"signin_separator_text": "Or continue with",
+	"credit_episode_card_airs_text": "Airs {date}",
+	"credit_episode_card_aired_text": "Aired {date}",
+	"credit_episode_card_not_aired_text": "Air date unknown",
+	"credit_episodes_container_wrong_type_title": "Invalid media type",
+	"credit_episodes_container_wrong_type_desc": "This credit is not for a TV show.",
+	"credit_episodes_container_episodes_not_found_title": "No episodes found",
+	"credit_episodes_container_episodes_not_found_desc": "No episode information is available for this credit.",
+	"credit_episodes_list_as": "as {role}",
+	"credit_episodes_list_unknown_role": "Unknown",
+	"episode_credits_not_found_title": "Oops!",
+	"episode_credits_not_found_desc": "Credits are not available at the moment",
+	"episode_credits_title": "Episode {episodeNumber}",
+	"episode_details_not_found_title": "Episode not found",
+	"episode_details_not_found_desc": "The episode you're looking for could not be found.",
+	"badge_episode_number": "Episode {episodeNumber}",
+	"episode_details_overview_title": "Overview",
+	"episode_details_runtime_text": "Runtime",
+	"episode_details_air_date": "Air Date",
+	"episodes_container_title": "Episodes",
+	"episodes_container_crew_text": "crew",
+	"episodes_container_guest_stars": "guest stars",
+	"season_card_episode_badge": [
+		{
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Episode",
+				"countPlural=other": "Episodes"
+			}
+		}
+	],
+	"season_card_special_season": "Specials",
+	"season_card_season": "Season {seasonNumber}",
+	"season_credits_not_found_title": "Oops!",
+	"season_credits_not_found_desc": "Credits are not available at the moment",
+	"season_credits_title": "Season {seasonNumber}",
+	"season_credits_special": "Specials",
+	"season_credits_no_results": "No credits found.",
+	"season_details_not_found_title": "Season not found",
+	"season_details_not_found_desc": "The season you're looking for could not be found",
+	"season_details_season_badge": "Season {seasonNumber}",
+	"season_details_overview_title": "Overview",
+	"season_details_rating": "Rating",
+	"season_details_air_date": "Air Date",
+	"season_details_episodes": [
+		{
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Episode",
+				"countPlural=other": "Episodes"
+			}
+		}
+	],
+	"season_details_networks": [
+		{
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Network",
+				"countPlural=other": "Networks"
+			}
+		}
+	],
+	"watch_providers_text": "Now streaming",
+	"seasons_details_seasons": "Seasons",
+	"seasons_details_not_found_title": "TV Show seasons not found",
+	"seasons_details_not_found_desc": "The TV Show seasons you're looking for could not be found.",
+	"search_toggle_aria_label_all": "All results",
+	"search_toggle_aria_label_movies": "Movies only",
+	"search_toggle_aria_label_tv": "TV Shows only",
+	"search_toggle_aria_label_people": "People only",
+	"btn_back": "Back",
+	"collection_details_budget": "Budget:",
+	"toast_error_not_found_generic": "Failed to load ${title}",
+	"person_born_country": "Born in {country}",
+	"movie_credits_not_found_title": "Oops!",
+	"movie_credits_not_found_desc": "Movie credits are not available at the moment.",
+	"tv_credits_not_found_title": "Oops!",
+	"tv_credits_not_found_desc": "TV credits are not available at the moment.",
+	"tv_details_not_found_title": "TV show not found",
+	"tv_details_not_found_desc": "The TV show you're looking for could not be found.",
+	"tv_details_overview": "Overview",
+	"tv_details_creator": [
+		{
+			"declarations": ["input gender"],
+			"selectors": ["gender"],
+			"match": {
+				"gender=male": "Creator",
+				"gender=female": "Creator",
+				"gender=*": "Creator"
+			}
+		}
+	],
+	"tv_details_first_aired": "First Aired",
+	"tv_details_status": "Status",
+	"tv_details_votes": [
+		{
+			"declarations": [
+				"input count",
+				"input voteCount",
+				"local countPlural = count: plural"
+			],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "{voteCount} vote",
+				"countPlural=other": "{voteCount} votes"
+			}
+		}
+	],
+	"tv_details_seasons": [
+		{
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Season",
+				"countPlural=other": "Seasons"
+			}
+		}
+	],
+	"tv_details_episodes": [
+		{
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Total Episode",
+				"countPlural=other": "Total Episodes"
+			}
+		}
+	],
+	"tv_details_status_in_production": "In Production",
+	"tv_details_status_returning_series": "Returning Series",
+	"tv_details_status_canceled": "Canceled",
+	"tv_details_status_ended": "Ended",
+	"tv_details_status_pilot": "Pilot",
+	"tv_details_networks": [
+		{
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Network",
+				"countPlural=other": "Networks"
+			}
+		}
+	],
+	"tv_details_companies": [
+		{
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Production Company",
+				"countPlural=other": "Production Companies"
+			}
+		}
+	],
+	"tv_details_btn_visit": "Visit",
+	"tv_details_homepage": "Homepage",
+	"toast_error_email_doesnt_match_settings_page": "OAuth provider email doesn't match the one for your account.",
+	"toast_error_already_linked_settings_page": "Account is already linked to a different user.",
+	"toast_error_generic_error_settings_page": "An error occured. Try again later.",
+	"toast_success_email_sent_title_welcome_page": "Verification email sent!",
+	"toast_success_email_sent_desc_welcome_page": "Please check your inbox.",
+	"toast_error_email_failed_welcome_page": "Failed to resend an email.",
+	"toast_error_token_expired_welcome_page": "Link expired",
+	"toast_error_token_expired_cancel_label_welcome_page": "Resend an email",
+	"welcome_page_greetings": "Welcome {username}",
+	"welcome_page_verification_required_title": "Email verification required",
+	"welcome_page_verification_required_desc": "Please check your inbox and verify your email address to access all features.",
+	"welcome_page_btn_sending": "Sending...",
+	"welcome_page_btn_resend": "Resend email",
+	"welcome_page_email_verified_text": "You're all set!",
+	"welcome_page_email_not_verified_text": "You're almost ready!",
+	"goodbye_page_title": "Sad to see you go, good bye!",
+	"goodbye_page_btn_go_home": "Return to home page",
+	"header_link_home": "Home",
+	"header_link_dashboard": "Dashboard",
+	"header_link_movies": "Movies",
+	"header_link_tv_shows": "TV Shows",
+	"landing_page_title": "Track what you watch.",
+	"landing_page_title_discover": "Discover",
+	"landing_page_title_whats_next": "what's next.",
+	"landing_page_desc": "Track every movie and show you watch, rate what you've seen, manage your watchlist, and discover what your friends are loving—all in one place.",
+	"landing_page_btn_search": "Search",
+	"landing_page_btn_get_started": "Get Started",
+	"tv_series_top_rated_title": "Top Rated Tv Shows",
+	"tv_series_trending_today_title": "TV Shows Trending Today",
+	"tv_series_trending_week_title": "Tv Shows Trending This Week",
+	"tv_series_popular_title": "Popular TV Shows",
+	"toast_success_logout": "You have been successfully logged out. Come back soon!",
+	"dropdown_profile_text": "Profile",
+	"dropdown_settings_text": "Settings",
+	"dropdown_support_text": "Support",
+	"dropdown_logout_text": "Log out"
+}
