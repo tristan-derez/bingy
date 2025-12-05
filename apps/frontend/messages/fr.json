@@ -249,5 +249,6 @@
 	"search_toggle_aria_label_tv": "Séries TV uniquement",
 	"search_toggle_aria_label_people": "Personnes uniquement",
 	"btn_back": "Retour",
-	"collection_details_budget": "Budget:"
+	"collection_details_budget": "Budget:",
+	"toast_error_not_found_generic": "${title} n'a pas pu etre chargé"
 }

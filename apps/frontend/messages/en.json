@@ -249,5 +249,6 @@
 	"search_toggle_aria_label_tv": "TV Shows only",
 	"search_toggle_aria_label_people": "People only",
 	"btn_back": "Back",
-	"collection_details_budget": "Budget:"
+	"collection_details_budget": "Budget:",
+	"toast_error_not_found_generic": "Failed to load ${title}"
 }
