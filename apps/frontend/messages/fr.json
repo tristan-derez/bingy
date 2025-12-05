@@ -425,5 +425,11 @@
 	"welcome_page_btn_sending": "Envoi...",
 	"welcome_page_btn_resend": "Renvoyer un e-mail",
 	"welcome_page_email_verified_text": "Tout est prêt !",
-	"welcome_page_email_not_verified_text": "Vous y êtes presque !"
+	"welcome_page_email_not_verified_text": "Vous y êtes presque !",
+	"goodbye_page_title": "Triste de vous voir partir. Au revoir !",
+	"goodbye_page_btn_go_home": "Retourner à l'accueil",
+	"header_link_home": "Accueil",
+	"header_link_dashboard": "Dashboard",
+	"header_link_movies": "Films",
+	"header_link_tv_shows": "Séries TV"
 }
