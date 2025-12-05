@@ -441,5 +441,10 @@
 	"tv_series_top_rated_title": "Top Rated Tv Shows",
 	"tv_series_trending_today_title": "TV Shows Trending Today",
 	"tv_series_trending_week_title": "Tv Shows Trending This Week",
-	"tv_series_popular_title": "Popular TV Shows"
+	"tv_series_popular_title": "Popular TV Shows",
+	"toast_success_logout": "You have been successfully logged out. Come back soon!",
+	"dropdown_profile_text": "Profile",
+	"dropdown_settings_text": "Settings",
+	"dropdown_support_text": "Support",
+	"dropdown_logout_text": "Log out"
 }
