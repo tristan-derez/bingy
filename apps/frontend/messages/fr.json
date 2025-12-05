@@ -149,8 +149,13 @@
 	"btn_visit_movie_details_homepage": "En savoir plus",
 	"movie_details_production_companies": [
 		{
-			"declarations": ["input count", "local countPlural = count: plural"],
-			"selectors": ["countPlural"],
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
 			"match": {
 				"countPlural=one": "Société de production",
 				"countPlural=other": "Sociétés de production"
@@ -174,8 +179,12 @@
 	"person_death_age": "à {age} ans",
 	"person_actor": [
 		{
-			"declarations": ["input gender"],
-			"selectors": ["gender"],
+			"declarations": [
+				"input gender"
+			],
+			"selectors": [
+				"gender"
+			],
 			"match": {
 				"gender=male": "Acteur",
 				"gender=female": "Actrice",
@@ -185,8 +194,12 @@
 	],
 	"person_writer": [
 		{
-			"declarations": ["input gender"],
-			"selectors": ["gender"],
+			"declarations": [
+				"input gender"
+			],
+			"selectors": [
+				"gender"
+			],
 			"match": {
 				"gender=male": "Scénariste",
 				"gender=female": "Scénariste",
@@ -196,8 +209,12 @@
 	],
 	"person_director": [
 		{
-			"declarations": ["input gender"],
-			"selectors": ["gender"],
+			"declarations": [
+				"input gender"
+			],
+			"selectors": [
+				"gender"
+			],
 			"match": {
 				"gender=male": "Réalisateur",
 				"gender=female": "Réalisatrice",
@@ -208,8 +225,13 @@
 	"person_biography": "Biographie",
 	"person_place_of_birth": [
 		{
-			"declarations": ["input gender", "input place"],
-			"selectors": ["gender"],
+			"declarations": [
+				"input gender",
+				"input place"
+			],
+			"selectors": [
+				"gender"
+			],
 			"match": {
 				"gender=male": "Né à {place}",
 				"gender=female": "Née à {place}",
@@ -219,8 +241,12 @@
 	],
 	"person_known_for": [
 		{
-			"declarations": ["input gender"],
-			"selectors": ["gender"],
+			"declarations": [
+				"input gender"
+			],
+			"selectors": [
+				"gender"
+			],
 			"match": {
 				"gender=male": "Connu pour",
 				"gender=female": "Connue pour",
@@ -277,8 +303,13 @@
 	"episodes_container_guest_stars": "guest stars",
 	"season_card_episode_badge": [
 		{
-			"declarations": ["input count", "local countPlural = count: plural"],
-			"selectors": ["countPlural"],
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
 			"match": {
 				"countPlural=one": "Episode",
 				"countPlural=other": "Episodes"
@@ -300,8 +331,13 @@
 	"season_details_air_date": "Date de diffusion",
 	"season_details_episodes": [
 		{
-			"declarations": ["input count", "local countPlural = count: plural"],
-			"selectors": ["countPlural"],
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
 			"match": {
 				"countPlural=one": "Episode",
 				"countPlural=other": "Episodes"
@@ -310,8 +346,13 @@
 	],
 	"season_details_networks": [
 		{
-			"declarations": ["input count", "local countPlural = count: plural"],
-			"selectors": ["countPlural"],
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
 			"match": {
 				"countPlural=one": "Distributeur",
 				"countPlural=other": "Distributeurs"
@@ -336,5 +377,108 @@
 	"tv_credits_not_found_desc": "Les crédits de cette série ne sont pas disponibles pour le moment.",
 	"tv_details_not_found_title": "Série indisponible",
 	"tv_details_not_found_desc": "La série demandée n'est pas disponible pour le moment.",
-	"tv_details_overview": "Résumé"
+	"tv_details_overview": "Résumé",
+	"tv_details_creator": [
+		{
+			"declarations": [
+				"input gender"
+			],
+			"selectors": [
+				"gender"
+			],
+			"match": {
+				"gender=male": "Créateur",
+				"gender=female": "Créatrice",
+				"gender=*": "Créateur"
+			}
+		}
+	],
+	"tv_details_first_aired": "Première diffusion",
+	"tv_details_status": "Statut",
+	"tv_details_votes": [
+		{
+			"declarations": [
+				"input count",
+				"input voteCount",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "{voteCount} vote",
+				"countPlural=other": "{voteCount} votes"
+			}
+		}
+	],
+	"tv_details_seasons": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "Saison",
+				"countPlural=other": "Saisons"
+			}
+		}
+	],
+	"tv_details_episodes": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "Épisode au total",
+				"countPlural=other": "Épisodes au total"
+			}
+		}
+	],
+	"tv_details_status_in_production": "En production",
+	"tv_details_status_returning_series": "En cours",
+	"tv_details_status_canceled": "Annulée",
+	"tv_details_status_ended": "Terminée",
+	"tv_details_status_pilot": "Pilote",
+	"tv_details_networks": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "Distributeur",
+				"countPlural=other": "Distributeurs"
+			}
+		}
+	],
+	"tv_details_companies": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
+			"match": {
+				"countPlural=one": "Société de production",
+				"countPlural=other": "Sociétés de production"
+			}
+		}
+	],
+	"tv_details_btn_visit": "En savoir plus",
+	"tv_details_homepage": "Site officiel",
+	"toast_error_email_doesnt_match_settings_page": "L'email ne correspond pas à l'email du compte.",
+	"toast_error_already_linked_settings_page": "Ce compte est déjà utilisé par un autre utilisateur.",
+	"toast_error_generic_error_settings_page": "Une erreur est survenue. Réessayez plus tard."
 }

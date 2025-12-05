@@ -336,5 +336,82 @@
 	"tv_credits_not_found_desc": "TV credits are not available at the moment.",
 	"tv_details_not_found_title": "TV show not found",
 	"tv_details_not_found_desc": "The TV show you're looking for could not be found.",
-	"tv_details_overview": "Overview"
+	"tv_details_overview": "Overview",
+	"tv_details_creator": [
+		{
+			"declarations": ["input gender"],
+			"selectors": ["gender"],
+			"match": {
+				"gender=male": "Creator",
+				"gender=female": "Creator",
+				"gender=*": "Creator"
+			}
+		}
+	],
+	"tv_details_first_aired": "First Aired",
+	"tv_details_status": "Status",
+	"tv_details_votes": [
+		{
+			"declarations": [
+				"input count",
+				"input voteCount",
+				"local countPlural = count: plural"
+			],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "{voteCount} vote",
+				"countPlural=other": "{voteCount} votes"
+			}
+		}
+	],
+	"tv_details_seasons": [
+		{
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Season",
+				"countPlural=other": "Seasons"
+			}
+		}
+	],
+	"tv_details_episodes": [
+		{
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Total Episode",
+				"countPlural=other": "Total Episodes"
+			}
+		}
+	],
+	"tv_details_status_in_production": "In Production",
+	"tv_details_status_returning_series": "Returning Series",
+	"tv_details_status_canceled": "Canceled",
+	"tv_details_status_ended": "Ended",
+	"tv_details_status_pilot": "Pilot",
+	"tv_details_networks": [
+		{
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Network",
+				"countPlural=other": "Networks"
+			}
+		}
+	],
+	"tv_details_companies": [
+		{
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Production Company",
+				"countPlural=other": "Production Companies"
+			}
+		}
+	],
+	"tv_details_btn_visit": "Visit",
+	"tv_details_homepage": "Homepage",
+	"toast_error_email_doesnt_match_settings_page": "OAuth provider email doesn't match the one for your account.",
+	"toast_error_already_linked_settings_page": "Account is already linked to a different user.",
+	"toast_error_generic_error_settings_page": "An error occured. Try again later."
 }
