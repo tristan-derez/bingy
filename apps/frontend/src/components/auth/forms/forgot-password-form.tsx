@@ -60,7 +60,7 @@ export function ForgotPasswordForm({ email }: ForgotPasswordFormProps) {
 				toast.success(m.forgot_password_email_sent());
 			}
 		} catch (err) {
-			toast.error(m.toast_generic_error());
+			toast.error(m.toast_error_generic());
 		} finally {
 			setIsSubmitting(false);
 		}

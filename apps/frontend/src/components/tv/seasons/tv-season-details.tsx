@@ -11,7 +11,7 @@ import { BackButton } from "@/components/ui/back-button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { WatchProvidersSection } from "@/components/watch-providers/watch-providers-section";
-import { localeWithRegionAtom } from "@/lib/atoms/locale";
+import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { EpisodesContainer } from "../episodes/episodes-container";
 
@@ -34,7 +34,7 @@ export function TvSeasonDetailsView({
 	isError,
 	onBack,
 }: TvSeasonDetailsViewProps) {
-	const localeWithRegion = useAtomValue(localeWithRegionAtom);
+	const localeRegion = useAtomValue(localeRegionAtom);
 	if (isLoading) {
 		return <LoadingCentered />;
 	}
@@ -210,7 +210,7 @@ export function TvSeasonDetailsView({
 									<p className="text-xl xl:text-2xl font-bold">
 										{tvSeason.air_date
 											? new Date(tvSeason.air_date).toLocaleDateString(
-													localeWithRegion,
+													localeRegion,
 													{
 														year: "numeric",
 														month: "short",
@@ -234,9 +234,9 @@ export function TvSeasonDetailsView({
 										{tvSeason.episodes.length}
 									</p>
 									<p className="text-sm text-muted-foreground">
-										{tvSeason.episodes.length > 1
-											? m.season_details_episodes()
-											: m.season_details_episode()}
+										{m.season_details_episodes({
+											count: tvSeason.episodes.length,
+										})}
 									</p>
 								</div>
 							</CardContent>
@@ -266,9 +266,9 @@ export function TvSeasonDetailsView({
 						<Card>
 							<CardHeader>
 								<CardTitle>
-									{tvSeason.networks.length > 1
-										? m.season_details_networks()
-										: m.season_details_network()}
+									{m.season_details_networks({
+										count: tvSeason.networks.length,
+									})}
 								</CardTitle>
 							</CardHeader>
 							<CardContent className="flex flex-wrap gap-4">

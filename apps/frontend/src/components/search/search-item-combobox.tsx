@@ -4,7 +4,7 @@ import { FilmIcon, TvIcon, UserIcon } from "lucide-react";
 import type { Schemas } from "shared";
 import { Badge } from "@/components/ui/badge";
 import { CommandItem } from "@/components/ui/command";
-import { localeWithRegionAtom } from "@/lib/atoms/locale";
+import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
@@ -19,7 +19,7 @@ export const SearchItemCombobox = ({
 	onSelect,
 }: SearchItemComboboxProps) => {
 	const navigate = useNavigate();
-	const localeWithRegion = useAtomValue(localeWithRegionAtom);
+	const localeRegion = useAtomValue(localeRegionAtom);
 
 	const commonClasses = "flex items-center gap-2 hover:cursor-pointer";
 
@@ -46,7 +46,7 @@ export const SearchItemCombobox = ({
 				<div className="flex items-center gap-2">
 					{movie.release_date && (
 						<span className="text-xs text-muted-foreground">
-							{formatDate(movie.release_date, localeWithRegion, {
+							{formatDate(movie.release_date, localeRegion, {
 								year: "numeric",
 							})}
 						</span>
@@ -84,7 +84,7 @@ export const SearchItemCombobox = ({
 				<div className="flex items-center gap-2">
 					{tv.first_air_date && (
 						<span className="text-xs text-muted-foreground">
-							{formatDate(tv.first_air_date, localeWithRegion, {
+							{formatDate(tv.first_air_date, localeRegion, {
 								year: "numeric",
 							})}
 						</span>

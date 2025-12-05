@@ -5,7 +5,7 @@ import type { Schemas } from "shared";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { localeWithRegionAtom } from "@/lib/atoms/locale";
+import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { formatRuntime } from "@/utils/format-runtime";
@@ -15,7 +15,7 @@ interface EpisodesContainerProps {
 }
 
 export function EpisodesContainer({ episodes }: EpisodesContainerProps) {
-	const localeWithRegion = useAtomValue(localeWithRegionAtom);
+	const localeRegion = useAtomValue(localeRegionAtom);
 	return (
 		<Card>
 			<CardHeader>
@@ -42,7 +42,7 @@ export function EpisodesContainer({ episodes }: EpisodesContainerProps) {
 									</h3>
 									{episode.air_date ? (
 										<p className="text-sm text-muted-foreground">
-											{formatDate(episode.air_date, localeWithRegion, {
+											{formatDate(episode.air_date, localeRegion, {
 												year: "numeric",
 												month: "short",
 												day: "numeric",

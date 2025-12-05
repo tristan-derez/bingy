@@ -3,7 +3,7 @@ import { useAtomValue } from "jotai";
 import { Calendar, Star, Users } from "lucide-react";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
-import { localeWithRegionAtom } from "@/lib/atoms/locale";
+import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { Badge } from "../ui/badge";
@@ -20,7 +20,7 @@ interface MovieCardProps {
 }
 
 export const MovieCard = ({ movie }: MovieCardProps) => {
-	const localeWithRegion = useAtomValue(localeWithRegionAtom);
+	const localeRegion = useAtomValue(localeRegionAtom);
 	const imageUrl = movie.poster_path
 		? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
 		: fallbackPoster;
@@ -78,7 +78,7 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
 						<Calendar className="h-4 w-4" />
 						<span>
 							{movie.release_date
-								? formatDate(movie.release_date, localeWithRegion, {
+								? formatDate(movie.release_date, localeRegion, {
 										month: "short",
 										year: "numeric",
 										day: "2-digit",

@@ -73,9 +73,9 @@ export function SignUpForm() {
 				navigate({ to: "/welcome" });
 			}
 
-			error && toast.error(m.toast_generic_error());
+			error && toast.error(m.toast_error_generic());
 		} catch (err) {
-			toast.error(m.toast_generic_error());
+			toast.error(m.toast_error_generic());
 		} finally {
 			setIsSubmitting(false);
 		}

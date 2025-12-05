@@ -1,21 +1,10 @@
 import { Link } from "@tanstack/react-router";
-import {
-	Calendar,
-	CheckCircle,
-	Clapperboard,
-	ExternalLink,
-	Layers,
-	RotateCcw,
-	Sparkles,
-	Star,
-	Tv,
-	XCircle,
-} from "lucide-react";
+import { useAtomValue } from "jotai";
+import { Calendar, ExternalLink, Layers, Star, Tv } from "lucide-react";
 import Flag from "react-world-flags";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import { Badge } from "@/components/ui/badge";
-
 import {
 	Card,
 	CardContent,
@@ -23,16 +12,23 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import { m } from "@/paraglide/messages";
+import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
+import {
+	m,
+	tv_details_homepage,
+	tv_details_networks,
+} from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { shortenCountryName } from "@/utils/shorten-country-name";
 import { ResourceNotFound } from "../errors/resource-not-found";
 import { LoadingCentered } from "../loading/loading-centered";
+import { MediaOverview } from "../medias/overview";
 import { CastCarousel } from "../person/cast-carousel";
 import { SocialLinks } from "../social-links";
 import { BackButton } from "../ui/back-button";
 import { Separator } from "../ui/separator";
 import { WatchProvidersSection } from "../watch-providers/watch-providers-section";
+import { TVStatusCard } from "./tv-details/status-card";
 
 interface TvDetailViewProps {
 	tv: Schemas.TvDetails | undefined;
@@ -53,6 +49,9 @@ export function TvDetailsView({
 	isError,
 	onBack,
 }: TvDetailViewProps) {
+	const localeRegion = useAtomValue(localeRegionAtom);
+	const region = useAtomValue(regionAtom);
+
 	if (isLoading) {
 		return <LoadingCentered />;
 	}
@@ -60,8 +59,8 @@ export function TvDetailsView({
 	if (isError || !tv) {
 		return (
 			<ResourceNotFound
-				title="TV Show Not Found"
-				description="The TV show you're looking for could not be found."
+				title={m.tv_details_not_found_title()}
+				description={m.tv_details_not_found_desc()}
 				onBack={onBack}
 			/>
 		);
@@ -94,7 +93,7 @@ export function TvDetailsView({
 					/>
 					<WatchProvidersSection
 						watchProviders={watchProviders}
-						region="FR"
+						region={region}
 						className="w-full justify-center items-center bg-transparent border-none py-0"
 					/>
 				</div>
@@ -142,22 +141,30 @@ export function TvDetailsView({
 						}
 					>
 						<CardHeader className="text-dark-card-foreground">
-							<CardTitle>Overview</CardTitle>
+							<CardTitle>{m.tv_details_overview()}</CardTitle>
 						</CardHeader>
 
 						<CardContent className="space-y-4 text-dark-card-foreground gap-4">
-							<p className="w-full xl:max-w-2/3">
-								{tv.overview ? tv.overview : "No overview available."}
-							</p>
+							<MediaOverview overview={tv.overview} bg={backgroundImage} />
 							<Separator />
 							{tv.created_by.length > 0 && (
 								<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 									{tv.created_by.slice(0, 3).map((creator) => (
 										<div key={creator.id}>
-											<h3 className="font-semibold text-lg whitespace-nowrap">
-												{creator.name}
-											</h3>
-											<p className="text-muted-foreground text-sm">Creator</p>
+											<Link
+												to="/person/$personId"
+												params={{ personId: creator.id.toString() }}
+											>
+												<h3 className="font-semibold text-lg whitespace-nowrap">
+													{creator.name}
+												</h3>
+											</Link>
+
+											<p className="text-muted-foreground text-sm">
+												{m.tv_details_creator({
+													gender: creator.gender === 1 ? "female" : "male",
+												})}
+											</p>
 										</div>
 									))}
 								</div>
@@ -184,19 +191,24 @@ export function TvDetailsView({
 					</Card>
 
 					<div className="grid lg:grid-cols-3 gap-3">
-						<Card>
-							<CardContent className="flex items-center gap-4">
-								<Star className="h-5 w-5 text-yellow-500" />
-								<div>
-									<p className="text-xl xl:text-2xl font-bold">
-										{tv.vote_count > 0 ? tv.vote_average.toFixed(1) : "N/R"}
-									</p>
-									<p className="text-sm text-muted-foreground">
-										{tv.vote_count} votes
-									</p>
-								</div>
-							</CardContent>
-						</Card>
+						{tv.vote_count > 0 ? (
+							<Card>
+								<CardContent className="flex items-center gap-4">
+									<Star className="h-5 w-5 text-yellow-500" />
+									<div>
+										<p className="text-xl xl:text-2xl font-bold">
+											{tv.vote_average.toFixed(1)}
+										</p>
+										<p className="text-sm text-muted-foreground">
+											{m.tv_details_votes({
+												count: tv.vote_count,
+												voteCount: tv.vote_count,
+											})}
+										</p>
+									</div>
+								</CardContent>
+							</Card>
+						) : null}
 
 						<Card>
 							<CardContent className="flex items-center gap-4">
@@ -204,35 +216,22 @@ export function TvDetailsView({
 								<div>
 									<p className="text-xl xl:text-2xl font-bold">
 										{tv.first_air_date
-											? formatDate(tv.first_air_date, "en-US", {
+											? formatDate(tv.first_air_date, localeRegion, {
 													year: "numeric",
 													month: "short",
 													day: "numeric",
 												})
 											: "N/A"}
 									</p>
-									<p className="text-sm text-muted-foreground">First Aired</p>
+									<p className="text-sm text-muted-foreground">
+										{m.tv_details_first_aired()}
+									</p>
 								</div>
 							</CardContent>
 						</Card>
 
-						<Card>
-							<CardContent className="flex items-center gap-4">
-								{tv.status === "In Production" && (
-									<Clapperboard className="h-5 w-5" />
-								)}
-								{tv.status === "Returning Series" && (
-									<RotateCcw className="h-5 w-5" />
-								)}
-								{tv.status === "Canceled" && <XCircle className="h-5 w-5" />}
-								{tv.status === "Ended" && <CheckCircle className="h-5 w-5" />}
-								{tv.status === "Pilot" && <Sparkles className="h-5 w-5" />}
-								<div>
-									<p className="text-xl xl:text-2xl font-bold">{tv.status}</p>
-									<p className="text-sm text-muted-foreground">Status</p>
-								</div>
-							</CardContent>
-						</Card>
+						<TVStatusCard status={tv.status} />
+
 						<Link to="/tv/$tvId/seasons" params={{ tvId: tv.id.toString() }}>
 							<Card>
 								<CardContent className="flex items-center gap-4">
@@ -242,7 +241,7 @@ export function TvDetailsView({
 											{tv.number_of_seasons}
 										</p>
 										<p className="text-sm text-muted-foreground">
-											{tv.number_of_seasons > 1 ? "Seasons" : "Season"}
+											{m.tv_details_seasons({ count: tv.number_of_seasons })}
 										</p>
 									</div>
 								</CardContent>
@@ -257,7 +256,7 @@ export function TvDetailsView({
 										{tv.number_of_episodes}
 									</p>
 									<p className="text-sm text-muted-foreground">
-										Total {tv.number_of_episodes > 1 ? "Episodes" : "Episode"}
+										{m.tv_details_episodes({ count: tv.number_of_episodes })}
 									</p>
 								</div>
 							</CardContent>
@@ -275,10 +274,12 @@ export function TvDetailsView({
 												rel="noopener noreferrer"
 												className="hover:underline"
 											>
-												Visit
+												{m.tv_details_btn_visit()}
 											</a>
 										</p>
-										<p className="text-sm text-muted-foreground">Homepage</p>
+										<p className="text-sm text-muted-foreground">
+											{tv_details_homepage()}
+										</p>
 									</div>
 								</CardContent>
 							</Card>
@@ -298,7 +299,7 @@ export function TvDetailsView({
 						<Card>
 							<CardHeader>
 								<CardTitle>
-									{`Network${tv.networks.length > 1 ? "s" : ""}`}
+									{m.tv_details_networks({ count: tv_details_networks.length })}
 								</CardTitle>
 							</CardHeader>
 
@@ -327,7 +328,9 @@ export function TvDetailsView({
 						<Card>
 							<CardHeader>
 								<CardTitle>
-									{`Production Compan${tv.production_companies.length > 1 ? "ies" : "y"}`}
+									{m.tv_details_companies({
+										count: tv.production_companies.length,
+									})}
 								</CardTitle>
 							</CardHeader>
 

@@ -68,7 +68,7 @@ export function UpdateEmailForm() {
 				}
 			}
 		} catch (err) {
-			toast.error(m.toast_generic_error());
+			toast.error(m.toast_error_generic());
 		} finally {
 			setIsSubmitting(false);
 		}

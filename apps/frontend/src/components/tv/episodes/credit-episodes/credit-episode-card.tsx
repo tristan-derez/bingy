@@ -8,7 +8,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import { localeWithRegionAtom } from "@/lib/atoms/locale";
+import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { formatRuntime } from "@/utils/format-runtime";
@@ -33,7 +33,7 @@ export const CreditEpisodeCard = ({
 	tvId,
 	isGuestAppearance,
 }: CreditEpisodeCardProps) => {
-	const localeWithRegion = useAtomValue(localeWithRegionAtom);
+	const localeRegion = useAtomValue(localeRegionAtom);
 	const backgroundImage = episode.still_path
 		? `https://image.tmdb.org/t/p/w500${episode.still_path}`
 		: null;
@@ -94,10 +94,10 @@ export const CreditEpisodeCard = ({
 					<div className="text-sm">
 						{new Date(episode.air_date) > new Date()
 							? m.credit_episode_card_airs_text({
-									date: formatDate(episode.air_date, localeWithRegion),
+									date: formatDate(episode.air_date, localeRegion),
 								})
 							: m.credit_episode_card_aired_text({
-									date: formatDate(episode.air_date, localeWithRegion),
+									date: formatDate(episode.air_date, localeRegion),
 								})}
 					</div>
 				) : (

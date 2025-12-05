@@ -15,7 +15,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import { localeWithRegionAtom } from "@/lib/atoms/locale";
+import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { formatRuntime } from "@/utils/format-runtime";
@@ -54,7 +54,8 @@ export function MovieDetailView({
 	onBack,
 }: MovieDetailViewProps) {
 	const id = useId();
-	const localeWithRegion = useAtomValue(localeWithRegionAtom);
+	const localeRegion = useAtomValue(localeRegionAtom);
+	const region = useAtomValue(regionAtom);
 
 	if (isLoading) {
 		return <LoadingCentered />;
@@ -97,7 +98,7 @@ export function MovieDetailView({
 					/>
 					<WatchProvidersSection
 						watchProviders={watchProviders}
-						region="FR"
+						region={region}
 						className="w-full justify-center items-center bg-transparent border-none py-0"
 					/>
 				</div>
@@ -215,7 +216,7 @@ export function MovieDetailView({
 								<div>
 									<p className="text-xl xl:text-2xl font-bold">
 										{movie.release_date
-											? formatDate(movie.release_date, localeWithRegion, {
+											? formatDate(movie.release_date, localeRegion, {
 													day: "numeric",
 													month: "short",
 													year: "numeric",
@@ -318,9 +319,9 @@ export function MovieDetailView({
 							<Card>
 								<CardHeader>
 									<CardTitle>
-										{movie.production_companies.length > 1
-											? m.movie_details_production_companies()
-											: m.movie_details_production_company()}
+										{m.movie_details_production_companies({
+											count: movie.production_companies.length,
+										})}
 									</CardTitle>
 								</CardHeader>
 

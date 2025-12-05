@@ -68,7 +68,7 @@ export function EnableTwoFactorForm() {
 				}
 			}
 		} catch (err) {
-			toast.error(m.toast_generic_error());
+			toast.error(m.toast_error_generic());
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -96,7 +96,7 @@ export function EnableTwoFactorForm() {
 				navigate({ to: "/settings" });
 			}
 		} catch (err) {
-			toast.error(m.toast_generic_error());
+			toast.error(m.toast_error_generic());
 		}
 	};
 

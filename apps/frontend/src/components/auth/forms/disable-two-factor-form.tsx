@@ -47,7 +47,7 @@ export function DisableTwoFactorForm() {
 
 			error && toast.error(m.toast_error_disable_twofactor());
 		} catch (err) {
-			toast.error(m.toast_generic_error());
+			toast.error(m.toast_error_generic());
 		} finally {
 			setIsSubmitting(false);
 		}

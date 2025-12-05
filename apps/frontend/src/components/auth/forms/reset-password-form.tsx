@@ -59,7 +59,7 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
 				navigate({ to: "/signin" });
 			}
 		} catch (err) {
-			toast.error(m.toast_generic_error());
+			toast.error(m.toast_error_generic());
 		} finally {
 			setIsSubmitting(false);
 		}

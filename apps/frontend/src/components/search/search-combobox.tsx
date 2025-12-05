@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import type { Schemas } from "shared";
 import { Button } from "@/components/ui/button";
 import { useSearchQuery } from "@/hooks/useSearch";
-import { localeWithRegionAtom } from "@/lib/atoms/locale";
+import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { getRelevanceScore } from "@/utils/search-relevance-score";
 import {
@@ -32,11 +32,11 @@ export function SearchCombobox({ title }: SearchComboboxProps) {
 	const [query, setQuery] = useState("");
 	const [isTyping, setIsTyping] = useState(false);
 	const navigate = useNavigate();
-	const localeWithRegion = useAtomValue(localeWithRegionAtom);
+	const localeRegion = useAtomValue(localeRegionAtom);
 
 	const { data, isLoading, isFetching } = useSearchQuery<
 		Schemas.PaginatedResponse<Schemas.MediaMulti>
-	>(query, { language: localeWithRegion });
+	>(query, { language: localeRegion });
 
 	const results = data?.results ?? [];
 
@@ -166,7 +166,7 @@ export function SearchCombobox({ title }: SearchComboboxProps) {
 															to: "/search",
 															search: {
 																q: query,
-																language: localeWithRegion,
+																language: localeRegion,
 																page: 1,
 															},
 														});

@@ -1,7 +1,7 @@
 import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/user-placeholder.jpg";
-import { localeWithRegionAtom } from "@/lib/atoms/locale";
+import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { calculateAge } from "@/utils/calculate-age";
 import { formatDate } from "@/utils/format-date";
@@ -36,7 +36,7 @@ export const PersonDetailsView = ({
 	isError,
 	onBack,
 }: PersonDetailsViewProps) => {
-	const localeWithRegion = useAtomValue(localeWithRegionAtom);
+	const localeRegion = useAtomValue(localeRegionAtom);
 
 	if (isLoading) {
 		return <LoadingCentered />;
@@ -102,9 +102,7 @@ export const PersonDetailsView = ({
 									{person.birthday ? (
 										<div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-muted-foreground">
 											<div className="flex items-center gap-1">
-												<span>
-													{formatDate(person.birthday, localeWithRegion)}
-												</span>
+												<span>{formatDate(person.birthday, localeRegion)}</span>
 												{!person.deathday && (
 													<span>
 														(
@@ -120,7 +118,7 @@ export const PersonDetailsView = ({
 													<span className="hidden sm:inline">-</span>
 													<div className="flex items-center gap-1">
 														<span>
-															{formatDate(person.deathday, localeWithRegion)}
+															{formatDate(person.deathday, localeRegion)}
 														</span>
 														<span>
 															(
@@ -139,15 +137,15 @@ export const PersonDetailsView = ({
 									) : null}
 									<p>
 										{person.known_for_department === "Acting"
-											? person.gender === 1
-												? m.person_actress()
-												: m.person_actor()
+											? m.person_actor({
+													gender: person.gender === 1 ? "female" : "male",
+												})
 											: person.known_for_department === "Writing"
-												? m.person_writer()
+												? m.person_writer({ gender: "*" })
 												: person.known_for_department === "Directing"
-													? person.gender === 1
-														? m.person_director_female()
-														: m.person_director_male()
+													? m.person_director({
+															gender: person.gender === 1 ? "female" : "male",
+														})
 													: person.known_for_department}
 									</p>
 								</div>
@@ -174,7 +172,14 @@ export const PersonDetailsView = ({
 										variant="secondary"
 										className="flex items-center gap-2"
 									>
-										{m.person_place_of_birth({ place: person.place_of_birth })}
+										{person.place_of_birth.includes(",")
+											? m.person_place_of_birth({
+													gender: person.gender === 1 ? "female" : "male",
+													place: person.place_of_birth,
+												})
+											: m.person_born_country({
+													country: person.place_of_birth,
+												})}
 									</Badge>
 								</div>
 							</CardFooter>
@@ -185,11 +190,9 @@ export const PersonDetailsView = ({
 							{sortedCredits && sortedCredits.length > 0 ? (
 								<MediasCarousel
 									medias={sortedCredits}
-									title={
-										person.gender === 1
-											? m.person_known_for_female()
-											: m.person_known_for_male()
-									}
+									title={m.person_known_for({
+										gender: person.gender === 1 ? "female" : "male",
+									})}
 								/>
 							) : null}
 							<PersonTimeline combinedCredits={person.combined_credits} />

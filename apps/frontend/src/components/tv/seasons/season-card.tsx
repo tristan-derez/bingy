@@ -4,7 +4,7 @@ import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { localeWithRegionAtom } from "@/lib/atoms/locale";
+import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 
@@ -15,7 +15,7 @@ export function SeasonCard({
 	season: Schemas.TvDetails["seasons"][number];
 	tvId: number;
 }) {
-	const localeWithRegion = useAtomValue(localeWithRegionAtom);
+	const localeRegion = useAtomValue(localeRegionAtom);
 	const imageUrl = season.poster_path
 		? `https://image.tmdb.org/t/p/w500${season.poster_path}`
 		: fallbackPoster;
@@ -41,7 +41,7 @@ export function SeasonCard({
 							</CardTitle>
 							<Badge className="text-sm">
 								{season.air_date
-									? formatDate(season.air_date, localeWithRegion, {
+									? formatDate(season.air_date, localeRegion, {
 											year: "numeric",
 										})
 									: "N/A"}
@@ -50,9 +50,7 @@ export function SeasonCard({
 						<Badge variant="outline">
 							<span>
 								{season.episode_count}{" "}
-								{season.episode_count > 1
-									? m.season_card_episodes_badge()
-									: m.season_card_episode_badge()}
+								{m.season_card_episode_badge({ count: season.episode_count })}
 							</span>
 						</Badge>
 					</div>

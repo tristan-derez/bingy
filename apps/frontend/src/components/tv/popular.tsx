@@ -3,6 +3,7 @@ import type { Schemas } from "shared";
 import { toast } from "sonner";
 import { usePopularTv } from "@/hooks/useTv";
 import { localeAtom } from "@/lib/atoms/locale";
+import { regionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { LoadingSection } from "../loading/loading-section";
 import { TvCarousel } from "./tv-carousel";
@@ -13,9 +14,10 @@ interface PopularTvProps {
 
 export const PopularTv = ({ title }: PopularTvProps) => {
 	const localeWithRegion = useAtomValue(localeAtom);
+	const region = useAtomValue(regionAtom);
 	const { data, isLoading, error } = usePopularTv({
 		language: localeWithRegion,
-		region: "US",
+		region,
 	});
 
 	if (isLoading) {

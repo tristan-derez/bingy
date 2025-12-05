@@ -1,5 +1,6 @@
 import { useId } from "react";
 import type { Schemas } from "shared";
+import { m } from "@/paraglide/messages";
 import { ScrollToCrewButton } from "../credits/scroll-to-crew-button";
 import { ResourceNotFound } from "../errors/resource-not-found";
 import { LoadingCentered } from "../loading/loading-centered";
@@ -27,8 +28,8 @@ export function MovieCreditsView({
 	if (isError || !credits) {
 		return (
 			<ResourceNotFound
-				title="Oops!"
-				description="Credits are not available at the moment"
+				title={m.movie_credits_not_found_title()}
+				description={m.movie_credits_not_found_desc()}
 				onBack={onBack}
 			/>
 		);

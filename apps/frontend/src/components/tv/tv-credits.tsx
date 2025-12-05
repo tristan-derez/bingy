@@ -1,5 +1,6 @@
 import { useId } from "react";
 import type { Schemas } from "shared";
+import { m } from "@/paraglide/messages";
 import { ScrollToCrewButton } from "../credits/scroll-to-crew-button";
 import { ResourceNotFound } from "../errors/resource-not-found";
 import { LoadingCentered } from "../loading/loading-centered";
@@ -21,18 +22,21 @@ export function TvCreditsView({
 	onBack,
 }: TvCreditsViewProps) {
 	const crewSectionId = useId();
+
 	if (isLoading) {
 		return <LoadingCentered />;
 	}
+
 	if (isError || !credits) {
 		return (
 			<ResourceNotFound
-				title="Oops!"
-				description="Credits are not available at the moment"
+				title={m.tv_credits_not_found_title()}
+				description={m.tv_credits_not_found_desc()}
 				onBack={onBack}
 			/>
 		);
 	}
+
 	return (
 		<div className="container scroll-smooth">
 			<div className="mb-4 flex justify-between">

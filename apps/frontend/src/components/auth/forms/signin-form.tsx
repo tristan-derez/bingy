@@ -72,12 +72,12 @@ export function SignInForm() {
 						}
 					},
 					async onError() {
-						toast.error(m.toast_generic_error());
+						toast.error(m.toast_error_generic());
 					},
 				},
 			);
 		} catch (err) {
-			toast.error(m.toast_generic_error());
+			toast.error(m.toast_error_generic());
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -92,7 +92,7 @@ export function SignInForm() {
 				newUserCallbackURL: `${config.appUrl}/welcome`,
 			});
 		} catch (err) {
-			toast.error(m.toast_generic_error());
+			toast.error(m.toast_error_generic());
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -109,7 +109,7 @@ export function SignInForm() {
 				toast.error(m.toast_error_invalid_code());
 				return;
 			} else if (error) {
-				toast.error(m.toast_generic_error());
+				toast.error(m.toast_error_generic());
 				return;
 			}
 

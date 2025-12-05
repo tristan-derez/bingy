@@ -47,9 +47,10 @@ export function LinkAccountComponent() {
 					callbackURL: `${config.appUrl}/settings`,
 					errorCallbackURL: `${config.appUrl}/settings`,
 				});
+				// errors comes from the url in the settings route, thats where we call a toast
 			}
 		} catch (err) {
-			toast.error(m.toast_generic_error());
+			toast.error(m.toast_error_generic());
 		} finally {
 			setIsLoading(false);
 		}

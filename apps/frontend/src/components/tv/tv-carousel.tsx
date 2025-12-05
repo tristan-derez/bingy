@@ -35,14 +35,7 @@ export const TvCarousel = ({ tvShows, title }: TvCarouselProps) => {
 	const { showGradient } = useCarouselGradient(emblaApi);
 
 	if (!tvShows.length) {
-		return (
-			<div className="min-h-[404px] flex flex-col">
-				<h2 className="text-xl font-semibold">{title}</h2>
-				<div className="flex-1 flex items-center justify-center">
-					<p>No TV Shows available at the moment</p>
-				</div>
-			</div>
-		);
+		return null;
 	}
 
 	const showButtons = !prevBtnDisabled || !nextBtnDisabled;
