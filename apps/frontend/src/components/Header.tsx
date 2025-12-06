@@ -64,17 +64,19 @@ export default function Header() {
 					<SearchCombobox />
 				</div>
 				<div className="flex items-center gap-4">
+					<LocaleRegionDropdown />
+
 					{!session && (
 						<>
 							<NavbarButton variant="secondary" to="/signin">
-								Sign In
+								{m.header_btn_sign_in()}
 							</NavbarButton>
 							<NavbarButton variant="primary" to="/signup">
-								Get Started
+								{m.header_btn_sign_up()}
 							</NavbarButton>
 						</>
 					)}
-					<LocaleRegionDropdown />
+
 					{session && (
 						<ProfileDropdown
 							session={{ ...session.session, user: session.user }}

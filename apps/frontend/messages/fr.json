@@ -446,5 +446,7 @@
 	"dropdown_profile_text": "Profil",
 	"dropdown_settings_text": "Paramètres",
 	"dropdown_support_text": "Assistance",
-	"dropdown_logout_text": "Se déconnecter"
+	"dropdown_logout_text": "Se déconnecter",
+	"header_btn_sign_in": "Se connecter",
+	"header_btn_sign_up": "S'inscrire"
 }

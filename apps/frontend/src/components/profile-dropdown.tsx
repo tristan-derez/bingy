@@ -54,7 +54,7 @@ export const ProfileDropdown = ({
 						<button
 							type="button"
 							className={cn(
-								"flex items-center w-full gap-16 p-3 rounded-2xl border transition-all duration-200 focus:outline-none",
+								"flex items-center w-full gap-8 p-3 rounded-md border transition-all duration-200 focus:outline-none",
 								"bg-card border-border hover:bg-card-foreground/10 hover:border-ring",
 							)}
 						>
