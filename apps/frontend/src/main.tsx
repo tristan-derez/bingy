@@ -11,6 +11,7 @@ import reportWebVitals from "./reportWebVitals.ts";
 import { routeTree } from "./routeTree.gen";
 import "@/styles/app.css";
 import "@/styles/autofill.css";
+import "flag-icons/css/flag-icons.min.css";
 
 const router = createRouter({
 	routeTree,
