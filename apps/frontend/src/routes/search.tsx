@@ -75,11 +75,7 @@ function SearchRoute() {
 
 			<SearchForm initialQuery={q} currentPage={page} />
 
-			<SearchResultsContainer
-				results={data.results}
-				language={language}
-				query={q}
-			/>
+			<SearchResultsContainer results={data.results} query={q} />
 			<SearchPagination
 				currentPage={page}
 				totalPages={data.total_pages}

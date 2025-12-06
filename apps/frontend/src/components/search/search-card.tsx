@@ -192,9 +192,10 @@ export const SearchCard = ({ item }: SearchCardProps) => {
 
 					{person.known_for?.length ? (
 						<CardDescription className="line-clamp-3 leading-relaxed">
-							{person.gender === 1
-								? m.person_known_for_female()
-								: m.person_known_for_male()}
+							{m.person_known_for({
+								gender: person.gender === 1 ? "female" : "male",
+							})}
+
 							{": "}
 							{person.known_for
 								.map((media) =>
