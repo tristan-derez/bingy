@@ -1,7 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import { Calendar, ExternalLink, Layers, Star, Tv } from "lucide-react";
-import Flag from "react-world-flags";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import { Badge } from "@/components/ui/badge";
@@ -179,8 +178,8 @@ export function TvDetailsView({
 										variant="secondary"
 										className="flex items-center gap-3"
 									>
-										<Flag
-											code={country.iso_3166_1}
+										<span
+											className={`fi fi-${country.iso_3166_1.toLowerCase()}`}
 											style={{ width: 18, height: 14 }}
 										/>
 										<span>{shortenCountryName(country.name)}</span>

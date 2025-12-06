@@ -4,7 +4,6 @@ import { Calendar, Clock, ExternalLink, Star } from "lucide-react";
 import { useId } from "react";
 import { FaMoneyBillTrendUp } from "react-icons/fa6";
 import { TbMoneybag } from "react-icons/tb";
-import Flag from "react-world-flags";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import { Badge } from "@/components/ui/badge";
@@ -181,11 +180,13 @@ export function MovieDetailView({
 											variant="secondary"
 											className="flex items-center gap-2"
 										>
-											<Flag
-												code={country.iso_3166_1}
+											<span
+												className={`fi fi-${country.iso_3166_1.toLowerCase()}`}
 												style={{ width: 18, height: 14 }}
-											/>
-											<span>{shortenCountryName(country.name)}</span>
+											></span>
+											<span className="font-medium">
+												{shortenCountryName(country.name)}
+											</span>
 										</Badge>
 									),
 								)}
@@ -333,8 +334,8 @@ export function MovieDetailView({
 												className="flex items-center gap-2"
 												variant="outline"
 											>
-												<Flag
-													code={company.origin_country}
+												<span
+													className={`fi fi-${company.origin_country.toLocaleLowerCase()}`}
 													style={{ width: 18, height: 14 }}
 												/>
 												<span className="font-medium">{company.name}</span>
