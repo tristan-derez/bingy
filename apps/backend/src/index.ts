@@ -2,7 +2,6 @@ import { serve } from "bun";
 import { Hono } from "hono";
 import { serveStatic } from "hono/bun";
 import { cors } from "hono/cors";
-import { showRoutes } from "hono/dev";
 import { logger as httpLogger } from "hono/logger";
 import { trimTrailingSlash } from "hono/trailing-slash";
 import type { auth } from "#lib/auth";
@@ -43,7 +42,12 @@ const app = new Hono<{
 app.use(
 	"*",
 	cors({
-		origin: env.FRONT_URL,
+		origin: [
+			env.FRONT_URL,
+			"http://localhost",
+			"http://localhost:8080",
+			"http://localhost:80",
+		],
 		allowHeaders: ["Content-Type", "Authorization"],
 		allowMethods: ["POST", "GET", "OPTIONS"],
 		exposeHeaders: ["Content-Length"],
@@ -60,8 +64,8 @@ const pingDB = async () => {
 	try {
 		await connection`SELECT 1 as ping`;
 		logger.info("Database connection established");
-	} catch {
-		logger.error("Failed to connect to the database.");
+	} catch (error) {
+		logger.error(error, "Failed to connect to the database.");
 	}
 };
 
@@ -102,15 +106,19 @@ if (env.NODE_ENV === "development") {
 const port = Number(env.PORT);
 logger.info(`Server is running on port ${port} and env: ${env.NODE_ENV}`);
 
-const web = serve({
+const serverConfig = {
 	fetch: app.fetch,
 	port,
-});
+};
 
-process.on("SIGINT", () => {
-	logger.info("Shutting down server...");
-	web.stop();
-	process.exit(0);
-});
+if (env.NODE_ENV !== "production") {
+	const web = serve(serverConfig);
+
+	process.on("SIGINT", () => {
+		logger.info("Shutting down server...");
+		web.stop();
+		process.exit(0);
+	});
+}
 
 export default app;

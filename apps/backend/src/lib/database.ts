@@ -17,7 +17,6 @@ export const connection = postgres({
 	password: env.DB_PASSWORD,
 	database: env.DB_NAME,
 	port: Number(env.DB_PORT),
-	ssl: env.NODE_ENV === "production",
 	max: 20,
 	idle_timeout: 20_000,
 	connect_timeout: 60_000,
