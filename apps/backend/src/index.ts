@@ -109,6 +109,7 @@ logger.info(`Server is running on port ${port} and env: ${env.NODE_ENV}`);
 const serverConfig = {
 	fetch: app.fetch,
 	port,
+	hostname: "0.0.0.0",
 };
 
 if (env.NODE_ENV !== "production") {
