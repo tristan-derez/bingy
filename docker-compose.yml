@@ -4,6 +4,8 @@ services:
       context: .
       dockerfile: apps/backend/Dockerfile
     restart: unless-stopped
+    ports:
+      - "${PORT}:${PORT}"
     networks:
       - bingy-network
 
