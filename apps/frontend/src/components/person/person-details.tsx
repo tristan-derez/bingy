@@ -82,7 +82,9 @@ export const PersonDetailsView = ({
 					{person.also_known_as && person.also_known_as.length > 0 ? (
 						<div className="hidden xl:flex mt-2 text-muted-foreground">
 							<div className="flex flex-col">
-								<h3 className="font-bold text-foreground">Also known as:</h3>
+								<h3 className="font-bold text-foreground">
+									{m.person_also_known()}
+								</h3>
 								{person.also_known_as.map((name: string, index: number) => (
 									<span key={index}>{name.trim()}</span>
 								))}

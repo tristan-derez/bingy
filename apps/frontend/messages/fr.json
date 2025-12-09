@@ -448,5 +448,6 @@
 	"dropdown_support_text": "Assistance",
 	"dropdown_logout_text": "Se déconnecter",
 	"header_btn_sign_in": "Se connecter",
-	"header_btn_sign_up": "S'inscrire"
+	"header_btn_get_started": "S'inscrire",
+	"person_also_known": "Aussi connu en tant que:"
 }
