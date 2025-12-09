@@ -72,7 +72,7 @@ export default function Header() {
 								{m.header_btn_sign_in()}
 							</NavbarButton>
 							<NavbarButton variant="primary" to="/signup">
-								{m.header_btn_sign_up()}
+								{m.header_btn_get_started()}
 							</NavbarButton>
 						</>
 					)}
@@ -120,7 +120,7 @@ export default function Header() {
 									className="w-full"
 									to={"/signin"}
 								>
-									Sign In
+									{m.header_btn_sign_in()}
 								</NavbarButton>
 								<NavbarButton
 									onClick={() => setIsMobileMenuOpen(false)}
@@ -128,7 +128,7 @@ export default function Header() {
 									className="w-full"
 									to={"/signup"}
 								>
-									Get Started
+									{m.header_btn_get_started()}
 								</NavbarButton>
 							</>
 						)}
