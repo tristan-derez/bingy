@@ -66,12 +66,12 @@ export const PersonDetailsView = ({
 		<div className="container">
 			<BackButton onBack={onBack} />
 
-			<div className="grid xl:grid-cols-[350px_minmax(0,1fr)] gap-2 xl:gap-4 pt-2 justify-items-center">
-				<div className="flex flex-col gap-2 items-center xl:items-start max-w-[250px] md:max-w-[350px] xl:max-w-none w-full">
+			<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
+				<div className="flex flex-col gap-2 items-center lg:items-start max-w-[250px] md:max-w-[300px] lg:max-w-[400px]">
 					<img
 						src={imageUrl}
 						alt={person.name}
-						className="rounded-lg shadow-lg w-full aspect-2/3 xl:max-h-[600px]"
+						className="rounded-lg shadow-lg w-full aspect-2/3 max-h-90 xl:max-h-[600px]"
 						onError={(e) => {
 							const target = e.currentTarget;
 							if (target.src !== fallbackPoster) {
