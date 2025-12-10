@@ -49,7 +49,7 @@ export const MovieCarousel = ({ movies, title }: MovieCarouselProps) => {
 						{movies.map((movie) => (
 							<div
 								key={`${carouselId}-${movie.id}`}
-								className="flex-[0_0_calc(100vw-3rem)] md:flex-[0_0_300px]"
+								className="flex-none w-[200px] sm:w-[250px] lg:w-[300px]"
 							>
 								<MovieCard movie={movie} />
 							</div>
