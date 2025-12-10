@@ -71,10 +71,9 @@ function App() {
 
 			<Particles
 				className="absolute inset-0 z-0"
-				quantity={100}
+				quantity={50}
 				ease={80}
 				color={getParticleColor()}
-				hideBelow={"lg"}
 				refresh
 			/>
 		</CenteredLayout>
