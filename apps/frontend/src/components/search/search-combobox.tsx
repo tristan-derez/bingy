@@ -126,7 +126,7 @@ export function SearchCombobox({
 				<VisuallyHidden.Root>
 					<DialogTitle>Search</DialogTitle>
 				</VisuallyHidden.Root>
-				<DialogContent className="p-0 max-w-[400px] rounded-lg">
+				<DialogContent className="p-0 w-xs md:w-md lg:w-lg rounded-lg">
 					<VisuallyHidden.Root>
 						<DialogDescription>Search results</DialogDescription>
 					</VisuallyHidden.Root>
@@ -139,7 +139,6 @@ export function SearchCombobox({
 								placeholder={m.search_combobox_input_placeholder()}
 								value={query}
 								onValueChange={setQuery}
-								className={"pl-9"}
 							/>
 						</div>
 
