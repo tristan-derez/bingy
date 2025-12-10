@@ -5,7 +5,6 @@ import { useTheme } from "@/components/theme/use-theme";
 import { Button } from "@/components/ui/button";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { Particles } from "@/components/ui/particles";
-import { SparklesText } from "@/components/ui/sparkles-text";
 import { m } from "@/paraglide/messages";
 
 export const Route = createFileRoute("/")({
@@ -36,13 +35,10 @@ function App() {
 				<h1 className="text-4xl md:text-6xl font-bold leading-relaxed">
 					<strong className="inline-block">{m.landing_page_title()}</strong>
 					<br />
-					<SparklesText
-						sparklesCount={5}
-						className="inline-block text-4xl md:text-6xl"
-					>
-						{m.landing_page_title_discover()}
-					</SparklesText>
-					<strong> {m.landing_page_title_whats_next()}</strong>
+					<strong>
+						{m.landing_page_title_discover()}{" "}
+						{m.landing_page_title_whats_next()}
+					</strong>
 				</h1>
 
 				<p className="text-lg md:text-xl text-muted-foreground max-w-2xl">
@@ -78,6 +74,7 @@ function App() {
 				quantity={100}
 				ease={80}
 				color={getParticleColor()}
+				hideBelow={"lg"}
 				refresh
 			/>
 		</CenteredLayout>
