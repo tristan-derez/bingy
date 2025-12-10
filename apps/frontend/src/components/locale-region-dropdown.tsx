@@ -30,7 +30,7 @@ export const LocaleRegionDropdown = () => {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
-				<Button variant="outline" size="icon">
+				<Button variant="ghost" size="icon">
 					<Globe className="h-4 w-4" />
 				</Button>
 			</DropdownMenuTrigger>
