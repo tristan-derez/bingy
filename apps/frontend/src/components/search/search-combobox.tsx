@@ -25,12 +25,23 @@ import { SearchItemCombobox } from "./search-item-combobox";
 
 interface SearchComboboxProps {
 	title?: string;
+	open?: boolean;
+	setOpen?: (v: boolean) => void;
+	showButton?: boolean;
 }
 
-export function SearchCombobox({ title }: SearchComboboxProps) {
-	const [open, setOpen] = useState(false);
+export function SearchCombobox({
+	title,
+	showButton = true,
+	open: openProp,
+	setOpen: setOpenProp,
+}: SearchComboboxProps) {
+	const [internalOpen, setInternalOpen] = useState(false);
+	const open = openProp ?? internalOpen;
+	const setOpen = setOpenProp ?? setInternalOpen;
 	const [query, setQuery] = useState("");
 	const [isTyping, setIsTyping] = useState(false);
+
 	const navigate = useNavigate();
 	const localeRegion = useAtomValue(localeRegionAtom);
 
@@ -44,20 +55,18 @@ export function SearchCombobox({ title }: SearchComboboxProps) {
 		const down = (e: KeyboardEvent) => {
 			if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
 				e.preventDefault();
-				setOpen((o) => !o);
+				setOpen(!open);
 			}
 		};
-
 		document.addEventListener("keydown", down);
 		return () => document.removeEventListener("keydown", down);
-	}, []);
+	}, [open, setOpen]);
 
 	useEffect(() => {
 		if (!query) {
 			setIsTyping(false);
 			return;
 		}
-
 		setIsTyping(true);
 		const timeout = setTimeout(() => setIsTyping(false), 500);
 		return () => clearTimeout(timeout);
@@ -67,10 +76,11 @@ export function SearchCombobox({ title }: SearchComboboxProps) {
 
 	const maxPerType = 3;
 
-	const groupedResults = { movie: [], tv: [], person: [] } as Record<
-		"movie" | "tv" | "person",
-		Schemas.MediaMulti[]
-	>;
+	const groupedResults = {
+		movie: [],
+		tv: [],
+		person: [],
+	} as Record<"movie" | "tv" | "person", Schemas.MediaMulti[]>;
 
 	for (const item of results) {
 		if (
@@ -101,30 +111,37 @@ export function SearchCombobox({ title }: SearchComboboxProps) {
 
 	return (
 		<>
-			<Button
-				variant="ghost"
-				onClick={() => setOpen(true)}
-				className="items-center align-center hover:cursor-pointer gap-2"
-			>
-				<SearchIcon className="h-4 w-4" />
-				{title ? <span>{title}</span> : null}
-			</Button>
+			{showButton ? (
+				<Button
+					variant="ghost"
+					onClick={() => setOpen(true)}
+					className="items-center gap-2"
+				>
+					<SearchIcon className="h-4 w-4" />
+					{title ? <span>{title}</span> : null}
+				</Button>
+			) : null}
 
 			<Dialog open={open} onOpenChange={setOpen}>
 				<VisuallyHidden.Root>
-					<DialogTitle>Search command</DialogTitle>
+					<DialogTitle>Search</DialogTitle>
 				</VisuallyHidden.Root>
 				<DialogContent className="p-0 max-w-[400px] rounded-lg">
 					<VisuallyHidden.Root>
 						<DialogDescription>Search results</DialogDescription>
 					</VisuallyHidden.Root>
+
 					<Command shouldFilter={false}>
-						<CommandInput
-							placeholder={m.search_combobox_input_placeholder()}
-							value={query}
-							onValueChange={setQuery}
-							className="placeholder:text-ellipsis"
-						/>
+						<div className="relative">
+							<SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 opacity-50 pointer-events-none" />
+
+							<CommandInput
+								placeholder={m.search_combobox_input_placeholder()}
+								value={query}
+								onValueChange={setQuery}
+								className={"pl-9"}
+							/>
+						</div>
 
 						<CommandList className="flex flex-col max-h-[400px]">
 							{!query && (
@@ -156,7 +173,7 @@ export function SearchCombobox({ title }: SearchComboboxProps) {
 									</div>
 
 									{showViewAll && (
-										<div className="sticky bottom-0 bg-background rounded-md m-1 hover:cursor-pointer">
+										<div className="sticky bottom-0 bg-background rounded-md m-1">
 											<CommandSeparator />
 											<CommandGroup>
 												<CommandItem
@@ -172,7 +189,7 @@ export function SearchCombobox({ title }: SearchComboboxProps) {
 														});
 														handleSelect();
 													}}
-													className="hover:cursor-pointer"
+													className="cursor-pointer"
 												>
 													<span className="w-full text-center font-medium">
 														{m.btn_view_all()} →
