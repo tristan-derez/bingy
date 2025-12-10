@@ -38,7 +38,7 @@ export const MobileBottomNav = ({ items, className }: BottomNavProps) => {
 			transition={{ type: "spring", stiffness: 300, damping: 30 }}
 			className={cn(
 				"fixed bottom-0 left-0 right-0 z-50 lg:hidden",
-				"px-4 py-2",
+				"px-4 py-4",
 				className,
 			)}
 		>
@@ -84,7 +84,7 @@ export const MobileTopBar = ({
 	return (
 		<div
 			className={cn(
-				"fixed top-0 left-0 right-0 z-40 lg:hidden",
+				"absolute top-0 left-0 right-0 z-40 lg:hidden",
 				"px-4 py-2",
 				className,
 			)}
