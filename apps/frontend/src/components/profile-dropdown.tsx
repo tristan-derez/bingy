@@ -54,7 +54,7 @@ export const ProfileDropdown = ({
 						<button
 							type="button"
 							className={cn(
-								"flex items-center w-full gap-8 p-3 rounded-md border transition-all duration-200 focus:outline-none",
+								"flex items-center h-10 gap-2 p-3 rounded-md border transition-all duration-200 focus:outline-none",
 								"bg-card border-border hover:bg-card-foreground/10 hover:border-ring",
 							)}
 						>
@@ -64,7 +64,7 @@ export const ProfileDropdown = ({
 								</div>
 							</div>
 							<div className="relative">
-								<div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 via-pink-500 to-orange-400 p-0.5">
+								<div className="w-8 h-8 rounded-full p-0.5">
 									<div className="w-full h-full rounded-full overflow-hidden bg-card">
 										<Avatar className="w-full h-full object-cover rounded-full">
 											<AvatarImage
