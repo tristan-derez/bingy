@@ -1,25 +1,23 @@
-import { Link, useRouteContext } from "@tanstack/react-router";
+import { useRouteContext } from "@tanstack/react-router";
 import { useState } from "react";
+import { BiHomeAlt, BiMovie, BiSearch, BiTv } from "react-icons/bi";
 import { m } from "@/paraglide/messages";
 import { LocaleRegionDropdown } from "./locale-region-dropdown";
 import { ProfileDropdown } from "./profile-dropdown";
 import { SearchCombobox } from "./search/search-combobox";
+import { MobileBottomNav, MobileTopBar } from "./ui/mobile-navbar";
 import {
-	MobileNav,
-	MobileNavHeader,
-	MobileNavMenu,
-	MobileNavToggle,
+	MobileNavbarLogo,
 	NavBody,
 	Navbar,
 	NavbarButton,
 	NavbarLogo,
 	NavItems,
 } from "./ui/resizable-navbar";
-import { Separator } from "./ui/separator";
 
 export default function Header() {
 	const { session } = useRouteContext({ from: "__root__" });
-	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+	const [searchOpen, setSearchOpen] = useState(false);
 
 	const allNavItems = [
 		{
@@ -54,92 +52,92 @@ export default function Header() {
 		return true;
 	});
 
+	const mobileBottomItems = [
+		{
+			name: m.header_link_home(),
+			link: session ? "/dashboard" : "/",
+			icon: <BiHomeAlt />,
+		},
+		{
+			name: m.header_link_movies(),
+			link: "/movies",
+			icon: <BiMovie />,
+		},
+		{
+			name: m.header_link_tv_shows(),
+			link: "/tv",
+			icon: <BiTv />,
+		},
+		{
+			name: m.header_link_search(),
+			icon: <BiSearch />,
+			onClick: () => setSearchOpen(true),
+		},
+	];
+
 	return (
-		<Navbar>
-			<NavBody>
-				<NavbarLogo />
-				<div className="flex items-center gap-2">
-					<NavItems items={navItems} />
-					<SearchCombobox />
-				</div>
-				<div className="flex items-center gap-4">
-					<LocaleRegionDropdown />
-
-					{!session && (
-						<>
-							<NavbarButton variant="secondary" to="/signin">
-								{m.header_btn_sign_in()}
-							</NavbarButton>
-							<NavbarButton variant="primary" to="/signup">
-								{m.header_btn_get_started()}
-							</NavbarButton>
-						</>
-					)}
-
-					{session && (
-						<ProfileDropdown
-							session={{ ...session.session, user: session.user }}
-						/>
-					)}
-				</div>
-			</NavBody>
-			<MobileNav>
-				<MobileNavHeader>
+		<>
+			{/* Desktop Navigation */}
+			<Navbar>
+				<NavBody>
 					<NavbarLogo />
-					<MobileNavToggle
-						isOpen={isMobileMenuOpen}
-						onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-					/>
-				</MobileNavHeader>
+					<div className="flex items-center gap-2">
+						<NavItems items={navItems} />
+						<SearchCombobox />
+					</div>
+					<div className="flex items-center gap-4">
+						<LocaleRegionDropdown />
 
-				<MobileNavMenu
-					isOpen={isMobileMenuOpen}
-					onClose={() => setIsMobileMenuOpen(false)}
-				>
-					{navItems.map((item, _idx) => (
-						<Link
-							to={item.link as "/"}
-							key={`link-${item.name}`}
-							onClick={() => setIsMobileMenuOpen(false)}
-							className="relative text-foreground"
-						>
-							<span className="block">{item.name}</span>
-						</Link>
-					))}
-
-					<SearchCombobox title="Search for movies, tv shows or people" />
-
-					<Separator />
-					<div className="flex w-full flex-col gap-4 pt-2">
 						{!session && (
 							<>
-								<NavbarButton
-									onClick={() => setIsMobileMenuOpen(false)}
-									variant="primary"
-									className="w-full"
-									to={"/signin"}
-								>
+								<NavbarButton variant="secondary" to="/signin">
 									{m.header_btn_sign_in()}
 								</NavbarButton>
-								<NavbarButton
-									onClick={() => setIsMobileMenuOpen(false)}
-									variant="primary"
-									className="w-full"
-									to={"/signup"}
-								>
+								<NavbarButton variant="primary" to="/signup">
 									{m.header_btn_get_started()}
 								</NavbarButton>
 							</>
 						)}
+
 						{session && (
 							<ProfileDropdown
 								session={{ ...session.session, user: session.user }}
-								onLinkClick={() => setIsMobileMenuOpen(false)}
 							/>
 						)}
 					</div>
-				</MobileNavMenu>
-			</MobileNav>
-		</Navbar>
+				</NavBody>
+			</Navbar>
+
+			{/* Mobile Top Bar */}
+			<MobileTopBar
+				logo={<MobileNavbarLogo />}
+				dropdown={
+					<div className="flex items-center gap-3">
+						<LocaleRegionDropdown />
+						{session ? (
+							<ProfileDropdown
+								session={{ ...session.session, user: session.user }}
+							/>
+						) : (
+							<NavbarButton
+								variant="primary"
+								to="/signin"
+								className="text-xs py-2.5 px-2"
+							>
+								{m.header_btn_sign_in()}
+							</NavbarButton>
+						)}
+					</div>
+				}
+			/>
+
+			{/* Mobile Bottom Navigation */}
+			<MobileBottomNav items={mobileBottomItems} />
+			<SearchCombobox
+				open={searchOpen}
+				setOpen={setSearchOpen}
+				showButton={false}
+			/>
+		</>
 	);
 }

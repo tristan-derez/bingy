@@ -1,13 +1,7 @@
 import { Link } from "@tanstack/react-router";
-import {
-	AnimatePresence,
-	motion,
-	useMotionValueEvent,
-	useScroll,
-} from "motion/react";
+import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import React, { useRef, useState } from "react";
-import { IoCloseSharp } from "react-icons/io5";
-import { LuMenu } from "react-icons/lu";
+import logo from "@/assets/bingy-icon.svg";
 import logoFull from "@/assets/bingy-icon_text.svg";
 import { cn } from "@/lib/utils";
 
@@ -29,24 +23,6 @@ interface NavItemsProps {
 	}[];
 	className?: string;
 	onItemClick?: () => void;
-}
-
-interface MobileNavProps {
-	children: React.ReactNode;
-	className?: string;
-	visible?: boolean;
-}
-
-interface MobileNavHeaderProps {
-	children: React.ReactNode;
-	className?: string;
-}
-
-interface MobileNavMenuProps {
-	children: React.ReactNode;
-	className?: string;
-	isOpen: boolean;
-	onClose: () => void;
 }
 
 export const Navbar = ({ children, className }: NavbarProps) => {
@@ -100,7 +76,7 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => {
 				backgroundColor: "inherit",
 			}}
 			className={cn(
-				"relative z-[60] hidden w-full min-w-[600px] max-w-full mx-auto flex-row items-center justify-between self-start rounded-full bg-transparent px-4 py-2 lg:flex",
+				"relative z-60 hidden w-full min-w-[600px] max-w-full mx-auto flex-row items-center justify-between self-start rounded-full bg-transparent px-4 py-2 lg:flex",
 				visible && "bg-card",
 				className,
 			)}
@@ -142,94 +118,18 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
 	);
 };
 
-export const MobileNav = ({ children, className, visible }: MobileNavProps) => {
-	return (
-		<motion.div
-			animate={{
-				backdropFilter: visible ? "blur(10px)" : "none",
-				boxShadow: visible
-					? "0 0 24px rgba(34, 42, 53, 0.06), 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(34, 42, 53, 0.04), 0 0 4px rgba(34, 42, 53, 0.08), 0 16px 68px rgba(47, 48, 55, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1) inset"
-					: "none",
-				width: visible ? "90%" : "100%",
-				paddingRight: visible ? "12px" : "0px",
-				paddingLeft: visible ? "12px" : "0px",
-				borderRadius: visible ? "8px" : "2rem",
-				y: visible ? 20 : 0,
-			}}
-			transition={{
-				type: "spring",
-				stiffness: 200,
-				damping: 50,
-			}}
-			className={cn(
-				"relative z-50 mx-auto flex w-full max-w-[calc(100vw-2rem)] flex-col items-center justify-between bg-transparent px-0 py-2 lg:hidden",
-				visible && "bg-card",
-				className,
-			)}
-		>
-			{children}
-		</motion.div>
-	);
-};
-
-export const MobileNavHeader = ({
-	children,
-	className,
-}: MobileNavHeaderProps) => {
-	return (
-		<div
-			className={cn(
-				"flex w-full flex-row items-center justify-between",
-				className,
-			)}
-		>
-			{children}
-		</div>
-	);
-};
-
-export const MobileNavMenu = ({
-	children,
-	className,
-	isOpen,
-}: MobileNavMenuProps) => {
-	return (
-		<AnimatePresence>
-			{isOpen && (
-				<motion.div
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					exit={{ opacity: 0 }}
-					className={cn(
-						"absolute inset-x-0 top-12 z-50 flex w-full flex-col items-start justify-start gap-4 rounded-lg p-4 shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset] bg-card",
-						className,
-					)}
-				>
-					{children}
-				</motion.div>
-			)}
-		</AnimatePresence>
-	);
-};
-
-export const MobileNavToggle = ({
-	isOpen,
-	onClick,
-}: {
-	isOpen: boolean;
-	onClick: () => void;
-}) => {
-	return isOpen ? (
-		<IoCloseSharp className="text-foreground text-2xl" onClick={onClick} />
-	) : (
-		<LuMenu className="text-foreground text-2xl" onClick={onClick} />
-	);
-};
-
 export const NavbarLogo = () => {
 	return (
 		<Link to="/">
 			<img src={logoFull} alt="Logo" className="h-6 w-auto" />
+		</Link>
+	);
+};
+
+export const MobileNavbarLogo = () => {
+	return (
+		<Link to="/">
+			<img src={logo} alt="Logo" className="h-6 w-auto" />
 		</Link>
 	);
 };
