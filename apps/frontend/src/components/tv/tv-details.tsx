@@ -77,12 +77,12 @@ export function TvDetailsView({
 		<div className="container">
 			<BackButton onBack={onBack} />
 
-			<div className="grid xl:grid-cols-[auto_1fr] gap-4 pt-2 justify-items-center">
-				<div className="flex flex-col gap-2 items-center xl:items-start max-w-[400px]">
+			<div className="grid xl:grid-cols-[auto_1fr] gap-2 xl:gap-4 pt-2 justify-items-center">
+				<div className="flex flex-col gap-2 items-center xl:items-start max-w-[250px] md:max-w-[350px] xl:max-w-[400px]">
 					<img
 						src={imageUrl}
 						alt={tv.name}
-						className="rounded-lg shadow-lg w-full xl:max-h-[600px]"
+						className="rounded-lg shadow-lg w-full aspect-2/3 xl:max-h-[600px]"
 						onError={(e) => {
 							const target = e.currentTarget;
 							if (target.src !== fallbackPoster) {
@@ -97,8 +97,8 @@ export function TvDetailsView({
 					/>
 				</div>
 
-				<div className="max-w-full space-y-4 overflow-hidden">
-					<Card className="shadow-none bg-transparent xl:p-0 border-none">
+				<div className="max-w-full flex flex-col gap-4 overflow-hidden">
+					<Card className="shadow-none bg-transparent py-2 xl:p-0 border-none">
 						<CardContent className="xl:p-0">
 							<div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2">
 								<div className="flex flex-col gap-2">
