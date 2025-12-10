@@ -20,7 +20,7 @@ export const CastCardCarousel = ({ person }: CastCardCarouselProps) => {
 	return (
 		<Link to="/person/$personId" params={{ personId: person.id.toString() }}>
 			<Card className="w-full min-w-42 lg:min-w-60 min-h-[250px]  overflow-hidden pt-0 select-none gap-4 pb-4">
-				<div className="aspect-[3/4] w-full overflow-hidden">
+				<div className="aspect-3/4 w-full overflow-hidden">
 					<img
 						src={imageUrl}
 						alt={person.name}
@@ -31,7 +31,7 @@ export const CastCardCarousel = ({ person }: CastCardCarouselProps) => {
 						className="h-full w-full object-cover"
 					/>
 				</div>
-				<CardHeader className="flex-grow justify-between gap-2">
+				<CardHeader className="grow justify-between gap-2">
 					<CardTitle
 						className="text-base leading-relaxed line-clamp-1"
 						title={person.name}

@@ -28,7 +28,7 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
 	return (
 		<Link to="/movies/$movieId" params={{ movieId: movie.id.toString() }}>
 			<Card className="w-full h-full overflow-hidden pt-0 flex flex-col select-none gap-2 shadow-none pb-4">
-				<div className="relative aspect-[2/3] w-full overflow-hidden">
+				<div className="relative aspect-3/4 md:aspect-2/3 w-full overflow-hidden">
 					<img
 						src={imageUrl}
 						alt={movie.title}
@@ -53,11 +53,11 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
 					</CardTitle>
 				</CardHeader>
 
-				<CardContent className="flex flex-col gap-4 flex-grow">
-					<p className="text-sm text-muted-foreground line-clamp-3 leading-normal min-h-[4rem]">
+				<CardContent className="flex flex-col gap-4 grow">
+					<p className="text-sm text-muted-foreground line-clamp-2 leading-normal">
 						{movie.overview ? movie.overview : m.overview_none()}
 					</p>
-					{movie.vote_count > 0 ? (
+					{movie.vote_count > 10 ? (
 						<div className="flex items-center gap-4 text-sm">
 							<div className="flex items-center gap-1">
 								<Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
