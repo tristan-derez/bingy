@@ -15,7 +15,8 @@ export function RootComponent() {
 			</div>
 			<TanstackDevtools
 				config={{
-					position: "bottom-left",
+					position: "top-left",
+					hideUntilHover: true,
 				}}
 				plugins={[
 					{
