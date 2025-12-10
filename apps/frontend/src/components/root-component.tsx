@@ -2,7 +2,7 @@ import { TanstackDevtools } from "@tanstack/react-devtools";
 import { HeadContent, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
-import Header from "./header-c";
+import Header from "./header";
 import { LightRays } from "./ui/light-rays";
 
 export function RootComponent() {
