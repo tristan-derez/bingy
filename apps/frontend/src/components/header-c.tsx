@@ -1,5 +1,4 @@
 import { Link, useRouteContext } from "@tanstack/react-router";
-
 import { useState } from "react";
 import { m } from "@/paraglide/messages";
 import { LocaleRegionDropdown } from "./locale-region-dropdown";
