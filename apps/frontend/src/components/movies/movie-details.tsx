@@ -102,7 +102,7 @@ export function MovieDetailView({
 					/>
 				</div>
 
-				<div className="max-w-full flex flex-col gap-4 overflow-hidden">
+				<div className="w-full flex flex-col gap-4 overflow-hidden">
 					<Card className="shadow-none bg-transparent py-2 xl:p-0 border-none">
 						<CardContent className="xl:p-0">
 							<div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2">
@@ -334,10 +334,12 @@ export function MovieDetailView({
 												className="flex items-center gap-2"
 												variant="outline"
 											>
-												<span
-													className={`fi fi-${company.origin_country.toLocaleLowerCase()}`}
-													style={{ width: 18, height: 14 }}
-												/>
+												{company.origin_country ? (
+													<span
+														className={`fi fi-${company.origin_country.toLocaleLowerCase()}`}
+														style={{ width: 18, height: 14 }}
+													/>
+												) : null}
 												<span className="font-medium">{company.name}</span>
 											</Badge>
 										),
