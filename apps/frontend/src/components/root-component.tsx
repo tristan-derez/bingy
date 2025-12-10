@@ -3,7 +3,6 @@ import { HeadContent, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
 import Header from "./Header";
-import { LightRays } from "./ui/light-rays";
 
 export function RootComponent() {
 	return (
@@ -25,7 +24,6 @@ export function RootComponent() {
 					TanStackQueryDevtools,
 				]}
 			/>
-			<LightRays />
 		</div>
 	);
 }
