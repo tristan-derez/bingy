@@ -11,7 +11,7 @@ export const Route = createFileRoute("/movies/")({
 
 function MoviesPage() {
 	return (
-		<div className="flex flex-col w-full p-4 space-y-4 gap-4">
+		<div className="flex flex-col w-full p-4 gap-4">
 			<NowPlayingMovies title={m.movies_now_playing_title()} />
 			<PopularMovies title={m.movies_popular_title()} />
 			<UpcomingMovies title={m.movies_upcoming_title()} />
