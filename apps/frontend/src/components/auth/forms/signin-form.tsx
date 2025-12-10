@@ -129,7 +129,7 @@ export function SignInForm() {
 			<Card className="border-none shadow-transparent p-0">
 				<MagicCard
 					gradientColor="var(--shadow-pointer)"
-					className="py-4 md:px-2 min-w-sm md:min-w-md"
+					className="py-4 md:px-2 min-w-2xs md:min-w-md lg:min-w-lg"
 				>
 					<CardHeader>
 						<CardTitle className="text-2xl">{m.signin_title()}</CardTitle>
@@ -213,14 +213,14 @@ export function SignInForm() {
 											) : (
 												m.btn_signin()
 											)}
-											{lastMethod === "email" && (
+											{lastMethod === "email" ? (
 												<Badge
 													variant="secondary"
-													className="absolute right-2 rounded-md"
+													className="hidden absolute right-2 rounded-md md:block text-xs overflow-hidden"
 												>
 													{m.signin_last_method_badge()}
 												</Badge>
-											)}
+											) : null}
 										</Button>
 									</div>
 								</fieldset>

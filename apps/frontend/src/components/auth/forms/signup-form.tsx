@@ -105,7 +105,7 @@ export function SignUpForm() {
 		<Card className="border-none p-0">
 			<MagicCard
 				gradientColor="var(--shadow-pointer)"
-				className="py-4 md:px-2 min-w-sm md:min-w-md"
+				className="py-4 md:px-2 min-w-2xs md:min-w-md lg:min-w-lg"
 			>
 				<CardHeader>
 					<CardTitle className="text-2xl">{m.signup_title()}</CardTitle>
