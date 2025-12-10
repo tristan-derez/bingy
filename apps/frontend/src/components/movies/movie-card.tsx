@@ -26,6 +26,7 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
 					<img
 						src={imageUrl}
 						alt={movie.title}
+						loading="lazy"
 						onError={(e) => {
 							const target = e.currentTarget;
 							if (target.src !== fallbackPoster) {

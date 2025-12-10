@@ -26,6 +26,7 @@ export const TvCard = ({ tvShow }: TvCardProps) => {
 					<img
 						src={imageUrl}
 						alt={tvShow.name}
+						loading="lazy"
 						onError={(e) => {
 							const target = e.currentTarget;
 							if (target.src !== fallbackPoster) {

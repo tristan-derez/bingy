@@ -35,6 +35,7 @@ export const MediaCard = ({ media }: MediaCardProps) => {
 					<img
 						src={imageUrl}
 						alt={title}
+						loading="lazy"
 						className="h-full w-full object-cover"
 						onError={(e) => {
 							const target = e.currentTarget;
