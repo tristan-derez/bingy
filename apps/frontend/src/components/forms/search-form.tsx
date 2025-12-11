@@ -6,7 +6,7 @@ import { m } from "@/paraglide/messages";
 import { searchFormSchema } from "@/schemas/search-form-schema";
 
 interface SearchFormProps {
-	initialQuery: string;
+	initialQuery: string | undefined;
 	currentPage: number;
 }
 
@@ -58,7 +58,7 @@ export function SearchForm({ initialQuery }: SearchFormProps) {
 						}
 					}}
 					placeholder={m.form_search_placeholder()}
-					className="flex rounded-md px-2 py-1"
+					className="flex rounded-md px-2 py-1 min-h-10"
 				/>
 				<Button
 					type="submit"

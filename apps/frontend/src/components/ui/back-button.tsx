@@ -1,17 +1,26 @@
 import { ArrowLeft } from "lucide-react";
-import { m } from "@/paraglide/messages";
 import { Button } from "./button";
 
 interface BackButtonProps {
 	onBack?: () => void;
 	style?: string;
-	variant?: string;
+	variant?: "ghost" | "default" | "outline" | "secondary" | "link";
+	text?: string;
 }
 
-export const BackButton = ({ onBack, style }: BackButtonProps) => {
+export const BackButton = ({
+	onBack,
+	style,
+	variant = "ghost",
+	text,
+}: BackButtonProps) => {
 	return (
-		<Button onClick={onBack} variant="outline" className={style}>
-			<ArrowLeft className="h-4 w-4" /> {m.btn_back()}
+		<Button
+			onClick={onBack}
+			variant={variant}
+			className={`${style} rounded-xl`}
+		>
+			<ArrowLeft className="h-4 w-4" /> {text ? text : null}
 		</Button>
 	);
 };

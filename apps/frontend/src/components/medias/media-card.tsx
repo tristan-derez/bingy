@@ -30,11 +30,12 @@ export const MediaCard = ({ media }: MediaCardProps) => {
 
 	return (
 		<Link to={linkTo} params={linkParams}>
-			<Card className="w-full min-w-42 lg:min-w-60 min-h-[250px]  overflow-hidden pt-0 select-none gap-4 pb-4">
+			<Card className="w-full h-full border-none bg-accent overflow-hidden pt-0 select-none gap-4 pb-4">
 				<div className="relative aspect-3/4 md:aspect-2/3 w-full overflow-hidden">
 					<img
 						src={imageUrl}
 						alt={title}
+						loading="lazy"
 						className="h-full w-full object-cover"
 						onError={(e) => {
 							const target = e.currentTarget;

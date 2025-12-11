@@ -51,7 +51,7 @@ export const MediasCarousel = ({ medias, title }: MediaCarouselProps) => {
 						{medias.map((media) => (
 							<div
 								key={`${carouselId}-${media.id}`}
-								className="flex-none w-[200px] lg:w-[250px]"
+								className="flex-none w-[200px]"
 							>
 								<MediaCard media={media} />
 							</div>

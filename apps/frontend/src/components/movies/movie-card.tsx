@@ -7,13 +7,7 @@ import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { Badge } from "../ui/badge";
-import {
-	Card,
-	CardContent,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "../ui/card";
+import { Card, CardContent, CardFooter } from "../ui/card";
 
 interface MovieCardProps {
 	movie: Schemas.Movie;
@@ -32,6 +26,7 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
 					<img
 						src={imageUrl}
 						alt={movie.title}
+						loading="lazy"
 						onError={(e) => {
 							const target = e.currentTarget;
 							if (target.src !== fallbackPoster) {
@@ -47,16 +42,7 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
 					)}
 				</div>
 
-				<CardHeader>
-					<CardTitle className="line-clamp-1 leading-normal">
-						{movie.title}
-					</CardTitle>
-				</CardHeader>
-
-				<CardContent className="flex flex-col gap-4 grow">
-					<p className="text-sm text-muted-foreground line-clamp-2 leading-normal">
-						{movie.overview ? movie.overview : m.overview_none()}
-					</p>
+				<CardContent className="flex flex-col gap-4 grow pt-2">
 					{movie.vote_count > 10 ? (
 						<div className="flex items-center gap-4 text-sm">
 							<div className="flex items-center gap-1">

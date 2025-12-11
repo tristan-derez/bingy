@@ -22,6 +22,7 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { MagicCard } from "@/components/ui/magic-card";
 import { authClient } from "@/lib/auth-client";
 import { config } from "@/lib/env";
 import { m } from "@/paraglide/messages";
@@ -67,58 +68,65 @@ export function ForgotPasswordForm({ email }: ForgotPasswordFormProps) {
 	};
 
 	return (
-		<Card className="mx-auto max-w-sm min-w-[420px]">
-			<CardHeader>
-				<CardTitle className="text-2xl">{m.forgot_password_title()}</CardTitle>
-				<CardDescription>
-					<p>{m.forgot_password_desc()}</p>
-				</CardDescription>
-			</CardHeader>
-			<CardContent>
-				<Form {...form}>
-					<form
-						onSubmit={form.handleSubmit(onFormSubmit)}
-						className="grid gap-4"
-					>
-						<fieldset disabled={isSubmitting}>
-							<FormField
-								control={form.control}
-								name="email"
-								render={({ field }) => (
-									<FormItem className="grid gap-2">
-										<FormLabel htmlFor="email">
-											{m.form_email_label()}
-										</FormLabel>
-										<FormControl>
-											<Input
-												id={`${id}-email`}
-												type="email"
-												autoComplete="email"
-												required
-												{...field}
-											/>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							<Button
-								type="submit"
-								className="w-full mt-4 disabled:bg-gray-300 disabled:text-gray-500"
-							>
-								{isSubmitting ? (
-									<span className="flex items-center justify-center gap-2">
-										<Loader2 className="animate-spin h-4 w-4" />
-										{m.btn_sending_email()}
-									</span>
-								) : (
-									m.forgot_password_title()
-								)}
-							</Button>
-						</fieldset>
-					</form>
-				</Form>
-			</CardContent>
+		<Card className="border-none p-0">
+			<MagicCard
+				gradientColor="var(--shadow-pointer)"
+				className="py-4 md:px-2 min-w-[300px] md:min-w-md lg:min-w-lg"
+			>
+				<CardHeader>
+					<CardTitle className="text-2xl">
+						{m.forgot_password_title()}
+					</CardTitle>
+					<CardDescription>
+						<p>{m.forgot_password_desc()}</p>
+					</CardDescription>
+				</CardHeader>
+				<CardContent className="pt-2">
+					<Form {...form}>
+						<form
+							onSubmit={form.handleSubmit(onFormSubmit)}
+							className="grid gap-4"
+						>
+							<fieldset disabled={isSubmitting}>
+								<FormField
+									control={form.control}
+									name="email"
+									render={({ field }) => (
+										<FormItem className="grid gap-2">
+											<FormLabel htmlFor="email">
+												{m.form_email_label()}
+											</FormLabel>
+											<FormControl>
+												<Input
+													id={`${id}-email`}
+													type="email"
+													autoComplete="email"
+													required
+													{...field}
+												/>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<Button
+									type="submit"
+									className="w-full mt-4 disabled:bg-gray-300 disabled:text-gray-500"
+								>
+									{isSubmitting ? (
+										<span className="flex items-center justify-center gap-2">
+											<Loader2 className="animate-spin h-4 w-4" />
+											{m.btn_sending_email()}
+										</span>
+									) : (
+										m.forgot_password_title()
+									)}
+								</Button>
+							</fieldset>
+						</form>
+					</Form>
+				</CardContent>
+			</MagicCard>
 		</Card>
 	);
 }

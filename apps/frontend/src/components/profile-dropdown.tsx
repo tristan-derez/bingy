@@ -1,5 +1,6 @@
 import { Link, useNavigate, useRouter } from "@tanstack/react-router";
 import type { Session as BaseSession, User } from "better-auth";
+import { ExternalLink } from "lucide-react";
 import { useState } from "react";
 import { FaGithub } from "react-icons/fa";
 import { IoLogOutSharp, IoSettingsSharp } from "react-icons/io5";
@@ -54,8 +55,8 @@ export const ProfileDropdown = ({
 						<button
 							type="button"
 							className={cn(
-								"flex items-center w-full gap-8 p-3 rounded-md border transition-all duration-200 focus:outline-none",
-								"bg-card border-border hover:bg-card-foreground/10 hover:border-ring",
+								"flex items-center h-10 gap-2 p-3 rounded-md border transition-all duration-200 focus:outline-none",
+								"bg-transparent border-border hover:bg-card-foreground/10 hover:border-ring",
 							)}
 						>
 							<div className="text-left flex-1">
@@ -64,7 +65,7 @@ export const ProfileDropdown = ({
 								</div>
 							</div>
 							<div className="relative">
-								<div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 via-pink-500 to-orange-400 p-0.5">
+								<div className="w-8 h-8 rounded-full p-0.5">
 									<div className="w-full h-full rounded-full overflow-hidden bg-card">
 										<Avatar className="w-full h-full object-cover rounded-full">
 											<AvatarImage
@@ -138,9 +139,19 @@ export const ProfileDropdown = ({
 							</Link>
 						</DropdownMenuItem>
 						<DropdownMenuSeparator className="bg-border" />
-						<DropdownMenuItem>
-							<FaGithub />
-							<a href="https://github.com/tristan-derez/bingy">GitHub</a>
+						<DropdownMenuItem asChild>
+							<a
+								href="https://github.com/tristan-derez/bingy"
+								target="_blank"
+								rel="noopener noreferrer"
+								className="flex items-center justify-between"
+							>
+								<div className="flex items-center gap-2">
+									<FaGithub />
+									<span>GitHub</span>
+								</div>
+								<ExternalLink className="text-muted-foreground" />
+							</a>
 						</DropdownMenuItem>
 						<DropdownMenuItem>
 							<MdSupport />

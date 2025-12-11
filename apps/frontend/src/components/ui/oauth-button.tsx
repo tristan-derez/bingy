@@ -39,14 +39,14 @@ function OAuthButton({
 					>
 						<Icon className="h-5 w-5" />
 						<p>{text}</p>
-						{lastMethod && (
+						{lastMethod ? (
 							<Badge
 								variant="secondary"
-								className="absolute right-2 rounded-md"
+								className="hidden right-2 rounded-md md:absolute"
 							>
 								{m.signin_last_method_badge()}
 							</Badge>
-						)}
+						) : null}
 					</Button>
 				</TooltipTrigger>
 				<TooltipContent>

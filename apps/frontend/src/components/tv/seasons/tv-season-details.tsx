@@ -117,12 +117,12 @@ export function TvSeasonDetailsView({
 		<div className="container">
 			<BackButton onBack={onBack} />
 
-			<div className="grid xl:grid-cols-[auto_1fr] gap-4 pt-2 justify-items-center">
-				<div className="flex flex-col gap-2 items-center xl:items-start max-w-[600px]">
+			<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
+				<div className="flex flex-col gap-2 items-center lg:items-start max-w-[250px] md:max-w-[300px] lg:max-w-[400px]">
 					<img
 						src={imageUrl}
 						alt={tvSeason.name}
-						className="rounded-lg shadow-lg w-full xl:max-h-[600px]"
+						className="rounded-lg shadow-lg w-full aspect-2/3 max-h-90 xl:max-h-[600px]"
 						onError={(e) => {
 							const target = e.currentTarget;
 							if (target.src !== fallbackPoster) {
@@ -137,7 +137,7 @@ export function TvSeasonDetailsView({
 					/>
 				</div>
 
-				<div className="w-full flex flex-col gap-4 overflow-hidden justify-start">
+				<div className="w-full flex flex-col gap-4 overflow-hidden">
 					<Card className="shadow-none bg-transparent xl:p-0 border-none">
 						<CardContent className="xl:p-0">
 							<div className="flex flex-col gap-2">

@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
 import React, { useId } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
@@ -41,7 +41,6 @@ import { getRandomAvatarUrl } from "@/utils/avatar-generator";
 
 export function SignUpForm() {
 	const [isSubmitting, setIsSubmitting] = React.useState(false);
-	const isLoading = useRouterState({ select: (s) => s.isLoading });
 	const navigate = useNavigate();
 	const id = useId();
 
@@ -99,13 +98,13 @@ export function SignUpForm() {
 		}
 	};
 
-	const isRegistering = isLoading || isSubmitting;
+	const isRegistering = isSubmitting;
 
 	return (
 		<Card className="border-none p-0">
 			<MagicCard
 				gradientColor="var(--shadow-pointer)"
-				className="py-4 md:px-2 min-w-sm md:min-w-md"
+				className="py-4 md:px-2 min-w-2xs md:min-w-md lg:min-w-lg"
 			>
 				<CardHeader>
 					<CardTitle className="text-2xl">{m.signup_title()}</CardTitle>

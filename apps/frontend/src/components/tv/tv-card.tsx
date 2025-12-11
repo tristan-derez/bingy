@@ -4,16 +4,9 @@ import { Calendar, Star, Users } from "lucide-react";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import { localeRegionAtom } from "@/lib/atoms/region";
-import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { Badge } from "../ui/badge";
-import {
-	Card,
-	CardContent,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "../ui/card";
+import { Card, CardContent, CardFooter } from "../ui/card";
 
 interface TvCardProps {
 	tvShow: Schemas.Tv;
@@ -33,6 +26,7 @@ export const TvCard = ({ tvShow }: TvCardProps) => {
 					<img
 						src={imageUrl}
 						alt={tvShow.name}
+						loading="lazy"
 						onError={(e) => {
 							const target = e.currentTarget;
 							if (target.src !== fallbackPoster) {
@@ -47,16 +41,8 @@ export const TvCard = ({ tvShow }: TvCardProps) => {
 						</Badge>
 					)}
 				</div>
-				<CardHeader>
-					<CardTitle className="line-clamp-1 leading-normal">
-						{tvShow.name}
-					</CardTitle>
-				</CardHeader>
-				<CardContent className="flex flex-col gap-4 grow">
-					<p className="text-sm text-muted-foreground line-clamp-2 leading-normal">
-						{tvShow.overview ? tvShow.overview : m.overview_none()}
-					</p>
 
+				<CardContent className="flex flex-col gap-4 grow">
 					{tvShow.vote_count > 10 ? (
 						<div className="flex items-center gap-4 text-sm">
 							<div className="flex items-center gap-1">
