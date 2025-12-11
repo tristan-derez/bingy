@@ -1,5 +1,5 @@
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
-import { createFileRoute, redirect, useRouter } from "@tanstack/react-router";
+import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import { z } from "zod";
 import { fetchSearchMulti } from "@/api/search";
@@ -7,9 +7,10 @@ import { SearchForm } from "@/components/forms/search-form";
 import { SearchPagination } from "@/components/search/search-pagination";
 import { SearchResultsContainer } from "@/components/search/search-results-container";
 import { Button } from "@/components/ui/button";
+import { m } from "@/paraglide/messages";
 
 const searchSchema = z.object({
-	q: z.string(),
+	q: z.string().optional(),
 	language: z.string().optional().default("en-US"),
 	page: z.number().optional().default(1),
 });
@@ -28,28 +29,30 @@ export const Route = createFileRoute("/search")({
 		language: search.language,
 		page: search.page,
 	}),
-	beforeLoad: ({ search }) => {
-		if (!search.q) throw redirect({ to: ".." });
-	},
 	loader: async ({ deps: search, context }) => {
+		if (!search.q) {
+			return { q: undefined };
+		}
+
 		await context.queryClient.ensureQueryData(
 			searchQueryOptions(search.q, search.language, search.page),
 		);
 
-		return {
-			q: search.q,
-		};
+		return { q: search.q };
 	},
 	component: SearchRoute,
 	head: (ctx) => {
+		const query = ctx.loaderData?.q;
 		return {
 			meta: [
 				{
-					title: `Bingy - "${ctx.loaderData?.q}" search results`,
+					title: query ? `Bingy - "${query}" search results` : "Bingy - Search",
 				},
 				{
 					name: "description",
-					content: `Search results for "${ctx.loaderData?.q}" on Bingy.`,
+					content: query
+						? `Search results for "${query}" on Bingy.`
+						: "Search for movies, TV shows, and people on Bingy.",
 				},
 			],
 		};
@@ -58,10 +61,11 @@ export const Route = createFileRoute("/search")({
 
 function SearchRoute() {
 	const router = useRouter();
-
 	const { q, language, page } = Route.useSearch();
 
-	const { data } = useSuspenseQuery(searchQueryOptions(q, language, page));
+	const query = q
+		? useSuspenseQuery(searchQueryOptions(q, language, page))
+		: null;
 
 	return (
 		<div className="container flex flex-col gap-4">
@@ -75,13 +79,21 @@ function SearchRoute() {
 
 			<SearchForm initialQuery={q} currentPage={page} />
 
-			<SearchResultsContainer results={data.results} query={q} />
-			<SearchPagination
-				currentPage={page}
-				totalPages={data.total_pages}
-				query={q}
-				language={language}
-			/>
+			{q && query ? (
+				<>
+					<SearchResultsContainer results={query.data.results} query={q} />
+					<SearchPagination
+						currentPage={page}
+						totalPages={query.data.total_pages}
+						query={q}
+						language={language}
+					/>
+				</>
+			) : (
+				<div className="text-center text-muted-foreground py-8">
+					{m.form_search_no_query()}
+				</div>
+			)}
 		</div>
 	);
 }
