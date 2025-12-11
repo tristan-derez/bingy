@@ -40,7 +40,7 @@ export const Navbar = ({ children, className }: NavbarProps) => {
 		<motion.div
 			ref={ref}
 			initial={{ top: 0 }}
-			animate={{ top: visible ? 30 : 0 }}
+			animate={{ top: visible ? 30 : 30 }}
 			transition={{ type: "tween", stiffness: 350 }}
 			className={cn(
 				"fixed top-0 inset-x-0 z-99 w-full px-2 md:px-6 lg:px-12 2xl:px-32",
@@ -111,7 +111,9 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
 								className="absolute inset-0 h-full w-full rounded-full bg-brand"
 							/>
 						)}
-						{item.icon && <span className="relative z-20">{item.icon}</span>}
+						{item.icon ? (
+							<span className="relative z-20">{item.icon}</span>
+						) : null}
 						<span className="relative z-20">{item.name}</span>
 					</button>
 				) : (
@@ -120,7 +122,7 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
 						to={item.link}
 						onMouseEnter={() => setHovered(idx)}
 						onClick={onItemClick}
-						className="relative px-4 py-2 [&.active]:font-bold"
+						className="relative px-4 py-2 flex items-center gap-2 [&.active]:font-bold"
 					>
 						{hovered === idx && (
 							<motion.div
@@ -128,6 +130,9 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
 								className="absolute inset-0 h-full w-full rounded-full bg-brand"
 							/>
 						)}
+						{item.icon ? (
+							<span className="relative z-20">{item.icon}</span>
+						) : null}
 						<span className="relative z-20">{item.name}</span>
 					</Link>
 				),
