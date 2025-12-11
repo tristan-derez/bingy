@@ -72,12 +72,9 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => {
 				stiffness: 350,
 				damping: 50,
 			}}
-			style={{
-				backgroundColor: "inherit",
-			}}
 			className={cn(
-				"relative z-60 hidden w-full min-w-[600px] max-w-full mx-auto flex-row items-center justify-between self-start rounded-full bg-transparent px-4 py-2 lg:flex",
-				visible && "bg-card",
+				"relative z-60 hidden w-full min-w-[600px] max-w-full mx-auto flex-row items-center justify-between self-start rounded-full px-4 py-2 lg:flex",
+				visible && "border-none bg-card/70 backdrop-blur-lg shadow-sm",
 				className,
 			)}
 		>
@@ -93,7 +90,7 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
 		<motion.div
 			onMouseLeave={() => setHovered(null)}
 			className={cn(
-				"hidden flex-row items-center justify-center space-x-2 text-sm font-medium text-zinc-600 transition duration-200 hover:text-card lg:flex lg:space-x-2",
+				"hidden flex-row items-center justify-center space-x-2 text-sm font-medium transition duration-200 lg:flex lg:space-x-2",
 				className,
 			)}
 		>
@@ -102,7 +99,7 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
 					to={item.link}
 					onMouseEnter={() => setHovered(idx)}
 					onClick={onItemClick}
-					className="relative px-4 py-2 text-foreground [&.active]:font-bold"
+					className="relative px-4 py-2 [&.active]:font-bold"
 					key={`link-${item.name}`}
 				>
 					{hovered === idx && (
