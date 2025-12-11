@@ -19,7 +19,9 @@ interface NavBodyProps {
 interface NavItemsProps {
 	items: {
 		name: string;
-		link: string;
+		link?: string;
+		icon?: React.ReactNode;
+		onClick?: () => void;
 	}[];
 	className?: string;
 	onItemClick?: () => void;
@@ -94,23 +96,42 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
 				className,
 			)}
 		>
-			{items.map((item, idx) => (
-				<Link
-					to={item.link}
-					onMouseEnter={() => setHovered(idx)}
-					onClick={onItemClick}
-					className="relative px-4 py-2 [&.active]:font-bold"
-					key={`link-${item.name}`}
-				>
-					{hovered === idx && (
-						<motion.div
-							layoutId="hovered"
-							className="absolute inset-0 h-full w-full rounded-full bg-card"
-						/>
-					)}
-					<span className="relative z-20">{item.name}</span>
-				</Link>
-			))}
+			{items.map((item, idx) =>
+				item.onClick ? (
+					<button
+						key={item.name}
+						type="button"
+						onMouseEnter={() => setHovered(idx)}
+						onClick={item.onClick}
+						className="relative px-4 py-2 flex items-center gap-2 hover:cursor-pointer"
+					>
+						{hovered === idx && (
+							<motion.div
+								layoutId="hovered"
+								className="absolute inset-0 h-full w-full rounded-full bg-brand"
+							/>
+						)}
+						{item.icon && <span className="relative z-20">{item.icon}</span>}
+						<span className="relative z-20">{item.name}</span>
+					</button>
+				) : (
+					<Link
+						key={item.name}
+						to={item.link}
+						onMouseEnter={() => setHovered(idx)}
+						onClick={onItemClick}
+						className="relative px-4 py-2 [&.active]:font-bold"
+					>
+						{hovered === idx && (
+							<motion.div
+								layoutId="hovered"
+								className="absolute inset-0 h-full w-full rounded-full bg-brand"
+							/>
+						)}
+						<span className="relative z-20">{item.name}</span>
+					</Link>
+				),
+			)}
 		</motion.div>
 	);
 };

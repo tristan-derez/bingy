@@ -44,11 +44,16 @@ export default function Header() {
 			requiresAuth: false,
 			hideWhenAuth: false,
 		},
+		{
+			name: m.header_link_search(),
+			icon: <BiSearch />,
+			onClick: () => setSearchOpen(true),
+		},
 	] as const;
 
 	const navItems = allNavItems.filter((item) => {
-		if (item.requiresAuth && !session) return false;
-		if (item.hideWhenAuth && session) return false;
+		if ("requiresAuth" in item && item.requiresAuth && !session) return false;
+		if ("hideWhenAuth" in item && item.hideWhenAuth && session) return false;
 		return true;
 	});
 
@@ -83,7 +88,6 @@ export default function Header() {
 					<NavbarLogo />
 					<div className="flex items-center gap-2">
 						<NavItems items={navItems} />
-						<SearchCombobox />
 					</div>
 					<div className="flex items-center gap-4">
 						<LocaleRegionDropdown />
