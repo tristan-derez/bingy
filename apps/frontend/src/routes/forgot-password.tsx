@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 import { ForgotPasswordForm } from "@/components/auth/forms/forgot-password-form";
+import { CenteredLayout } from "@/components/layout/centered-layout";
 
 const searchSchema = z.object({
 	email: z.email().optional(),
@@ -15,8 +16,8 @@ function ForgotPasswordPage() {
 	const { email } = Route.useSearch();
 
 	return (
-		<div>
+		<CenteredLayout>
 			<ForgotPasswordForm email={email} />
-		</div>
+		</CenteredLayout>
 	);
 }
