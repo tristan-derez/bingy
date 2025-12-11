@@ -35,14 +35,10 @@ export const MobileBottomNav = ({ items, className }: BottomNavProps) => {
 		<motion.nav
 			initial={{ y: 100 }}
 			animate={{ y: visible ? 0 : 100 }}
-			transition={{ type: "spring", stiffness: 300, damping: 30 }}
-			className={cn(
-				"fixed bottom-0 left-0 right-0 z-50 lg:hidden",
-				"px-4 py-4",
-				className,
-			)}
+			transition={{ type: "spring", stiffness: 300, damping: 40 }}
+			className={cn("fixed bottom-0 left-0 right-0 z-50 lg:hidden", className)}
 		>
-			<div className="flex items-center justify-around rounded-md border border-border px-1 py-1.5 bg-card/70 backdrop-blur-lg shadow-sm">
+			<div className="flex items-center justify-around rounded-t-lg border py-1 px-1 border-border bg-card/70 backdrop-blur-lg shadow-sm">
 				{items.map((item) =>
 					item.onClick ? (
 						<button
