@@ -1,10 +1,10 @@
 import { CenteredLayout } from "../layout/centered-layout";
-import { LoaderOne } from "../ui/loader";
+import { LoaderTwo } from "../ui/loader";
 
 export function LoadingCentered() {
 	return (
 		<CenteredLayout>
-			<LoaderOne />
+			<LoaderTwo />
 		</CenteredLayout>
 	);
 }
