@@ -43,7 +43,7 @@ export const MobileBottomNav = ({ items, className }: BottomNavProps) => {
 			}}
 			className={cn("fixed bottom-0 left-0 right-0 z-50 lg:hidden", className)}
 		>
-			<div className="flex items-center justify-around rounded-t-lg border py-1 px-1 border-border bg-card/70 backdrop-blur-lg shadow-sm">
+			<div className="flex items-center justify-around rounded-t-lg border py-4 px-4 border-border bg-card/70 backdrop-blur-lg shadow-sm">
 				{items.map((item) =>
 					item.onClick ? (
 						<button
@@ -53,7 +53,6 @@ export const MobileBottomNav = ({ items, className }: BottomNavProps) => {
 							className="flex flex-col items-center gap-1 px-2 py-1 text-muted-foreground transition-colors hover:text-foreground"
 						>
 							<span className="text-xl">{item.icon}</span>
-							<span className="text-xs font-medium">{item.name}</span>
 						</button>
 					) : (
 						<Link
@@ -62,7 +61,6 @@ export const MobileBottomNav = ({ items, className }: BottomNavProps) => {
 							className="flex flex-col items-center gap-1 px-2 py-1 text-muted-foreground transition-colors [&.active]:text-foreground"
 						>
 							<span className="text-xl">{item.icon}</span>
-							<span className="text-xs font-medium">{item.name}</span>
 						</Link>
 					),
 				)}

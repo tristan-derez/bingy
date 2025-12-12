@@ -1,4 +1,5 @@
 import { useRouteContext } from "@tanstack/react-router";
+import { User } from "lucide-react";
 import { useState } from "react";
 import { BiHomeAlt, BiMovie, BiSearch, BiTv } from "react-icons/bi";
 import { m } from "@/paraglide/messages";
@@ -78,6 +79,11 @@ export default function Header() {
 			icon: <BiSearch />,
 			onClick: () => setSearchOpen(true),
 		},
+		{
+			name: m.header_link_profile(),
+			link: "/profile",
+			icon: <User />,
+		},
 	];
 
 	return (
@@ -92,7 +98,11 @@ export default function Header() {
 					<div className="flex items-center gap-4">
 						<LocaleRegionDropdown />
 
-						{!session && (
+						{session ? (
+							<ProfileDropdown
+								session={{ ...session.session, user: session.user }}
+							/>
+						) : (
 							<>
 								<NavbarButton variant="secondary" to="/signin">
 									{m.header_btn_sign_in()}
@@ -101,12 +111,6 @@ export default function Header() {
 									{m.header_btn_get_started()}
 								</NavbarButton>
 							</>
-						)}
-
-						{session && (
-							<ProfileDropdown
-								session={{ ...session.session, user: session.user }}
-							/>
 						)}
 					</div>
 				</NavBody>
@@ -118,11 +122,8 @@ export default function Header() {
 				dropdown={
 					<div className="flex items-center gap-3">
 						<LocaleRegionDropdown />
-						{session ? (
-							<ProfileDropdown
-								session={{ ...session.session, user: session.user }}
-							/>
-						) : (
+
+						{session ? null : (
 							<NavbarButton
 								variant="primary"
 								to="/signin"
