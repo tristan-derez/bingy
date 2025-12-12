@@ -1,9 +1,11 @@
 import { createFileRoute, redirect, useRouter } from "@tanstack/react-router";
+import { useAtomValue } from "jotai";
 import { z } from "zod";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
 import { LoadingCentered } from "@/components/loading/loading-centered";
 import { CreditEpisodesContainer } from "@/components/tv/episodes/credit-episodes/credit-episodes-container";
 import { useCredit } from "@/hooks/useCredit";
+import { localeRegionAtom } from "@/lib/atoms/region";
 
 export const Route = createFileRoute("/tv/$tvId_/episodes")({
 	component: CreditEpisodesPage,
@@ -22,12 +24,13 @@ export const Route = createFileRoute("/tv/$tvId_/episodes")({
 function CreditEpisodesPage() {
 	const { credit_id } = Route.useSearch();
 	const router = useRouter();
+	const localeRegion = useAtomValue(localeRegionAtom);
 
 	const {
 		data: creditDetails,
 		isLoading,
 		isError,
-	} = useCredit(String(credit_id));
+	} = useCredit(String(credit_id), { language: localeRegion });
 
 	if (isLoading) {
 		return <LoadingCentered />;
