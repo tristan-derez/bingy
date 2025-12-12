@@ -4,19 +4,25 @@ import { logger } from "#lib/logger";
 import { serveInternalServerError, serveNotFound } from "#lib/responses/error";
 import { serveData } from "#lib/responses/resp";
 import { TmdbError, tmdbClient } from "#lib/tmdb/tmdb.client";
-import { creditIdSchemas } from "#web/validators/query-param";
+import {
+	creditIdSchemas,
+	languageQuerySchema,
+} from "#web/validators/query-param";
 
 const creditRoutes = new Hono();
 
 creditRoutes.get(
 	"/:credit_id",
 	zValidator("param", creditIdSchemas),
+	zValidator("query", languageQuerySchema),
 	async (c) => {
 		const { credit_id } = c.req.valid("param");
+		const { language } = c.req.valid("query");
 
 		try {
 			const results = await tmdbClient.get("/credit/{credit_id}", {
 				path: { credit_id },
+				query: { language },
 			});
 			return serveData(c, results);
 		} catch (error) {

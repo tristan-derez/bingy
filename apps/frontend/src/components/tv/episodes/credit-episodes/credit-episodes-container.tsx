@@ -1,8 +1,10 @@
 import { useQueries } from "@tanstack/react-query";
+import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
 import { fetchTvSeasonResources } from "@/api/tv";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
 import { LoadingCentered } from "@/components/loading/loading-centered";
+import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { CreditEpisodesList } from "./credit-episodes-list";
 
@@ -15,6 +17,8 @@ export const CreditEpisodesContainer = ({
 	creditDetails,
 	onBack,
 }: CreditEpisodesContainerProps) => {
+	const localeRegion = useAtomValue(localeRegionAtom);
+
 	// movies should not be accessible from there
 	if (creditDetails.media.media_type !== "tv") {
 		return (
@@ -53,7 +57,7 @@ export const CreditEpisodesContainer = ({
 				const response = await fetchTvSeasonResources(
 					tvId,
 					season.season_number,
-					{},
+					{ params: { language: localeRegion } },
 				);
 				return response as Schemas.TvSeasonDetails;
 			},

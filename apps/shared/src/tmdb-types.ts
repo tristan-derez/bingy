@@ -1243,6 +1243,7 @@ export namespace Endpoints {
 		path: "/credit/{credit_id}";
 		parameters: {
 			path: Required<{ credit_id: string }>;
+			query: Partial<{ language: string }>;
 		};
 		response: Schemas.CreditDetails;
 	};
@@ -2159,9 +2160,8 @@ export type RequiredKeys<T> = {
 	[P in keyof T]-?: undefined extends T[P] ? never : P;
 }[keyof T];
 
-export type MaybeOptionalArg<T> = RequiredKeys<T> extends never
-	? [config?: T]
-	: [config: T];
+export type MaybeOptionalArg<T> =
+	RequiredKeys<T> extends never ? [config?: T] : [config: T];
 // </ApiClientTypes>
 
 /**
