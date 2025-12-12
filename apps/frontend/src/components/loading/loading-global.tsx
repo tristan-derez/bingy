@@ -19,9 +19,7 @@ export function GlobalLoadingIndicator() {
 
 	return (
 		<div className="fixed inset-0 bg-black/20 flex items-center justify-center z-50">
-			<div className="bg-card text-foreground rounded-sm p-8 shadow-lg">
-				<LoaderTwo />
-			</div>
+			<LoaderTwo />
 		</div>
 	);
 }
