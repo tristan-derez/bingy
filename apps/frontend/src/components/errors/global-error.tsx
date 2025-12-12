@@ -5,7 +5,6 @@ import {
 	CardDescription,
 	CardTitle,
 } from "@/components/ui/card";
-import { LightRays } from "../ui/light-rays";
 
 type GlobalErrorProps = {
 	error: unknown;
@@ -30,7 +29,6 @@ export function GlobalError({ error }: GlobalErrorProps) {
 					</Button>
 				</CardContent>
 			</Card>
-			<LightRays />
 		</div>
 	);
 }

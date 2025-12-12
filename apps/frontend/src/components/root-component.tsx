@@ -5,7 +5,6 @@ import { config } from "@/lib/env";
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
 import Header from "./header";
 import { GlobalLoadingIndicator } from "./loading/loading-global";
-import { LightRays } from "./ui/light-rays";
 
 export function RootComponent() {
 	const isProd = config.appEnv === "production";
@@ -33,7 +32,6 @@ export function RootComponent() {
 					]}
 				/>
 			) : null}
-			<LightRays />
 		</div>
 	);
 }
