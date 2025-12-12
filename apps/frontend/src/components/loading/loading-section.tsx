@@ -1,4 +1,4 @@
-import { LoaderOne } from "../ui/loader";
+import { LoaderTwo } from "../ui/loader";
 
 type LoadingSectionProps = {
 	title: string;
@@ -9,7 +9,7 @@ export function LoadingSection({ title }: LoadingSectionProps) {
 		<section className="flex flex-col gap-4 min-h-[496px] pb-4">
 			<h2 className="text-xl font-semibold">{title}</h2>
 			<div className="flex items-center justify-center py-12 min-h-[404px]">
-				<LoaderOne />
+				<LoaderTwo />
 			</div>
 		</section>
 	);
