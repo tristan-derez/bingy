@@ -67,7 +67,7 @@ export const LoaderTwo = () => {
 				animate={{
 					x: [0, 20, 0],
 				}}
-				className="h-4 w-4 rounded-full bg-muted shadow-md"
+				className="h-4 w-4 rounded-full bg-brand shadow-md"
 			/>
 			<motion.div
 				initial={{
@@ -77,7 +77,7 @@ export const LoaderTwo = () => {
 					x: [0, 20, 0],
 				}}
 				transition={transition(0.4)}
-				className="h-4 w-4 -translate-x-2 rounded-full bg-muted shadow-md"
+				className="h-4 w-4 -translate-x-2 rounded-full bg-brand/50 shadow-md"
 			/>
 			<motion.div
 				initial={{
@@ -87,7 +87,7 @@ export const LoaderTwo = () => {
 					x: [0, 20, 0],
 				}}
 				transition={transition(0.8)}
-				className="h-4 w-4 -translate-x-4 rounded-full bg-muted shadow-md"
+				className="h-4 w-4 -translate-x-4 rounded-full bg-brand/70 shadow-md"
 			/>
 		</div>
 	);
