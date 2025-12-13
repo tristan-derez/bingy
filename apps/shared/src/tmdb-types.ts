@@ -467,7 +467,7 @@ export namespace Schemas {
 	export type MediaMulti = Pretty<Media | PersonExtended>;
 
 	export type MovieDetails = Pretty<
-		Omit<MovieMedia, "genre_ids"> & {
+		Omit<MovieMedia, "genre_ids" | "media_type"> & {
 			belongs_to_collection: CollectionItem | null;
 			budget: number;
 			genres: Genre[];
