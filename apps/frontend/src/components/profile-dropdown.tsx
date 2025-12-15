@@ -4,7 +4,7 @@ import { ExternalLink } from "lucide-react";
 import { useState } from "react";
 import { FaGithub } from "react-icons/fa";
 import { IoLogOutSharp, IoSettingsSharp } from "react-icons/io5";
-import { MdSupport } from "react-icons/md";
+import { MdSupport, MdWatchLater } from "react-icons/md";
 import { PiUserFill } from "react-icons/pi";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
@@ -130,6 +130,12 @@ export const ProfileDropdown = ({
 							<Link to="/profile" onClick={onLinkClick}>
 								<PiUserFill />
 								{m.dropdown_profile_text()}
+							</Link>
+						</DropdownMenuItem>
+						<DropdownMenuItem asChild>
+							<Link to="/lists/watchlist" onClick={onLinkClick}>
+								<MdWatchLater />
+								{m.dropdown_watchlist_text()}
 							</Link>
 						</DropdownMenuItem>
 						<DropdownMenuItem asChild>
