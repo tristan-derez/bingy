@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useRouteContext } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import { Calendar, Clock, ExternalLink, Star } from "lucide-react";
 import { useId } from "react";
@@ -21,6 +21,7 @@ import { formatRuntime } from "@/utils/format-runtime";
 import { shortenCountryName } from "@/utils/shorten-country-name";
 import { CollectionCard } from "../collections/collection-card";
 import { ResourceNotFound } from "../errors/resource-not-found";
+import { ToggleWatchlistButton } from "../lists/media/toggle-watchlist-button";
 import { LoadingCentered } from "../loading/loading-centered";
 import { MediaOverview } from "../medias/overview";
 import { CastCarousel } from "../person/cast-carousel";
@@ -52,6 +53,7 @@ export function MovieDetailView({
 	isError,
 	onBack,
 }: MovieDetailViewProps) {
+	const { session } = useRouteContext({ from: "__root__" });
 	const id = useId();
 	const localeRegion = useAtomValue(localeRegionAtom);
 	const region = useAtomValue(regionAtom);
@@ -124,10 +126,9 @@ export function MovieDetailView({
 										))}
 									</div>
 								</div>
-
-								{Object.keys(socials).length > 0 ? (
+								{session ? (
 									<div className="lg:self-start mt-3 lg:pr-2">
-										<SocialLinks socials={socials} />
+										<ToggleWatchlistButton movie={movie} />
 									</div>
 								) : null}
 							</div>
@@ -150,8 +151,13 @@ export function MovieDetailView({
 								: undefined
 						}
 					>
-						<CardHeader>
+						<CardHeader className="flex flex-row items-center justify-between w-full">
 							<CardTitle>{m.movie_details_title()}</CardTitle>
+							{Object.keys(socials).length > 0 ? (
+								<div className="ml-auto">
+									<SocialLinks socials={socials} />
+								</div>
+							) : null}
 						</CardHeader>
 						<CardContent className="flex flex-col gap-4">
 							<MediaOverview overview={movie.overview} bg={backgroundImage} />

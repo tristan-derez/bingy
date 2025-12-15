@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useRouteContext } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import { Calendar, ExternalLink, Layers, Star, Tv } from "lucide-react";
 import type { Schemas } from "shared";
@@ -20,6 +20,7 @@ import {
 import { formatDate } from "@/utils/format-date";
 import { shortenCountryName } from "@/utils/shorten-country-name";
 import { ResourceNotFound } from "../errors/resource-not-found";
+import { ToggleWatchlistButton } from "../lists/media/toggle-watchlist-button";
 import { LoadingCentered } from "../loading/loading-centered";
 import { MediaOverview } from "../medias/overview";
 import { CastCarousel } from "../person/cast-carousel";
@@ -48,6 +49,7 @@ export function TvDetailsView({
 	isError,
 	onBack,
 }: TvDetailViewProps) {
+	const { session } = useRouteContext({ from: "__root__" });
 	const localeRegion = useAtomValue(localeRegionAtom);
 	const region = useAtomValue(regionAtom);
 
@@ -118,11 +120,11 @@ export function TvDetailsView({
 									</div>
 								</div>
 
-								{Object.keys(socials).length > 0 && (
+								{session ? (
 									<div className="lg:self-start mt-3 lg:pr-2">
-										<SocialLinks socials={socials} />
+										<ToggleWatchlistButton tvShow={tv} />
 									</div>
-								)}
+								) : null}
 							</div>
 						</CardContent>
 					</Card>
@@ -139,11 +141,16 @@ export function TvDetailsView({
 								: undefined
 						}
 					>
-						<CardHeader className="text-dark-card-foreground">
+						<CardHeader className="flex flex-row items-center justify-between w-full">
 							<CardTitle>{m.tv_details_overview()}</CardTitle>
+							{Object.keys(socials).length > 0 && (
+								<div className="ml-auto">
+									<SocialLinks socials={socials} />
+								</div>
+							)}
 						</CardHeader>
 
-						<CardContent className="space-y-4 text-dark-card-foreground gap-4">
+						<CardContent className="flex flex-col text-dark-card-foreground gap-4">
 							<MediaOverview overview={tv.overview} bg={backgroundImage} />
 							<Separator />
 							{tv.created_by.length > 0 && (
