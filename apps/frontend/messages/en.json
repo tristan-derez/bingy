@@ -465,6 +465,7 @@
 	"watchlist_page_empty_cta_prefix": "Check",
 	"watchlist_page_link_movies": "movies",
 	"watchlist_page_empty_cta_separator": "or",
+	"watchlist_page_empty_cta_followup": "to add some.",
 	"watchlist_page_link_tv": "TV shows",
 	"watchlist_toggle_aria_label_all": "All",
 	"watchlist_toggle_aria_label_movies": "Movies only",
@@ -472,6 +473,7 @@
 	"watchlist_toggle_group_item_all": "All",
 	"watchlist_toggle_group_item_movies": "Movies",
 	"watchlist_toggle_group_item_tv": "TV Shows",
+	"watchlist_toggle_no_result_all": "Your watchlist is empty.",
 	"watchlist_toggle_no_result_movies": "No movies items in watchlist",
 	"watchlist_toggle_no_result_tv": "No TV show items in watchlist",
 	"watchlist_error": "Error while loading watchlist. Try again."

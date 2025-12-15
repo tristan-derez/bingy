@@ -465,6 +465,7 @@
 	"watchlist_page_empty_cta_prefix": "Rends-toi sur la page des",
 	"watchlist_page_link_movies": "films",
 	"watchlist_page_empty_cta_separator": "ou des",
+	"watchlist_page_empty_cta_followup": "pour en ajouter.",
 	"watchlist_page_link_tv": "séries TV",
 	"watchlist_toggle_aria_label_all": "Tout",
 	"watchlist_toggle_aria_label_movies": "Seulement les films",
@@ -472,6 +473,7 @@
 	"watchlist_toggle_group_item_all": "Tout",
 	"watchlist_toggle_group_item_movies": "Films",
 	"watchlist_toggle_group_item_tv": "Séries TV",
+	"watchlist_toggle_no_result_all": "Ta watchlist est vide.",
 	"watchlist_toggle_no_result_movies": "Pas de film dans la watchlist.",
 	"watchlist_toggle_no_result_tv": "Pas de série TV dans la watchlist.",
 	"watchlist_error": "Erreur pendant le chargement de la watchlist. Réessaie plus tard."
