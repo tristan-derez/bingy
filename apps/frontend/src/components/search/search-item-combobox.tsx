@@ -2,11 +2,12 @@ import { useNavigate } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import { FilmIcon, TvIcon, UserIcon } from "lucide-react";
 import type { Schemas } from "shared";
-import { Badge } from "@/components/ui/badge";
 import { CommandItem } from "@/components/ui/command";
 import { localeRegionAtom } from "@/lib/atoms/region";
-import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
+import { MovieBadge } from "../badges/movie-badge";
+import { PersonBadge } from "../badges/person-badge";
+import { TvShowBadge } from "../badges/tv-badge";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 interface SearchItemComboboxProps {
@@ -39,7 +40,7 @@ export const SearchItemCombobox = ({
 				}}
 				className={commonClasses}
 			>
-				<FilmIcon className="h-4 w-4 flex-shrink-0" />
+				<FilmIcon className="h-4 w-4 shrink-0" />
 				<span className="flex-1 line-clamp-1 leading-relaxed">
 					{movie.title}
 				</span>
@@ -51,12 +52,7 @@ export const SearchItemCombobox = ({
 							})}
 						</span>
 					)}
-					<Badge
-						variant="secondary"
-						className="bg-blue-500/10 text-blue-500 hover:bg-blue-500/20 min-w-18 justify-center"
-					>
-						{m.search_movie_badge()}
-					</Badge>
+					<MovieBadge />
 				</div>
 			</CommandItem>
 		);
@@ -78,7 +74,7 @@ export const SearchItemCombobox = ({
 				}}
 				className={commonClasses}
 			>
-				<TvIcon className="h-4 w-4 flex-shrink-0" />
+				<TvIcon className="h-4 w-4 shrink-0" />
 				<span className="flex-1 line-clamp-1 leading-relaxed">{tv.name}</span>
 
 				<div className="flex items-center gap-2">
@@ -89,12 +85,7 @@ export const SearchItemCombobox = ({
 							})}
 						</span>
 					)}
-					<Badge
-						variant="secondary"
-						className="bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 min-w-18 justify-center"
-					>
-						{m.search_tv_badge()}
-					</Badge>
+					<TvShowBadge />
 				</div>
 			</CommandItem>
 		);
@@ -115,7 +106,7 @@ export const SearchItemCombobox = ({
 				className={commonClasses}
 			>
 				{item.profile_path ? (
-					<Avatar className="h-4 w-4 flex-shrink-0 rounded-xs overflow-hidden p-0">
+					<Avatar className="h-4 w-4 shrink-0 rounded-xs overflow-hidden p-0">
 						<AvatarImage
 							src={
 								item.profile_path
@@ -141,12 +132,7 @@ export const SearchItemCombobox = ({
 							{item.known_for_department}
 						</span>
 					)}
-					<Badge
-						variant="secondary"
-						className="bg-green-500/10 text-green-500 hover:bg-green-500/20 min-w-18 justify-center"
-					>
-						{m.search_person_badge()}
-					</Badge>
+					<PersonBadge />
 				</div>
 			</CommandItem>
 		);
