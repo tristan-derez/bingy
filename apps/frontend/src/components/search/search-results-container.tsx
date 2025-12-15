@@ -59,7 +59,7 @@ export const SearchResultsContainer = ({
 				</ToggleGroupItem>
 				<ToggleGroupItem
 					value="tv"
-					aria-label={m.search_toggle_aria_label_people()}
+					aria-label={m.search_toggle_aria_label_tv()}
 					className="hover:cursor-pointer"
 				>
 					<TvIcon className="h-4 w-4" />
