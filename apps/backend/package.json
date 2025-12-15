@@ -5,10 +5,7 @@
 	"scripts": {
 		"dev": "bun run --hot --no-clear-screen src/index.ts",
 		"db:studio": "drizzle-kit studio --config=./drizzle.config.ts",
-		"db:generate": "drizzle-kit generate",
-		"db:migrate": "drizzle-kit migrate",
-		"db:push": "drizzle-kit push",
-		"db:drop": "drizzle-kit drop",
+		"db": "drizzle-kit",
 		"build": "bun build src/index.ts --outdir ./dist --target bun",
 		"email:dev": "email dev --dir ./src/emails"
 	},
