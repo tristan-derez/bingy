@@ -27,6 +27,7 @@ import personRoutes from "#web/routes/person";
 import searchRoutes from "#web/routes/search";
 import trendingRoutes from "#web/routes/trending";
 import tvRoutes from "#web/routes/tv";
+import userListRoutes from "#web/routes/user-list";
 import watchProvidersRoutes from "#web/routes/watch-providers";
 
 declare global {
@@ -45,7 +46,7 @@ app.use(
 	cors({
 		origin: [env.FRONT_URL],
 		allowHeaders: ["Content-Type", "Authorization"],
-		allowMethods: ["POST", "GET", "OPTIONS"],
+		allowMethods: ["POST", "GET", "DELETE", "PUT", "OPTIONS"],
 		exposeHeaders: ["Content-Length"],
 		maxAge: 600,
 		credentials: true,
@@ -71,6 +72,7 @@ app.use("*", sessionMiddleware);
 const api = new Hono();
 api.route("/auth", authRoutes);
 api.route("/health", healthRoutes);
+api.route("/lists", userListRoutes);
 api.use("*", cacheMiddleware);
 api.route("/movies", movieRoutes);
 api.route("/tv", tvRoutes);
