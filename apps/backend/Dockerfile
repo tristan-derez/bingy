@@ -36,4 +36,4 @@ COPY --from=builder /app/apps/backend/drizzle ./apps/backend/drizzle
 
 WORKDIR /app/apps/backend
 
-CMD ["bun", "dist/index.js"]
+CMD ["bun", "db", "migrate", "&&", "bun", "dist/index.js"]
