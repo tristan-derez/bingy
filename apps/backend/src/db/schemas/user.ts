@@ -18,7 +18,7 @@ import { timestamps } from "./column.helper";
 
 export const users = pgTable("users", {
 	id: uuid("id").primaryKey().default(sql`uuidv7()`),
-	username: varchar("username", { length: 30 }),
+	name: varchar("name", { length: 30 }),
 	email: varchar("email", { length: 256 }).unique().notNull(),
 	avatarUrl: text("avatar_url"),
 	emailVerified: boolean("email_verified").default(false).notNull(),
