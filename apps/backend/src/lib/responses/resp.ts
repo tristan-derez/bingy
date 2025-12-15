@@ -9,4 +9,12 @@ const serve = <T>(c: Context, data: T, status: ContentfulStatusCode) => {
 	return c.json({ data }, status);
 };
 
-export { serve, serveData };
+const serveNoContent = (c: Context) => {
+	return c.body(null, 204);
+};
+
+const serveCreated = <T>(c: Context, data: T, status: ContentfulStatusCode) => {
+	return c.json({ data }, status);
+};
+
+export { serve, serveData, serveNoContent, serveCreated };
