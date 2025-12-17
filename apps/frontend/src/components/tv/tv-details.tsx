@@ -130,7 +130,7 @@ export function TvDetailsView({
 					</Card>
 
 					<Card
-						className="relative overflow-hidden min-h-[200px] border-none"
+						className="relative overflow-hidden min-h-[200px] border-none text-dark-card-foreground"
 						style={
 							backgroundImage
 								? {
@@ -142,7 +142,7 @@ export function TvDetailsView({
 						}
 					>
 						<CardHeader className="flex flex-row items-center justify-between w-full">
-							<CardTitle>{m.tv_details_overview()}</CardTitle>
+							<CardTitle className="">{m.tv_details_overview()}</CardTitle>
 							{Object.keys(socials).length > 0 && (
 								<div className="ml-auto">
 									<SocialLinks socials={socials} />
@@ -150,7 +150,7 @@ export function TvDetailsView({
 							)}
 						</CardHeader>
 
-						<CardContent className="flex flex-col text-dark-card-foreground gap-4">
+						<CardContent className="flex flex-col gap-4">
 							<MediaOverview overview={tv.overview} bg={backgroundImage} />
 							<Separator />
 							{tv.created_by.length > 0 && (
