@@ -32,16 +32,17 @@ userListRoutes.post(
 		const user = c.get("user")!;
 		const data = c.req.valid("json");
 
-		await db
+		const [item] = await db
 			.insert(watchlist)
 			.values({
 				userId: user.id,
 				mediaTmdbId: data.tmdbId,
 				mediaType: data.mediaType,
 			})
-			.onConflictDoNothing();
+			.onConflictDoNothing()
+			.returning();
 
-		return serveCreated(c, { data }, 201);
+		return serveCreated(c, { item }, 201);
 	},
 );
 
