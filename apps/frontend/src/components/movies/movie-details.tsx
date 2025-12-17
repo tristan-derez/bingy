@@ -21,7 +21,7 @@ import { formatRuntime } from "@/utils/format-runtime";
 import { shortenCountryName } from "@/utils/shorten-country-name";
 import { CollectionCard } from "../collections/collection-card";
 import { ResourceNotFound } from "../errors/resource-not-found";
-import { ToggleWatchlistButton } from "../lists/media/toggle-watchlist-button";
+import { WatchlistToggleButton } from "../lists/media/watchlist-toggle-button";
 import { LoadingCentered } from "../loading/loading-centered";
 import { MediaOverview } from "../medias/overview";
 import { CastCarousel } from "../person/cast-carousel";
@@ -128,7 +128,7 @@ export function MovieDetailView({
 								</div>
 								{session ? (
 									<div className="lg:self-start mt-3 lg:pr-2">
-										<ToggleWatchlistButton movie={movie} />
+										<WatchlistToggleButton movie={movie} />
 									</div>
 								) : null}
 							</div>
