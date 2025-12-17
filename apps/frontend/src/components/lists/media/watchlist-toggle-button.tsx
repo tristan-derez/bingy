@@ -4,29 +4,23 @@ import type { Schemas } from "shared";
 import { Button } from "@/components/ui/button";
 import {
 	useAddMediaToWatchlist,
+	useIsInWatchlist,
 	useRemoveFromWatchlist,
-	useWatchlist,
 } from "@/hooks/useLists";
 import { m } from "@/paraglide/messages";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../../ui/tooltip";
 
-interface ToggleWatchlistButtonProps {
+interface WatchlistToggleButtonProps {
 	movie?: Schemas.MovieDetails;
 	tvShow?: Schemas.TvDetails;
+	color?: string;
 }
 
-type WatchlistItem = {
-	userId: string;
-	mediaTmdbId: number;
-	mediaType: string;
-	addedAt: string;
-};
-
-export function ToggleWatchlistButton({
+export function WatchlistToggleButton({
 	movie,
 	tvShow,
-}: ToggleWatchlistButtonProps) {
-	const { data: watchlistData } = useWatchlist();
+	color = "foreground",
+}: WatchlistToggleButtonProps) {
 	const addToWatchlist = useAddMediaToWatchlist();
 	const removeFromWatchlist = useRemoveFromWatchlist();
 
@@ -34,16 +28,13 @@ export function ToggleWatchlistButton({
 	const mediaId = movie?.id ?? tvShow?.id;
 	const mediaTitle = movie?.title ?? tvShow?.name;
 
+	const isInWatchlist = useIsInWatchlist(mediaId ?? 0);
+
 	if (!mediaId || !mediaTitle) {
 		return null;
 	}
 
-	const watchlist = (watchlistData as WatchlistItem[] | undefined) ?? [];
-	const isInWatchlist = watchlist.some(
-		(item) => item.mediaTmdbId === mediaId && item.mediaType === mediaType,
-	);
-
-	const handleToggleWatchlist = () => {
+	const handleWatchlistToggle = () => {
 		if (isInWatchlist) {
 			removeFromWatchlist.mutate({
 				tmdbId: mediaId,
@@ -67,9 +58,9 @@ export function ToggleWatchlistButton({
 				<Button
 					variant="ghost"
 					size="icon"
-					onClick={handleToggleWatchlist}
+					onClick={handleWatchlistToggle}
 					disabled={isPending}
-					className="hover:cursor-pointer font-bold hover:bg-none"
+					className={`hover:cursor-pointer hover:text-${color} hover:bg-none font-bold text-${color}`}
 				>
 					{isInWatchlist ? (
 						<TbClockMinus className="h-5 w-5" />
