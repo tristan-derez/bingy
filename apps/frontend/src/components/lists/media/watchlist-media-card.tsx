@@ -5,7 +5,7 @@ import { MovieBadge } from "@/components/badges/movie-badge";
 import { TvShowBadge } from "@/components/badges/tv-badge";
 import type { MediaItem } from "@/utils/media-info";
 import { getMediaInfo } from "@/utils/media-info";
-import { ToggleWatchlistButton } from "./toggle-watchlist-button";
+import { WatchlistToggleButton } from "./watchlist-toggle-button";
 
 interface WatchlistMediaCardProps {
 	item: MediaItem;
@@ -26,7 +26,8 @@ export const WatchlistMediaCard = ({ item }: WatchlistMediaCardProps) => {
 					<div className="absolute inset-x-0 top-0 h-24 bg-linear-to-b from-black/90 to-transparent" />
 				</Link>
 				<div className="absolute top-2 inset-x-2 flex items-center justify-between z-10">
-					<ToggleWatchlistButton
+					<WatchlistToggleButton
+						color="white"
 						{...(item.mediaType === "movie"
 							? { movie: item as Schemas.MovieDetails }
 							: { tvShow: item as Schemas.TvDetails })}
