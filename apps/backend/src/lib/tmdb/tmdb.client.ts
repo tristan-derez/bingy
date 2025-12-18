@@ -1,3 +1,4 @@
+import { FetchError, ofetch } from "ofetch";
 import { EndpointParameters, EndpointPath, Fetcher, Method } from "shared";
 import { createApiClient } from "./tmdb";
 
@@ -18,41 +19,37 @@ export const tmdbFetch: Fetcher = async <TResponse>(
 	apiKey: string,
 	parameters: EndpointParameters = {},
 ) => {
-	let finalUrl = `${baseUrl}${path}`;
-	const headers: Record<string, string> = {
-		"Content-Type": "application/json",
-		Authorization: `Bearer ${apiKey}`,
-	};
+	let finalPath = path as string;
 
 	if (parameters.path) {
 		for (const [key, value] of Object.entries(parameters.path)) {
-			finalUrl = finalUrl.replace(
+			finalPath = finalPath.replace(
 				`{${key}}`,
 				encodeURIComponent(String(value)),
 			);
 		}
 	}
 
-	if (parameters.query) {
-		const queryString = new URLSearchParams(
-			Object.entries(parameters.query)
-				.filter(([, v]) => v != null)
-				.map(([k, v]) => [k, String(v)]),
-		).toString();
-		if (queryString) finalUrl += `?${queryString}`;
+	try {
+		return await ofetch<TResponse>(`${baseUrl}${finalPath}`, {
+			method: method.toUpperCase(),
+			headers: {
+				Authorization: `Bearer ${apiKey}`,
+			},
+			query: parameters.query as Record<string, string | number | boolean>,
+			body: parameters.body as Record<string, unknown>,
+			retry: 1,
+			retryDelay: 1000,
+		});
+	} catch (error) {
+		if (error instanceof FetchError) {
+			throw new TmdbError(
+				error.status || 500,
+				error.statusText || error.message,
+			);
+		}
+		throw error;
 	}
-
-	const body =
-		method === "post" ||
-		method === "put" ||
-		method === "patch" ||
-		method === "delete"
-			? JSON.stringify(parameters.body ?? {})
-			: undefined;
-
-	const res = await fetch(finalUrl, { method, headers, body });
-	if (!res.ok) throw new TmdbError(res.status, res.statusText);
-	return res.json() as Promise<TResponse>;
 };
 
 export const tmdbClient = createApiClient(tmdbFetch);
