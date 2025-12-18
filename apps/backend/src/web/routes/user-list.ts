@@ -1,5 +1,5 @@
 import { zValidator } from "@hono/zod-validator";
-import { and, eq } from "drizzle-orm";
+import { and, desc, eq, sql } from "drizzle-orm";
 import { Hono } from "hono";
 import { z } from "zod";
 import { customLists, listItems, watchlist } from "#db/schemas/list";
@@ -7,6 +7,7 @@ import type { User } from "#db/schemas/user";
 import { db } from "#lib/database";
 import { serveNotFound } from "#lib/responses/error";
 import { serveCreated, serveData, serveNoContent } from "#lib/responses/resp";
+import { getMediaDetails, NormalizedMedia } from "#lib/tmdb/get-media-details";
 import { sessionMiddleware } from "#web/middlewares/session";
 
 type Variables = {
@@ -68,13 +69,80 @@ userListRoutes.delete("/watchlist/:tmdbId/:mediaType", async (c) => {
 // Get user's watchlist
 userListRoutes.get("/watchlist", async (c) => {
 	const user = c.get("user")!;
+	const language = c.req.query("lang") || "en-US";
+	const page = Math.max(1, parseInt(c.req.query("page") || "1"));
+	const limit = 40;
+	const offset = (page - 1) * limit;
 
-	const items = await db.query.watchlist.findMany({
-		where: eq(watchlist.userId, user.id),
-		orderBy: (watchlist, { desc }) => [desc(watchlist.addedAt)],
+	const [dbItems, totalCountResult] = await Promise.all([
+		db.query.watchlist.findMany({
+			where: eq(watchlist.userId, user.id),
+			orderBy: [desc(watchlist.addedAt)],
+			limit,
+			offset,
+		}),
+		db
+			.select({ count: sql<number>`count(*)` })
+			.from(watchlist)
+			.where(eq(watchlist.userId, user.id)),
+	]);
+
+	const totalResults = totalCountResult[0].count;
+
+	const hydratedData = (
+		await Promise.all(
+			dbItems.map(async (item) => {
+				const details = await getMediaDetails(
+					item.mediaTmdbId,
+					item.mediaType,
+					language,
+				);
+				if (!details) return null;
+
+				return {
+					...details,
+					mediaType: item.mediaType,
+					addedAt: item.addedAt,
+				};
+			}),
+		)
+	).filter((item): item is NormalizedMedia => item !== null);
+
+	return c.json({
+		data: hydratedData,
+		page,
+		total_pages: Math.ceil(totalResults / limit),
+		total_results: totalResults,
+	});
+});
+
+userListRoutes.get("/watchlist/check/:mediaType/:tmdbId", async (c) => {
+	const user = c.get("user")!;
+	const mediaType = c.req.param("mediaType");
+	const tmdbId = parseInt(c.req.param("tmdbId"));
+
+	if (mediaType !== "movie" && mediaType !== "tv") {
+		return c.json({ error: "Invalid media type" }, 400);
+	}
+
+	if (isNaN(tmdbId)) {
+		return c.json({ error: "Invalid TMDB ID" }, 400);
+	}
+
+	const exists = await db.query.watchlist.findFirst({
+		where: and(
+			eq(watchlist.userId, user.id),
+			eq(watchlist.mediaTmdbId, tmdbId),
+			eq(watchlist.mediaType, mediaType),
+		),
+		columns: { mediaTmdbId: true, mediaType: true },
 	});
 
-	return serveData(c, items);
+	return c.json({
+		tmdb_id: tmdbId,
+		media_type: mediaType,
+		item_present: !!exists,
+	});
 });
 
 // Create custom list
