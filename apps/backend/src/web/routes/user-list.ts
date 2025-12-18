@@ -48,7 +48,7 @@ userListRoutes.post(
 );
 
 // Remove from watchlist
-userListRoutes.delete("/watchlist/:tmdbId/:mediaType", async (c) => {
+userListRoutes.delete("/watchlist/:mediaType/:tmdbId", async (c) => {
 	const user = c.get("user")!;
 	const tmdbId = Number(c.req.param("tmdbId"));
 	const mediaType = c.req.param("mediaType");
@@ -241,7 +241,7 @@ userListRoutes.post(
 );
 
 // Remove item from custom list
-userListRoutes.delete("/lists/:listId/items/:tmdbId/:mediaType", async (c) => {
+userListRoutes.delete("/lists/:listId/items/:mediaType/:tmdbId", async (c) => {
 	const user = c.get("user")!;
 	const listId = c.req.param("listId");
 	const tmdbId = Number(c.req.param("tmdbId"));
