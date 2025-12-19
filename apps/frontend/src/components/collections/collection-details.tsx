@@ -84,6 +84,12 @@ export function CollectionDetailsView({
 		maximumFractionDigits: 0,
 	}).format(totalBudget);
 
+	const sortedParts = [...collectionData.parts].sort((a, b) => {
+		const dateA = new Date(a.release_date || 0).getTime();
+		const dateB = new Date(b.release_date || 0).getTime();
+		return dateA - dateB;
+	});
+
 	const backgroundImage = collectionData.backdrop_path
 		? `https://image.tmdb.org/t/p/original${collectionData.backdrop_path}`
 		: undefined;
@@ -176,7 +182,7 @@ export function CollectionDetailsView({
 					title={m.collection_carousel_title({
 						number: collectionData.parts.length,
 					})}
-					movies={collectionData.parts}
+					movies={sortedParts}
 				/>
 			</div>
 		</div>
