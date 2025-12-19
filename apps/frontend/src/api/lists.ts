@@ -1,11 +1,41 @@
 import type { Pretty } from "shared";
 import { apiFetch } from "./fetcher";
 
-export const fetchWatchlist = async () => {
-	const res = await apiFetch("/lists/watchlist", {
+type WatchlistResponse = {
+	data: Array<{
+		id: number;
+		title: string;
+		originalTitle: string;
+		releaseDate: string;
+		posterPath: string | null;
+		voteAverage: number;
+		mediaType: string;
+		addedAt: Date;
+	}>;
+	page: number;
+	total_pages: number;
+	total_results: number;
+};
+
+export const fetchWatchlist = async (
+	page = 1,
+	language: string,
+): Promise<WatchlistResponse> => {
+	const res = await apiFetch(`/lists/watchlist`, {
 		method: "GET",
+		query: { page, language },
 	});
-	return res.data;
+	return res;
+};
+
+export const fetchCheckItemInWatchlist = async (
+	tmdbMediaType: string,
+	tmdbId: number,
+) => {
+	const res = await apiFetch(
+		`/lists/watchlist/check/${tmdbMediaType}/${tmdbId}`,
+	);
+	return res.item_present;
 };
 
 export const postMediaWatchlist = async (
@@ -21,7 +51,7 @@ export const postMediaWatchlist = async (
 export const deleteMediaWatchlist = async (
 	payload: RemoveMediaFromWatchlistPayload,
 ) => {
-	await apiFetch(`/lists/watchlist/${payload.tmdbId}/${payload.mediaType}`, {
+	await apiFetch(`/lists/watchlist/${payload.mediaType}/${payload.tmdbId}`, {
 		method: "DELETE",
 	});
 };

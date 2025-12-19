@@ -3,17 +3,26 @@ import { toast } from "sonner";
 import {
 	type AddMediaToWatchlistPayload,
 	deleteMediaWatchlist,
+	fetchCheckItemInWatchlist,
 	fetchWatchlist,
 	postMediaWatchlist,
 	type RemoveMediaFromWatchlistPayload,
 } from "@/api/lists";
 import { m } from "@/paraglide/messages";
 
-export function useWatchlist() {
+export function useWatchlist(page = 1, language: string) {
 	return useQuery({
-		queryKey: ["lists", "watchlist"],
-		queryFn: () => fetchWatchlist(),
+		queryKey: ["lists", "watchlist", page, language],
+		queryFn: () => fetchWatchlist(page, language),
 		staleTime: 1000 * 60 * 10,
+	});
+}
+
+export function useIsInWatchlist(tmdbMediaType: string, tmdbId: number) {
+	return useQuery({
+		queryKey: ["lists", "watchlist", tmdbMediaType, tmdbId],
+		queryFn: () => fetchCheckItemInWatchlist(tmdbMediaType, tmdbId),
+		staleTime: 0,
 	});
 }
 
