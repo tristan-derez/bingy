@@ -1,6 +1,5 @@
 import { ClockPlus } from "lucide-react";
 import { TbClockMinus } from "react-icons/tb";
-import type { Schemas } from "shared";
 import { Button } from "@/components/ui/button";
 import {
 	useAddMediaToWatchlist,
@@ -11,8 +10,16 @@ import { m } from "@/paraglide/messages";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../../ui/tooltip";
 
 interface WatchlistToggleButtonProps {
-	movie?: Schemas.MovieDetails;
-	tvShow?: Schemas.TvDetails;
+	movie?: {
+		mediaType?: string;
+		id: number;
+		title: string;
+	};
+	tvShow?: {
+		mediaType?: string;
+		id: number;
+		name: string;
+	};
 	color?: string;
 }
 
@@ -28,7 +35,10 @@ export function WatchlistToggleButton({
 	const mediaId = movie?.id ?? tvShow?.id;
 	const mediaTitle = movie?.title ?? tvShow?.name;
 
-	const isInWatchlist = useIsInWatchlist(mediaId ?? 0);
+	const { data: isInWatchlist, isLoading } = useIsInWatchlist(
+		mediaType,
+		mediaId ?? 0,
+	);
 
 	if (!mediaId || !mediaTitle) {
 		return null;
@@ -50,7 +60,8 @@ export function WatchlistToggleButton({
 		}
 	};
 
-	const isPending = addToWatchlist.isPending || removeFromWatchlist.isPending;
+	const isPending =
+		addToWatchlist.isPending || removeFromWatchlist.isPending || isLoading;
 
 	return (
 		<Tooltip>
