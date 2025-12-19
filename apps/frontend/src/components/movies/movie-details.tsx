@@ -37,6 +37,8 @@ interface MovieDetailViewProps {
 	socials: Partial<Record<"facebook" | "instagram" | "twitter", string>>;
 	watchProviders: Schemas.WatchProviders | undefined;
 	collection: Schemas.MovieDetails["belongs_to_collection"] | undefined;
+	releaseDate: string | undefined;
+	releaseRegion: string | undefined;
 	isLoading: boolean;
 	isError: boolean;
 	onBack: () => void;
@@ -49,6 +51,8 @@ export function MovieDetailView({
 	socials,
 	watchProviders,
 	collection,
+	releaseDate,
+	releaseRegion,
 	isLoading,
 	isError,
 	onBack,
@@ -222,15 +226,21 @@ export function MovieDetailView({
 								<Calendar className="h-5 w-5" />
 								<div>
 									<p className="text-xl xl:text-2xl font-bold">
-										{movie.release_date
-											? formatDate(movie.release_date, localeRegion, {
+										{releaseDate
+											? formatDate(releaseDate, localeRegion, {
 													day: "numeric",
 													month: "short",
 													year: "numeric",
 												})
 											: "N/A"}
 									</p>
-									<p className="text-sm text-muted-foreground">
+									<p className="text-sm text-muted-foreground flex items-center gap-2">
+										{releaseRegion ? (
+											<span
+												className={`fi fi-${releaseRegion.toLowerCase()}`}
+												style={{ width: 18, height: 14 }}
+											/>
+										) : null}
 										{m.movie_details_release_date()}
 									</p>
 								</div>

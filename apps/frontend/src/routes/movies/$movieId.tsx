@@ -1,19 +1,28 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import { MovieDetailView } from "@/components/movies/movie-details";
-import { useMovie } from "@/hooks/useMovies";
-import { localeRegionAtom } from "@/lib/atoms/region";
+import { useMovie, useMovieResource } from "@/hooks/useMovies";
+import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
 import { getRole } from "@/utils/excluded-jobs";
+import { getReleaseDate } from "@/utils/release-dates";
 import { getSocialUrls } from "@/utils/social-urls";
 
 export const Route = createFileRoute("/movies/$movieId")({
 	component: MovieDetailsPage,
 });
 
+type ReleaseDates = {
+	results: Array<{
+		iso_3166_1: string;
+		release_dates: Array<{ type: number; release_date: string }>;
+	}>;
+};
+
 function MovieDetailsPage() {
 	const router = useRouter();
 	const { movieId } = Route.useParams();
 	const localeRegion = useAtomValue(localeRegionAtom);
+	const region = useAtomValue(regionAtom);
 
 	const {
 		data: movie,
@@ -23,6 +32,18 @@ function MovieDetailsPage() {
 		append_to_response: "credits,external_ids,watch/providers",
 		language: localeRegion,
 	});
+
+	const { data: releaseDates } = useMovieResource<ReleaseDates>(
+		Number(movieId),
+		"release_dates",
+		{},
+	);
+
+	const { date: releaseDate, region: releaseRegion } = getReleaseDate(
+		releaseDates,
+		region,
+		movie?.release_date,
+	);
 
 	const crewWithRoles =
 		movie?.credits?.crew.reduce<
@@ -58,6 +79,8 @@ function MovieDetailsPage() {
 			collection={collection}
 			isLoading={isLoading}
 			isError={isError}
+			releaseDate={releaseDate}
+			releaseRegion={releaseRegion}
 			onBack={() => router.history.back()}
 		/>
 	);
