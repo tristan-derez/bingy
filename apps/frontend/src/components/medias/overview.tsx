@@ -20,9 +20,17 @@ export const MediaOverview = ({ overview, bg }: MediaOverviewProps) => {
 		return <p className={textColor}>{m.overview_none()}</p>;
 	}
 
-	const maxInitialLength = 250;
+	const searchWindow = 350;
+	const textToSearch = overview.slice(
+		0,
+		Math.min(searchWindow, overview.length),
+	);
+	const lastPeriod = textToSearch.lastIndexOf(".");
 
-	if (overview.length <= maxInitialLength) {
+	// Show full text if it's short, no period found, or nothing meaningful after the period
+	const hiddenText =
+		lastPeriod > 0 ? overview.slice(lastPeriod + 1).trim() : "";
+	if (overview.length <= 250 || lastPeriod <= 0 || !hiddenText) {
 		return (
 			<p className={`w-full xl:w-2/3 whitespace-pre-line ${textColor}`}>
 				{overview}
@@ -30,19 +38,7 @@ export const MediaOverview = ({ overview, bg }: MediaOverviewProps) => {
 		);
 	}
 
-	const textUpToLimit = overview.slice(0, maxInitialLength);
-	const lastPeriod = textUpToLimit.lastIndexOf(".");
-
-	let displayText: string;
-	let hiddenText: string;
-
-	if (lastPeriod > 0) {
-		displayText = overview.slice(0, lastPeriod + 1);
-		hiddenText = overview.slice(lastPeriod + 1).trim();
-	} else {
-		displayText = overview.slice(0, maxInitialLength);
-		hiddenText = overview.slice(maxInitialLength);
-	}
+	const displayText = overview.slice(0, lastPeriod + 1);
 
 	return (
 		<>
