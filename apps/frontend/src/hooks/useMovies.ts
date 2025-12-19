@@ -20,7 +20,7 @@ export function useLatestMovie() {
 export function useNowPlayingMovies(params?: MoviesParams) {
 	return useQuery({
 		queryKey: ["movies", "now_playing", params],
-		queryFn: () => fetchMultiPagesMovies("now_playing", 2, params),
+		queryFn: () => fetchMultiPagesMovies("now_playing", 1, params),
 		staleTime: 1000 * 60 * 10,
 	});
 }
@@ -36,7 +36,7 @@ export function usePopularMovies(params?: MoviesParams) {
 export function useTopRatedMovies(params?: MoviesParams) {
 	return useQuery({
 		queryKey: ["movies", "top_rated", params],
-		queryFn: () => fetchMultiPagesMovies("top_rated", 2, params),
+		queryFn: () => fetchMultiPagesMovies("top_rated", 1, params),
 		staleTime: 1000 * 60 * 40,
 	});
 }
@@ -44,7 +44,7 @@ export function useTopRatedMovies(params?: MoviesParams) {
 export function useUpcomingMovies(params?: MoviesParams) {
 	return useQuery({
 		queryKey: ["movies", "upcoming", params],
-		queryFn: () => fetchMultiPagesMovies("upcoming", 2, params),
+		queryFn: () => fetchMultiPagesMovies("upcoming", 1, params),
 		staleTime: 1000 * 60 * 10,
 	});
 }

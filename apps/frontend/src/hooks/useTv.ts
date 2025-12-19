@@ -24,7 +24,7 @@ export function useLatestTv(params?: TvParams) {
 export function useTopRatedTv(params?: TvParams) {
 	return useQuery({
 		queryKey: ["tv", "top_rated", params],
-		queryFn: () => fetchMultiPagesTv("top_rated", { maxPages: 2, params }),
+		queryFn: () => fetchMultiPagesTv("top_rated", { maxPages: 1, params }),
 		staleTime: 1000 * 60 * 40,
 	});
 }
@@ -32,7 +32,7 @@ export function useTopRatedTv(params?: TvParams) {
 export function usePopularTv(params?: TvParams) {
 	return useQuery({
 		queryKey: ["tv", "popular", params],
-		queryFn: () => fetchMultiPagesTv("popular", { maxPages: 2, params }),
+		queryFn: () => fetchMultiPagesTv("popular", { maxPages: 1, params }),
 		staleTime: 1000 * 60 * 40,
 	});
 }
@@ -41,7 +41,7 @@ export function useTrendingTodayTv(params?: TvParams) {
 	return useQuery({
 		queryKey: ["tv", "trending", "day", params],
 		queryFn: () =>
-			fetchMultiPagesTrending("tv", "day", { maxPages: 2, params }),
+			fetchMultiPagesTrending("tv", "day", { maxPages: 1, params }),
 		staleTime: 1000 * 60 * 40,
 	});
 }
@@ -50,7 +50,7 @@ export function useTrendingWeekTv(params?: TvParams) {
 	return useQuery({
 		queryKey: ["tv", "trending", "week", params],
 		queryFn: () =>
-			fetchMultiPagesTrending("tv", "week", { maxPages: 2, params }),
+			fetchMultiPagesTrending("tv", "week", { maxPages: 1, params }),
 		staleTime: 1000 * 60 * 40,
 	});
 }
