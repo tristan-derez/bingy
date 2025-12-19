@@ -69,7 +69,7 @@ userListRoutes.delete("/watchlist/:mediaType/:tmdbId", async (c) => {
 // Get user's watchlist
 userListRoutes.get("/watchlist", async (c) => {
 	const user = c.get("user")!;
-	const language = c.req.query("lang") || "en-US";
+	const language = c.req.query("language") || "en-US";
 	const page = Math.max(1, parseInt(c.req.query("page") || "1"));
 	const limit = 40;
 	const offset = (page - 1) * limit;
