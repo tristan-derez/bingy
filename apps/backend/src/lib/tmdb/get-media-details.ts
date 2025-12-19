@@ -1,3 +1,4 @@
+import { logger } from "#lib/logger";
 import { cacheClient } from "../cache-client";
 import { tmdbClient } from "./tmdb.client";
 
@@ -21,6 +22,7 @@ export async function getMediaDetails(
 
 	const cached = await cacheClient.get(cacheKey);
 	if (cached) {
+		logger.info(`Cache hit: ${cacheKey}`);
 		return JSON.parse(cached);
 	}
 
@@ -43,6 +45,7 @@ export async function getMediaDetails(
 			};
 
 			await cacheClient.set(cacheKey, JSON.stringify(details), 86400);
+			logger.info(`Cache set: ${cacheKey}`);
 			return details;
 		}
 
@@ -62,6 +65,7 @@ export async function getMediaDetails(
 		};
 
 		await cacheClient.set(cacheKey, JSON.stringify(details), 86400);
+		logger.info(`Cache set: ${cacheKey}`);
 		return details;
 	} catch {
 		return null;
