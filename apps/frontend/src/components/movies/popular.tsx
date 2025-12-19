@@ -1,30 +1,27 @@
-import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
 import { toast } from "sonner";
-import { usePopularMovies } from "@/hooks/useMovies";
-import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { LoadingSection } from "../loading/loading-section";
 import { MovieCarousel } from "./movie-carousel";
 
 interface PopularMoviesProps {
 	title: string;
+	movies: Schemas.PaginatedResponse<Schemas.Movie>;
+	isLoading: boolean;
+	isError: boolean;
 }
 
-export const PopularMovies = ({ title }: PopularMoviesProps) => {
-	const localeRegion = useAtomValue(localeRegionAtom);
-	const region = useAtomValue(regionAtom);
-
-	const { data, isLoading, error } = usePopularMovies({
-		region,
-		language: localeRegion,
-	});
-
+export const PopularMovies = ({
+	title,
+	movies,
+	isLoading,
+	isError,
+}: PopularMoviesProps) => {
 	if (isLoading) {
 		return <LoadingSection title={title} />;
 	}
 
-	if (error) {
+	if (isError) {
 		toast.error(m.error_failed_to_load({ title }));
 		return null;
 	}
@@ -32,7 +29,7 @@ export const PopularMovies = ({ title }: PopularMoviesProps) => {
 	const seenIds = new Set<number>();
 
 	const filteredMovies =
-		data?.results.filter((movie: Schemas.Movie) => {
+		movies?.results.filter((movie: Schemas.Movie) => {
 			if (seenIds.has(movie.id)) {
 				return false;
 			}
