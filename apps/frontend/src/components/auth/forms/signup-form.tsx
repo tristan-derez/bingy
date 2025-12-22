@@ -63,7 +63,7 @@ export function SignUpForm() {
 				email: formData.email,
 				password: formData.password,
 				name: formData.name,
-				image: getRandomAvatarUrl(),
+				image: getRandomAvatarUrl(formData.name),
 				callbackURL: `${config.appUrl}/welcome`,
 			});
 

@@ -1,42 +1,7 @@
 const BASE_URL = "https://api.dicebear.com/9.x";
-const DEFAULT_STYLE = "bottts-neutral";
+const DEFAULT_STYLE = "thumbs";
 
-const seeds = [
-	"Ashley",
-	"Brandon",
-	"Emma",
-	"Finn",
-	"Grace",
-	"Isabella",
-	"Jackson",
-	"Kaitlyn",
-	"Logan",
-	"Madison",
-	"Noah",
-	"Olivia",
-	"Parker",
-	"Quinn",
-	"Riley",
-	"Sophia",
-	"Tyler",
-	"Uma",
-	"Victoria",
-	"Wesley",
-	"Yasmin",
-	"Zoe",
-	"Austin",
-	"Brooke",
-	"Connor",
-] as const;
-
-export type Seed = (typeof seeds)[number];
-export type AvatarStyle =
-	| "bottts-neutral"
-	| "adventurer"
-	| "micah"
-	| "identicon"
-	| "shapes"
-	| "thumbs";
+export type AvatarStyle = "thumbs";
 
 function buildAvatarUrl(
 	seed: string,
@@ -45,11 +10,11 @@ function buildAvatarUrl(
 	return `${BASE_URL}/${style}/svg?seed=${encodeURIComponent(seed)}`;
 }
 
-export function getRandomAvatarUrl(style: AvatarStyle = DEFAULT_STYLE): string {
-	const randomSeed = seeds[Math.floor(Math.random() * seeds.length)];
+export function getRandomAvatarUrl(
+	seed: string,
+	style: AvatarStyle = DEFAULT_STYLE,
+): string {
+	const randomNumber = Math.floor(Math.random() * 100);
+	const randomSeed = `${seed}${randomNumber}`;
 	return buildAvatarUrl(randomSeed, style);
-}
-
-export function getAllAvatarUrls(style: AvatarStyle = DEFAULT_STYLE): string[] {
-	return seeds.map((seed) => buildAvatarUrl(seed, style));
 }
