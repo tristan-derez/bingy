@@ -85,8 +85,12 @@ export function CollectionDetailsView({
 	}).format(totalBudget);
 
 	const sortedParts = [...collectionData.parts].sort((a, b) => {
-		const dateA = new Date(a.release_date || 0).getTime();
-		const dateB = new Date(b.release_date || 0).getTime();
+		const dateA = a.release_date
+			? new Date(a.release_date).getTime()
+			: Infinity;
+		const dateB = b.release_date
+			? new Date(b.release_date).getTime()
+			: Infinity;
 		return dateA - dateB;
 	});
 
