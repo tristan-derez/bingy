@@ -71,12 +71,18 @@ userListRoutes.get("/watchlist", async (c) => {
 	const user = c.get("user")!;
 	const language = c.req.query("language") || "en-US";
 	const page = Math.max(1, parseInt(c.req.query("page") || "1"));
-	const limit = 40;
+	const mediaType = c.req.query("mediaType") as "movie" | "tv" | undefined;
+	const limit = 24;
 	const offset = (page - 1) * limit;
+
+	const baseCondition = eq(watchlist.userId, user.id);
+	const whereCondition = mediaType
+		? and(baseCondition, eq(watchlist.mediaType, mediaType))
+		: baseCondition;
 
 	const [dbItems, totalCountResult] = await Promise.all([
 		db.query.watchlist.findMany({
-			where: eq(watchlist.userId, user.id),
+			where: whereCondition,
 			orderBy: [desc(watchlist.addedAt)],
 			limit,
 			offset,
@@ -84,7 +90,7 @@ userListRoutes.get("/watchlist", async (c) => {
 		db
 			.select({ count: sql<number>`count(*)` })
 			.from(watchlist)
-			.where(eq(watchlist.userId, user.id)),
+			.where(whereCondition),
 	]);
 
 	const totalResults = totalCountResult[0].count;
