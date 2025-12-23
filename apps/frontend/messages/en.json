@@ -476,5 +476,9 @@
 	"watchlist_toggle_no_result_all": "Your watchlist is empty.",
 	"watchlist_toggle_no_result_movies": "No movies items in watchlist",
 	"watchlist_toggle_no_result_tv": "No TV show items in watchlist",
-	"watchlist_error": "Error while loading watchlist. Try again."
+	"watchlist_error": "Error while loading watchlist. Try again.",
+	"pagination_previous_aria_label": "Go to previous page",
+	"pagination_next_aria_label": "Go to next page",
+	"pagination_previous": "Previous",
+	"pagination_next": "Next"
 }
