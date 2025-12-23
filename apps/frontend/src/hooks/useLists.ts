@@ -10,10 +10,14 @@ import {
 } from "@/api/lists";
 import { m } from "@/paraglide/messages";
 
-export function useWatchlist(page = 1, language: string) {
+export function useWatchlist(
+	page = 1,
+	language: string,
+	mediaType?: "movie" | "tv",
+) {
 	return useQuery({
-		queryKey: ["lists", "watchlist", page, language],
-		queryFn: () => fetchWatchlist(page, language),
+		queryKey: ["lists", "watchlist", page, language, mediaType],
+		queryFn: () => fetchWatchlist(page, language, mediaType),
 		staleTime: 1000 * 60 * 10,
 	});
 }

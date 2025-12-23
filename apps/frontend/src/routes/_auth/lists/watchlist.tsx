@@ -1,6 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
-import { WatchlistContainer } from "@/components/lists/media/watchlist-container";
+import { useState } from "react";
+import {
+	type MediaFilter,
+	WatchlistContainer,
+} from "@/components/lists/media/watchlist-container";
 import { GlobalLoadingIndicator } from "@/components/loading/loading-global";
 import { useWatchlist } from "@/hooks/useLists";
 import { localeRegionAtom } from "@/lib/atoms/region";
@@ -12,7 +16,14 @@ export const Route = createFileRoute("/_auth/lists/watchlist")({
 
 function WatchlistPage() {
 	const localeRegion = useAtomValue(localeRegionAtom);
-	const { data, isLoading, isError } = useWatchlist(1, localeRegion);
+	const [filter, setFilter] = useState<MediaFilter>("all");
+	const [page, setPage] = useState(1);
+
+	const { data, isLoading, isError } = useWatchlist(
+		page,
+		localeRegion,
+		filter === "all" ? undefined : filter,
+	);
 
 	if (isLoading) {
 		return <GlobalLoadingIndicator />;
@@ -26,6 +37,11 @@ function WatchlistPage() {
 		<WatchlistContainer
 			title={m.watchlist_page_title_text()}
 			items={data?.data}
+			filter={filter}
+			onFilterChange={setFilter}
+			page={page}
+			totalPages={data?.total_pages ?? 1}
+			onPageChange={setPage}
 		/>
 	);
 }

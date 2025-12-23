@@ -1,11 +1,11 @@
 import { FilmIcon, LayoutGridIcon, TvIcon } from "lucide-react";
-import { useState } from "react";
 import { WatchlistMediaCard } from "@/components/lists/media/watchlist-media-card";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { m } from "@/paraglide/messages";
+import { ListPagination } from "../list-pagination";
 import { WatchlistEmptyState } from "./watchlist-empty-state";
 
-type MediaFilter = "all" | "movie" | "tv";
+export type MediaFilter = "all" | "movie" | "tv";
 
 type WatchlistContainerProps = {
 	title: string;
@@ -19,32 +19,38 @@ type WatchlistContainerProps = {
 		mediaType: string;
 		addedAt: Date;
 	}[];
+	filter: MediaFilter;
+	onFilterChange: (filter: MediaFilter) => void;
+	page: number;
+	totalPages: number;
+	onPageChange: (page: number) => void;
 };
 
 export function WatchlistContainer({
 	title,
 	items = [],
+	filter,
+	onFilterChange,
+	page,
+	totalPages,
+	onPageChange,
 }: WatchlistContainerProps) {
-	const [filter, setFilter] = useState<MediaFilter>("all");
-
-	const filteredMedia = items.filter((item) => {
-		if (filter === "all") return true;
-		return item.mediaType === filter;
-	});
-
 	const handleFilterChange = (value: string) => {
-		if (value) setFilter(value as MediaFilter);
+		if (value) {
+			onFilterChange(value as MediaFilter);
+			onPageChange(1);
+		}
 	};
 
 	return (
-		<div className="container p-4">
-			<h1 className="text-3xl font-bold mb-6">{title}</h1>
+		<div className="container px-4 flex flex-col gap-4">
+			<h1 className="text-3xl font-bold">{title}</h1>
 
 			<ToggleGroup
 				type="single"
 				value={filter}
 				onValueChange={handleFilterChange}
-				className="justify-start mb-6"
+				className="justify-start"
 			>
 				<ToggleGroupItem
 					value="all"
@@ -72,21 +78,29 @@ export function WatchlistContainer({
 				</ToggleGroupItem>
 			</ToggleGroup>
 
-			{filteredMedia.length === 0 ? (
+			{items.length === 0 ? (
 				<WatchlistEmptyState filter={filter} />
 			) : (
-				<div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-5 xl:grid-cols-8 gap-2 sm:gap-4">
-					{filteredMedia.map((item) => {
-						const type = item.mediaType === "movie" ? "movies" : "tv";
-						return (
-							<WatchlistMediaCard
-								key={`${item.mediaType}-${item.id}`}
-								item={item}
-								linkTo={`/${type}/${item.id}`}
-							/>
-						);
-					})}
-				</div>
+				<>
+					<div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-5 xl:grid-cols-8 gap-2 sm:gap-4">
+						{items.map((item) => {
+							const type = item.mediaType === "movie" ? "movies" : "tv";
+							return (
+								<WatchlistMediaCard
+									key={`${item.mediaType}-${item.id}`}
+									item={item}
+									linkTo={`/${type}/${item.id}`}
+								/>
+							);
+						})}
+					</div>
+
+					<ListPagination
+						page={page}
+						totalPages={totalPages}
+						onPageChange={onPageChange}
+					/>
+				</>
 			)}
 		</div>
 	);
