@@ -15,6 +15,13 @@ import {
 	varchar,
 } from "drizzle-orm/pg-core";
 import { timestamps } from "./column.helper";
+import {
+	customLists,
+	movieWatchHistory,
+	reviewComments,
+	tvShowWatchHistory,
+	watchlist,
+} from "./list";
 
 export const users = pgTable("users", {
 	id: uuid("id").primaryKey().default(sql`uuidv7()`),
@@ -81,6 +88,41 @@ export const sessions = pgTable(
 	(table) => [uniqueIndex("unique_session_token").on(table.token)],
 );
 
+export const activity = pgTable(
+	"activity",
+	{
+		id: uuid("id").primaryKey().default(sql`uuidv7()`),
+		userId: uuid("user_id")
+			.notNull()
+			.references(() => users.id, { onDelete: "cascade" }),
+		activityType: varchar("activity_type", { length: 50 }).notNull(),
+		// Polymorphic references - only one should be set per activity
+		movieWatchHistoryId: uuid("movie_watch_history_id").references(
+			() => movieWatchHistory.id,
+			{ onDelete: "cascade" },
+		),
+		tvShowWatchHistoryId: uuid("tv_show_watch_history_id").references(
+			() => tvShowWatchHistory.id,
+			{ onDelete: "cascade" },
+		),
+		reviewCommentId: uuid("review_comment_id").references(
+			() => reviewComments.id,
+			{ onDelete: "cascade" },
+		),
+		customListId: uuid("custom_list_id").references(() => customLists.id, {
+			onDelete: "cascade",
+		}),
+		watchlistId: uuid("watchlist_id").references(() => watchlist.id, {
+			onDelete: "cascade",
+		}),
+		createdAt: timestamp("created_at").notNull().defaultNow(),
+	},
+	(table) => [
+		index("idx_user_activity_user_date").on(table.userId, table.createdAt),
+		index("idx_user_activity_type").on(table.activityType),
+	],
+);
+
 export const verifications = pgTable("verifications", {
 	id: uuid("id").primaryKey().default(sql`uuidv7()`),
 	identifier: text(),
@@ -100,7 +142,36 @@ export const accountsRelations = relations(accounts, ({ one }) => ({
 	}),
 }));
 
+export const activityRelations = relations(activity, ({ one }) => ({
+	user: one(users, {
+		fields: [activity.userId],
+		references: [users.id],
+	}),
+	movieWatchHistory: one(movieWatchHistory, {
+		fields: [activity.movieWatchHistoryId],
+		references: [movieWatchHistory.id],
+	}),
+	tvShowWatchHistory: one(tvShowWatchHistory, {
+		fields: [activity.tvShowWatchHistoryId],
+		references: [tvShowWatchHistory.id],
+	}),
+	reviewComment: one(reviewComments, {
+		fields: [activity.reviewCommentId],
+		references: [reviewComments.id],
+	}),
+	customList: one(customLists, {
+		fields: [activity.customListId],
+		references: [customLists.id],
+	}),
+	watchlist: one(watchlist, {
+		fields: [activity.watchlistId],
+		references: [watchlist.id],
+	}),
+}));
+
 export type User = InferSelectModel<typeof users>;
 export type NewUser = InferInsertModel<typeof users>;
 export type Account = InferSelectModel<typeof accounts>;
 export type NewAccount = InferInsertModel<typeof accounts>;
+export type Activity = InferSelectModel<typeof activity>;
+export type NewActivity = InferInsertModel<typeof activity>;

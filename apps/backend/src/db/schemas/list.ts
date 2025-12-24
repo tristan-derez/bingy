@@ -13,6 +13,7 @@ import {
 	primaryKey,
 	text,
 	timestamp,
+	unique,
 	uuid,
 	varchar,
 } from "drizzle-orm/pg-core";
@@ -97,6 +98,7 @@ export const reviewComments = pgTable(
 export const watchlist = pgTable(
 	"watchlist",
 	{
+		id: uuid("id").primaryKey().default(sql`uuidv7()`),
 		userId: uuid("user_id")
 			.notNull()
 			.references(() => users.id, { onDelete: "cascade" }),
@@ -104,10 +106,7 @@ export const watchlist = pgTable(
 		mediaType: varchar("media_type", { length: 10 }).notNull(),
 		addedAt: timestamp("added_at").notNull().defaultNow(),
 	},
-	(table) => [
-		primaryKey({ columns: [table.userId, table.mediaTmdbId, table.mediaType] }),
-		index("idx_watchlist_user").on(table.userId),
-	],
+	(table) => [unique().on(table.userId, table.mediaTmdbId, table.mediaType)],
 );
 
 export const customLists = pgTable(

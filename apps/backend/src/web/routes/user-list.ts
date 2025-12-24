@@ -2,8 +2,15 @@ import { zValidator } from "@hono/zod-validator";
 import { and, desc, eq, sql } from "drizzle-orm";
 import { Hono } from "hono";
 import { z } from "zod";
-import { customLists, listItems, watchlist } from "#db/schemas/list";
+import {
+	customLists,
+	listItems,
+	movieWatchHistory,
+	tvShowWatchHistory,
+	watchlist,
+} from "#db/schemas/list";
 import type { User } from "#db/schemas/user";
+import { activity } from "#db/schemas/user";
 import { db } from "#lib/database";
 import { serveNotFound } from "#lib/responses/error";
 import { serveCreated, serveData, serveNoContent } from "#lib/responses/resp";
@@ -33,17 +40,29 @@ userListRoutes.post(
 		const user = c.get("user")!;
 		const data = c.req.valid("json");
 
-		const [item] = await db
-			.insert(watchlist)
-			.values({
-				userId: user.id,
-				mediaTmdbId: data.tmdbId,
-				mediaType: data.mediaType,
-			})
-			.onConflictDoNothing()
-			.returning();
+		const result = await db.transaction(async (tx) => {
+			const [item] = await tx
+				.insert(watchlist)
+				.values({
+					userId: user.id,
+					mediaTmdbId: data.tmdbId,
+					mediaType: data.mediaType,
+				})
+				.onConflictDoNothing()
+				.returning();
 
-		return serveCreated(c, { item }, 201);
+			if (item) {
+				await tx.insert(activity).values({
+					userId: user.id,
+					activityType: "added_to_watchlist",
+					watchlistId: item.id,
+				});
+			}
+
+			return item;
+		});
+
+		return serveCreated(c, { item: result }, 201);
 	},
 );
 
@@ -164,13 +183,23 @@ userListRoutes.post(
 		const user = c.get("user")!;
 		const { name } = c.req.valid("json");
 
-		const [list] = await db
-			.insert(customLists)
-			.values({
+		const list = await db.transaction(async (tx) => {
+			const [newList] = await tx
+				.insert(customLists)
+				.values({
+					userId: user.id,
+					name,
+				})
+				.returning();
+
+			await tx.insert(activity).values({
 				userId: user.id,
-				name,
-			})
-			.returning();
+				activityType: "created_list",
+				customListId: newList.id,
+			});
+
+			return newList;
+		});
 
 		return serveCreated(c, list, 201);
 	},
@@ -294,5 +323,287 @@ userListRoutes.get("/lists/:listId/items", async (c) => {
 
 	return serveData(c, items);
 });
+
+// Log movie watch
+userListRoutes.post(
+	"/history/movie",
+	zValidator(
+		"json",
+		z.object({
+			tmdbId: z.number(),
+			rating: z.number().min(0.5).max(5.0).optional(),
+			review: z.string().optional(),
+			watchedAt: z.string().datetime().optional(),
+		}),
+	),
+	async (c) => {
+		const user = c.get("user")!;
+		const data = c.req.valid("json");
+
+		const entry = await db.transaction(async (tx) => {
+			const [watchEntry] = await tx
+				.insert(movieWatchHistory)
+				.values({
+					userId: user.id,
+					mediaTmdbId: data.tmdbId,
+					rating: data.rating?.toString(),
+					review: data.review,
+					watchedAt: data.watchedAt ? new Date(data.watchedAt) : undefined,
+				})
+				.returning();
+
+			await tx.insert(activity).values({
+				userId: user.id,
+				activityType: "watched_movie",
+				movieWatchHistoryId: watchEntry.id,
+			});
+
+			return watchEntry;
+		});
+
+		return c.json(entry, 201);
+	},
+);
+
+// Log TV show episode watch
+userListRoutes.post(
+	"/history/tv",
+	zValidator(
+		"json",
+		z.object({
+			tmdbId: z.number(),
+			seasonNumber: z.number().min(0),
+			episodeNumber: z.number().min(1),
+			rating: z.number().min(0.5).max(5.0).optional(),
+			review: z.string().optional(),
+			watchedAt: z.string().datetime().optional(),
+		}),
+	),
+	async (c) => {
+		const user = c.get("user")!;
+		const data = c.req.valid("json");
+
+		const entry = await db.transaction(async (tx) => {
+			const [watchEntry] = await tx
+				.insert(tvShowWatchHistory)
+				.values({
+					userId: user.id,
+					mediaTmdbId: data.tmdbId,
+					seasonNumber: data.seasonNumber,
+					episodeNumber: data.episodeNumber,
+					rating: data.rating?.toString(),
+					review: data.review,
+					watchedAt: data.watchedAt ? new Date(data.watchedAt) : undefined,
+				})
+				.returning();
+
+			await tx.insert(activity).values({
+				userId: user.id,
+				activityType: "watched_episode",
+				tvShowWatchHistoryId: watchEntry.id,
+			});
+
+			return watchEntry;
+		});
+
+		return c.json(entry, 201);
+	},
+);
+
+// Get movie watch history
+userListRoutes.get("/history/movie", async (c) => {
+	const user = c.get("user")!;
+	const tmdbId = c.req.query("tmdbId");
+	const page = Math.max(1, parseInt(c.req.query("page") || "1"));
+	const limit = 24;
+	const offset = (page - 1) * limit;
+
+	const whereCondition = tmdbId
+		? and(
+				eq(movieWatchHistory.userId, user.id),
+				eq(movieWatchHistory.mediaTmdbId, Number(tmdbId)),
+			)
+		: eq(movieWatchHistory.userId, user.id);
+
+	const [entries, totalCountResult] = await Promise.all([
+		db.query.movieWatchHistory.findMany({
+			where: whereCondition,
+			orderBy: [desc(movieWatchHistory.watchedAt)],
+			limit,
+			offset,
+		}),
+		db
+			.select({ count: sql<number>`count(*)` })
+			.from(movieWatchHistory)
+			.where(whereCondition),
+	]);
+
+	return c.json({
+		data: entries,
+		page,
+		total_pages: Math.ceil(totalCountResult[0].count / limit),
+		total_results: totalCountResult[0].count,
+	});
+});
+
+// Get TV show watch history
+userListRoutes.get("/history/tv", async (c) => {
+	const user = c.get("user")!;
+	const tmdbId = c.req.query("tmdbId");
+	const page = Math.max(1, parseInt(c.req.query("page") || "1"));
+	const limit = 24;
+	const offset = (page - 1) * limit;
+
+	const whereCondition = tmdbId
+		? and(
+				eq(tvShowWatchHistory.userId, user.id),
+				eq(tvShowWatchHistory.mediaTmdbId, Number(tmdbId)),
+			)
+		: eq(tvShowWatchHistory.userId, user.id);
+
+	const [entries, totalCountResult] = await Promise.all([
+		db.query.tvShowWatchHistory.findMany({
+			where: whereCondition,
+			orderBy: [desc(tvShowWatchHistory.watchedAt)],
+			limit,
+			offset,
+		}),
+		db
+			.select({ count: sql<number>`count(*)` })
+			.from(tvShowWatchHistory)
+			.where(whereCondition),
+	]);
+
+	return c.json({
+		data: entries,
+		page,
+		total_pages: Math.ceil(totalCountResult[0].count / limit),
+		total_results: totalCountResult[0].count,
+	});
+});
+
+// Delete movie watch history entry
+userListRoutes.delete("/history/movie/:id", async (c) => {
+	const user = c.get("user")!;
+	const id = c.req.param("id");
+
+	const entry = await db.query.movieWatchHistory.findFirst({
+		where: and(
+			eq(movieWatchHistory.id, id),
+			eq(movieWatchHistory.userId, user.id),
+		),
+	});
+
+	if (!entry) {
+		return c.json({ error: "Watch history entry not found" }, 404);
+	}
+
+	await db.delete(movieWatchHistory).where(eq(movieWatchHistory.id, id));
+
+	return c.body(null, 204);
+});
+
+// Delete TV show watch history entry
+userListRoutes.delete("/history/tv/:id", async (c) => {
+	const user = c.get("user")!;
+	const id = c.req.param("id");
+
+	const entry = await db.query.tvShowWatchHistory.findFirst({
+		where: and(
+			eq(tvShowWatchHistory.id, id),
+			eq(tvShowWatchHistory.userId, user.id),
+		),
+	});
+
+	if (!entry) {
+		return c.json({ error: "Watch history entry not found" }, 404);
+	}
+
+	await db.delete(tvShowWatchHistory).where(eq(tvShowWatchHistory.id, id));
+
+	return c.body(null, 204);
+});
+
+// Update movie watch history entry
+userListRoutes.patch(
+	"/history/movie/:id",
+	zValidator(
+		"json",
+		z.object({
+			rating: z.number().min(0.5).max(5.0).optional(),
+			review: z.string().optional(),
+			watchedAt: z.string().datetime().optional(),
+		}),
+	),
+	async (c) => {
+		const user = c.get("user")!;
+		const id = c.req.param("id");
+		const data = c.req.valid("json");
+
+		const entry = await db.query.movieWatchHistory.findFirst({
+			where: and(
+				eq(movieWatchHistory.id, id),
+				eq(movieWatchHistory.userId, user.id),
+			),
+		});
+
+		if (!entry) {
+			return c.json({ error: "Watch history entry not found" }, 404);
+		}
+
+		const [updated] = await db
+			.update(movieWatchHistory)
+			.set({
+				rating: data.rating?.toString(),
+				review: data.review,
+				watchedAt: data.watchedAt ? new Date(data.watchedAt) : undefined,
+			})
+			.where(eq(movieWatchHistory.id, id))
+			.returning();
+
+		return c.json(updated, 200);
+	},
+);
+
+// Update TV show watch history entry
+userListRoutes.patch(
+	"/history/tv/:id",
+	zValidator(
+		"json",
+		z.object({
+			rating: z.number().min(0.5).max(5.0).optional(),
+			review: z.string().optional(),
+			watchedAt: z.string().datetime().optional(),
+		}),
+	),
+	async (c) => {
+		const user = c.get("user")!;
+		const id = c.req.param("id");
+		const data = c.req.valid("json");
+
+		const entry = await db.query.tvShowWatchHistory.findFirst({
+			where: and(
+				eq(tvShowWatchHistory.id, id),
+				eq(tvShowWatchHistory.userId, user.id),
+			),
+		});
+
+		if (!entry) {
+			return c.json({ error: "Watch history entry not found" }, 404);
+		}
+
+		const [updated] = await db
+			.update(tvShowWatchHistory)
+			.set({
+				rating: data.rating?.toString(),
+				review: data.review,
+				watchedAt: data.watchedAt ? new Date(data.watchedAt) : undefined,
+			})
+			.where(eq(tvShowWatchHistory.id, id))
+			.returning();
+
+		return c.json(updated, 200);
+	},
+);
 
 export default userListRoutes;
