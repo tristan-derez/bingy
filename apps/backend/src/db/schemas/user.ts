@@ -19,6 +19,8 @@ import {
 	customLists,
 	movieWatchHistory,
 	reviewComments,
+	tvEpisodeWatchHistory,
+	tvSeasonWatchHistory,
 	tvShowWatchHistory,
 	watchlist,
 } from "./list";
@@ -105,6 +107,14 @@ export const activity = pgTable(
 			() => tvShowWatchHistory.id,
 			{ onDelete: "cascade" },
 		),
+		tvSeasonWatchHistoryId: uuid("tv_season_watch_history_id").references(
+			() => tvSeasonWatchHistory.id,
+			{ onDelete: "cascade" },
+		),
+		tvEpisodeWatchHistoryId: uuid("tv_episode_watch_history_id").references(
+			() => tvEpisodeWatchHistory.id,
+			{ onDelete: "cascade" },
+		),
 		reviewCommentId: uuid("review_comment_id").references(
 			() => reviewComments.id,
 			{ onDelete: "cascade" },
@@ -154,6 +164,14 @@ export const activityRelations = relations(activity, ({ one }) => ({
 	tvShowWatchHistory: one(tvShowWatchHistory, {
 		fields: [activity.tvShowWatchHistoryId],
 		references: [tvShowWatchHistory.id],
+	}),
+	tvSeasonWatchHistory: one(tvSeasonWatchHistory, {
+		fields: [activity.tvSeasonWatchHistoryId],
+		references: [tvSeasonWatchHistory.id],
+	}),
+	tvEpisodeWatchHistory: one(tvEpisodeWatchHistory, {
+		fields: [activity.tvEpisodeWatchHistoryId],
+		references: [tvEpisodeWatchHistory.id],
 	}),
 	reviewComment: one(reviewComments, {
 		fields: [activity.reviewCommentId],

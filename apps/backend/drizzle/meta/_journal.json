@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1765791915460,
-      "tag": "0000_fearless_madripoor",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1766586708998,
-      "tag": "0001_calm_texas_twister",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1766614704141,
-      "tag": "0002_gorgeous_wildside",
+      "when": 1766620543631,
+      "tag": "0000_marvelous_bucky",
       "breakpoints": true
     }
   ]

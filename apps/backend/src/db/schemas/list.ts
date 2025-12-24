@@ -20,6 +20,24 @@ import {
 import { timestamps } from "./column.helper";
 import { users } from "./user";
 
+export const media = pgTable(
+	"media",
+	{
+		id: uuid("id").primaryKey().default(sql`uuidv7()`),
+		tmdbId: integer("tmdb_id").notNull(),
+		mediaType: varchar("media_type", { length: 10 }).notNull(),
+		averageRating: numeric("average_rating", { precision: 2, scale: 1 }),
+		ratingCount: integer("rating_count").notNull().default(0),
+		...timestamps,
+	},
+	(table) => [
+		unique().on(table.tmdbId, table.mediaType),
+		index("idx_media_type").on(table.mediaType),
+		index("idx_media_rating").on(table.averageRating),
+		index("idx_media_tmdb").on(table.tmdbId),
+	],
+);
+
 export const movieWatchHistory = pgTable(
 	"movie_watch_history",
 	{
@@ -27,7 +45,9 @@ export const movieWatchHistory = pgTable(
 		userId: uuid("user_id")
 			.notNull()
 			.references(() => users.id, { onDelete: "cascade" }),
-		mediaTmdbId: integer("media_tmdb_id").notNull(),
+		mediaId: uuid("media_id")
+			.notNull()
+			.references(() => media.id, { onDelete: "cascade" }),
 		rating: numeric("rating", { precision: 2, scale: 1 }),
 		review: text("review"),
 		loggedAt: timestamp("logged_at").notNull().defaultNow(),
@@ -39,7 +59,7 @@ export const movieWatchHistory = pgTable(
 			sql`${table.rating} >= 0.5 AND ${table.rating} <= 5.0`,
 		),
 		index("idx_movie_watch_user").on(table.userId),
-		index("idx_movie_watch_media").on(table.mediaTmdbId),
+		index("idx_movie_watch_media").on(table.mediaId),
 		index("idx_movie_watch_date").on(table.watchedAt),
 	],
 );
@@ -51,22 +71,72 @@ export const tvShowWatchHistory = pgTable(
 		userId: uuid("user_id")
 			.notNull()
 			.references(() => users.id, { onDelete: "cascade" }),
-		mediaTmdbId: integer("media_tmdb_id").notNull(),
-		seasonNumber: integer("season_number").notNull(),
-		episodeNumber: integer("episode_number").notNull(),
+		mediaId: uuid("media_id")
+			.notNull()
+			.references(() => media.id, { onDelete: "cascade" }),
 		rating: numeric("rating", { precision: 2, scale: 1 }),
 		review: text("review"),
 		loggedAt: timestamp("logged_at").notNull().defaultNow(),
 		watchedAt: timestamp("watched_at"),
 	},
 	(table) => [
+		unique().on(table.userId, table.mediaId),
 		check(
 			"rating_range",
 			sql`${table.rating} >= 0.5 AND ${table.rating} <= 5.0`,
 		),
 		index("idx_tv_show_watch_user").on(table.userId),
-		index("idx_tv_show_watch_media").on(table.mediaTmdbId),
-		index("idx_tv_show_watch_date").on(table.watchedAt),
+		index("idx_tv_show_watch_media").on(table.mediaId),
+	],
+);
+
+export const tvSeasonWatchHistory = pgTable(
+	"tv_season_watch_history",
+	{
+		id: uuid("id").primaryKey().default(sql`uuidv7()`),
+		userId: uuid("user_id")
+			.notNull()
+			.references(() => users.id, { onDelete: "cascade" }),
+		mediaId: uuid("media_id")
+			.notNull()
+			.references(() => media.id, { onDelete: "cascade" }),
+		seasonNumber: integer("season_number").notNull(),
+		loggedAt: timestamp("logged_at").notNull().defaultNow(),
+		watchedAt: timestamp("watched_at"),
+	},
+	(table) => [
+		unique().on(table.userId, table.mediaId, table.seasonNumber),
+		index("idx_tv_season_watch_user").on(table.userId),
+		index("idx_tv_season_watch_media").on(table.mediaId),
+		index("idx_tv_season_watch_date").on(table.watchedAt),
+	],
+);
+
+export const tvEpisodeWatchHistory = pgTable(
+	"tv_episode_watch_history",
+	{
+		id: uuid("id").primaryKey().default(sql`uuidv7()`),
+		userId: uuid("user_id")
+			.notNull()
+			.references(() => users.id, { onDelete: "cascade" }),
+		mediaId: uuid("media_id")
+			.notNull()
+			.references(() => media.id, { onDelete: "cascade" }),
+		seasonNumber: integer("season_number").notNull(),
+		episodeNumber: integer("episode_number").notNull(),
+		loggedAt: timestamp("logged_at").notNull().defaultNow(),
+		watchedAt: timestamp("watched_at"),
+	},
+	(table) => [
+		unique().on(
+			table.userId,
+			table.mediaId,
+			table.seasonNumber,
+			table.episodeNumber,
+		),
+		index("idx_tv_episode_watch_user").on(table.userId),
+		index("idx_tv_episode_watch_media").on(table.mediaId),
+		index("idx_tv_episode_watch_date").on(table.watchedAt),
 	],
 );
 
@@ -89,6 +159,10 @@ export const reviewComments = pgTable(
 		...timestamps,
 	},
 	(table) => [
+		check(
+			"review_comment_target_check",
+			sql`((movie_watch_history_id IS NOT NULL)::int + (tv_show_watch_history_id IS NOT NULL)::int) = 1`,
+		),
 		index("idx_review_comments_movie").on(table.movieWatchHistoryId),
 		index("idx_review_comments_tv").on(table.tvShowWatchHistoryId),
 		index("idx_review_comments_user").on(table.userId),
@@ -102,11 +176,16 @@ export const watchlist = pgTable(
 		userId: uuid("user_id")
 			.notNull()
 			.references(() => users.id, { onDelete: "cascade" }),
-		mediaTmdbId: integer("media_tmdb_id").notNull(),
-		mediaType: varchar("media_type", { length: 10 }).notNull(),
+		mediaId: uuid("media_id")
+			.notNull()
+			.references(() => media.id, { onDelete: "cascade" }),
 		addedAt: timestamp("added_at").notNull().defaultNow(),
 	},
-	(table) => [unique().on(table.userId, table.mediaTmdbId, table.mediaType)],
+	(table) => [
+		unique().on(table.userId, table.mediaId),
+		index("idx_watchlist_user").on(table.userId),
+		index("idx_watchlist_media").on(table.mediaId),
+	],
 );
 
 export const customLists = pgTable(
@@ -128,20 +207,33 @@ export const listItems = pgTable(
 		listId: uuid("list_id")
 			.notNull()
 			.references(() => customLists.id, { onDelete: "cascade" }),
-		mediaTmdbId: integer("media_tmdb_id").notNull(),
-		mediaType: varchar("media_type", { length: 10 }).notNull(),
+		mediaId: uuid("media_id")
+			.notNull()
+			.references(() => media.id, { onDelete: "cascade" }),
 		addedAt: timestamp("added_at").notNull().defaultNow(),
 	},
 	(table) => [
-		primaryKey({ columns: [table.listId, table.mediaTmdbId, table.mediaType] }),
+		primaryKey({ columns: [table.listId, table.mediaId] }),
 		index("idx_list_items_list").on(table.listId),
+		index("idx_list_items_media").on(table.mediaId),
 	],
 );
 
 // Relations
+export const mediaRelations = relations(media, ({ many }) => ({
+	movieWatchHistory: many(movieWatchHistory),
+	tvShowWatchHistory: many(tvShowWatchHistory),
+	tvSeasonWatchHistory: many(tvSeasonWatchHistory),
+	tvEpisodeWatchHistory: many(tvEpisodeWatchHistory),
+	watchlistEntries: many(watchlist),
+	listItems: many(listItems),
+}));
+
 export const usersRelations = relations(users, ({ many }) => ({
 	movieWatchHistory: many(movieWatchHistory),
 	tvShowWatchHistory: many(tvShowWatchHistory),
+	tvSeasonWatchHistory: many(tvSeasonWatchHistory),
+	tvEpisodeWatchHistory: many(tvEpisodeWatchHistory),
 	reviewComments: many(reviewComments),
 	watchlist: many(watchlist),
 	customLists: many(customLists),
@@ -154,6 +246,10 @@ export const movieWatchHistoryRelations = relations(
 			fields: [movieWatchHistory.userId],
 			references: [users.id],
 		}),
+		media: one(media, {
+			fields: [movieWatchHistory.mediaId],
+			references: [media.id],
+		}),
 		comments: many(reviewComments),
 	}),
 );
@@ -165,7 +261,39 @@ export const tvShowWatchHistoryRelations = relations(
 			fields: [tvShowWatchHistory.userId],
 			references: [users.id],
 		}),
+		media: one(media, {
+			fields: [tvShowWatchHistory.mediaId],
+			references: [media.id],
+		}),
 		comments: many(reviewComments),
+	}),
+);
+
+export const tvSeasonWatchHistoryRelations = relations(
+	tvSeasonWatchHistory,
+	({ one }) => ({
+		user: one(users, {
+			fields: [tvSeasonWatchHistory.userId],
+			references: [users.id],
+		}),
+		media: one(media, {
+			fields: [tvSeasonWatchHistory.mediaId],
+			references: [media.id],
+		}),
+	}),
+);
+
+export const tvEpisodeWatchHistoryRelations = relations(
+	tvEpisodeWatchHistory,
+	({ one }) => ({
+		user: one(users, {
+			fields: [tvEpisodeWatchHistory.userId],
+			references: [users.id],
+		}),
+		media: one(media, {
+			fields: [tvEpisodeWatchHistory.mediaId],
+			references: [media.id],
+		}),
 	}),
 );
 
@@ -189,6 +317,10 @@ export const watchlistRelations = relations(watchlist, ({ one }) => ({
 		fields: [watchlist.userId],
 		references: [users.id],
 	}),
+	media: one(media, {
+		fields: [watchlist.mediaId],
+		references: [media.id],
+	}),
 }));
 
 export const customListsRelations = relations(customLists, ({ one, many }) => ({
@@ -204,7 +336,15 @@ export const listItemsRelations = relations(listItems, ({ one }) => ({
 		fields: [listItems.listId],
 		references: [customLists.id],
 	}),
+	media: one(media, {
+		fields: [listItems.mediaId],
+		references: [media.id],
+	}),
 }));
+
+// Media types
+export type Media = InferSelectModel<typeof media>;
+export type NewMedia = InferInsertModel<typeof media>;
 
 // Watch history types
 export type MovieWatchHistory = InferSelectModel<typeof movieWatchHistory>;
@@ -212,6 +352,18 @@ export type NewMovieWatchHistory = InferInsertModel<typeof movieWatchHistory>;
 
 export type TvShowWatchHistory = InferSelectModel<typeof tvShowWatchHistory>;
 export type NewTvShowWatchHistory = InferInsertModel<typeof tvShowWatchHistory>;
+export type TvSeasonWatchHistory = InferSelectModel<
+	typeof tvSeasonWatchHistory
+>;
+export type NewTvSeasonWatchHistory = InferInsertModel<
+	typeof tvSeasonWatchHistory
+>;
+export type TvEpisodeWatchHistory = InferSelectModel<
+	typeof tvEpisodeWatchHistory
+>;
+export type NewTvEpisodeWatchHistory = InferInsertModel<
+	typeof tvEpisodeWatchHistory
+>;
 
 // Review comment types
 export type ReviewComment = InferSelectModel<typeof reviewComments>;
@@ -220,9 +372,7 @@ export type NewReviewComment = InferInsertModel<typeof reviewComments>;
 // List types
 export type Watchlist = InferSelectModel<typeof watchlist>;
 export type NewWatchlist = InferInsertModel<typeof watchlist>;
-
 export type CustomList = InferSelectModel<typeof customLists>;
 export type NewCustomList = InferInsertModel<typeof customLists>;
-
 export type ListItem = InferSelectModel<typeof listItems>;
 export type NewListItem = InferInsertModel<typeof listItems>;
