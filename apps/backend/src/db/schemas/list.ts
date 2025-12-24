@@ -5,10 +5,13 @@ import {
 	sql,
 } from "drizzle-orm";
 import {
+	check,
 	index,
 	integer,
+	numeric,
 	pgTable,
 	primaryKey,
+	text,
 	timestamp,
 	uuid,
 	varchar,
@@ -24,11 +27,19 @@ export const movieWatchHistory = pgTable(
 			.notNull()
 			.references(() => users.id, { onDelete: "cascade" }),
 		mediaTmdbId: integer("media_tmdb_id").notNull(),
-		watchedAt: timestamp("watched_at").notNull().defaultNow(),
+		rating: numeric("rating", { precision: 2, scale: 1 }),
+		review: text("review"),
+		loggedAt: timestamp("logged_at").notNull().defaultNow(),
+		watchedAt: timestamp("watched_at"),
 	},
 	(table) => [
+		check(
+			"rating_range",
+			sql`${table.rating} >= 0.5 AND ${table.rating} <= 5.0`,
+		),
 		index("idx_movie_watch_user").on(table.userId),
 		index("idx_movie_watch_media").on(table.mediaTmdbId),
+		index("idx_movie_watch_date").on(table.watchedAt),
 	],
 );
 
@@ -42,11 +53,44 @@ export const tvShowWatchHistory = pgTable(
 		mediaTmdbId: integer("media_tmdb_id").notNull(),
 		seasonNumber: integer("season_number").notNull(),
 		episodeNumber: integer("episode_number").notNull(),
-		watchedAt: timestamp("watched_at").notNull().defaultNow(),
+		rating: numeric("rating", { precision: 2, scale: 1 }),
+		review: text("review"),
+		loggedAt: timestamp("logged_at").notNull().defaultNow(),
+		watchedAt: timestamp("watched_at"),
 	},
 	(table) => [
+		check(
+			"rating_range",
+			sql`${table.rating} >= 0.5 AND ${table.rating} <= 5.0`,
+		),
 		index("idx_tv_show_watch_user").on(table.userId),
 		index("idx_tv_show_watch_media").on(table.mediaTmdbId),
+		index("idx_tv_show_watch_date").on(table.watchedAt),
+	],
+);
+
+export const reviewComments = pgTable(
+	"review_comments",
+	{
+		id: uuid("id").primaryKey().default(sql`uuidv7()`),
+		userId: uuid("user_id")
+			.notNull()
+			.references(() => users.id, { onDelete: "cascade" }),
+		movieWatchHistoryId: uuid("movie_watch_history_id").references(
+			() => movieWatchHistory.id,
+			{ onDelete: "cascade" },
+		),
+		tvShowWatchHistoryId: uuid("tv_show_watch_history_id").references(
+			() => tvShowWatchHistory.id,
+			{ onDelete: "cascade" },
+		),
+		comment: text("comment").notNull(),
+		...timestamps,
+	},
+	(table) => [
+		index("idx_review_comments_movie").on(table.movieWatchHistoryId),
+		index("idx_review_comments_tv").on(table.tvShowWatchHistoryId),
+		index("idx_review_comments_user").on(table.userId),
 	],
 );
 
@@ -95,32 +139,51 @@ export const listItems = pgTable(
 	],
 );
 
+// Relations
 export const usersRelations = relations(users, ({ many }) => ({
 	movieWatchHistory: many(movieWatchHistory),
 	tvShowWatchHistory: many(tvShowWatchHistory),
+	reviewComments: many(reviewComments),
 	watchlist: many(watchlist),
 	customLists: many(customLists),
 }));
 
 export const movieWatchHistoryRelations = relations(
 	movieWatchHistory,
-	({ one }) => ({
+	({ one, many }) => ({
 		user: one(users, {
 			fields: [movieWatchHistory.userId],
 			references: [users.id],
 		}),
+		comments: many(reviewComments),
 	}),
 );
 
 export const tvShowWatchHistoryRelations = relations(
 	tvShowWatchHistory,
-	({ one }) => ({
+	({ one, many }) => ({
 		user: one(users, {
 			fields: [tvShowWatchHistory.userId],
 			references: [users.id],
 		}),
+		comments: many(reviewComments),
 	}),
 );
+
+export const reviewCommentsRelations = relations(reviewComments, ({ one }) => ({
+	user: one(users, {
+		fields: [reviewComments.userId],
+		references: [users.id],
+	}),
+	movieWatchHistory: one(movieWatchHistory, {
+		fields: [reviewComments.movieWatchHistoryId],
+		references: [movieWatchHistory.id],
+	}),
+	tvShowWatchHistory: one(tvShowWatchHistory, {
+		fields: [reviewComments.tvShowWatchHistoryId],
+		references: [tvShowWatchHistory.id],
+	}),
+}));
 
 export const watchlistRelations = relations(watchlist, ({ one }) => ({
 	user: one(users, {
@@ -150,6 +213,10 @@ export type NewMovieWatchHistory = InferInsertModel<typeof movieWatchHistory>;
 
 export type TvShowWatchHistory = InferSelectModel<typeof tvShowWatchHistory>;
 export type NewTvShowWatchHistory = InferInsertModel<typeof tvShowWatchHistory>;
+
+// Review comment types
+export type ReviewComment = InferSelectModel<typeof reviewComments>;
+export type NewReviewComment = InferInsertModel<typeof reviewComments>;
 
 // List types
 export type Watchlist = InferSelectModel<typeof watchlist>;
