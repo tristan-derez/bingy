@@ -480,5 +480,12 @@
 	"pagination_previous_aria_label": "Go to previous page",
 	"pagination_next_aria_label": "Go to next page",
 	"pagination_previous": "Previous",
-	"pagination_next": "Next"
+	"pagination_next": "Next",
+	"list_dropdown_item_remove_watchlist": "Remove from your watchlist",
+	"list_dropdown_item_add_watchlist": "Add to your watchlist",
+	"list_dropdown_logreview": "Log or review",
+	"log_review_dialog_title_movie": "Rate Movie",
+	"log_review_dialog_desc_movie": "Add your rating and review or just mark as watched by clicking on save",
+	"log_review_dialog_title_tv": "Rate TV Show",
+	"log_review_dialog_desc_tv": "Add your rating and review. You can also just save your progress and rate later."
 }

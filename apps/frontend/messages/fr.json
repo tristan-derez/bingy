@@ -480,5 +480,12 @@
 	"pagination_previous_aria_label": "Aller à la page précédente",
 	"pagination_next_aria_label": "Aller à la page suivante",
 	"pagination_previous": "Précédent",
-	"pagination_next": "Suivant"
+	"pagination_next": "Suivant",
+	"list_dropdown_item_remove_watchlist": "Supprimer de la watchlist",
+	"list_dropdown_item_add_watchlist": "Ajouter à la watchlist",
+	"list_dropdown_logreview": "Marquer comme vu ou noter",
+	"log_review_dialog_title_movie": "Noter le film",
+	"log_review_dialog_desc_movie": "Ajoutez votre note et votre avis ou marquez simplement comme vu en cliquant sur « Enregistrer ».",
+	"log_review_dialog_title_tv": "Noter la série",
+	"log_review_dialog_desc_tv": "Ajoutez votre note et votre avis. Vous pouvez également enregistrer votre progression et noter plus tard."
 }
