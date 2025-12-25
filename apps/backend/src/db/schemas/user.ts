@@ -19,8 +19,7 @@ import {
 	customLists,
 	movieWatchHistory,
 	reviewComments,
-	tvEpisodeWatchHistory,
-	tvSeasonWatchHistory,
+	tvShowProgress,
 	tvShowWatchHistory,
 	watchlist,
 } from "./list";
@@ -98,7 +97,6 @@ export const activity = pgTable(
 			.notNull()
 			.references(() => users.id, { onDelete: "cascade" }),
 		activityType: varchar("activity_type", { length: 50 }).notNull(),
-		// Polymorphic references - only one should be set per activity
 		movieWatchHistoryId: uuid("movie_watch_history_id").references(
 			() => movieWatchHistory.id,
 			{ onDelete: "cascade" },
@@ -107,12 +105,8 @@ export const activity = pgTable(
 			() => tvShowWatchHistory.id,
 			{ onDelete: "cascade" },
 		),
-		tvSeasonWatchHistoryId: uuid("tv_season_watch_history_id").references(
-			() => tvSeasonWatchHistory.id,
-			{ onDelete: "cascade" },
-		),
-		tvEpisodeWatchHistoryId: uuid("tv_episode_watch_history_id").references(
-			() => tvEpisodeWatchHistory.id,
+		tvShowProgressId: uuid("tv_show_progress_id").references(
+			() => tvShowProgress.id,
 			{ onDelete: "cascade" },
 		),
 		reviewCommentId: uuid("review_comment_id").references(
@@ -165,13 +159,9 @@ export const activityRelations = relations(activity, ({ one }) => ({
 		fields: [activity.tvShowWatchHistoryId],
 		references: [tvShowWatchHistory.id],
 	}),
-	tvSeasonWatchHistory: one(tvSeasonWatchHistory, {
-		fields: [activity.tvSeasonWatchHistoryId],
-		references: [tvSeasonWatchHistory.id],
-	}),
-	tvEpisodeWatchHistory: one(tvEpisodeWatchHistory, {
-		fields: [activity.tvEpisodeWatchHistoryId],
-		references: [tvEpisodeWatchHistory.id],
+	tvShowProgress: one(tvShowProgress, {
+		fields: [activity.tvShowProgressId],
+		references: [tvShowProgress.id],
 	}),
 	reviewComment: one(reviewComments, {
 		fields: [activity.reviewCommentId],

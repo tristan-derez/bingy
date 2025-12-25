@@ -49,25 +49,27 @@ CREATE TABLE "review_comments" (
 	CONSTRAINT "review_comment_target_check" CHECK (((movie_watch_history_id IS NOT NULL)::int + (tv_show_watch_history_id IS NOT NULL)::int) = 1)
 );
 --> statement-breakpoint
-CREATE TABLE "tv_episode_watch_history" (
+CREATE TABLE "tv_seasons" (
 	"id" uuid PRIMARY KEY DEFAULT uuidv7() NOT NULL,
-	"user_id" uuid NOT NULL,
 	"media_id" uuid NOT NULL,
 	"season_number" integer NOT NULL,
-	"episode_number" integer NOT NULL,
-	"logged_at" timestamp DEFAULT now() NOT NULL,
-	"watched_at" timestamp,
-	CONSTRAINT "tv_episode_watch_history_user_id_media_id_season_number_episode_number_unique" UNIQUE("user_id","media_id","season_number","episode_number")
+	"episode_count" integer NOT NULL,
+	"updated_at" timestamp,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"deleted_at" timestamp,
+	CONSTRAINT "tv_seasons_media_id_season_number_unique" UNIQUE("media_id","season_number")
 );
 --> statement-breakpoint
-CREATE TABLE "tv_season_watch_history" (
+CREATE TABLE "tv_show_progress" (
 	"id" uuid PRIMARY KEY DEFAULT uuidv7() NOT NULL,
 	"user_id" uuid NOT NULL,
 	"media_id" uuid NOT NULL,
-	"season_number" integer NOT NULL,
-	"logged_at" timestamp DEFAULT now() NOT NULL,
-	"watched_at" timestamp,
-	CONSTRAINT "tv_season_watch_history_user_id_media_id_season_number_unique" UNIQUE("user_id","media_id","season_number")
+	"last_watched_season" integer NOT NULL,
+	"last_watched_episode" integer NOT NULL,
+	"updated_at" timestamp,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"deleted_at" timestamp,
+	CONSTRAINT "tv_show_progress_user_id_media_id_unique" UNIQUE("user_id","media_id")
 );
 --> statement-breakpoint
 CREATE TABLE "tv_show_watch_history" (
@@ -113,8 +115,7 @@ CREATE TABLE "activity" (
 	"activity_type" varchar(50) NOT NULL,
 	"movie_watch_history_id" uuid,
 	"tv_show_watch_history_id" uuid,
-	"tv_season_watch_history_id" uuid,
-	"tv_episode_watch_history_id" uuid,
+	"tv_show_progress_id" uuid,
 	"review_comment_id" uuid,
 	"custom_list_id" uuid,
 	"watchlist_id" uuid,
@@ -173,10 +174,9 @@ ALTER TABLE "movie_watch_history" ADD CONSTRAINT "movie_watch_history_media_id_m
 ALTER TABLE "review_comments" ADD CONSTRAINT "review_comments_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "review_comments" ADD CONSTRAINT "review_comments_movie_watch_history_id_movie_watch_history_id_fk" FOREIGN KEY ("movie_watch_history_id") REFERENCES "public"."movie_watch_history"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "review_comments" ADD CONSTRAINT "review_comments_tv_show_watch_history_id_tv_show_watch_history_id_fk" FOREIGN KEY ("tv_show_watch_history_id") REFERENCES "public"."tv_show_watch_history"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "tv_episode_watch_history" ADD CONSTRAINT "tv_episode_watch_history_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "tv_episode_watch_history" ADD CONSTRAINT "tv_episode_watch_history_media_id_media_id_fk" FOREIGN KEY ("media_id") REFERENCES "public"."media"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "tv_season_watch_history" ADD CONSTRAINT "tv_season_watch_history_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "tv_season_watch_history" ADD CONSTRAINT "tv_season_watch_history_media_id_media_id_fk" FOREIGN KEY ("media_id") REFERENCES "public"."media"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "tv_seasons" ADD CONSTRAINT "tv_seasons_media_id_media_id_fk" FOREIGN KEY ("media_id") REFERENCES "public"."media"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "tv_show_progress" ADD CONSTRAINT "tv_show_progress_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "tv_show_progress" ADD CONSTRAINT "tv_show_progress_media_id_media_id_fk" FOREIGN KEY ("media_id") REFERENCES "public"."media"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "tv_show_watch_history" ADD CONSTRAINT "tv_show_watch_history_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "tv_show_watch_history" ADD CONSTRAINT "tv_show_watch_history_media_id_media_id_fk" FOREIGN KEY ("media_id") REFERENCES "public"."media"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "watchlist" ADD CONSTRAINT "watchlist_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
@@ -185,8 +185,7 @@ ALTER TABLE "accounts" ADD CONSTRAINT "accounts_user_id_users_id_fk" FOREIGN KEY
 ALTER TABLE "activity" ADD CONSTRAINT "activity_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "activity" ADD CONSTRAINT "activity_movie_watch_history_id_movie_watch_history_id_fk" FOREIGN KEY ("movie_watch_history_id") REFERENCES "public"."movie_watch_history"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "activity" ADD CONSTRAINT "activity_tv_show_watch_history_id_tv_show_watch_history_id_fk" FOREIGN KEY ("tv_show_watch_history_id") REFERENCES "public"."tv_show_watch_history"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "activity" ADD CONSTRAINT "activity_tv_season_watch_history_id_tv_season_watch_history_id_fk" FOREIGN KEY ("tv_season_watch_history_id") REFERENCES "public"."tv_season_watch_history"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "activity" ADD CONSTRAINT "activity_tv_episode_watch_history_id_tv_episode_watch_history_id_fk" FOREIGN KEY ("tv_episode_watch_history_id") REFERENCES "public"."tv_episode_watch_history"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "activity" ADD CONSTRAINT "activity_tv_show_progress_id_tv_show_progress_id_fk" FOREIGN KEY ("tv_show_progress_id") REFERENCES "public"."tv_show_progress"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "activity" ADD CONSTRAINT "activity_review_comment_id_review_comments_id_fk" FOREIGN KEY ("review_comment_id") REFERENCES "public"."review_comments"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "activity" ADD CONSTRAINT "activity_custom_list_id_custom_lists_id_fk" FOREIGN KEY ("custom_list_id") REFERENCES "public"."custom_lists"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "activity" ADD CONSTRAINT "activity_watchlist_id_watchlist_id_fk" FOREIGN KEY ("watchlist_id") REFERENCES "public"."watchlist"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
@@ -204,12 +203,9 @@ CREATE INDEX "idx_movie_watch_date" ON "movie_watch_history" USING btree ("watch
 CREATE INDEX "idx_review_comments_movie" ON "review_comments" USING btree ("movie_watch_history_id");--> statement-breakpoint
 CREATE INDEX "idx_review_comments_tv" ON "review_comments" USING btree ("tv_show_watch_history_id");--> statement-breakpoint
 CREATE INDEX "idx_review_comments_user" ON "review_comments" USING btree ("user_id");--> statement-breakpoint
-CREATE INDEX "idx_tv_episode_watch_user" ON "tv_episode_watch_history" USING btree ("user_id");--> statement-breakpoint
-CREATE INDEX "idx_tv_episode_watch_media" ON "tv_episode_watch_history" USING btree ("media_id");--> statement-breakpoint
-CREATE INDEX "idx_tv_episode_watch_date" ON "tv_episode_watch_history" USING btree ("watched_at");--> statement-breakpoint
-CREATE INDEX "idx_tv_season_watch_user" ON "tv_season_watch_history" USING btree ("user_id");--> statement-breakpoint
-CREATE INDEX "idx_tv_season_watch_media" ON "tv_season_watch_history" USING btree ("media_id");--> statement-breakpoint
-CREATE INDEX "idx_tv_season_watch_date" ON "tv_season_watch_history" USING btree ("watched_at");--> statement-breakpoint
+CREATE INDEX "idx_tv_seasons_media" ON "tv_seasons" USING btree ("media_id");--> statement-breakpoint
+CREATE INDEX "idx_tv_show_progress_user" ON "tv_show_progress" USING btree ("user_id");--> statement-breakpoint
+CREATE INDEX "idx_tv_show_progress_media" ON "tv_show_progress" USING btree ("media_id");--> statement-breakpoint
 CREATE INDEX "idx_tv_show_watch_user" ON "tv_show_watch_history" USING btree ("user_id");--> statement-breakpoint
 CREATE INDEX "idx_tv_show_watch_media" ON "tv_show_watch_history" USING btree ("media_id");--> statement-breakpoint
 CREATE INDEX "idx_watchlist_user" ON "watchlist" USING btree ("user_id");--> statement-breakpoint

@@ -1,5 +1,5 @@
 {
-  "id": "3e3e20b3-2b1d-43d6-9023-35f774707684",
+  "id": "35952419-1b98-4b41-9a91-0776fde6e132",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -591,8 +591,8 @@
       },
       "isRLSEnabled": false
     },
-    "public.tv_episode_watch_history": {
-      "name": "tv_episode_watch_history",
+    "public.tv_seasons": {
+      "name": "tv_seasons",
       "schema": "",
       "columns": {
         "id": {
@@ -601,12 +601,6 @@
           "primaryKey": true,
           "notNull": true,
           "default": "uuidv7()"
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
         },
         "media_id": {
           "name": "media_id",
@@ -620,44 +614,35 @@
           "primaryKey": false,
           "notNull": true
         },
-        "episode_number": {
-          "name": "episode_number",
+        "episode_count": {
+          "name": "episode_count",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
         },
-        "logged_at": {
-          "name": "logged_at",
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
         },
-        "watched_at": {
-          "name": "watched_at",
+        "deleted_at": {
+          "name": "deleted_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false
         }
       },
       "indexes": {
-        "idx_tv_episode_watch_user": {
-          "name": "idx_tv_episode_watch_user",
-          "columns": [
-            {
-              "expression": "user_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "idx_tv_episode_watch_media": {
-          "name": "idx_tv_episode_watch_media",
+        "idx_tv_seasons_media": {
+          "name": "idx_tv_seasons_media",
           "columns": [
             {
               "expression": "media_id",
@@ -670,40 +655,12 @@
           "concurrently": false,
           "method": "btree",
           "with": {}
-        },
-        "idx_tv_episode_watch_date": {
-          "name": "idx_tv_episode_watch_date",
-          "columns": [
-            {
-              "expression": "watched_at",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
         }
       },
       "foreignKeys": {
-        "tv_episode_watch_history_user_id_users_id_fk": {
-          "name": "tv_episode_watch_history_user_id_users_id_fk",
-          "tableFrom": "tv_episode_watch_history",
-          "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "tv_episode_watch_history_media_id_media_id_fk": {
-          "name": "tv_episode_watch_history_media_id_media_id_fk",
-          "tableFrom": "tv_episode_watch_history",
+        "tv_seasons_media_id_media_id_fk": {
+          "name": "tv_seasons_media_id_media_id_fk",
+          "tableFrom": "tv_seasons",
           "tableTo": "media",
           "columnsFrom": [
             "media_id"
@@ -717,14 +674,12 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "tv_episode_watch_history_user_id_media_id_season_number_episode_number_unique": {
-          "name": "tv_episode_watch_history_user_id_media_id_season_number_episode_number_unique",
+        "tv_seasons_media_id_season_number_unique": {
+          "name": "tv_seasons_media_id_season_number_unique",
           "nullsNotDistinct": false,
           "columns": [
-            "user_id",
             "media_id",
-            "season_number",
-            "episode_number"
+            "season_number"
           ]
         }
       },
@@ -732,8 +687,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.tv_season_watch_history": {
-      "name": "tv_season_watch_history",
+    "public.tv_show_progress": {
+      "name": "tv_show_progress",
       "schema": "",
       "columns": {
         "id": {
@@ -755,29 +710,41 @@
           "primaryKey": false,
           "notNull": true
         },
-        "season_number": {
-          "name": "season_number",
+        "last_watched_season": {
+          "name": "last_watched_season",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
         },
-        "logged_at": {
-          "name": "logged_at",
+        "last_watched_episode": {
+          "name": "last_watched_episode",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
         },
-        "watched_at": {
-          "name": "watched_at",
+        "deleted_at": {
+          "name": "deleted_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false
         }
       },
       "indexes": {
-        "idx_tv_season_watch_user": {
-          "name": "idx_tv_season_watch_user",
+        "idx_tv_show_progress_user": {
+          "name": "idx_tv_show_progress_user",
           "columns": [
             {
               "expression": "user_id",
@@ -791,8 +758,8 @@
           "method": "btree",
           "with": {}
         },
-        "idx_tv_season_watch_media": {
-          "name": "idx_tv_season_watch_media",
+        "idx_tv_show_progress_media": {
+          "name": "idx_tv_show_progress_media",
           "columns": [
             {
               "expression": "media_id",
@@ -805,27 +772,12 @@
           "concurrently": false,
           "method": "btree",
           "with": {}
-        },
-        "idx_tv_season_watch_date": {
-          "name": "idx_tv_season_watch_date",
-          "columns": [
-            {
-              "expression": "watched_at",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
         }
       },
       "foreignKeys": {
-        "tv_season_watch_history_user_id_users_id_fk": {
-          "name": "tv_season_watch_history_user_id_users_id_fk",
-          "tableFrom": "tv_season_watch_history",
+        "tv_show_progress_user_id_users_id_fk": {
+          "name": "tv_show_progress_user_id_users_id_fk",
+          "tableFrom": "tv_show_progress",
           "tableTo": "users",
           "columnsFrom": [
             "user_id"
@@ -836,9 +788,9 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "tv_season_watch_history_media_id_media_id_fk": {
-          "name": "tv_season_watch_history_media_id_media_id_fk",
-          "tableFrom": "tv_season_watch_history",
+        "tv_show_progress_media_id_media_id_fk": {
+          "name": "tv_show_progress_media_id_media_id_fk",
+          "tableFrom": "tv_show_progress",
           "tableTo": "media",
           "columnsFrom": [
             "media_id"
@@ -852,13 +804,12 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "tv_season_watch_history_user_id_media_id_season_number_unique": {
-          "name": "tv_season_watch_history_user_id_media_id_season_number_unique",
+        "tv_show_progress_user_id_media_id_unique": {
+          "name": "tv_show_progress_user_id_media_id_unique",
           "nullsNotDistinct": false,
           "columns": [
             "user_id",
-            "media_id",
-            "season_number"
+            "media_id"
           ]
         }
       },
@@ -1307,14 +1258,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "tv_season_watch_history_id": {
-          "name": "tv_season_watch_history_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "tv_episode_watch_history_id": {
-          "name": "tv_episode_watch_history_id",
+        "tv_show_progress_id": {
+          "name": "tv_show_progress_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
@@ -1423,25 +1368,12 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "activity_tv_season_watch_history_id_tv_season_watch_history_id_fk": {
-          "name": "activity_tv_season_watch_history_id_tv_season_watch_history_id_fk",
+        "activity_tv_show_progress_id_tv_show_progress_id_fk": {
+          "name": "activity_tv_show_progress_id_tv_show_progress_id_fk",
           "tableFrom": "activity",
-          "tableTo": "tv_season_watch_history",
+          "tableTo": "tv_show_progress",
           "columnsFrom": [
-            "tv_season_watch_history_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "activity_tv_episode_watch_history_id_tv_episode_watch_history_id_fk": {
-          "name": "activity_tv_episode_watch_history_id_tv_episode_watch_history_id_fk",
-          "tableFrom": "activity",
-          "tableTo": "tv_episode_watch_history",
-          "columnsFrom": [
-            "tv_episode_watch_history_id"
+            "tv_show_progress_id"
           ],
           "columnsTo": [
             "id"

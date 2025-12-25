@@ -38,6 +38,23 @@ export const media = pgTable(
 	],
 );
 
+export const tvSeasons = pgTable(
+	"tv_seasons",
+	{
+		id: uuid("id").primaryKey().default(sql`uuidv7()`),
+		mediaId: uuid("media_id")
+			.notNull()
+			.references(() => media.id, { onDelete: "cascade" }),
+		seasonNumber: integer("season_number").notNull(),
+		episodeCount: integer("episode_count").notNull(),
+		...timestamps,
+	},
+	(table) => [
+		unique().on(table.mediaId, table.seasonNumber),
+		index("idx_tv_seasons_media").on(table.mediaId),
+	],
+);
+
 export const movieWatchHistory = pgTable(
 	"movie_watch_history",
 	{
@@ -90,8 +107,8 @@ export const tvShowWatchHistory = pgTable(
 	],
 );
 
-export const tvSeasonWatchHistory = pgTable(
-	"tv_season_watch_history",
+export const tvShowProgress = pgTable(
+	"tv_show_progress",
 	{
 		id: uuid("id").primaryKey().default(sql`uuidv7()`),
 		userId: uuid("user_id")
@@ -100,43 +117,14 @@ export const tvSeasonWatchHistory = pgTable(
 		mediaId: uuid("media_id")
 			.notNull()
 			.references(() => media.id, { onDelete: "cascade" }),
-		seasonNumber: integer("season_number").notNull(),
-		loggedAt: timestamp("logged_at").notNull().defaultNow(),
-		watchedAt: timestamp("watched_at"),
+		lastWatchedSeason: integer("last_watched_season").notNull(),
+		lastWatchedEpisode: integer("last_watched_episode").notNull(),
+		...timestamps,
 	},
 	(table) => [
-		unique().on(table.userId, table.mediaId, table.seasonNumber),
-		index("idx_tv_season_watch_user").on(table.userId),
-		index("idx_tv_season_watch_media").on(table.mediaId),
-		index("idx_tv_season_watch_date").on(table.watchedAt),
-	],
-);
-
-export const tvEpisodeWatchHistory = pgTable(
-	"tv_episode_watch_history",
-	{
-		id: uuid("id").primaryKey().default(sql`uuidv7()`),
-		userId: uuid("user_id")
-			.notNull()
-			.references(() => users.id, { onDelete: "cascade" }),
-		mediaId: uuid("media_id")
-			.notNull()
-			.references(() => media.id, { onDelete: "cascade" }),
-		seasonNumber: integer("season_number").notNull(),
-		episodeNumber: integer("episode_number").notNull(),
-		loggedAt: timestamp("logged_at").notNull().defaultNow(),
-		watchedAt: timestamp("watched_at"),
-	},
-	(table) => [
-		unique().on(
-			table.userId,
-			table.mediaId,
-			table.seasonNumber,
-			table.episodeNumber,
-		),
-		index("idx_tv_episode_watch_user").on(table.userId),
-		index("idx_tv_episode_watch_media").on(table.mediaId),
-		index("idx_tv_episode_watch_date").on(table.watchedAt),
+		unique().on(table.userId, table.mediaId),
+		index("idx_tv_show_progress_user").on(table.userId),
+		index("idx_tv_show_progress_media").on(table.mediaId),
 	],
 );
 
@@ -223,17 +211,23 @@ export const listItems = pgTable(
 export const mediaRelations = relations(media, ({ many }) => ({
 	movieWatchHistory: many(movieWatchHistory),
 	tvShowWatchHistory: many(tvShowWatchHistory),
-	tvSeasonWatchHistory: many(tvSeasonWatchHistory),
-	tvEpisodeWatchHistory: many(tvEpisodeWatchHistory),
+	tvShowProgress: many(tvShowProgress),
+	tvSeasons: many(tvSeasons),
 	watchlistEntries: many(watchlist),
 	listItems: many(listItems),
+}));
+
+export const tvSeasonsRelations = relations(tvSeasons, ({ one }) => ({
+	media: one(media, {
+		fields: [tvSeasons.mediaId],
+		references: [media.id],
+	}),
 }));
 
 export const usersRelations = relations(users, ({ many }) => ({
 	movieWatchHistory: many(movieWatchHistory),
 	tvShowWatchHistory: many(tvShowWatchHistory),
-	tvSeasonWatchHistory: many(tvSeasonWatchHistory),
-	tvEpisodeWatchHistory: many(tvEpisodeWatchHistory),
+	tvShowProgress: many(tvShowProgress),
 	reviewComments: many(reviewComments),
 	watchlist: many(watchlist),
 	customLists: many(customLists),
@@ -269,33 +263,16 @@ export const tvShowWatchHistoryRelations = relations(
 	}),
 );
 
-export const tvSeasonWatchHistoryRelations = relations(
-	tvSeasonWatchHistory,
-	({ one }) => ({
-		user: one(users, {
-			fields: [tvSeasonWatchHistory.userId],
-			references: [users.id],
-		}),
-		media: one(media, {
-			fields: [tvSeasonWatchHistory.mediaId],
-			references: [media.id],
-		}),
+export const tvShowProgressRelations = relations(tvShowProgress, ({ one }) => ({
+	user: one(users, {
+		fields: [tvShowProgress.userId],
+		references: [users.id],
 	}),
-);
-
-export const tvEpisodeWatchHistoryRelations = relations(
-	tvEpisodeWatchHistory,
-	({ one }) => ({
-		user: one(users, {
-			fields: [tvEpisodeWatchHistory.userId],
-			references: [users.id],
-		}),
-		media: one(media, {
-			fields: [tvEpisodeWatchHistory.mediaId],
-			references: [media.id],
-		}),
+	media: one(media, {
+		fields: [tvShowProgress.mediaId],
+		references: [media.id],
 	}),
-);
+}));
 
 export const reviewCommentsRelations = relations(reviewComments, ({ one }) => ({
 	user: one(users, {
@@ -346,24 +323,18 @@ export const listItemsRelations = relations(listItems, ({ one }) => ({
 export type Media = InferSelectModel<typeof media>;
 export type NewMedia = InferInsertModel<typeof media>;
 
+export type TvSeason = InferSelectModel<typeof tvSeasons>;
+export type NewTvSeason = InferInsertModel<typeof tvSeasons>;
+
 // Watch history types
 export type MovieWatchHistory = InferSelectModel<typeof movieWatchHistory>;
 export type NewMovieWatchHistory = InferInsertModel<typeof movieWatchHistory>;
 
 export type TvShowWatchHistory = InferSelectModel<typeof tvShowWatchHistory>;
 export type NewTvShowWatchHistory = InferInsertModel<typeof tvShowWatchHistory>;
-export type TvSeasonWatchHistory = InferSelectModel<
-	typeof tvSeasonWatchHistory
->;
-export type NewTvSeasonWatchHistory = InferInsertModel<
-	typeof tvSeasonWatchHistory
->;
-export type TvEpisodeWatchHistory = InferSelectModel<
-	typeof tvEpisodeWatchHistory
->;
-export type NewTvEpisodeWatchHistory = InferInsertModel<
-	typeof tvEpisodeWatchHistory
->;
+
+export type TvShowProgress = InferSelectModel<typeof tvShowProgress>;
+export type NewTvShowProgress = InferInsertModel<typeof tvShowProgress>;
 
 // Review comment types
 export type ReviewComment = InferSelectModel<typeof reviewComments>;
