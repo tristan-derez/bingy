@@ -10,16 +10,18 @@ import { useWatchlist } from "@/hooks/useLists";
 import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 
-export const Route = createFileRoute("/_auth/lists/watchlist")({
+export const Route = createFileRoute("/user/$username/watchlist")({
 	component: WatchlistPage,
 });
 
 function WatchlistPage() {
+	const { username } = Route.useParams();
 	const localeRegion = useAtomValue(localeRegionAtom);
 	const [filter, setFilter] = useState<MediaFilter>("all");
 	const [page, setPage] = useState(1);
 
 	const { data, isLoading, isError } = useWatchlist(
+		username,
 		page,
 		localeRegion,
 		filter === "all" ? undefined : filter,
@@ -30,7 +32,7 @@ function WatchlistPage() {
 	}
 
 	if (isError) {
-		return <p>Error loading watchlist</p>;
+		return <p>Error while loading watchlist</p>;
 	}
 
 	return (
