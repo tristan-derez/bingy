@@ -11,22 +11,23 @@ import {
 import { m } from "@/paraglide/messages";
 
 export function useWatchlist(
+	username: string,
 	page = 1,
 	language: string,
 	mediaType?: "movie" | "tv",
 ) {
 	return useQuery({
-		queryKey: ["lists", "watchlist", page, language, mediaType],
-		queryFn: () => fetchWatchlist(page, language, mediaType),
+		queryKey: ["lists", "watchlist", username, page, language, mediaType],
+		queryFn: () => fetchWatchlist(username, page, language, mediaType),
 		staleTime: 1000 * 60 * 10,
 	});
 }
 
 export function useIsInWatchlist(tmdbMediaType: string, tmdbId: number) {
 	return useQuery({
-		queryKey: ["lists", "watchlist", tmdbMediaType, tmdbId],
+		queryKey: ["lists", "watchlist", "check", tmdbMediaType, tmdbId],
 		queryFn: () => fetchCheckItemInWatchlist(tmdbMediaType, tmdbId),
-		staleTime: 0,
+		staleTime: 1000 * 60 * 10,
 	});
 }
 
