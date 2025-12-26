@@ -34,6 +34,7 @@ CREATE TABLE "movie_watch_history" (
 	"review" text,
 	"logged_at" timestamp DEFAULT now() NOT NULL,
 	"watched_at" timestamp,
+	CONSTRAINT "movie_watch_history_user_id_media_id_unique" UNIQUE("user_id","media_id"),
 	CONSTRAINT "rating_range" CHECK ("movie_watch_history"."rating" >= 0.5 AND "movie_watch_history"."rating" <= 5.0)
 );
 --> statement-breakpoint

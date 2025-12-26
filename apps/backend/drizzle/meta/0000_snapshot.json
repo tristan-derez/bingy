@@ -1,5 +1,5 @@
 {
-  "id": "35952419-1b98-4b41-9a91-0776fde6e132",
+  "id": "7df0e3e4-353b-4810-b0a4-fc69ccd6b1bc",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -427,7 +427,16 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
+      "uniqueConstraints": {
+        "movie_watch_history_user_id_media_id_unique": {
+          "name": "movie_watch_history_user_id_media_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "user_id",
+            "media_id"
+          ]
+        }
+      },
       "policies": {},
       "checkConstraints": {
         "rating_range": {

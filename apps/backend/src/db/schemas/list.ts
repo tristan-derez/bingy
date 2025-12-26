@@ -71,6 +71,7 @@ export const movieWatchHistory = pgTable(
 		watchedAt: timestamp("watched_at"),
 	},
 	(table) => [
+		unique().on(table.userId, table.mediaId),
 		check(
 			"rating_range",
 			sql`${table.rating} >= 0.5 AND ${table.rating} <= 5.0`,
