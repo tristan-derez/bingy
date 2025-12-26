@@ -144,7 +144,8 @@ CREATE TABLE "two_factor" (
 --> statement-breakpoint
 CREATE TABLE "users" (
 	"id" uuid PRIMARY KEY DEFAULT uuidv7() NOT NULL,
-	"name" varchar(30),
+	"name" varchar(30) NOT NULL,
+	"display_name" varchar(30) NOT NULL,
 	"email" varchar(256) NOT NULL,
 	"avatar_url" text,
 	"email_verified" boolean DEFAULT false NOT NULL,
@@ -154,6 +155,7 @@ CREATE TABLE "users" (
 	"updated_at" timestamp,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"deleted_at" timestamp,
+	CONSTRAINT "users_name_unique" UNIQUE("name"),
 	CONSTRAINT "users_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint
@@ -216,4 +218,5 @@ CREATE UNIQUE INDEX "unique_provider_account" ON "accounts" USING btree ("provid
 CREATE INDEX "idx_accounts_provider" ON "accounts" USING btree ("provider_id");--> statement-breakpoint
 CREATE INDEX "idx_user_activity_user_date" ON "activity" USING btree ("user_id","created_at");--> statement-breakpoint
 CREATE INDEX "idx_user_activity_type" ON "activity" USING btree ("activity_type");--> statement-breakpoint
-CREATE UNIQUE INDEX "unique_session_token" ON "sessions" USING btree ("token");
+CREATE UNIQUE INDEX "unique_session_token" ON "sessions" USING btree ("token");--> statement-breakpoint
+CREATE INDEX "idx_users_name" ON "users" USING btree ("name");

@@ -24,17 +24,22 @@ import {
 	watchlist,
 } from "./list";
 
-export const users = pgTable("users", {
-	id: uuid("id").primaryKey().default(sql`uuidv7()`),
-	name: varchar("name", { length: 30 }),
-	email: varchar("email", { length: 256 }).unique().notNull(),
-	avatarUrl: text("avatar_url"),
-	emailVerified: boolean("email_verified").default(false).notNull(),
-	emailVerifiedAt: timestamp("email_verified_at"),
-	twoFactorEnabled: boolean("two_factor_enabled").default(false).notNull(),
-	lastLoginMethod: text("last_login_method"),
-	...timestamps,
-});
+export const users = pgTable(
+	"users",
+	{
+		id: uuid("id").primaryKey().default(sql`uuidv7()`),
+		name: varchar("name", { length: 30 }).notNull().unique(),
+		displayName: varchar("display_name", { length: 30 }).notNull(),
+		email: varchar("email", { length: 256 }).unique().notNull(),
+		avatarUrl: text("avatar_url"),
+		emailVerified: boolean("email_verified").default(false).notNull(),
+		emailVerifiedAt: timestamp("email_verified_at"),
+		twoFactorEnabled: boolean("two_factor_enabled").default(false).notNull(),
+		lastLoginMethod: text("last_login_method"),
+		...timestamps,
+	},
+	(table) => [index("idx_users_name").on(table.name)],
+);
 
 export const accounts = pgTable(
 	"accounts",
