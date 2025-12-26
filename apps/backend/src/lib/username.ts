@@ -5,14 +5,14 @@ import { db } from "./database";
 export async function generateUniqueUsername(
 	baseName: string,
 ): Promise<string> {
-	// Sanitize: lowercase, allow alphanumeric, dots, underscores, hyphens
+	// Sanitize: lowercase, allow alphanumeric, dots, underscores only
 	let username = baseName
 		.toLowerCase()
-		.replace(/[^a-z0-9._-]/g, "")
+		.replace(/[^a-z0-9._]/g, "")
 		.slice(0, 30);
 
-	// Remove leading/trailing dots, underscores, hyphens
-	username = username.replace(/^[._-]+|[._-]+$/g, "");
+	// Remove leading/trailing dots and underscores
+	username = username.replace(/^[._]+|[._]+$/g, "");
 
 	// Replace consecutive dots with single dot
 	username = username.replace(/\.{2,}/g, ".");

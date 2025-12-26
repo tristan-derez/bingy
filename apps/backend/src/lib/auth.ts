@@ -233,7 +233,22 @@ export const auth = betterAuth({
 						};
 					}
 
-					return { data: user };
+					// Normal auth: ensure lowercase and only allowed chars
+					const normalizedName = user.name
+						.toLowerCase()
+						.replace(/[^a-z0-9._]/g, "");
+
+					const displayName = user.name
+						.replace(/[^a-z0-9._-]/gi, "")
+						.slice(0, 30);
+
+					return {
+						data: {
+							...user,
+							name: normalizedName,
+							displayName,
+						},
+					};
 				},
 			},
 		},
