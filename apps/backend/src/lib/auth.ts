@@ -8,6 +8,7 @@ import { db } from "#lib/database";
 import env from "./env";
 import { logger } from "./logger";
 import { hash, verify } from "./password-processing";
+import { generateUniqueUsername } from "./username";
 
 export const auth = betterAuth({
 	appName: "Bingy",
@@ -58,6 +59,13 @@ export const auth = betterAuth({
 	user: {
 		fields: {
 			image: "avatarUrl",
+		},
+		additionalFields: {
+			displayName: {
+				type: "string",
+				required: false,
+				input: true,
+			},
 		},
 		changeEmail: {
 			enabled: true,
@@ -166,6 +174,7 @@ export const auth = betterAuth({
 		google: {
 			clientId: env.GOOGLE_CLIENT_ID,
 			clientSecret: env.GOOGLE_CLIENT_SECRET,
+			prompt: "select_account",
 		},
 		discord: {
 			clientId: env.DISCORD_CLIENT_ID,
@@ -179,4 +188,41 @@ export const auth = betterAuth({
 			cookieName: "bingy.last_used_login_method",
 		}),
 	],
+	databaseHooks: {
+		user: {
+			create: {
+				before: async (user, ctx) => {
+					const isOAuth = !ctx?.body?.password;
+
+					if (isOAuth) {
+						const uniqueName = await generateUniqueUsername(user.name);
+
+						if (uniqueName.startsWith("user")) {
+							return {
+								data: {
+									...user,
+									name: uniqueName,
+									displayName: uniqueName,
+								},
+							};
+						}
+
+						const match = uniqueName.match(/(\d+)$/);
+						const suffix = match ? match[1] : "";
+						const displayName = `${user.name}${suffix}`.slice(0, 30);
+
+						return {
+							data: {
+								...user,
+								name: uniqueName,
+								displayName,
+							},
+						};
+					}
+
+					return { data: user };
+				},
+			},
+		},
+	},
 });
