@@ -27,6 +27,7 @@ import personRoutes from "#web/routes/person";
 import searchRoutes from "#web/routes/search";
 import trendingRoutes from "#web/routes/trending";
 import tvRoutes from "#web/routes/tv";
+import userHistoryRoutes from "#web/routes/user-history";
 import userListRoutes from "#web/routes/user-list";
 import watchProvidersRoutes from "#web/routes/watch-providers";
 
@@ -73,6 +74,7 @@ const api = new Hono();
 api.route("/auth", authRoutes);
 api.route("/health", healthRoutes);
 api.route("/lists", userListRoutes);
+api.route("/history", userHistoryRoutes);
 api.use("*", cacheMiddleware);
 api.route("/movies", movieRoutes);
 api.route("/tv", tvRoutes);
