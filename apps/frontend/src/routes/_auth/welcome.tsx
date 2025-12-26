@@ -75,7 +75,7 @@ export function WelcomePage() {
 	return (
 		<div className="flex flex-col gap-6">
 			<h1 className="text-3xl font-bold mt-2">
-				{m.welcome_page_greetings({ username: session.user.name })}
+				{m.welcome_page_greetings({ username: session.user.displayName! })}
 			</h1>
 			{!session.user.emailVerified ? (
 				<Card className="max-w-lg">

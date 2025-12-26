@@ -99,9 +99,7 @@ export default function Header() {
 						<LocaleRegionDropdown />
 
 						{session ? (
-							<ProfileDropdown
-								session={{ ...session.session, user: session.user }}
-							/>
+							<ProfileDropdown session={session} />
 						) : (
 							<>
 								<NavbarButton variant="secondary" to="/signin">

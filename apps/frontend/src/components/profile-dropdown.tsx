@@ -1,5 +1,4 @@
 import { Link, useNavigate, useRouter } from "@tanstack/react-router";
-import type { Session as BaseSession, User } from "better-auth";
 import { ExternalLink } from "lucide-react";
 import { useState } from "react";
 import { FaGithub } from "react-icons/fa";
@@ -19,9 +18,9 @@ import {
 	DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 
-export type Session = BaseSession & {
-	user: User;
-};
+type SessionData = ReturnType<typeof authClient.useSession>["data"];
+
+export type Session = NonNullable<SessionData>;
 
 interface ProfileDropdownProps extends React.HTMLAttributes<HTMLDivElement> {
 	session: Session;
@@ -61,7 +60,7 @@ export const ProfileDropdown = ({
 						>
 							<div className="text-left flex-1">
 								<div className="text-sm font-medium tracking-tight leading-tight text-foreground">
-									{session.user.name}
+									{session.user.displayName}
 								</div>
 							</div>
 							<div className="relative">
@@ -73,7 +72,9 @@ export const ProfileDropdown = ({
 												alt={session.user.name}
 											/>
 											<AvatarFallback className="rounded-lg">
-												{session.user.name ? session.user.name[0] : "U"}
+												{session.user.name
+													? session.user.name[0].toUpperCase()
+													: "U"}
 											</AvatarFallback>
 										</Avatar>
 									</div>
@@ -133,7 +134,11 @@ export const ProfileDropdown = ({
 							</Link>
 						</DropdownMenuItem>
 						<DropdownMenuItem asChild>
-							<Link to="/lists/watchlist" onClick={onLinkClick}>
+							<Link
+								to="/user/$username/watchlist"
+								params={{ username: session.user.name }}
+								onClick={onLinkClick}
+							>
 								<MdWatchLater />
 								{m.dropdown_watchlist_text()}
 							</Link>
