@@ -1,6 +1,6 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { lastLoginMethod, twoFactor } from "better-auth/plugins";
+import { customSession, lastLoginMethod, twoFactor } from "better-auth/plugins";
 import { redis } from "bun";
 import * as schema from "#db/schemas/user";
 import { sendEmail } from "#emails/index";
@@ -65,6 +65,7 @@ export const auth = betterAuth({
 				type: "string",
 				required: false,
 				input: true,
+				returned: true,
 			},
 		},
 		changeEmail: {
@@ -187,6 +188,18 @@ export const auth = betterAuth({
 			storeInDatabase: true,
 			cookieName: "bingy.last_used_login_method",
 		}),
+		customSession(async ({ user, session }) => {
+			const userWithDisplayName = user as typeof user & {
+				displayName?: string;
+			};
+			return {
+				user: {
+					...user,
+					displayName: userWithDisplayName.displayName,
+				},
+				session,
+			};
+		}),
 	],
 	databaseHooks: {
 		user: {
@@ -226,3 +239,5 @@ export const auth = betterAuth({
 		},
 	},
 });
+
+export type Auth = typeof auth;
