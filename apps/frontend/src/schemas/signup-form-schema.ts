@@ -12,8 +12,17 @@ export const signUpFormSchema = z.object({
 		.min(2, {
 			message: "Your name's a bit shy! Can you give us at least 2 characters?",
 		})
-		.max(256, {
-			message: "Whoa there, try to keep your name under 256 characters",
+		.max(30, {
+			message: "Whoa there, try to keep your name under 30 characters",
+		})
+		.regex(/^[a-zA-Z0-9._]+$/, {
+			message: "Only letters, numbers, dots, and underscores allowed",
+		})
+		.regex(/^[a-zA-Z0-9].*[a-zA-Z0-9]$/, {
+			message: "Must start and end with a letter or number",
+		})
+		.refine((val) => !val.includes(".."), {
+			message: "Your name can't have consecutive dots",
 		}),
 	email: z
 		.email({

@@ -39,6 +39,14 @@ import { m } from "@/paraglide/messages";
 import { signUpFormSchema } from "@/schemas/signup-form-schema";
 import { getRandomAvatarUrl } from "@/utils/avatar-generator";
 
+type ErrorWithDetails = {
+	details?: {
+		cause?: {
+			constraint_name?: string;
+		};
+	};
+};
+
 export function SignUpForm() {
 	const [isSubmitting, setIsSubmitting] = React.useState(false);
 	const navigate = useNavigate();
@@ -46,6 +54,7 @@ export function SignUpForm() {
 
 	const form = useForm<z.infer<typeof signUpFormSchema>>({
 		resolver: zodResolver(signUpFormSchema),
+		mode: "onTouched",
 		defaultValues: {
 			name: "",
 			email: "",
@@ -67,12 +76,29 @@ export function SignUpForm() {
 				callbackURL: `${config.appUrl}/welcome`,
 			});
 
-			if (data && data.user) {
+			if (error) {
+				if (
+					"details" in error &&
+					(error as ErrorWithDetails).details?.cause?.constraint_name ===
+						"users_name_unique"
+				) {
+					toast.error("This username is already taken");
+					return;
+				}
+
+				if (error.code === "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL") {
+					toast.error("This email is already used. Use another one.");
+					return;
+				}
+
+				toast.error(m.toast_error_generic());
+				return;
+			}
+
+			if (data?.user) {
 				toast.success(`Please verify your email at ${data.user.email}`);
 				navigate({ to: "/welcome" });
 			}
-
-			error && toast.error(m.toast_error_generic());
 		} catch (err) {
 			toast.error(m.toast_error_generic());
 		} finally {
