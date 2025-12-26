@@ -18,11 +18,12 @@ type WatchlistResponse = {
 };
 
 export const fetchWatchlist = async (
+	username: string,
 	page = 1,
 	language: string,
 	mediaType?: "movie" | "tv",
 ): Promise<WatchlistResponse> => {
-	const res = await apiFetch(`/lists/watchlist`, {
+	const res = await apiFetch(`/lists/${username}/watchlist`, {
 		method: "GET",
 		query: { page, language, ...(mediaType && { mediaType }) },
 	});
