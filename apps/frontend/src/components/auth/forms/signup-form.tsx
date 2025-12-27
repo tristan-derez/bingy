@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, useNavigate, useRouter } from "@tanstack/react-router";
+import { Link, useRouter } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
 import React, { useId } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
@@ -52,7 +52,6 @@ type ErrorWithDetails = {
 export function SignUpForm() {
 	const [isSubmitting, setIsSubmitting] = React.useState(false);
 	const router = useRouter();
-	const navigate = useNavigate();
 	const id = useId();
 
 	const form = useForm<z.infer<typeof signUpFormSchema>>({

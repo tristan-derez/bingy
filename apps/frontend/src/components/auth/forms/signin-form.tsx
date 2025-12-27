@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, useNavigate, useRouter } from "@tanstack/react-router";
+import { Link, useRouter } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
 import { useId, useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
@@ -40,7 +40,6 @@ export function SignInForm() {
 	const [showDialog, setShowDialog] = useState(false);
 	const id = useId();
 	const router = useRouter();
-	const navigate = useNavigate();
 	const lastMethod = authClient.getLastUsedLoginMethod();
 
 	const form = useForm<z.infer<typeof signinFormSchema>>({
