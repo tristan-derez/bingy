@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate, useRouter } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
 import React, { useId } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
@@ -33,8 +33,10 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { queryClient } from "@/integrations/tanstack-query/root-provider";
 import { authClient } from "@/lib/auth-client";
 import { config } from "@/lib/env";
+import { sessionQueryOptions } from "@/lib/queries/session";
 import { m } from "@/paraglide/messages";
 import { signUpFormSchema } from "@/schemas/signup-form-schema";
 import { getRandomAvatarUrl } from "@/utils/avatar-generator";
@@ -49,6 +51,7 @@ type ErrorWithDetails = {
 
 export function SignUpForm() {
 	const [isSubmitting, setIsSubmitting] = React.useState(false);
+	const router = useRouter();
 	const navigate = useNavigate();
 	const id = useId();
 
@@ -73,7 +76,7 @@ export function SignUpForm() {
 				password: formData.password,
 				name: formData.name,
 				image: getRandomAvatarUrl(formData.name),
-				callbackURL: `${config.appUrl}/welcome`,
+				callbackURL: `${config.appUrl}/verify-email`,
 			});
 
 			if (error) {
@@ -96,8 +99,15 @@ export function SignUpForm() {
 			}
 
 			if (data?.user) {
+				await queryClient.invalidateQueries({
+					queryKey: sessionQueryOptions.queryKey,
+				});
+				await queryClient.refetchQueries({
+					queryKey: sessionQueryOptions.queryKey,
+				});
+
 				toast.success(`Please verify your email at ${data.user.email}`);
-				navigate({ to: "/welcome" });
+				await router.navigate({ to: "/verify-email" });
 			}
 		} catch (err) {
 			toast.error(m.toast_error_generic());

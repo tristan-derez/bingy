@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate, useRouter } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
 import { useId, useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
@@ -27,8 +27,10 @@ import { Input } from "@/components/ui/input";
 import { MagicCard } from "@/components/ui/magic-card";
 import { OAuthButton } from "@/components/ui/oauth-button";
 import { SeparatorWithText } from "@/components/ui/separator-text";
+import { queryClient } from "@/integrations/tanstack-query/root-provider";
 import { authClient } from "@/lib/auth-client";
 import { config } from "@/lib/env";
+import { sessionQueryOptions } from "@/lib/queries/session";
 import { m } from "@/paraglide/messages";
 import { signinFormSchema } from "@/schemas/signin-form-schema";
 import { TwoFactorDialog } from "../two-factor.dialog";
@@ -37,6 +39,7 @@ export function SignInForm() {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [showDialog, setShowDialog] = useState(false);
 	const id = useId();
+	const router = useRouter();
 	const navigate = useNavigate();
 	const lastMethod = authClient.getLastUsedLoginMethod();
 
@@ -64,15 +67,31 @@ export function SignInForm() {
 					async onSuccess(context) {
 						if (context.data.twoFactorRedirect) {
 							setShowDialog(true);
-						} else if (context.data.user.emailVerified === "false") {
-							toast.success(m.toast_email_not_verified_new_user());
-							navigate({ to: "/welcome" });
-						} else if (context.data.user.emailVerified) {
-							navigate({ to: "/dashboard" });
+							return;
 						}
+
+						const emailVerified = context.data.user.emailVerified;
+
+						await queryClient.invalidateQueries({
+							queryKey: sessionQueryOptions.queryKey,
+						});
+						await queryClient.refetchQueries({
+							queryKey: sessionQueryOptions.queryKey,
+						});
+
+						if (!emailVerified) {
+							await router.navigate({ to: "/verify-email" });
+							return;
+						}
+
+						await router.navigate({ to: "/dashboard" });
 					},
-					async onError() {
-						toast.error(m.toast_error_generic());
+					async onError(context) {
+						if (context.error.code === "INVALID_EMAIL_OR_PASSWORD") {
+							toast.error("invalid email or password");
+						} else {
+							toast.error(m.toast_error_generic());
+						}
 					},
 				},
 			);
@@ -114,10 +133,17 @@ export function SignInForm() {
 			}
 
 			if (data) {
+				await queryClient.invalidateQueries({
+					queryKey: sessionQueryOptions.queryKey,
+				});
+				await queryClient.refetchQueries({
+					queryKey: sessionQueryOptions.queryKey,
+				});
+
 				toast.success(m.welcome_back_message({ username: data.user.name }));
 				setShowDialog(false);
 				form.reset();
-				navigate({ to: "/dashboard" });
+				await router.navigate({ to: "/dashboard" });
 			}
 		} catch (err) {
 			toast.error(m.toast_error_signin_invalid_code());

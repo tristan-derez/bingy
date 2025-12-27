@@ -6,7 +6,9 @@ import { IoLogOutSharp, IoSettingsSharp } from "react-icons/io5";
 import { MdSupport, MdWatchLater } from "react-icons/md";
 import { PiUserFill } from "react-icons/pi";
 import { toast } from "sonner";
+import { queryClient } from "@/integrations/tanstack-query/root-provider";
 import { authClient } from "@/lib/auth-client";
+import { sessionQueryOptions } from "@/lib/queries/session";
 import { cn } from "@/lib/utils";
 import { m } from "@/paraglide/messages";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -39,11 +41,15 @@ export const ProfileDropdown = ({
 
 	const logout = async () => {
 		onLinkClick?.();
-		toast.success(m.toast_success_logout());
+
 		await authClient.signOut();
-		router.invalidate().finally(() => {
-			navigate({ to: "/" });
-		});
+
+		queryClient.setQueryData(sessionQueryOptions.queryKey, null);
+
+		toast.success(m.toast_success_logout());
+
+		await router.invalidate();
+		await navigate({ to: "/" });
 	};
 
 	return (

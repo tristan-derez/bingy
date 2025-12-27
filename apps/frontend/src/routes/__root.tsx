@@ -4,6 +4,7 @@ import { GlobalError } from "@/components/errors/global-error";
 import { NotFoundComponent } from "@/components/errors/not-found";
 import { RootComponent } from "@/components/root-component";
 import { authClient } from "@/lib/auth-client";
+import { sessionQueryOptions } from "@/lib/queries/session";
 import appCss from "@/styles/app.css?url";
 
 interface MyRouterContext {
@@ -12,10 +13,11 @@ interface MyRouterContext {
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
-	beforeLoad: async ({ context: _ }) => {
-		const session = await authClient.getSession();
+	beforeLoad: async ({ context }) => {
+		const session =
+			await context.queryClient.ensureQueryData(sessionQueryOptions);
 
-		return { session: session.data };
+		return { session };
 	},
 	head: () => ({
 		meta: [
