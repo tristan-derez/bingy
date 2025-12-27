@@ -193,13 +193,15 @@ export const auth = betterAuth({
 			cookieName: "bingy.last_used_login_method",
 		}),
 		customSession(async ({ user, session }) => {
-			const userWithDisplayName = user as typeof user & {
-				displayName?: string;
+			const userWithCustomFields = user as typeof user & {
+				displayName: string;
+				twoFactorEnabled: boolean;
 			};
 			return {
 				user: {
 					...user,
-					displayName: userWithDisplayName.displayName,
+					displayName: userWithCustomFields.displayName,
+					twoFactorEnabled: userWithCustomFields.twoFactorEnabled,
 				},
 				session,
 			};
