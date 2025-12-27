@@ -81,7 +81,7 @@ export default function Header() {
 		},
 		{
 			name: m.header_link_profile(),
-			link: "/profile",
+			link: session ? `/user/${session?.user.name}` : `/signin`,
 			icon: <User />,
 		},
 	];
