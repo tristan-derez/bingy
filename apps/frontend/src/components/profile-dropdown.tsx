@@ -134,7 +134,11 @@ export const ProfileDropdown = ({
 						)}
 					>
 						<DropdownMenuItem asChild>
-							<Link to="/profile" onClick={onLinkClick}>
+							<Link
+								to="/user/$username"
+								params={{ username: session.user.name }}
+								onClick={onLinkClick}
+							>
 								<PiUserFill />
 								{m.dropdown_profile_text()}
 							</Link>
