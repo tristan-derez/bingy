@@ -2,7 +2,6 @@ import { createFileRoute, useSearch } from "@tanstack/react-router";
 import { toast } from "sonner";
 import z from "zod";
 import { SettingsComponent } from "@/components/auth/settings-component";
-import { authClient } from "@/lib/auth-client";
 import { m } from "@/paraglide/messages";
 
 const settingsPageSchema = z.object({
@@ -11,18 +10,10 @@ const settingsPageSchema = z.object({
 
 export const Route = createFileRoute("/_auth/settings")({
 	head: () => ({
-		meta: [
-			{
-				title: "Bingy - Settings",
-			},
-		],
+		meta: [{ title: "Bingy - Settings" }],
 	}),
 	validateSearch: settingsPageSchema,
 	component: SettingsPage,
-	beforeLoad: async () => {
-		const connections = await authClient.listAccounts();
-		return { connections };
-	},
 });
 
 function SettingsPage() {

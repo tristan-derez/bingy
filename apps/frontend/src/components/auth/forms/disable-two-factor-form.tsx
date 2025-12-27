@@ -15,7 +15,9 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { queryClient } from "@/integrations/tanstack-query/root-provider";
 import { authClient } from "@/lib/auth-client";
+import { sessionQueryOptions } from "@/lib/queries/session";
 import { m } from "@/paraglide/messages";
 import { twoFactorSchema } from "@/schemas/two-factor-schema";
 
@@ -41,6 +43,11 @@ export function DisableTwoFactorForm() {
 			});
 
 			if (data) {
+				const { data: freshSession } = await authClient.getSession({
+					query: { disableCookieCache: true },
+				});
+				queryClient.setQueryData(sessionQueryOptions.queryKey, freshSession);
+
 				toast.success(m.toast_success_disable_twofactor());
 				navigate({ to: "/settings" });
 			}

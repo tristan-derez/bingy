@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate, useRouteContext } from "@tanstack/react-router";
+import { useRouteContext, useRouter } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
 import { useId, useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
@@ -15,14 +15,16 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { queryClient } from "@/integrations/tanstack-query/root-provider";
 import { authClient } from "@/lib/auth-client";
+import { sessionQueryOptions } from "@/lib/queries/session";
 import { m } from "@/paraglide/messages";
 import { twoFactorSchema } from "@/schemas/two-factor-schema";
 import { SetupTwoFactorDialog } from "../setup-two-factor-dialog";
 
 export function EnableTwoFactorForm() {
 	const { session } = useRouteContext({ from: "__root__" });
-	const navigate = useNavigate();
+	const router = useRouter();
 
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [showDialog, setShowDialog] = useState(false);
@@ -90,10 +92,15 @@ export function EnableTwoFactorForm() {
 			}
 
 			if (data) {
+				const { data: freshSession } = await authClient.getSession({
+					query: { disableCookieCache: true },
+				});
+				queryClient.setQueryData(sessionQueryOptions.queryKey, freshSession);
+
 				toast.success(m.toast_success_enable_twofactor());
 				setShowDialog(false);
 				form.reset();
-				navigate({ to: "/settings" });
+				router.navigate({ to: "/settings" });
 			}
 		} catch (err) {
 			toast.error(m.toast_error_generic());

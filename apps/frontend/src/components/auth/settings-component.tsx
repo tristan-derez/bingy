@@ -1,7 +1,9 @@
+import { useQuery } from "@tanstack/react-query";
 import { useRouteContext } from "@tanstack/react-router";
 import { UpdatePasswordForm } from "@/components/auth/forms/update-password-form";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { authClient } from "@/lib/auth-client";
 import { m } from "@/paraglide/messages";
 import { ModeToggle } from "../theme/theme-toggle";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
@@ -12,14 +14,22 @@ import { UpdateEmailForm } from "./forms/update-email-form";
 import { LinkAccountComponent } from "./link-account";
 
 export function SettingsComponent() {
-	const { connections } = useRouteContext({ from: "/_auth/settings" });
+	const { data: connections } = useQuery({
+		queryKey: ["accounts"],
+		queryFn: () => authClient.listAccounts(),
+	});
+
 	const { session } = useRouteContext({ from: "__root__" });
+
+	if (!session) {
+		return null;
+	}
 
 	const hasPassword = connections?.data?.some(
 		(c) => c.providerId === "credential",
 	);
 
-	const twoFactorEnabled = session?.user?.twoFactorEnabled;
+	const twoFactorEnabled = session.user.twoFactorEnabled;
 
 	return (
 		<Tabs defaultValue="account">
