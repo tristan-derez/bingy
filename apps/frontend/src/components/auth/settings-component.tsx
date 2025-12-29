@@ -1,4 +1,5 @@
 import { useRouteContext } from "@tanstack/react-router";
+import type { Account } from "better-auth";
 import { UpdatePasswordForm } from "@/components/auth/forms/update-password-form";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -10,16 +11,6 @@ import { DisableTwoFactorForm } from "./forms/disable-two-factor-form";
 import { EnableTwoFactorForm } from "./forms/enable-two-factor-form";
 import { UpdateEmailForm } from "./forms/update-email-form";
 import { LinkAccountComponent } from "./link-account";
-
-type Account = {
-	id: string;
-	providerId: string;
-	accountId: string;
-	userId: string;
-	scopes: string[];
-	createdAt: Date;
-	updatedAt: Date;
-};
 
 type SettingsComponentProps = {
 	accounts: Account[];

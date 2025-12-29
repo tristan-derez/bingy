@@ -1,4 +1,5 @@
 import { useNavigate } from "@tanstack/react-router";
+import type { Account } from "better-auth";
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { toast } from "sonner";
@@ -6,16 +7,6 @@ import { authClient } from "@/lib/auth-client";
 import { config } from "@/lib/env";
 import { m } from "@/paraglide/messages";
 import { OAuthButton } from "../ui/oauth-button";
-
-type Account = {
-	id: string;
-	providerId: string;
-	accountId: string;
-	userId: string;
-	scopes: string[];
-	createdAt: Date;
-	updatedAt: Date;
-};
 
 type LinkAccountComponentProps = {
 	accounts: Account[];
