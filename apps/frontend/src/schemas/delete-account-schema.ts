@@ -1,5 +1,5 @@
-import { z } from "zod";
+import { signUpFormSchema } from "./signup-form-schema";
 
-export const deleteAccountSchema = z.object({
-	password: z.string().min(8, "Password is required"),
+export const deleteAccountSchema = signUpFormSchema.pick({
+	password: true,
 });

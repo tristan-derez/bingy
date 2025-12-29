@@ -1,5 +1,5 @@
-import { z } from "zod";
+import { signUpFormSchema } from "../signup-form-schema";
 
-export const resetPasswordFormSchema = z.object({
-	newPassword: z.string().min(8, "Password must be at least 8 characters long"),
+export const resetPasswordFormSchema = signUpFormSchema.pick({
+	password: true,
 });
