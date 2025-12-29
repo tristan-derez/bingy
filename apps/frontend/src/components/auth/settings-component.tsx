@@ -1,9 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
 import { useRouteContext } from "@tanstack/react-router";
 import { UpdatePasswordForm } from "@/components/auth/forms/update-password-form";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { authClient } from "@/lib/auth-client";
 import { m } from "@/paraglide/messages";
 import { ModeToggle } from "../theme/theme-toggle";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
@@ -13,22 +11,28 @@ import { EnableTwoFactorForm } from "./forms/enable-two-factor-form";
 import { UpdateEmailForm } from "./forms/update-email-form";
 import { LinkAccountComponent } from "./link-account";
 
-export function SettingsComponent() {
-	const { data: connections } = useQuery({
-		queryKey: ["accounts"],
-		queryFn: () => authClient.listAccounts(),
-	});
+type Account = {
+	id: string;
+	providerId: string;
+	accountId: string;
+	userId: string;
+	scopes: string[];
+	createdAt: Date;
+	updatedAt: Date;
+};
 
+type SettingsComponentProps = {
+	accounts: Account[];
+};
+
+export function SettingsComponent({ accounts }: SettingsComponentProps) {
 	const { session } = useRouteContext({ from: "__root__" });
 
 	if (!session) {
 		return null;
 	}
 
-	const hasPassword = connections?.data?.some(
-		(c) => c.providerId === "credential",
-	);
-
+	const hasPassword = accounts.some((c) => c.providerId === "credential");
 	const twoFactorEnabled = session.user.twoFactorEnabled;
 
 	return (
@@ -46,7 +50,7 @@ export function SettingsComponent() {
 					<CardTitle>{m.settings_card_title_account()}</CardTitle>
 					<CardDescription>{m.settings_card_desc_account()}</CardDescription>
 					<Separator />
-					<LinkAccountComponent />
+					<LinkAccountComponent accounts={accounts} />
 					<Separator />
 					{hasPassword && !twoFactorEnabled && (
 						<>

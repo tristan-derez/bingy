@@ -1,7 +1,9 @@
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, useSearch } from "@tanstack/react-router";
 import { toast } from "sonner";
 import z from "zod";
 import { SettingsComponent } from "@/components/auth/settings-component";
+import { authClient } from "@/lib/auth-client";
 import { m } from "@/paraglide/messages";
 
 const settingsPageSchema = z.object({
@@ -17,6 +19,14 @@ export const Route = createFileRoute("/_auth/settings")({
 });
 
 function SettingsPage() {
+	const { data } = useSuspenseQuery({
+		queryKey: ["accounts"],
+		queryFn: async () => {
+			const result = await authClient.listAccounts();
+			return result.data;
+		},
+	});
+
 	const error = useSearch({
 		from: "/_auth/settings",
 		select: (search) => search.error,
@@ -49,7 +59,7 @@ function SettingsPage() {
 
 	return (
 		<div className="flex w-full max-w-md flex-col gap-6">
-			<SettingsComponent />
+			<SettingsComponent accounts={data} />
 		</div>
 	);
 }

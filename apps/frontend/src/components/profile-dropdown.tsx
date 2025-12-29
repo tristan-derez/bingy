@@ -44,6 +44,7 @@ export const ProfileDropdown = ({
 		await authClient.signOut();
 
 		queryClient.setQueryData(sessionQueryOptions.queryKey, null);
+		queryClient.removeQueries({ queryKey: ["accounts"] });
 
 		toast.success(m.toast_success_logout());
 
