@@ -57,43 +57,39 @@ export function SignInForm() {
 	) => {
 		setIsSubmitting(true);
 		try {
-			await authClient.signIn.email(
-				{
-					email: formData.email,
-					password: formData.password,
-				},
-				{
-					async onSuccess(context) {
-						if (context.data.twoFactorRedirect) {
-							setShowDialog(true);
-							return;
-						}
+			const { data, error } = await authClient.signIn.email({
+				email: formData.email,
+				password: formData.password,
+			});
 
-						const emailVerified = context.data.user.emailVerified;
+			if (data) {
+				await queryClient.invalidateQueries({
+					queryKey: sessionQueryOptions.queryKey,
+				});
+				await queryClient.refetchQueries({
+					queryKey: sessionQueryOptions.queryKey,
+				});
 
-						await queryClient.invalidateQueries({
-							queryKey: sessionQueryOptions.queryKey,
-						});
-						await queryClient.refetchQueries({
-							queryKey: sessionQueryOptions.queryKey,
-						});
+				if (data.twoFactorRedirect) {
+					setShowDialog(true);
+					return;
+				}
 
-						if (!emailVerified) {
-							await router.navigate({ to: "/verify-email" });
-							return;
-						}
+				if (!data.user.emailVerified) {
+					await router.navigate({ to: "/verify-email" });
+					return;
+				}
 
-						await router.navigate({ to: "/dashboard" });
-					},
-					async onError(context) {
-						if (context.error.code === "INVALID_EMAIL_OR_PASSWORD") {
-							toast.error("invalid email or password");
-						} else {
-							toast.error(m.toast_error_generic());
-						}
-					},
-				},
-			);
+				await router.navigate({ to: "/dashboard" });
+			}
+
+			if (error) {
+				if (error.code === "INVALID_EMAIL_OR_PASSWORD") {
+					toast.error("invalid email or password");
+				} else {
+					toast.error(m.toast_error_generic());
+				}
+			}
 		} catch (err) {
 			toast.error(m.toast_error_generic());
 		} finally {

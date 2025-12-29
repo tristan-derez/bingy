@@ -1,4 +1,4 @@
-import { Link, useNavigate, useRouter } from "@tanstack/react-router";
+import { Link, useRouter } from "@tanstack/react-router";
 import { ExternalLink } from "lucide-react";
 import { useState } from "react";
 import { FaGithub } from "react-icons/fa";
@@ -36,7 +36,6 @@ export const ProfileDropdown = ({
 	...props
 }: ProfileDropdownProps) => {
 	const router = useRouter();
-	const navigate = useNavigate();
 	const [isOpen, setIsOpen] = useState(false);
 
 	const logout = async () => {
@@ -48,8 +47,7 @@ export const ProfileDropdown = ({
 
 		toast.success(m.toast_success_logout());
 
-		await router.invalidate();
-		await navigate({ to: "/" });
+		await router.navigate({ to: "/" });
 	};
 
 	return (
