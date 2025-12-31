@@ -1,0 +1,1 @@
+CREATE INDEX "idx_tv_show_watch_date" ON "tv_show_watch_history" USING btree ("watched_at");

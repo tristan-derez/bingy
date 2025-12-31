@@ -105,6 +105,7 @@ export const tvShowWatchHistory = pgTable(
 		),
 		index("idx_tv_show_watch_user").on(table.userId),
 		index("idx_tv_show_watch_media").on(table.mediaId),
+		index("idx_tv_show_watch_date").on(table.watchedAt),
 	],
 );
 
