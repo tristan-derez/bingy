@@ -32,7 +32,7 @@ function WatchlistPage() {
 	}
 
 	if (isError) {
-		return <p>Error while loading watchlist</p>;
+		return <p>{m.watchlist_error()}</p>;
 	}
 
 	return (
