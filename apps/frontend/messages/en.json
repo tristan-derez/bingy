@@ -508,5 +508,21 @@
 	"schema_password_min_length": "Password must be at least 8 characters",
 	"schema_password_max_length": "Password must not exceed 256 characters",
 	"schema_search_min_length": "Search cannot be empty",
-	"schema_search_max_length": "Search cannot exceed 300 characters"
+	"schema_search_max_length": "Search cannot exceed 300 characters",
+	"history_page_title_text": "History",
+	"history_page_empty_cta_prefix": "Check",
+	"history_page_link_movies": "movies",
+	"history_page_empty_cta_separator": "or",
+	"history_page_link_tv": "TV shows",
+	"history_page_empty_cta_followup": "to add some.",
+	"history_toggle_aria_label_all": "All",
+	"history_toggle_aria_label_movies": "Movies only",
+	"history_toggle_aria_label_tv": "TV Shows only",
+	"history_toggle_group_item_all": "All",
+	"history_toggle_group_item_movies": "Movies",
+	"history_toggle_group_item_tv": "TV Shows",
+	"history_toggle_no_result_all": "Your history is empty.",
+	"history_toggle_no_result_movies": "No movies items in history",
+	"history_toggle_no_result_tv": "No TV show items in history",
+	"history_error": "Error while loading history. Try again."
 }

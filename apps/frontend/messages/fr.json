@@ -508,5 +508,21 @@
 	"schema_password_min_length": "Le mot de passe doit contenir au moins 8 caractères",
 	"schema_password_max_length": "Le mot de passe ne doit pas dépasser 256 caractères",
 	"schema_search_min_length": "La recherche ne peut pas être vide",
-	"schema_search_max_length": "La recherche ne peut pas dépasser 300 caractères"
+	"schema_search_max_length": "La recherche ne peut pas dépasser 300 caractères",
+	"history_page_title_text": "History",
+	"history_page_empty_cta_prefix": "Rends-toi sur la page des",
+	"history_page_link_movies": "films",
+	"history_page_empty_cta_separator": "ou",
+	"history_page_link_tv": "des séries TV",
+	"history_page_empty_cta_followup": "pour en ajouter.",
+	"history_toggle_aria_label_all": "Tout",
+	"history_toggle_aria_label_movies": "Seulement les films",
+	"history_toggle_aria_label_tv": "Seulement les séries TV",
+	"history_toggle_group_item_all": "Tout",
+	"history_toggle_group_item_movies": "Films",
+	"history_toggle_group_item_tv": "Séries TV",
+	"history_toggle_no_result_all": "Ton historique est vide.",
+	"history_toggle_no_result_movies": "Pas de films dans l'historique",
+	"history_toggle_no_result_tv": "Pas de séries TV dans l'historique",
+	"history_error": "Erreur lors du chargement de l'historique. Veuillez réessayer."
 }
