@@ -8,8 +8,7 @@ export type NormalizedMedia = {
 	originalTitle: string;
 	releaseDate: string;
 	posterPath: string | null;
-	voteAverage: number;
-	mediaType: string;
+	mediaType: "movie" | "tv";
 	addedAt: Date;
 };
 
