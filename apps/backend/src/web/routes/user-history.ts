@@ -1,5 +1,5 @@
 import { zValidator } from "@hono/zod-validator";
-import { and, desc, eq, sql } from "drizzle-orm";
+import { and, desc, eq, inArray, sql } from "drizzle-orm";
 import { Hono } from "hono";
 import { z } from "zod";
 import {
@@ -8,14 +8,15 @@ import {
 	tvSeasons,
 	tvShowProgress,
 	tvShowWatchHistory,
+	watchlist,
 } from "#db/schemas/list";
 import type { User } from "#db/schemas/user";
-import { activity } from "#db/schemas/user";
+import { activity, users } from "#db/schemas/user";
 import { db } from "#lib/database";
-import { serveNotFound } from "#lib/responses/error";
-import { serveCreated, serveData, serveNoContent } from "#lib/responses/resp";
-import { getMediaDetails, NormalizedMedia } from "#lib/tmdb/get-media-details";
+import { getMediaDetails } from "#lib/tmdb/get-media-details";
 import { sessionMiddleware } from "#web/middlewares/session";
+import { getOrCreateMedia } from "#web/utils/create-update-media";
+import { updateMediaRating } from "#web/utils/media-rating";
 
 type Variables = {
 	user: User | null;
@@ -26,14 +27,18 @@ const userHistoryRoutes = new Hono<{ Variables: Variables }>();
 
 userHistoryRoutes.use("*", sessionMiddleware);
 
-// rate/log a movie
+// rate a movie
+// user must be logged in
 userHistoryRoutes.post(
 	"/movie",
 	zValidator(
 		"json",
 		z.object({
 			tmdbId: z.number(),
-			rating: z.number().min(0.5).max(5.0).optional(),
+			rating: z.preprocess(
+				(v) => (typeof v === "string" ? Number(v) : v),
+				z.number().min(0).max(5).optional(),
+			),
 			review: z.string().optional(),
 			watchedAt: z.iso.datetime().optional(),
 		}),
@@ -43,29 +48,7 @@ userHistoryRoutes.post(
 		const data = c.req.valid("json");
 
 		const entry = await db.transaction(async (tx) => {
-			const [mediaEntry] = await tx
-				.insert(media)
-				.values({
-					tmdbId: data.tmdbId,
-					mediaType: "movie",
-				})
-				.onConflictDoNothing()
-				.returning();
-
-			const mediaId =
-				mediaEntry?.id ||
-				(
-					await tx.query.media.findFirst({
-						where: and(
-							eq(media.tmdbId, data.tmdbId),
-							eq(media.mediaType, "movie"),
-						),
-					})
-				)?.id;
-
-			if (!mediaId) {
-				throw new Error("Failed to create or find media entry");
-			}
+			const mediaId = await getOrCreateMedia(tx, data.tmdbId, "movie");
 
 			const [watchEntry] = await tx
 				.insert(movieWatchHistory)
@@ -88,31 +71,17 @@ userHistoryRoutes.post(
 				.returning();
 
 			if (data.rating) {
-				const allRatings = await tx.query.movieWatchHistory.findMany({
-					where: eq(movieWatchHistory.mediaId, mediaId),
-					columns: { rating: true },
-				});
-
-				const ratings = allRatings
-					.map((r) => (r.rating ? parseFloat(r.rating) : null))
-					.filter((r): r is number => r !== null);
-
-				const avgRating =
-					ratings.length > 0
-						? (ratings.reduce((sum, r) => sum + r, 0) / ratings.length).toFixed(
-								1,
-							)
-						: null;
-
-				await tx
-					.update(media)
-					.set({
-						averageRating: avgRating,
-						ratingCount: ratings.length,
-					})
-					.where(eq(media.id, mediaId));
+				await updateMediaRating(tx, mediaId);
 			}
 
+			// Remove from watchlist if exists
+			await tx
+				.delete(watchlist)
+				.where(
+					and(eq(watchlist.userId, user.id), eq(watchlist.mediaId, mediaId)),
+				);
+
+			// add to activity
 			await tx.insert(activity).values({
 				userId: user.id,
 				activityType: "watched_movie",
@@ -126,15 +95,21 @@ userHistoryRoutes.post(
 	},
 );
 
-// rate/review a tv show (show-level only)
+// rate a tv show
+// user must be logged in
 userHistoryRoutes.post(
 	"/tv",
 	zValidator(
 		"json",
 		z.object({
 			tmdbId: z.number(),
-			rating: z.number().min(0.5).max(5.0).optional(),
+			rating: z.preprocess(
+				(v) => (typeof v === "string" ? Number(v) : v),
+				z.number().min(0).max(5).optional(),
+			),
 			review: z.string().optional(),
+			lastWatchedSeason: z.number().optional(),
+			lastWatchedEpisode: z.number().optional(),
 			watchedAt: z.iso.datetime().optional(),
 		}),
 	),
@@ -143,29 +118,7 @@ userHistoryRoutes.post(
 		const data = c.req.valid("json");
 
 		const entry = await db.transaction(async (tx) => {
-			const [mediaEntry] = await tx
-				.insert(media)
-				.values({
-					tmdbId: data.tmdbId,
-					mediaType: "tv",
-				})
-				.onConflictDoNothing()
-				.returning();
-
-			const mediaId =
-				mediaEntry?.id ||
-				(
-					await tx.query.media.findFirst({
-						where: and(
-							eq(media.tmdbId, data.tmdbId),
-							eq(media.mediaType, "tv"),
-						),
-					})
-				)?.id;
-
-			if (!mediaId) {
-				throw new Error("Failed to create or find media entry");
-			}
+			const mediaId = await getOrCreateMedia(tx, data.tmdbId, "tv");
 
 			const [watchEntry] = await tx
 				.insert(tvShowWatchHistory)
@@ -186,32 +139,37 @@ userHistoryRoutes.post(
 				})
 				.returning();
 
-			if (data.rating) {
-				const allRatings = await tx.query.tvShowWatchHistory.findMany({
-					where: eq(tvShowWatchHistory.mediaId, mediaId),
-					columns: { rating: true },
-				});
-
-				const ratings = allRatings
-					.map((r) => (r.rating ? parseFloat(r.rating) : null))
-					.filter((r): r is number => r !== null);
-
-				const avgRating =
-					ratings.length > 0
-						? (ratings.reduce((sum, r) => sum + r, 0) / ratings.length).toFixed(
-								1,
-							)
-						: null;
-
+			if (data.lastWatchedSeason && data.lastWatchedEpisode) {
 				await tx
-					.update(media)
-					.set({
-						averageRating: avgRating,
-						ratingCount: ratings.length,
+					.insert(tvShowProgress)
+					.values({
+						userId: user.id,
+						mediaId,
+						lastWatchedSeason: data.lastWatchedSeason,
+						lastWatchedEpisode: data.lastWatchedEpisode,
 					})
-					.where(eq(media.id, mediaId));
+					.onConflictDoUpdate({
+						target: [tvShowProgress.userId, tvShowProgress.mediaId],
+						set: {
+							lastWatchedSeason: data.lastWatchedSeason,
+							lastWatchedEpisode: data.lastWatchedEpisode,
+							updatedAt: new Date(),
+						},
+					});
 			}
 
+			if (data.rating) {
+				await updateMediaRating(tx, mediaId);
+			}
+
+			// Remove from watchlist if exists
+			await tx
+				.delete(watchlist)
+				.where(
+					and(eq(watchlist.userId, user.id), eq(watchlist.mediaId, mediaId)),
+				);
+
+			// add to activity
 			await tx.insert(activity).values({
 				userId: user.id,
 				activityType: "watched_show",
@@ -225,10 +183,10 @@ userHistoryRoutes.post(
 	},
 );
 
-// mark episode as watched (updates progress)
-// we consider every previous episode as watched
+// create entry in progress for tv seasonNumber and episodeNumber are the last episode the user watched
+// user must be logged in
 userHistoryRoutes.post(
-	"/tv",
+	"/progress/tv",
 	zValidator(
 		"json",
 		z.object({
@@ -245,32 +203,8 @@ userHistoryRoutes.post(
 		const data = c.req.valid("json");
 
 		const entry = await db.transaction(async (tx) => {
-			// 1. Ensure media exists
-			const [mediaEntry] = await tx
-				.insert(media)
-				.values({
-					tmdbId: data.tmdbId,
-					mediaType: "tv",
-				})
-				.onConflictDoNothing()
-				.returning();
+			const mediaId = await getOrCreateMedia(tx, data.tmdbId, "tv");
 
-			const mediaId =
-				mediaEntry?.id ||
-				(
-					await tx.query.media.findFirst({
-						where: and(
-							eq(media.tmdbId, data.tmdbId),
-							eq(media.mediaType, "tv"),
-						),
-					})
-				)?.id;
-
-			if (!mediaId) {
-				throw new Error("Failed to create or find media entry");
-			}
-
-			// 2. Handle rating/review
 			let watchEntry;
 			if (
 				data.rating !== undefined ||
@@ -297,33 +231,10 @@ userHistoryRoutes.post(
 					.returning();
 
 				if (data.rating) {
-					const allRatings = await tx.query.tvShowWatchHistory.findMany({
-						where: eq(tvShowWatchHistory.mediaId, mediaId),
-						columns: { rating: true },
-					});
-
-					const ratings = allRatings
-						.map((r) => (r.rating ? parseFloat(r.rating) : null))
-						.filter((r): r is number => r !== null);
-
-					const avgRating =
-						ratings.length > 0
-							? (
-									ratings.reduce((sum, r) => sum + r, 0) / ratings.length
-								).toFixed(1)
-							: null;
-
-					await tx
-						.update(media)
-						.set({
-							averageRating: avgRating,
-							ratingCount: ratings.length,
-						})
-						.where(eq(media.id, mediaId));
+					await updateMediaRating(tx, mediaId);
 				}
 			}
 
-			// 3. Handle progress tracking
 			let progressEntry;
 			if (data.seasonNumber !== undefined && data.episodeNumber !== undefined) {
 				const season = await tx.query.tvSeasons.findFirst({
@@ -356,7 +267,6 @@ userHistoryRoutes.post(
 					.returning();
 			}
 
-			// 4. Add activity for rating (if applicable)
 			if (watchEntry) {
 				await tx.insert(activity).values({
 					userId: user.id,
@@ -375,18 +285,24 @@ userHistoryRoutes.post(
 	},
 );
 
-// get movie rating
+// get a movie rating from an user by username
 userHistoryRoutes.get(
-	"/movie/:tmdbId",
+	"/:username/movie/:tmdbId",
 	zValidator(
 		"param",
 		z.object({
+			username: z.string(),
 			tmdbId: z.coerce.number(),
 		}),
 	),
 	async (c) => {
-		const user = c.get("user")!;
-		const { tmdbId } = c.req.valid("param");
+		const { username, tmdbId } = c.req.valid("param");
+
+		const targetUser = await db.query.users.findFirst({
+			where: eq(users.name, username),
+		});
+
+		if (!targetUser) return c.json("User not found", 404);
 
 		const [entry] = await db
 			.select({
@@ -398,7 +314,7 @@ userHistoryRoutes.get(
 			.innerJoin(media, eq(media.id, movieWatchHistory.mediaId))
 			.where(
 				and(
-					eq(movieWatchHistory.userId, user.id),
+					eq(movieWatchHistory.userId, targetUser.id),
 					eq(media.tmdbId, tmdbId),
 					eq(media.mediaType, "movie"),
 				),
@@ -410,18 +326,24 @@ userHistoryRoutes.get(
 	},
 );
 
-// get tv rating
+// get a tv show rating from an user by username
 userHistoryRoutes.get(
-	"/tv/:tmdbId",
+	"/:username/tv/:tmdbId",
 	zValidator(
 		"param",
 		z.object({
+			username: z.string(),
 			tmdbId: z.coerce.number(),
 		}),
 	),
 	async (c) => {
-		const user = c.get("user")!;
-		const { tmdbId } = c.req.valid("param");
+		const { username, tmdbId } = c.req.valid("param");
+
+		const targetUser = await db.query.users.findFirst({
+			where: eq(users.name, username),
+		});
+
+		if (!targetUser) return c.json("User not found", 404);
 
 		const [entry] = await db
 			.select({
@@ -433,7 +355,7 @@ userHistoryRoutes.get(
 			.innerJoin(media, eq(media.id, tvShowWatchHistory.mediaId))
 			.where(
 				and(
-					eq(tvShowWatchHistory.userId, user.id),
+					eq(tvShowWatchHistory.userId, targetUser.id),
 					eq(media.tmdbId, tmdbId),
 					eq(media.mediaType, "tv"),
 				),
@@ -443,10 +365,17 @@ userHistoryRoutes.get(
 	},
 );
 
-// get tv show progress
-userHistoryRoutes.get("/tv/progress/:tmdbId", async (c) => {
-	const user = c.get("user")!;
+// get a tv show progress from an user by username
+// @todo: get every tv shows progress
+userHistoryRoutes.get("/:username/tv/progress/:tmdbId", async (c) => {
+	const { username } = c.req.param();
 	const tmdbId = Number(c.req.param("tmdbId"));
+
+	const targetUser = await db.query.users.findFirst({
+		where: eq(users.name, username),
+	});
+
+	if (!targetUser) return c.json("User not found", 404);
 
 	const mediaEntry = await db.query.media.findFirst({
 		where: and(eq(media.tmdbId, tmdbId), eq(media.mediaType, "tv")),
@@ -459,7 +388,7 @@ userHistoryRoutes.get("/tv/progress/:tmdbId", async (c) => {
 	const [progress, seasons] = await Promise.all([
 		db.query.tvShowProgress.findFirst({
 			where: and(
-				eq(tvShowProgress.userId, user.id),
+				eq(tvShowProgress.userId, targetUser.id),
 				eq(tvShowProgress.mediaId, mediaEntry.id),
 			),
 		}),
@@ -472,72 +401,141 @@ userHistoryRoutes.get("/tv/progress/:tmdbId", async (c) => {
 	return c.json({ progress, seasons });
 });
 
-// get movies from history
-userHistoryRoutes.get("/movies", async (c) => {
-	const user = c.get("user")!;
-	const page = Math.max(1, parseInt(c.req.query("page") || "1"));
+// get media history from an user by username
+userHistoryRoutes.get("/:username", async (c) => {
+	const { username } = c.req.param();
+	const language = c.req.query("language") || "en-US";
+	const page = Math.max(1, Number(c.req.query("page") || 1));
+	const mediaTypeFilter = c.req.query("mediaType") as
+		| "movie"
+		| "tv"
+		| undefined;
+
 	const limit = 24;
 	const offset = (page - 1) * limit;
 
-	const [entries, totalCountResult] = await Promise.all([
-		db.query.movieWatchHistory.findMany({
-			where: eq(movieWatchHistory.userId, user.id),
-			with: {
-				media: true,
-			},
-			orderBy: [desc(movieWatchHistory.watchedAt)],
-			limit,
-			offset,
-		}),
-		db
-			.select({ count: sql<number>`count(*)` })
-			.from(movieWatchHistory)
-			.where(eq(movieWatchHistory.userId, user.id)),
+	const targetUser = await db.query.users.findFirst({
+		where: eq(users.name, username),
+	});
+
+	if (!targetUser) return c.json("User not found", 404);
+
+	const movieQuery = db
+		.select({
+			mediaId: media.id,
+			tmdbId: media.tmdbId,
+			mediaType: sql<"movie" | "tv">`'movie'`.as("media_type"),
+			watchedAt: movieWatchHistory.watchedAt,
+			rating: movieWatchHistory.rating,
+		})
+		.from(movieWatchHistory)
+		.innerJoin(media, eq(movieWatchHistory.mediaId, media.id))
+		.where(eq(movieWatchHistory.userId, targetUser.id));
+
+	const tvQuery = db
+		.select({
+			mediaId: media.id,
+			tmdbId: media.tmdbId,
+			mediaType: sql<"movie" | "tv">`'tv'`.as("media_type"),
+			watchedAt: tvShowWatchHistory.watchedAt,
+			rating: tvShowWatchHistory.rating,
+		})
+		.from(tvShowWatchHistory)
+		.innerJoin(media, eq(tvShowWatchHistory.mediaId, media.id))
+		.where(eq(tvShowWatchHistory.userId, targetUser.id));
+
+	let entries;
+	if (mediaTypeFilter === "movie") {
+		entries = await movieQuery
+			.orderBy(desc(movieWatchHistory.watchedAt))
+			.limit(limit)
+			.offset(offset);
+	} else if (mediaTypeFilter === "tv") {
+		entries = await tvQuery
+			.orderBy(desc(tvShowWatchHistory.watchedAt))
+			.limit(limit)
+			.offset(offset);
+	} else {
+		entries = await db
+			.select()
+			.from(movieQuery.as("m"))
+			.unionAll(db.select().from(tvQuery.as("t")))
+			.orderBy(desc(sql`watched_at`))
+			.limit(limit)
+			.offset(offset);
+	}
+
+	const [movieCount, tvCount] = await Promise.all([
+		!mediaTypeFilter || mediaTypeFilter === "movie"
+			? db
+					.select({ count: sql<number>`count(*)` })
+					.from(movieWatchHistory)
+					.where(eq(movieWatchHistory.userId, targetUser.id))
+			: [{ count: 0 }],
+		!mediaTypeFilter || mediaTypeFilter === "tv"
+			? db
+					.select({ count: sql<number>`count(*)` })
+					.from(tvShowWatchHistory)
+					.where(eq(tvShowWatchHistory.userId, targetUser.id))
+			: [{ count: 0 }],
 	]);
 
+	const totalResults = Number(movieCount[0].count) + Number(tvCount[0].count);
+
+	const tvMediaIds = entries
+		.filter((e) => e.mediaType === "tv")
+		.map((e) => e.mediaId);
+	const progressByMediaId = new Map();
+
+	if (tvMediaIds.length > 0) {
+		const progress = await db
+			.select()
+			.from(tvShowProgress)
+			.where(
+				and(
+					eq(tvShowProgress.userId, targetUser.id),
+					inArray(tvShowProgress.mediaId, tvMediaIds),
+				),
+			);
+		progress.forEach((p) => progressByMediaId.set(p.mediaId, p));
+	}
+
+	const hydratedData = (
+		await Promise.all(
+			entries.map(async (entry) => {
+				const details = await getMediaDetails(
+					entry.tmdbId,
+					entry.mediaType,
+					language,
+				);
+				if (!details) return null;
+				return {
+					...details,
+					mediaType: entry.mediaType,
+					watchedAt: entry.watchedAt,
+					rating: entry.rating,
+					progress:
+						entry.mediaType === "tv"
+							? (progressByMediaId.get(entry.mediaId) ?? null)
+							: null,
+				};
+			}),
+		)
+	).filter(Boolean);
+
 	return c.json({
-		data: entries,
+		data: hydratedData,
 		page,
-		total_pages: Math.ceil(totalCountResult[0].count / limit),
-		total_results: totalCountResult[0].count,
+		total_pages: Math.ceil(totalResults / limit),
+		total_results: totalResults,
 	});
 });
 
-// get tv shows from history
-userHistoryRoutes.get("/tvShows", async (c) => {
-	const user = c.get("user")!;
-	const page = Math.max(1, parseInt(c.req.query("page") || "1"));
-	const limit = 24;
-	const offset = (page - 1) * limit;
-
-	const [entries, totalCountResult] = await Promise.all([
-		db.query.tvShowWatchHistory.findMany({
-			where: eq(tvShowWatchHistory.userId, user.id),
-			with: {
-				media: true,
-			},
-			orderBy: [desc(tvShowWatchHistory.watchedAt)],
-			limit,
-			offset,
-		}),
-		db
-			.select({ count: sql<number>`count(*)` })
-			.from(tvShowWatchHistory)
-			.where(eq(tvShowWatchHistory.userId, user.id)),
-	]);
-
-	return c.json({
-		data: entries,
-		page,
-		total_pages: Math.ceil(totalCountResult[0].count / limit),
-		total_results: totalCountResult[0].count,
-	});
-});
-
-// delete a movie from history
+// delete movie from history
+// user must be logged in
 userHistoryRoutes.delete("/movie/:id", async (c) => {
 	const user = c.get("user")!;
-	const id = c.req.param("id");
+	const { id } = c.req.param();
 
 	const entry = await db.query.movieWatchHistory.findFirst({
 		where: and(
@@ -547,7 +545,10 @@ userHistoryRoutes.delete("/movie/:id", async (c) => {
 	});
 
 	if (!entry) {
-		return c.json({ error: "Watch history entry not found" }, 404);
+		return c.json(
+			{ error: "Watch history entry not found or unauthorized" },
+			404,
+		);
 	}
 
 	await db.transaction(async (tx) => {
@@ -579,10 +580,11 @@ userHistoryRoutes.delete("/movie/:id", async (c) => {
 	return c.body(null, 204);
 });
 
-// delete a tv show from history
+// delete tv show from history
+// user must be logged in
 userHistoryRoutes.delete("/tv/:id", async (c) => {
 	const user = c.get("user")!;
-	const id = c.req.param("id");
+	const { id } = c.req.param();
 
 	const entry = await db.query.tvShowWatchHistory.findFirst({
 		where: and(
@@ -592,7 +594,10 @@ userHistoryRoutes.delete("/tv/:id", async (c) => {
 	});
 
 	if (!entry) {
-		return c.json({ error: "Watch history entry not found" }, 404);
+		return c.json(
+			{ error: "Watch history entry not found or unauthorized" },
+			404,
+		);
 	}
 
 	await db.transaction(async (tx) => {
@@ -624,7 +629,8 @@ userHistoryRoutes.delete("/tv/:id", async (c) => {
 	return c.body(null, 204);
 });
 
-// patch a movie rating
+// update a movie entry from history
+// user must be logged in
 userHistoryRoutes.patch(
 	"/movie/:id",
 	zValidator(
@@ -637,7 +643,7 @@ userHistoryRoutes.patch(
 	),
 	async (c) => {
 		const user = c.get("user")!;
-		const id = c.req.param("id");
+		const { id } = c.req.param();
 		const data = c.req.valid("json");
 
 		const entry = await db.query.movieWatchHistory.findFirst({
@@ -648,7 +654,10 @@ userHistoryRoutes.patch(
 		});
 
 		if (!entry) {
-			return c.json({ error: "Watch history entry not found" }, 404);
+			return c.json(
+				{ error: "Watch history entry not found or unauthorized" },
+				404,
+			);
 		}
 
 		const updated = await db.transaction(async (tx) => {
@@ -695,7 +704,8 @@ userHistoryRoutes.patch(
 	},
 );
 
-// patch a tv show rating
+// update a tv entry
+// user must be logged in
 userHistoryRoutes.patch(
 	"/tv/:id",
 	zValidator(
@@ -708,7 +718,7 @@ userHistoryRoutes.patch(
 	),
 	async (c) => {
 		const user = c.get("user")!;
-		const id = c.req.param("id");
+		const { id } = c.req.param();
 		const data = c.req.valid("json");
 
 		const entry = await db.query.tvShowWatchHistory.findFirst({
@@ -719,7 +729,10 @@ userHistoryRoutes.patch(
 		});
 
 		if (!entry) {
-			return c.json({ error: "Watch history entry not found" }, 404);
+			return c.json(
+				{ error: "Watch history entry not found or unauthorized" },
+				404,
+			);
 		}
 
 		const updated = await db.transaction(async (tx) => {
