@@ -8,54 +8,44 @@ type WatchlistEmptyStateProps = {
 };
 
 export function WatchlistEmptyState({ filter }: WatchlistEmptyStateProps) {
+	const headerMessages = {
+		all: m.watchlist_toggle_no_result_all(),
+		movie: m.watchlist_toggle_no_result_movies(),
+		tv: m.watchlist_toggle_no_result_tv(),
+	};
+
+	const showMoviesLink = filter === "all" || filter === "movie";
+	const showTvLink = filter === "all" || filter === "tv";
+
 	return (
 		<div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
-			<p className="text-muted-foreground text-2xl">
-				{filter === "all"
-					? m.watchlist_toggle_no_result_all()
-					: filter === "movie"
-						? m.watchlist_toggle_no_result_movies()
-						: m.watchlist_toggle_no_result_tv()}
-			</p>
+			<p className="text-muted-foreground text-2xl">{headerMessages[filter]}</p>
+
 			<p className="text-muted-foreground flex gap-1">
+				{m.watchlist_page_empty_cta_prefix()}
+
+				{showMoviesLink ? (
+					<Link
+						to="/movies"
+						className="text-primary underline hover:text-primary/80"
+					>
+						{m.watchlist_page_link_movies()}
+					</Link>
+				) : null}
+
 				{filter === "all" ? (
-					<>
-						{m.watchlist_page_empty_cta_prefix()}
-						<Link
-							to="/movies"
-							className="text-primary underline hover:text-primary/80"
-						>
-							{m.watchlist_page_link_movies()}
-						</Link>{" "}
-						{m.watchlist_page_empty_cta_separator()}{" "}
-						<Link
-							to="/tv"
-							className="text-primary underline hover:text-primary/80"
-						>
-							{m.watchlist_page_link_tv()}
-						</Link>
-					</>
-				) : filter === "movie" ? (
-					<>
-						{m.watchlist_page_empty_cta_prefix()}
-						<Link
-							to="/movies"
-							className="text-primary underline hover:text-primary/80"
-						>
-							{m.watchlist_page_link_movies()}
-						</Link>
-					</>
-				) : (
-					<>
-						{m.watchlist_page_empty_cta_prefix()}
-						<Link
-							to="/tv"
-							className="text-primary underline hover:text-primary/80"
-						>
-							{m.watchlist_page_link_tv()}
-						</Link>
-					</>
-				)}
+					<span>{m.watchlist_page_empty_cta_separator()}</span>
+				) : null}
+
+				{showTvLink ? (
+					<Link
+						to="/tv"
+						className="text-primary underline hover:text-primary/80"
+					>
+						{m.watchlist_page_link_tv()}
+					</Link>
+				) : null}
+
 				{m.watchlist_page_empty_cta_followup()}
 			</p>
 		</div>
