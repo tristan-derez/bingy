@@ -44,7 +44,10 @@ export function WatchlistToggleButton({
 		return null;
 	}
 
-	const handleWatchlistToggle = () => {
+	const handleWatchlistToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
+		e.stopPropagation();
+		e.preventDefault();
+
 		if (isInWatchlist) {
 			removeFromWatchlist.mutate({
 				tmdbId: mediaId,
