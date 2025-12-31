@@ -2,18 +2,9 @@ import { zValidator } from "@hono/zod-validator";
 import { and, desc, eq, sql } from "drizzle-orm";
 import { Hono } from "hono";
 import { z } from "zod";
-import {
-	customLists,
-	listItems,
-	media,
-	movieWatchHistory,
-	tvSeasons,
-	tvShowProgress,
-	tvShowWatchHistory,
-	watchlist,
-} from "#db/schemas/list";
+import { customLists, listItems, media, watchlist } from "#db/schemas/list";
 import type { User } from "#db/schemas/user";
-import { activity } from "#db/schemas/user";
+import { activity, users } from "#db/schemas/user";
 import { db } from "#lib/database";
 import { serveNotFound } from "#lib/responses/error";
 import { serveCreated, serveData, serveNoContent } from "#lib/responses/resp";
@@ -115,54 +106,68 @@ userListRoutes.delete("/watchlist/:mediaType/:tmdbId", async (c) => {
 	return serveNoContent(c);
 });
 
-// get watchlist
-userListRoutes.get("/watchlist", async (c) => {
-	const user = c.get("user")!;
+// get watchlist by username
+userListRoutes.get("/:username/watchlist", async (c) => {
+	const { username } = c.req.param();
 	const language = c.req.query("language") || "en-US";
 	const page = Math.max(1, parseInt(c.req.query("page") || "1"));
+
+	const targetUser = await db.query.users.findFirst({
+		where: eq(users.name, username),
+	});
+
+	if (!targetUser) return c.json("User not found", 404);
+
 	const mediaTypeFilter = c.req.query("mediaType") as
 		| "movie"
 		| "tv"
 		| undefined;
+
 	const limit = 24;
 	const offset = (page - 1) * limit;
 
+	const filters = and(
+		eq(watchlist.userId, targetUser.id),
+		mediaTypeFilter ? eq(media.mediaType, mediaTypeFilter) : undefined,
+	);
+
 	const [dbItems, totalCountResult] = await Promise.all([
-		db.query.watchlist.findMany({
-			where: eq(watchlist.userId, user.id),
-			with: {
-				media: true,
-			},
-			orderBy: [desc(watchlist.addedAt)],
-			limit,
-			offset,
-		}),
+		db
+			.select({
+				watchlist: watchlist,
+				media: media,
+			})
+			.from(watchlist)
+			.innerJoin(media, eq(watchlist.mediaId, media.id))
+			.where(filters)
+			.orderBy(desc(watchlist.addedAt))
+			.limit(limit)
+			.offset(offset),
+
 		db
 			.select({ count: sql<number>`count(*)` })
 			.from(watchlist)
-			.where(eq(watchlist.userId, user.id)),
+			.innerJoin(media, eq(watchlist.mediaId, media.id))
+			.where(filters),
 	]);
-
-	const filteredItems = mediaTypeFilter
-		? dbItems.filter((item) => item.media.mediaType === mediaTypeFilter)
-		: dbItems;
 
 	const totalResults = totalCountResult[0].count;
 
 	const hydratedData = (
 		await Promise.all(
-			filteredItems.map(async (item) => {
+			dbItems.map(async (item) => {
 				const details = await getMediaDetails(
 					item.media.tmdbId,
 					item.media.mediaType,
 					language,
 				);
+
 				if (!details) return null;
 
 				return {
 					...details,
 					mediaType: item.media.mediaType,
-					addedAt: item.addedAt,
+					addedAt: item.watchlist.addedAt,
 				};
 			}),
 		)
@@ -176,7 +181,7 @@ userListRoutes.get("/watchlist", async (c) => {
 	});
 });
 
-// check if an item is in watchlist
+// check if an item is in watchlist (authenticated user only)
 userListRoutes.get("/watchlist/check/:mediaType/:tmdbId", async (c) => {
 	const user = c.get("user")!;
 	const mediaType = c.req.param("mediaType");
@@ -252,12 +257,18 @@ userListRoutes.post(
 	},
 );
 
-// get lists from the user
-userListRoutes.get("/", async (c) => {
-	const user = c.get("user")!;
+// get lists from a user by username
+userListRoutes.get("/:username/lists", async (c) => {
+	const { username } = c.req.param();
+
+	const targetUser = await db.query.users.findFirst({
+		where: eq(users.name, username),
+	});
+
+	if (!targetUser) return c.json("User not found", 404);
 
 	const lists = await db.query.customLists.findMany({
-		where: eq(customLists.userId, user.id),
+		where: eq(customLists.userId, targetUser.id),
 		orderBy: (customLists, { desc }) => [desc(customLists.createdAt)],
 	});
 
@@ -268,6 +279,7 @@ userListRoutes.get("/", async (c) => {
 	return serveData(c, lists);
 });
 
+// delete list
 userListRoutes.delete("/:listId", async (c) => {
 	const user = c.get("user")!;
 	const listId = c.req.param("listId");
@@ -378,13 +390,21 @@ userListRoutes.delete("/:listId/items/:mediaType/:tmdbId", async (c) => {
 	return serveNoContent(c);
 });
 
-// get items from a list
-userListRoutes.get("/:listId/items", async (c) => {
-	const user = c.get("user")!;
-	const listId = c.req.param("listId");
+// get items from a list by username
+userListRoutes.get("/:username/lists/:listId/items", async (c) => {
+	const { username, listId } = c.req.param();
+
+	const targetUser = await db.query.users.findFirst({
+		where: eq(users.name, username),
+	});
+
+	if (!targetUser) return c.json("User not found", 404);
 
 	const list = await db.query.customLists.findFirst({
-		where: and(eq(customLists.id, listId), eq(customLists.userId, user.id)),
+		where: and(
+			eq(customLists.id, listId),
+			eq(customLists.userId, targetUser.id),
+		),
 	});
 
 	if (!list) {
