@@ -525,5 +525,6 @@
 	"history_toggle_no_result_all": "Ton historique est vide.",
 	"history_toggle_no_result_movies": "Pas de films dans l'historique",
 	"history_toggle_no_result_tv": "Pas de séries TV dans l'historique",
-	"history_error": "Erreur lors du chargement de l'historique. Veuillez réessayer."
+	"history_error": "Erreur lors du chargement de l'historique. Veuillez réessayer.",
+	"btn_error_retry": "Réessayer"
 }

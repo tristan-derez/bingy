@@ -525,5 +525,6 @@
 	"history_toggle_no_result_all": "Your history is empty.",
 	"history_toggle_no_result_movies": "No movies items in history",
 	"history_toggle_no_result_tv": "No TV show items in history",
-	"history_error": "Error while loading history. Try again."
+	"history_error": "Error while loading history. Try again.",
+	"btn_error_retry": "Retry"
 }
