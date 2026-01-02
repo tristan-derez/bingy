@@ -74,11 +74,7 @@ export function WatchlistToggleButton({
 					disabled={isPending}
 					className={`hover:cursor-pointer hover:text-${color} hover:bg-none font-bold text-${color}`}
 				>
-					{isInWatchlist ? (
-						<IconClockMinus className="" />
-					) : (
-						<IconClockPlus className="" />
-					)}
+					{isInWatchlist ? <IconClockMinus /> : <IconClockPlus />}
 				</Button>
 			</TooltipTrigger>
 			<TooltipContent align="center">
