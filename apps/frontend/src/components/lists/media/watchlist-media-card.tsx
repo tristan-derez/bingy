@@ -44,7 +44,7 @@ export const WatchlistMediaCard = ({
 					/>
 					<div className="absolute inset-x-0 top-0 h-24 bg-linear-to-b from-black/90 to-transparent" />
 					<div className="absolute inset-x-0 bottom-0 h-12 bg-linear-to-b from-transparent to-black/90" />
-					<div className="absolute top-2 inset-x-2 flex items-center justify-between z-10">
+					<div className="w-full absolute top-2 flex items-center justify-between z-10 pr-2">
 						<WatchlistToggleButton color="white" {...mediaProps} />
 						{item.mediaType === "movie" ? (
 							<MovieBadge minWidth={8} />
