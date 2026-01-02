@@ -510,7 +510,7 @@
 	"schema_password_max_length": "Le mot de passe ne doit pas dépasser 256 caractères",
 	"schema_search_min_length": "La recherche ne peut pas être vide",
 	"schema_search_max_length": "La recherche ne peut pas dépasser 300 caractères",
-	"history_page_title_text": "History",
+	"history_page_title_text": "Historique",
 	"history_page_empty_cta_prefix": "Rends-toi sur la page des",
 	"history_page_link_movies": "films",
 	"history_page_empty_cta_separator": "ou",
