@@ -3,7 +3,7 @@ import { ExternalLink } from "lucide-react";
 import { useState } from "react";
 import { FaGithub } from "react-icons/fa";
 import { IoLogOutSharp, IoSettingsSharp } from "react-icons/io5";
-import { MdSupport, MdWatchLater } from "react-icons/md";
+import { MdHistory, MdSupport, MdWatchLater } from "react-icons/md";
 import { PiUserFill } from "react-icons/pi";
 import { toast } from "sonner";
 import { queryClient } from "@/integrations/tanstack-query/root-provider";
@@ -150,6 +150,16 @@ export const ProfileDropdown = ({
 							>
 								<MdWatchLater />
 								{m.dropdown_watchlist_text()}
+							</Link>
+						</DropdownMenuItem>
+						<DropdownMenuItem asChild>
+							<Link
+								to="/user/$username/history"
+								params={{ username: session.user.name }}
+								onClick={onLinkClick}
+							>
+								<MdHistory />
+								{m.dropdown_history_text()}
 							</Link>
 						</DropdownMenuItem>
 						<DropdownMenuItem asChild>
