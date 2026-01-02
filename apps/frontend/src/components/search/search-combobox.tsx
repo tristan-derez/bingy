@@ -1,7 +1,7 @@
 import { DialogTitle } from "@radix-ui/react-dialog";
+import { IconSearch } from "@tabler/icons-react";
 import { useNavigate } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
-import { SearchIcon } from "lucide-react";
 import { VisuallyHidden } from "radix-ui";
 import { useEffect, useState } from "react";
 import type { Schemas } from "shared";
@@ -121,7 +121,7 @@ export function SearchCombobox({
 					onClick={() => setOpen(true)}
 					className="items-center gap-2"
 				>
-					<SearchIcon className="h-4 w-4" />
+					<IconSearch className="h-4 w-4" />
 					{title ? <span>{title}</span> : null}
 				</Button>
 			) : null}
@@ -136,15 +136,11 @@ export function SearchCombobox({
 					</VisuallyHidden.Root>
 
 					<Command shouldFilter={false}>
-						<div className="relative">
-							<SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 opacity-50 pointer-events-none" />
-
-							<CommandInput
-								placeholder={m.search_combobox_input_placeholder()}
-								value={query}
-								onValueChange={setQuery}
-							/>
-						</div>
+						<CommandInput
+							placeholder={m.search_combobox_input_placeholder()}
+							value={query}
+							onValueChange={setQuery}
+						/>
 
 						<CommandList className="flex flex-col max-h-[400px]">
 							{!query && (
