@@ -1,5 +1,11 @@
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
+import { ResourceNotFound } from "@/components/errors/resource-not-found";
+import { LoadingCentered } from "@/components/loading/loading-centered";
+import { MediaOverview } from "@/components/medias/overview";
+import { MovieCarousel } from "@/components/movies/movie-carousel";
+import { BackButton } from "@/components/ui/back-button";
+import { Badge } from "@/components/ui/badge";
 import {
 	Card,
 	CardContent,
@@ -8,12 +14,6 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { m } from "@/paraglide/messages";
-import { ResourceNotFound } from "../errors/resource-not-found";
-import { LoadingCentered } from "../loading/loading-centered";
-import { MediaOverview } from "../medias/overview";
-import { MovieCarousel } from "../movies/movie-carousel";
-import { BackButton } from "../ui/back-button";
-import { Badge } from "../ui/badge";
 
 interface CollectionDetailsViewProps {
 	collectionData: Schemas.CollectionDetails | undefined;

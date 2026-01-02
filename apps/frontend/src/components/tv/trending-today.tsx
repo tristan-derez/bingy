@@ -1,10 +1,10 @@
 import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
 import { toast } from "sonner";
+import { LoadingSection } from "@/components/loading/loading-section";
 import { useTrendingTodayTv } from "@/hooks/useTv";
 import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
-import { LoadingSection } from "../loading/loading-section";
 import { TvCarousel } from "./tv-carousel";
 
 interface TrendingTodayTvProps {

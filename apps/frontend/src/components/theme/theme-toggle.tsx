@@ -1,7 +1,6 @@
+import { IconBrandWindowsFilled, IconMoon, IconSun } from "@tabler/icons-react";
 import { useRef } from "react";
 import { flushSync } from "react-dom";
-import { FaMoon, FaSun } from "react-icons/fa";
-import { GrSystem } from "react-icons/gr";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { m } from "@/paraglide/messages";
@@ -76,7 +75,7 @@ export function ModeToggle({ duration = 700 }: ModeToggleProps) {
 				onClick={(e) => handleThemeChange("light", e)}
 				className={`flex items-center gap-2 w-28 ${theme === "light" ? "hover:cursor-not-allowed" : ""}`}
 			>
-				<FaSun className="h-4 w-4" />
+				<IconSun />
 				{m.btn_light_mode()}
 			</Button>
 
@@ -85,7 +84,7 @@ export function ModeToggle({ duration = 700 }: ModeToggleProps) {
 				onClick={(e) => handleThemeChange("dark", e)}
 				className={`flex items-center gap-2 w-28 ${theme === "dark" ? "hover:cursor-not-allowed" : ""}`}
 			>
-				<FaMoon className="h-4 w-4" />
+				<IconMoon />
 				{m.btn_dark_mode()}
 			</Button>
 
@@ -94,7 +93,7 @@ export function ModeToggle({ duration = 700 }: ModeToggleProps) {
 				onClick={(e) => handleThemeChange("system", e)}
 				className={`flex items-center gap-2 w-28 ${theme === "system" ? "hover:cursor-not-allowed" : ""}`}
 			>
-				<GrSystem className="h-4 w-4" />
+				<IconBrandWindowsFilled />
 				{m.btn_system_mode()}
 			</Button>
 		</div>

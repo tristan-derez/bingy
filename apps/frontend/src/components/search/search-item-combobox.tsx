@@ -1,14 +1,14 @@
+import { IconDeviceTv, IconMovie, IconUser } from "@tabler/icons-react";
 import { useNavigate } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
-import { FilmIcon, TvIcon, UserIcon } from "lucide-react";
 import type { Schemas } from "shared";
+import { MovieBadge } from "@/components/badges/movie-badge";
+import { PersonBadge } from "@/components/badges/person-badge";
+import { TvShowBadge } from "@/components/badges/tv-badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CommandItem } from "@/components/ui/command";
 import { localeRegionAtom } from "@/lib/atoms/region";
 import { formatDate } from "@/utils/format-date";
-import { MovieBadge } from "../badges/movie-badge";
-import { PersonBadge } from "../badges/person-badge";
-import { TvShowBadge } from "../badges/tv-badge";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 interface SearchItemComboboxProps {
 	item: Schemas.MediaMulti;
@@ -40,7 +40,7 @@ export const SearchItemCombobox = ({
 				}}
 				className={commonClasses}
 			>
-				<FilmIcon className="h-4 w-4 shrink-0" />
+				<IconMovie className="h-4 w-4 shrink-0" />
 				<span className="flex-1 line-clamp-1 leading-relaxed">
 					{movie.title}
 				</span>
@@ -74,7 +74,7 @@ export const SearchItemCombobox = ({
 				}}
 				className={commonClasses}
 			>
-				<TvIcon className="h-4 w-4 shrink-0" />
+				<IconDeviceTv className="h-4 w-4 shrink-0" />
 				<span className="flex-1 line-clamp-1 leading-relaxed">{tv.name}</span>
 
 				<div className="flex items-center gap-2">
@@ -117,11 +117,11 @@ export const SearchItemCombobox = ({
 							className="h-full w-full object-cover"
 						/>
 						<AvatarFallback>
-							<UserIcon className="h-4 w-4" />
+							<IconUser className="h-4 w-4" />
 						</AvatarFallback>
 					</Avatar>
 				) : (
-					<UserIcon className="h-4 w-4" />
+					<IconUser className="h-4 w-4" />
 				)}
 
 				<span className="flex-1">{item.name}</span>

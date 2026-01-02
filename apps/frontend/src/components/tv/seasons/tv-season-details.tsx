@@ -1,6 +1,11 @@
+import {
+	IconCalendarWeekFilled,
+	IconStack2,
+	IconStarFilled,
+	IconStopwatch,
+} from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
-import { Calendar, Layers, Star, Timer } from "lucide-react";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
@@ -150,7 +155,7 @@ export function TvSeasonDetailsView({
 											variant="default"
 											className="w-fit gap-1 self-center"
 										>
-											<Timer className="h-4 w-4" />
+											<IconStopwatch className="h-4 w-4" />
 											<span>
 												{(
 													tvSeason.episodes.reduce(
@@ -189,7 +194,7 @@ export function TvSeasonDetailsView({
 					<div className="grid lg:grid-cols-3 gap-3">
 						<Card>
 							<CardContent className="flex items-center gap-4">
-								<Star className="h-5 w-5 text-yellow-500" />
+								<IconStarFilled className="h-5 w-5 text-yellow-500" />
 								<div>
 									<p className="text-xl xl:text-2xl font-bold">
 										{tvSeason.vote_average > 0
@@ -205,7 +210,7 @@ export function TvSeasonDetailsView({
 
 						<Card>
 							<CardContent className="flex items-center gap-4">
-								<Calendar className="h-5 w-5" />
+								<IconCalendarWeekFilled className="h-5 w-5" />
 								<div>
 									<p className="text-xl xl:text-2xl font-bold">
 										{tvSeason.air_date
@@ -228,7 +233,7 @@ export function TvSeasonDetailsView({
 
 						<Card>
 							<CardContent className="flex items-center gap-4">
-								<Layers className="h-5 w-5" />
+								<IconStack2 className="h-5 w-5" />
 								<div>
 									<p className="text-xl xl:text-2xl font-bold">
 										{tvSeason.episodes.length}

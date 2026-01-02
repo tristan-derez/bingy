@@ -1,6 +1,6 @@
 import { Separator } from "./separator";
 
-function SeparatorWithText({ text }: { text?: string }) {
+export function SeparatorWithText({ text }: { text: string }) {
 	return (
 		<div className="flex items-center gap-2">
 			<Separator className="flex-1" />
@@ -9,5 +9,3 @@ function SeparatorWithText({ text }: { text?: string }) {
 		</div>
 	);
 }
-
-export { SeparatorWithText };

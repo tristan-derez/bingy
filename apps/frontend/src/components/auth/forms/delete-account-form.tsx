@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2 } from "lucide-react";
+import { IconLoader } from "@tabler/icons-react";
 import React, { useId } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -15,10 +15,6 @@ import {
 	AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { authClient } from "@/lib/auth-client";
-import { config } from "@/lib/env";
-import { m } from "@/paraglide/messages";
-import { deleteAccountSchema } from "@/schemas/delete-account-schema";
 import {
 	Form,
 	FormControl,
@@ -26,8 +22,12 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from "../../ui/form";
-import { Input } from "../../ui/input";
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { authClient } from "@/lib/auth-client";
+import { config } from "@/lib/env";
+import { m } from "@/paraglide/messages";
+import { deleteAccountSchema } from "@/schemas/delete-account-schema";
 
 export function DeleteAccountForm() {
 	const [isSubmitting, setIsSubmitting] = React.useState(false);
@@ -120,7 +120,7 @@ export function DeleteAccountForm() {
 								<Button type="submit" disabled={isSubmitting}>
 									{isSubmitting ? (
 										<span className="flex items-center justify-center gap-2">
-											<Loader2 className="animate-spin h-4 w-4" />
+											<IconLoader className="animate-spin h-4 w-4" />
 											{m.btn_sending_email()}
 										</span>
 									) : (

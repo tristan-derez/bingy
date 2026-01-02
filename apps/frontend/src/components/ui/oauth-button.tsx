@@ -1,4 +1,4 @@
-import type { IconType } from "react-icons";
+import type { Icon } from "@tabler/icons-react";
 import { Badge } from "@/components/ui/badge";
 import { m } from "@/paraglide/messages";
 import { Button } from "./button";
@@ -10,7 +10,7 @@ import {
 } from "./tooltip";
 
 interface OAuthButtonProps {
-	icon: IconType;
+	icon: Icon;
 	label: string;
 	text: string;
 	onClick: () => void;

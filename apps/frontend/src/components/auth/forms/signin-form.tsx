@@ -1,9 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { IconBrandGoogleFilled, IconLoader } from "@tabler/icons-react";
 import { Link, useRouter } from "@tanstack/react-router";
-import { Loader2 } from "lucide-react";
 import { useId, useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
-import { FcGoogle } from "react-icons/fc";
 import { toast } from "sonner";
 import type { z } from "zod";
 import { Badge } from "@/components/ui/badge";
@@ -228,7 +227,7 @@ export function SignInForm() {
 										>
 											{isSubmitting ? (
 												<span className="flex items-center justify-center gap-2">
-													<Loader2 className="animate-spin h-4 w-4" />
+													<IconLoader className="animate-spin h-4 w-4" />
 													{m.btn_signing_in()}
 												</span>
 											) : (
@@ -251,7 +250,7 @@ export function SignInForm() {
 						<SeparatorWithText text={m.signin_separator_text()} />
 						<div className="flex gap-2">
 							<OAuthButton
-								icon={FcGoogle}
+								icon={IconBrandGoogleFilled}
 								label={m.signin_with_provider({ provider: "Google" })}
 								text="Google"
 								lastMethod={lastMethod === "google"}

@@ -1,12 +1,12 @@
 import { useId } from "react";
 import type { Schemas } from "shared";
+import { ScrollToCrewButton } from "@/components/credits/scroll-to-crew-button";
+import { ResourceNotFound } from "@/components/errors/resource-not-found";
+import { LoadingCentered } from "@/components/loading/loading-centered";
+import { CastSectionAggregated } from "@/components/person/aggregated/cast-section-aggregated";
+import { CrewSectionAggregated } from "@/components/person/aggregated/crew-section-aggregated";
+import { BackButton } from "@/components/ui/back-button";
 import { m } from "@/paraglide/messages";
-import { ScrollToCrewButton } from "../credits/scroll-to-crew-button";
-import { ResourceNotFound } from "../errors/resource-not-found";
-import { LoadingCentered } from "../loading/loading-centered";
-import { CastSectionAggregated } from "../person/aggregated/cast-section-aggregated";
-import { CrewSectionAggregated } from "../person/aggregated/crew-section-aggregated";
-import { BackButton } from "../ui/back-button";
 
 interface TvCreditsViewProps {
 	credits: Schemas.TvAggregatedCredits | undefined;

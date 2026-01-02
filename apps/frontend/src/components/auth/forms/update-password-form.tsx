@@ -1,11 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouteContext } from "@tanstack/react-router";
-import { Loader2 } from "lucide-react";
+import { IconLoader } from "@tabler/icons-react";
 import React, { useId } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -28,16 +26,15 @@ import { authClient } from "@/lib/auth-client";
 import { m } from "@/paraglide/messages";
 import { updatePasswordFormSchema } from "@/schemas/password/update-password";
 
-export function UpdatePasswordForm() {
-	const { connections } = useRouteContext({ from: "/_auth/settings" });
+type UpdatePasswordFormProps = {
+	hasPassword: boolean;
+};
+
+export function UpdatePasswordForm({ hasPassword }: UpdatePasswordFormProps) {
 	const [isSubmitting, setIsSubmitting] = React.useState(false);
 	const [open, setOpen] = React.useState(false);
 	const [_, setIsSuccess] = React.useState(false);
 	const id = useId();
-
-	const hasPassword = connections?.data?.some(
-		(c) => c.providerId === "credential",
-	);
 
 	const form = useForm<z.infer<typeof updatePasswordFormSchema>>({
 		resolver: zodResolver(updatePasswordFormSchema),
@@ -86,7 +83,7 @@ export function UpdatePasswordForm() {
 						: m.update_password_desc()}
 				</p>
 			</div>
-			{hasPassword && (
+			{hasPassword ? (
 				<Dialog open={open} onOpenChange={setOpen}>
 					<DialogTrigger asChild>
 						<Button variant="default" className="mt-2">
@@ -151,7 +148,7 @@ export function UpdatePasswordForm() {
 									>
 										{isSubmitting ? (
 											<span className="flex items-center justify-center gap-2">
-												<Loader2 className="animate-spin h-4 w-4" />
+												<IconLoader className="animate-spin h-4 w-4" />
 												{m.btn_updating_password()}
 											</span>
 										) : (
@@ -163,7 +160,7 @@ export function UpdatePasswordForm() {
 						</Form>
 					</DialogContent>
 				</Dialog>
-			)}
+			) : null}
 		</div>
 	);
 }

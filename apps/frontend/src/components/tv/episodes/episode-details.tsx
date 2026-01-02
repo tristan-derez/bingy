@@ -1,6 +1,10 @@
+import {
+	IconCalendarWeekFilled,
+	IconClock,
+	IconStarFilled,
+} from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
-import { Calendar, Clock, Star } from "lucide-react";
 import type { Schemas } from "shared";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
 import { LoadingCentered } from "@/components/loading/loading-centered";
@@ -154,7 +158,7 @@ export function TvEpisodeDetailsView({
 					{episode.vote_count > 0 ? (
 						<Card>
 							<CardContent className="flex items-center gap-4">
-								<Star className="h-5 w-5 text-yellow-500" />
+								<IconStarFilled className="h-5 w-5 text-yellow-500" />
 								<div>
 									<p className="text-xl xl:text-2xl font-bold">
 										{episode.vote_average.toFixed(1)}
@@ -169,7 +173,7 @@ export function TvEpisodeDetailsView({
 
 					<Card>
 						<CardContent className="flex items-center gap-4">
-							<Clock className="h-5 w-5" />
+							<IconClock className="h-5 w-5" />
 							<div>
 								<p className="text-xl xl:text-2xl font-bold">
 									{formatRuntime(episode.runtime)}
@@ -183,7 +187,7 @@ export function TvEpisodeDetailsView({
 
 					<Card>
 						<CardContent className="flex items-center gap-4">
-							<Calendar className="h-5 w-5" />
+							<IconCalendarWeekFilled className="h-5 w-5" />
 							<div>
 								<p className="text-xl xl:text-2xl font-bold">
 									{episode.air_date

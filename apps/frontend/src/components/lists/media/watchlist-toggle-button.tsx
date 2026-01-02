@@ -1,5 +1,4 @@
-import { ClockPlus } from "lucide-react";
-import { TbClockMinus } from "react-icons/tb";
+import { IconClockMinus, IconClockPlus } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import {
 	useAddMediaToWatchlist,
@@ -71,15 +70,14 @@ export function WatchlistToggleButton({
 			<TooltipTrigger asChild>
 				<Button
 					variant="ghost"
-					size="icon"
 					onClick={handleWatchlistToggle}
 					disabled={isPending}
 					className={`hover:cursor-pointer hover:text-${color} hover:bg-none font-bold text-${color}`}
 				>
 					{isInWatchlist ? (
-						<TbClockMinus className="h-5 w-5" />
+						<IconClockMinus className="" />
 					) : (
-						<ClockPlus className="h-5 w-5" />
+						<IconClockPlus className="" />
 					)}
 				</Button>
 			</TooltipTrigger>

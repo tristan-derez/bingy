@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { m } from "@/paraglide/messages";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import {
 	Collapsible,
 	CollapsibleContent,
 	CollapsibleTrigger,
-} from "../ui/collapsible";
+} from "@/components/ui/collapsible";
+import { m } from "@/paraglide/messages";
 
 interface PersonBiographyProps {
 	biography: string;

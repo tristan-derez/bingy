@@ -5,6 +5,7 @@ import {
 	CardDescription,
 	CardTitle,
 } from "@/components/ui/card";
+import { m } from "@/paraglide/messages";
 
 type GlobalErrorProps = {
 	error: unknown;
@@ -25,7 +26,7 @@ export function GlobalError({ error }: GlobalErrorProps) {
 						className="w-full"
 						onClick={() => window.location.reload()}
 					>
-						Retry
+						{m.btn_error_retry()}
 					</Button>
 				</CardContent>
 			</Card>

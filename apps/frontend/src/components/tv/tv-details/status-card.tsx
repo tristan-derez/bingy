@@ -1,32 +1,32 @@
 import {
-	CheckCircle,
-	Clapperboard,
-	RotateCcw,
-	Sparkles,
-	XCircle,
-} from "lucide-react";
+	IconCircleCheck,
+	IconCircleX,
+	IconClipboard,
+	IconProgress,
+	IconSparkles,
+} from "@tabler/icons-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { m } from "@/paraglide/messages";
 
 const STATUS_CONFIG = {
 	"In Production": {
-		icon: Clapperboard,
+		icon: IconClipboard,
 		key: "tv_details_status_in_production",
 	},
 	"Returning Series": {
-		icon: RotateCcw,
+		icon: IconProgress,
 		key: "tv_details_status_returning_series",
 	},
 	Canceled: {
-		icon: XCircle,
+		icon: IconCircleX,
 		key: "tv_details_status_canceled",
 	},
 	Ended: {
-		icon: CheckCircle,
+		icon: IconCircleCheck,
 		key: "tv_details_status_ended",
 	},
 	Pilot: {
-		icon: Sparkles,
+		icon: IconSparkles,
 		key: "tv_details_status_pilot",
 	},
 } as const;
@@ -48,7 +48,7 @@ export function TVStatusCard({ status }: TVStatusCardProps) {
 	return (
 		<Card>
 			<CardContent className="flex items-center gap-4">
-				<Icon className="h-5 w-5" />
+				<Icon />
 				<div>
 					<p className="text-xl xl:text-2xl font-bold">{statusMessage()}</p>
 					<p className="text-sm text-muted-foreground">

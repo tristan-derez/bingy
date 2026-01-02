@@ -1,7 +1,7 @@
 import type { Schemas } from "shared";
 import { toast } from "sonner";
+import { LoadingSection } from "@/components/loading/loading-section";
 import { m } from "@/paraglide/messages";
-import { LoadingSection } from "../loading/loading-section";
 import { MovieCarousel } from "./movie-carousel";
 
 interface TopRatedMoviesProps {

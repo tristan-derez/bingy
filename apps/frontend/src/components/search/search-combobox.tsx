@@ -6,10 +6,6 @@ import { VisuallyHidden } from "radix-ui";
 import { useEffect, useState } from "react";
 import type { Schemas } from "shared";
 import { Button } from "@/components/ui/button";
-import { useSearchQuery } from "@/hooks/useSearch";
-import { localeRegionAtom } from "@/lib/atoms/region";
-import { m } from "@/paraglide/messages";
-import { getRelevanceScore } from "@/utils/search-relevance-score";
 import {
 	Command,
 	CommandEmpty,
@@ -18,9 +14,17 @@ import {
 	CommandItem,
 	CommandList,
 	CommandSeparator,
-} from "../ui/command";
-import { Dialog, DialogContent, DialogDescription } from "../ui/dialog";
-import { LoaderFive } from "../ui/loader";
+} from "@/components/ui/command";
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+} from "@/components/ui/dialog";
+import { LoaderFive } from "@/components/ui/loader";
+import { useSearchQuery } from "@/hooks/useSearch";
+import { localeRegionAtom } from "@/lib/atoms/region";
+import { m } from "@/paraglide/messages";
+import { getRelevanceScore } from "@/utils/search-relevance-score";
 import { SearchItemCombobox } from "./search-item-combobox";
 
 interface SearchComboboxProps {

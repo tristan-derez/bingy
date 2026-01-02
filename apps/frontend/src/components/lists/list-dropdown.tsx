@@ -1,5 +1,5 @@
+import { IconDots } from "@tabler/icons-react";
 import { useRouteContext } from "@tanstack/react-router";
-import { MoreHorizontalIcon } from "lucide-react";
 import { useState } from "react";
 import {
 	DropdownMenu,
@@ -78,7 +78,7 @@ export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 					className="p-1 hover:bg-white/10 rounded"
 					onClick={(e) => e.preventDefault()}
 				>
-					<MoreHorizontalIcon className="w-5 h-5 text-white" />
+					<IconDots className="w-5 h-5 text-white" />
 				</DropdownMenuTrigger>
 				<DropdownMenuContent align="center">
 					<div className="px-2 flex justify-center">

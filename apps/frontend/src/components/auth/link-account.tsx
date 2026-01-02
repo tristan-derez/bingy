@@ -1,7 +1,7 @@
+import { IconBrandGoogle } from "@tabler/icons-react";
 import { useNavigate } from "@tanstack/react-router";
 import type { Account } from "better-auth";
 import { useState } from "react";
-import { FcGoogle } from "react-icons/fc";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { config } from "@/lib/env";
@@ -82,7 +82,7 @@ export function LinkAccountComponent({ accounts }: LinkAccountComponentProps) {
 			</div>
 
 			<OAuthButton
-				icon={FcGoogle}
+				icon={IconBrandGoogle}
 				label="Google"
 				text={getButtonText()}
 				onClick={() => handleLinkAccount("google")}

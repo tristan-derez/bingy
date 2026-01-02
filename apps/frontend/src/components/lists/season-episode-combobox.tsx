@@ -1,7 +1,6 @@
-import { Check, ChevronsUpDown } from "lucide-react";
+import { IconCheck, IconSelector } from "@tabler/icons-react";
 import { useState } from "react";
-import { cn } from "../../lib/utils";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import {
 	Command,
 	CommandEmpty,
@@ -9,9 +8,14 @@ import {
 	CommandInput,
 	CommandItem,
 	CommandList,
-} from "../ui/command";
-import { Label } from "../ui/label";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+} from "@/components/ui/command";
+import { Label } from "@/components/ui/label";
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 
 interface Season {
 	season_number: number;
@@ -66,7 +70,7 @@ export function SeasonEpisodeCombobox({
 							type="button"
 						>
 							{selectedSeason ? `Season ${selectedSeason}` : "Select season"}
-							<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+							<IconSelector className="ml-2 h-4 w-4 shrink-0 opacity-50" />
 						</Button>
 					</PopoverTrigger>
 					<PopoverContent className="w-[200px] p-0">
@@ -81,7 +85,7 @@ export function SeasonEpisodeCombobox({
 											value={s.season_number.toString()}
 											onSelect={handleSeasonSelect}
 										>
-											<Check
+											<IconCheck
 												className={cn(
 													"mr-2 h-4 w-4",
 													selectedSeason === s.season_number.toString()
@@ -114,7 +118,7 @@ export function SeasonEpisodeCombobox({
 							{selectedEpisode
 								? `Episode ${selectedEpisode}`
 								: "Select episode"}
-							<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+							<IconSelector className="ml-2 h-4 w-4 shrink-0 opacity-50" />
 						</Button>
 					</PopoverTrigger>
 					<PopoverContent className="w-[200px] p-0">
@@ -132,7 +136,7 @@ export function SeasonEpisodeCombobox({
 											value={ep.toString()}
 											onSelect={handleEpisodeSelect}
 										>
-											<Check
+											<IconCheck
 												className={cn(
 													"mr-2 h-4 w-4",
 													selectedEpisode === ep.toString()

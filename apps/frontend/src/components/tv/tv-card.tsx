@@ -1,12 +1,15 @@
+import {
+	IconCalendarWeekFilled,
+	IconStarFilled,
+	IconUsers,
+} from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
-import { Calendar, Star, Users } from "lucide-react";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { localeRegionAtom } from "@/lib/atoms/region";
 import { formatDate } from "@/utils/format-date";
-import { Badge } from "../ui/badge";
-import { Card, CardContent, CardFooter } from "../ui/card";
 
 interface TvCardProps {
 	tvShow: Schemas.Tv;
@@ -35,25 +38,20 @@ export const TvCard = ({ tvShow }: TvCardProps) => {
 						}}
 						className="h-full w-full object-cover"
 					/>
-					{tvShow.adult && (
-						<Badge className="absolute top-2 right-2" variant="destructive">
-							18+
-						</Badge>
-					)}
 				</div>
 
 				<CardContent className="flex flex-col gap-4 grow">
 					{tvShow.vote_count > 10 ? (
 						<div className="flex items-center gap-4 text-sm">
 							<div className="flex items-center gap-1">
-								<Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+								<IconStarFilled className="h-4 w-4 text-yellow-400" />
 								<span className="font-medium">
 									{tvShow.vote_average.toFixed(1)}
 								</span>
 							</div>
 
 							<div className="flex items-center gap-1 text-muted-foreground">
-								<Users className="h-4 w-4" />
+								<IconUsers className="h-4 w-4" />
 								<span>{tvShow.vote_count.toLocaleString()}</span>
 							</div>
 						</div>
@@ -61,7 +59,7 @@ export const TvCard = ({ tvShow }: TvCardProps) => {
 				</CardContent>
 				<CardFooter className="text-sm text-muted-foreground">
 					<div className="flex items-center gap-1">
-						<Calendar className="h-4 w-4" />
+						<IconCalendarWeekFilled className="h-4 w-4" />
 						<span>
 							{tvShow.first_air_date
 								? formatDate(tvShow.first_air_date, localeRegion, {

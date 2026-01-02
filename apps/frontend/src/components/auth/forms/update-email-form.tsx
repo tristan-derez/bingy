@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { IconLoader } from "@tabler/icons-react";
 import { useRouteContext } from "@tanstack/react-router";
-import { Loader2 } from "lucide-react";
 import React, { useId } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -37,7 +37,7 @@ export function UpdateEmailForm() {
 	const form = useForm<z.infer<typeof updateEmailSchema>>({
 		resolver: zodResolver(updateEmailSchema),
 		defaultValues: {
-			newEmail: "",
+			email: "",
 		},
 	});
 
@@ -47,7 +47,7 @@ export function UpdateEmailForm() {
 		setIsSubmitting(true);
 		try {
 			const { data, error } = await authClient.changeEmail({
-				newEmail: formData.newEmail,
+				email: formData.email,
 				callbackURL: `${config.appUrl}/account`,
 			});
 
@@ -132,15 +132,15 @@ export function UpdateEmailForm() {
 								</FormItem>
 								<FormField
 									control={form.control}
-									name="newEmail"
+									name="email"
 									render={({ field }) => (
 										<FormItem className="grid gap-2">
-											<FormLabel htmlFor="newEmail">
+											<FormLabel htmlFor="email">
 												{m.form_new_email_label()}
 											</FormLabel>
 											<FormControl>
 												<Input
-													id={`${id}-newEmail`}
+													id={`${id}-email`}
 													type="email"
 													autoComplete="email"
 													required
@@ -157,7 +157,7 @@ export function UpdateEmailForm() {
 								>
 									{isSubmitting ? (
 										<span className="flex items-center justify-center gap-2">
-											<Loader2 className="animate-spin h-4 w-4" />
+											<IconLoader className="animate-spin h-4 w-4" />
 											{m.btn_updating_email()}
 										</span>
 									) : (

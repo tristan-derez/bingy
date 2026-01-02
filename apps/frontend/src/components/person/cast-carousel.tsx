@@ -8,7 +8,7 @@ import {
 import {
 	CarouselGradient,
 	useCarouselGradient,
-} from "../ui/embla/embla-carousel-gradient";
+} from "@/components/ui/embla/embla-carousel-gradient";
 import { CastCardCarousel } from "./cast-card-carousel";
 
 interface CastCarouselProps {

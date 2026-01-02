@@ -1,8 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { useId } from "react";
 import { Card, CardContent } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import { m } from "@/paraglide/messages";
-import { Separator } from "../ui/separator";
 
 export type TimelineItem = {
 	id: number;

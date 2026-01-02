@@ -1,6 +1,6 @@
+import { IconStarFilled } from "@tabler/icons-react";
 import { useNavigate } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
-import { Star } from "lucide-react";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import fallbackPersonPoster from "@/assets/user-placeholder.jpg";
@@ -48,7 +48,7 @@ export const SearchCard = ({ item }: SearchCardProps) => {
 				<img
 					src={imageUrl}
 					alt={`poster path for ${movie.title}`}
-					className="w-[100px] h-[170px] md:w-[133px] md:h-[200px] object-cover rounded flex-shrink-0"
+					className="w-[100px] h-[170px] md:w-[133px] md:h-[200px] object-cover rounded shrink-0"
 				/>
 
 				<CardHeader className="flex-1 flex flex-col gap-2 p-0">
@@ -58,7 +58,7 @@ export const SearchCard = ({ item }: SearchCardProps) => {
 								{movie.title}
 							</CardTitle>
 							{movie.release_date && (
-								<span className="text-sm text-muted-foreground flex-shrink-0">
+								<span className="text-sm text-muted-foreground shrink-0">
 									{formatDate(movie.release_date, locale, {
 										year: "numeric",
 									})}
@@ -69,7 +69,7 @@ export const SearchCard = ({ item }: SearchCardProps) => {
 						<div className="flex items-center gap-2 md:ml-auto">
 							{movie.vote_count > 0 ? (
 								<div className="flex items-center gap-1 text-sm text-muted-foreground">
-									<Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+									<IconStarFilled className="h-4 w-4 text-yellow-400" />
 									{movie.vote_average.toFixed(1)}
 								</div>
 							) : null}
@@ -106,7 +106,7 @@ export const SearchCard = ({ item }: SearchCardProps) => {
 				<img
 					src={imageUrl}
 					alt={`poster path for ${tv.name}`}
-					className="w-[100px] h-[170px] md:w-[133px] md:h-[200px] object-cover rounded flex-shrink-0"
+					className="w-[100px] h-[170px] md:w-[133px] md:h-[200px] object-cover rounded shrink-0"
 				/>
 
 				<CardHeader className="flex-1 min-w-0 flex flex-col gap-2 p-0">
@@ -116,7 +116,7 @@ export const SearchCard = ({ item }: SearchCardProps) => {
 								{tv.name}
 							</CardTitle>
 							{tv.first_air_date && (
-								<span className="text-sm text-muted-foreground flex-shrink-0">
+								<span className="text-sm text-muted-foreground shrink-0">
 									{formatDate(tv.first_air_date, locale, {
 										year: "numeric",
 									})}
@@ -127,7 +127,7 @@ export const SearchCard = ({ item }: SearchCardProps) => {
 						<div className="flex items-center gap-2 md:ml-auto">
 							{tv.vote_count > 0 ? (
 								<div className="flex items-center gap-1 text-sm text-muted-foreground">
-									<Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+									<IconStarFilled className="h-4 w-4 text-yellow-400" />
 									{tv.vote_average.toFixed(1)}
 								</div>
 							) : null}
@@ -167,7 +167,7 @@ export const SearchCard = ({ item }: SearchCardProps) => {
 				<img
 					src={imageUrl}
 					alt={`picture of ${person.name}`}
-					className="w-[100px] h-[170px] md:w-[133px] md:h-[200px] object-cover rounded flex-shrink-0"
+					className="w-[100px] h-[170px] md:w-[133px] md:h-[200px] object-cover rounded shrink-0"
 				/>
 
 				<CardHeader className="flex-1 min-w-0 flex flex-col gap-2 p-0">

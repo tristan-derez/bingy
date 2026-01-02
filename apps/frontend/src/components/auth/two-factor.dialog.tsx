@@ -1,5 +1,5 @@
+import { IconLoader } from "@tabler/icons-react";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
-import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -72,7 +72,7 @@ export function TwoFactorDialog({
 					>
 						{isVerifying ? (
 							<span className="flex items-center justify-center gap-2">
-								<Loader2 className="animate-spin h-4 w-4" />
+								<IconLoader className="animate-spin h-4 w-4" />
 								{m.dialog_btn_verifying()}
 							</span>
 						) : (

@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/user-placeholder.jpg";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
 	Card,
 	CardContent,
@@ -10,7 +11,6 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { m } from "@/paraglide/messages";
-import { Button } from "../../ui/button";
 
 interface CrewCardMovieProps {
 	person: Schemas.CrewMember;

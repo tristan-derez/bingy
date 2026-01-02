@@ -1,13 +1,17 @@
+import {
+	IconCalendarWeekFilled,
+	IconStarFilled,
+	IconUsers,
+} from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
-import { Calendar, Star, Users } from "lucide-react";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
-import { Badge } from "../ui/badge";
-import { Card, CardContent, CardFooter } from "../ui/card";
 
 interface MovieCardProps {
 	movie: Schemas.Movie;
@@ -46,13 +50,13 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
 					{movie.vote_count > 10 ? (
 						<div className="flex items-center gap-4 text-sm">
 							<div className="flex items-center gap-1">
-								<Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+								<IconStarFilled className="h-4 w-4 text-yellow-400" />
 								<span className="font-medium">
 									{movie.vote_average.toFixed(1)}
 								</span>
 							</div>
 							<div className="flex items-center gap-1 text-muted-foreground">
-								<Users className="h-4 w-4" />
+								<IconUsers className="h-4 w-4" />
 								<span>{movie.vote_count.toLocaleString()}</span>
 							</div>
 						</div>
@@ -61,7 +65,7 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
 
 				<CardFooter className="text-sm text-muted-foreground">
 					<div className="flex items-center gap-1">
-						<Calendar className="h-4 w-4" />
+						<IconCalendarWeekFilled className="h-4 w-4" />
 						<span>
 							{movie.release_date
 								? formatDate(movie.release_date, localeRegion, {

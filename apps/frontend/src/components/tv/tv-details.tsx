@@ -1,6 +1,12 @@
+import {
+	IconCalendarWeekFilled,
+	IconDeviceTv,
+	IconExternalLink,
+	IconStack2,
+	IconStarFilled,
+} from "@tabler/icons-react";
 import { Link, useRouteContext } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
-import { Calendar, ExternalLink, Layers, Star, Tv } from "lucide-react";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import { Badge } from "@/components/ui/badge";
@@ -12,11 +18,7 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
-import {
-	m,
-	tv_details_homepage,
-	tv_details_networks,
-} from "@/paraglide/messages";
+import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { shortenCountryName } from "@/utils/shorten-country-name";
 import { ResourceNotFound } from "../errors/resource-not-found";
@@ -33,7 +35,7 @@ import { TVStatusCard } from "./tv-details/status-card";
 interface TvDetailViewProps {
 	tv: Schemas.TvDetails | undefined;
 	watchProviders: Schemas.WatchProviders | undefined;
-	socials: Partial<Record<"facebook" | "instagram" | "twitter", string>>;
+	socials: Partial<Record<"instagram" | "twitter", string>>;
 	cast: Schemas.CastMember[];
 	isLoading: boolean;
 	isError: boolean;
@@ -107,9 +109,9 @@ export function TvDetailsView({
 									<h1 className="text-4xl font-bold leading-relaxed">
 										{tv.name}
 									</h1>
-									{tv.tagline && (
+									{tv.tagline ? (
 										<p className="text-muted-foreground italic">{tv.tagline}</p>
-									)}
+									) : null}
 
 									<div className="flex flex-wrap gap-2 mt-2">
 										{tv.genres.map((genre) => (
@@ -143,17 +145,17 @@ export function TvDetailsView({
 					>
 						<CardHeader className="flex flex-row items-center justify-between w-full">
 							<CardTitle className="">{m.tv_details_overview()}</CardTitle>
-							{Object.keys(socials).length > 0 && (
+							{Object.keys(socials).length > 0 ? (
 								<div className="ml-auto">
 									<SocialLinks socials={socials} />
 								</div>
-							)}
+							) : null}
 						</CardHeader>
 
 						<CardContent className="flex flex-col gap-4">
 							<MediaOverview overview={tv.overview} bg={backgroundImage} />
 							<Separator />
-							{tv.created_by.length > 0 && (
+							{tv.created_by.length > 0 ? (
 								<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 									{tv.created_by.slice(0, 3).map((creator) => (
 										<div key={creator.id}>
@@ -174,7 +176,7 @@ export function TvDetailsView({
 										</div>
 									))}
 								</div>
-							)}
+							) : null}
 						</CardContent>
 
 						<CardFooter>
@@ -200,7 +202,7 @@ export function TvDetailsView({
 						{tv.vote_count > 0 ? (
 							<Card>
 								<CardContent className="flex items-center gap-4">
-									<Star className="h-5 w-5 text-yellow-500" />
+									<IconStarFilled className="h-5 w-5 text-yellow-500" />
 									<div>
 										<p className="text-xl xl:text-2xl font-bold">
 											{tv.vote_average.toFixed(1)}
@@ -218,7 +220,7 @@ export function TvDetailsView({
 
 						<Card>
 							<CardContent className="flex items-center gap-4">
-								<Calendar className="h-5 w-5" />
+								<IconCalendarWeekFilled />
 								<div>
 									<p className="text-xl xl:text-2xl font-bold">
 										{tv.first_air_date
@@ -241,7 +243,7 @@ export function TvDetailsView({
 						<Link to="/tv/$tvId/seasons" params={{ tvId: tv.id.toString() }}>
 							<Card>
 								<CardContent className="flex items-center gap-4">
-									<Tv className="h-5 w-5" />
+									<IconDeviceTv />
 									<div>
 										<p className="text-xl xl:text-2xl font-bold">
 											{tv.number_of_seasons}
@@ -256,7 +258,7 @@ export function TvDetailsView({
 
 						<Card>
 							<CardContent className="flex items-center gap-4">
-								<Layers className="h-5 w-5" />
+								<IconStack2 />
 								<div>
 									<p className="text-xl xl:text-2xl font-bold">
 										{tv.number_of_episodes}
@@ -268,10 +270,10 @@ export function TvDetailsView({
 							</CardContent>
 						</Card>
 
-						{tv.homepage && (
+						{tv.homepage ? (
 							<Card>
 								<CardContent className="flex items-center gap-4">
-									<ExternalLink className="h-5 w-5" />
+									<IconExternalLink />
 									<div>
 										<p className="text-xl xl:text-2xl font-bold">
 											<a
@@ -284,28 +286,30 @@ export function TvDetailsView({
 											</a>
 										</p>
 										<p className="text-sm text-muted-foreground">
-											{tv_details_homepage()}
+											{m.tv_details_homepage()}
 										</p>
 									</div>
 								</CardContent>
 							</Card>
-						)}
+						) : null}
 					</div>
 
-					{cast.length > 0 && (
+					{cast.length > 0 ? (
 						<div className="flex flex-col gap-2">
 							<CastCarousel people={cast} />
 							<Link to="/tv/$tvId/credits" params={{ tvId: tv.id.toString() }}>
 								{m.link_text_full_credits()}
 							</Link>
 						</div>
-					)}
+					) : null}
 
-					{tv.networks.length > 0 && (
+					{tv.networks.length > 0 ? (
 						<Card>
 							<CardHeader>
 								<CardTitle>
-									{m.tv_details_networks({ count: tv_details_networks.length })}
+									{m.tv_details_networks({
+										count: tv.networks.length,
+									})}
 								</CardTitle>
 							</CardHeader>
 
@@ -328,9 +332,9 @@ export function TvDetailsView({
 								)}
 							</CardContent>
 						</Card>
-					)}
+					) : null}
 
-					{tv.production_companies && tv.production_companies.length > 0 && (
+					{tv.production_companies.length > 0 ? (
 						<Card>
 							<CardHeader>
 								<CardTitle>
@@ -352,7 +356,7 @@ export function TvDetailsView({
 								))}
 							</CardContent>
 						</Card>
-					)}
+					) : null}
 				</div>
 			</div>
 		</div>

@@ -1,10 +1,15 @@
+import {
+	IconAdjustmentsHorizontal,
+	IconBrandGithub,
+	IconClockBolt,
+	IconExternalLink,
+	IconHistory,
+	IconLifebuoy,
+	IconLogout,
+	IconUser,
+} from "@tabler/icons-react";
 import { Link, useRouter } from "@tanstack/react-router";
-import { ExternalLink } from "lucide-react";
 import { useState } from "react";
-import { FaGithub } from "react-icons/fa";
-import { IoLogOutSharp, IoSettingsSharp } from "react-icons/io5";
-import { MdHistory, MdSupport, MdWatchLater } from "react-icons/md";
-import { PiUserFill } from "react-icons/pi";
 import { toast } from "sonner";
 import { queryClient } from "@/integrations/tanstack-query/root-provider";
 import { authClient } from "@/lib/auth-client";
@@ -138,7 +143,7 @@ export const ProfileDropdown = ({
 								params={{ username: session.user.name }}
 								onClick={onLinkClick}
 							>
-								<PiUserFill />
+								<IconUser />
 								{m.dropdown_profile_text()}
 							</Link>
 						</DropdownMenuItem>
@@ -148,7 +153,7 @@ export const ProfileDropdown = ({
 								params={{ username: session.user.name }}
 								onClick={onLinkClick}
 							>
-								<MdWatchLater />
+								<IconClockBolt />
 								{m.dropdown_watchlist_text()}
 							</Link>
 						</DropdownMenuItem>
@@ -158,13 +163,13 @@ export const ProfileDropdown = ({
 								params={{ username: session.user.name }}
 								onClick={onLinkClick}
 							>
-								<MdHistory />
+								<IconHistory />
 								{m.dropdown_history_text()}
 							</Link>
 						</DropdownMenuItem>
 						<DropdownMenuItem asChild>
 							<Link to="/settings" onClick={onLinkClick}>
-								<IoSettingsSharp />
+								<IconAdjustmentsHorizontal />
 								{m.dropdown_settings_text()}
 							</Link>
 						</DropdownMenuItem>
@@ -177,19 +182,19 @@ export const ProfileDropdown = ({
 								className="flex items-center justify-between"
 							>
 								<div className="flex items-center gap-2">
-									<FaGithub />
+									<IconBrandGithub className="w-4 h-4" />
 									<span>GitHub</span>
 								</div>
-								<ExternalLink className="text-muted-foreground" />
+								<IconExternalLink className="text-muted-foreground" />
 							</a>
 						</DropdownMenuItem>
 						<DropdownMenuItem>
-							<MdSupport />
+							<IconLifebuoy className="w-4 h-4" />
 							<span>{m.dropdown_support_text()}</span>
 						</DropdownMenuItem>
 						<DropdownMenuSeparator className="bg-border" />
 						<DropdownMenuItem onSelect={logout}>
-							<IoLogOutSharp />
+							<IconLogout className="w-4 h-4" />
 							<span>{m.dropdown_logout_text()}</span>
 						</DropdownMenuItem>
 					</DropdownMenuContent>

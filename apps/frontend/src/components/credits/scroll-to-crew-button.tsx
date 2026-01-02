@@ -1,6 +1,6 @@
 import { ArrowDown } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { m } from "@/paraglide/messages";
-import { Button } from "../ui/button";
 
 interface ScrollToCrewButtonProps {
 	crewSectionId: string;

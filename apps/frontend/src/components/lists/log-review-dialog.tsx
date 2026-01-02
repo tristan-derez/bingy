@@ -1,14 +1,10 @@
+import { IconCalendarWeekFilled } from "@tabler/icons-react";
 import { format } from "date-fns";
 import { useAtomValue } from "jotai";
-import { CalendarIcon } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useRateMovie, useRateTvShow } from "@/hooks/useRating";
-import { useTv } from "@/hooks/useTv";
-import { localeRegionAtom } from "@/lib/atoms/region";
-import { m } from "@/paraglide/messages";
-import { Button } from "../ui/button";
-import { Calendar } from "../ui/calendar";
-import { Checkbox } from "../ui/checkbox";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
 	Dialog,
 	DialogClose,
@@ -17,10 +13,18 @@ import {
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
-} from "../ui/dialog";
-import { Label } from "../ui/label";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { Textarea } from "../ui/textarea";
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "@/components/ui/popover";
+import { Textarea } from "@/components/ui/textarea";
+import { useRateMovie, useRateTvShow } from "@/hooks/useRating";
+import { useTv } from "@/hooks/useTv";
+import { localeRegionAtom } from "@/lib/atoms/region";
+import { m } from "@/paraglide/messages";
 import { SeasonEpisodeCombobox } from "./season-episode-combobox";
 import { StarRating } from "./star-rating";
 
@@ -229,7 +233,7 @@ export function LogReviewDialog({
 													className="h-7 px-2 text-sm font-normal"
 													type="button"
 												>
-													<CalendarIcon className="mr-1.5 h-3.5 w-3.5" />
+													<IconCalendarWeekFilled className="mr-1.5 h-3.5 w-3.5" />
 													{format(watchedDate, "MMMM d, yyyy")}
 												</Button>
 											</PopoverTrigger>

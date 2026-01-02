@@ -1,4 +1,4 @@
-import { ArrowLeft } from "lucide-react";
+import { IconArrowLeft } from "@tabler/icons-react";
 import { Button } from "./button";
 
 interface BackButtonProps {
@@ -20,7 +20,7 @@ export const BackButton = ({
 			variant={variant}
 			className={`${style} rounded-xl`}
 		>
-			<ArrowLeft className="h-4 w-4" /> {text ? text : null}
+			<IconArrowLeft /> {text ? text : null}
 		</Button>
 	);
 };

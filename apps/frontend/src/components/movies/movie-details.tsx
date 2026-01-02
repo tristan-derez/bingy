@@ -1,9 +1,14 @@
+import {
+	IconCalendarWeekFilled,
+	IconExternalLink,
+	IconMoneybag,
+	IconReceiptDollar,
+	IconStarFilled,
+	IconStopwatch,
+} from "@tabler/icons-react";
 import { Link, useRouteContext } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
-import { Calendar, Clock, ExternalLink, Star } from "lucide-react";
 import { useId } from "react";
-import { FaMoneyBillTrendUp } from "react-icons/fa6";
-import { TbMoneybag } from "react-icons/tb";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import { Badge } from "@/components/ui/badge";
@@ -34,7 +39,7 @@ interface MovieDetailViewProps {
 	movie: Schemas.MovieDetails | undefined;
 	crew: Array<{ name: string; roles: Set<string> }>;
 	cast: Schemas.CastMember[];
-	socials: Partial<Record<"facebook" | "instagram" | "twitter", string>>;
+	socials: Partial<Record<"instagram" | "twitter", string>>;
 	watchProviders: Schemas.WatchProviders | undefined;
 	collection: Schemas.MovieDetails["belongs_to_collection"] | undefined;
 	releaseDate: string | undefined;
@@ -208,7 +213,7 @@ export function MovieDetailView({
 						{movie.vote_count ? (
 							<Card>
 								<CardContent className="flex items-center gap-4">
-									<Star className="h-5 w-5 text-yellow-500" />
+									<IconStarFilled className="h-5 w-5 text-yellow-500" />
 									<div>
 										<p className="text-xl xl:text-2xl font-bold">
 											{movie.vote_average.toFixed(1)}
@@ -223,7 +228,7 @@ export function MovieDetailView({
 
 						<Card>
 							<CardContent className="flex items-center gap-4">
-								<Calendar className="h-5 w-5" />
+								<IconCalendarWeekFilled />
 								<div>
 									<p className="text-xl xl:text-2xl font-bold">
 										{releaseDate
@@ -249,7 +254,7 @@ export function MovieDetailView({
 
 						<Card>
 							<CardContent className="flex items-center gap-4">
-								<Clock className="h-5 w-5" />
+								<IconStopwatch />
 								<div>
 									<p className="text-xl xl:text-2xl font-bold">
 										{formatRuntime(movie.runtime)}
@@ -264,7 +269,7 @@ export function MovieDetailView({
 						{movie.budget > 0 ? (
 							<Card>
 								<CardContent className="flex items-center gap-4">
-									<TbMoneybag className="h-5 w-5" />
+									<IconReceiptDollar />
 									<div>
 										<p className="text-xl xl:text-2xl font-bold">
 											${movie.budget.toLocaleString()}
@@ -280,7 +285,7 @@ export function MovieDetailView({
 						{movie.revenue > 0 ? (
 							<Card>
 								<CardContent className="flex items-center gap-4">
-									<FaMoneyBillTrendUp className="h-5 w-5" />
+									<IconMoneybag />
 									<div>
 										<p className="text-xl xl:text-2xl font-bold">
 											${movie.revenue.toLocaleString()}
@@ -296,7 +301,7 @@ export function MovieDetailView({
 						{movie.homepage ? (
 							<Card>
 								<CardContent className=" flex items-center gap-4">
-									<ExternalLink className="h-5 w-5" />
+									<IconExternalLink />
 									<div>
 										<p className="text-xl xl:text-2xl font-bold">
 											<a

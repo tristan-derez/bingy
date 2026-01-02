@@ -1,12 +1,12 @@
 import { useId } from "react";
 import type { Schemas } from "shared";
+import { ScrollToCrewButton } from "@/components/credits/scroll-to-crew-button";
+import { ResourceNotFound } from "@/components/errors/resource-not-found";
+import { LoadingCentered } from "@/components/loading/loading-centered";
+import { CastSectionMovie } from "@/components/person/movie/cast-section-movie";
+import { CrewSectionMovie } from "@/components/person/movie/crew-section-movie";
+import { BackButton } from "@/components/ui/back-button";
 import { m } from "@/paraglide/messages";
-import { ScrollToCrewButton } from "../credits/scroll-to-crew-button";
-import { ResourceNotFound } from "../errors/resource-not-found";
-import { LoadingCentered } from "../loading/loading-centered";
-import { CastSectionMovie } from "../person/movie/cast-section-movie";
-import { CrewSectionMovie } from "../person/movie/crew-section-movie";
-import { BackButton } from "../ui/back-button";
 
 interface MovieCreditsViewProps {
 	credits: Schemas.MovieCredits | undefined;

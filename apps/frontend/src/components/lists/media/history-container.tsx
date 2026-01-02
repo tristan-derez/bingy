@@ -1,4 +1,4 @@
-import { FilmIcon, LayoutGridIcon, TvIcon } from "lucide-react";
+import { IconDeviceTv, IconLayoutGrid, IconMovie } from "@tabler/icons-react";
 import { WatchlistMediaCard } from "@/components/lists/media/watchlist-media-card";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { m } from "@/paraglide/messages";
@@ -56,7 +56,7 @@ export function HistoryContainer({
 					aria-label={m.history_toggle_aria_label_all()}
 					className="hover:cursor-pointer"
 				>
-					<LayoutGridIcon className="h-4 w-4" />
+					<IconLayoutGrid className="h-4 w-4" />
 					{m.history_toggle_group_item_all()}
 				</ToggleGroupItem>
 				<ToggleGroupItem
@@ -64,7 +64,7 @@ export function HistoryContainer({
 					aria-label={m.history_toggle_aria_label_movies()}
 					className="hover:cursor-pointer"
 				>
-					<FilmIcon className="h-4 w-4" />
+					<IconMovie className="h-4 w-4" />
 					{m.history_toggle_group_item_movies()}
 				</ToggleGroupItem>
 				<ToggleGroupItem
@@ -72,7 +72,7 @@ export function HistoryContainer({
 					aria-label={m.history_toggle_aria_label_tv()}
 					className="hover:cursor-pointer"
 				>
-					<TvIcon className="h-4 w-4" />
+					<IconDeviceTv className="h-4 w-4" />
 					{m.history_toggle_group_item_tv()}
 				</ToggleGroupItem>
 			</ToggleGroup>

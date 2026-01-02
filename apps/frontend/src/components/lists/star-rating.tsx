@@ -1,4 +1,4 @@
-import { Star } from "lucide-react";
+import { IconStar } from "@tabler/icons-react";
 import { useState } from "react";
 import { useMovieRating, useTvRating } from "@/hooks/useRating";
 
@@ -63,13 +63,13 @@ export function StarRating({
 							onClick={() => handleClick(starIndex, false)}
 						/>
 
-						<Star
+						<IconStar
 							className="w-6 h-6 absolute top-0 left-0"
 							fill="none"
 							stroke="currentColor"
 						/>
 
-						<Star
+						<IconStar
 							className="w-6 h-6 relative"
 							fill={filled || halfFilled ? "currentColor" : "none"}
 							stroke="none"

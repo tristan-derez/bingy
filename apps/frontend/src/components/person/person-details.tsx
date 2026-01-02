@@ -1,25 +1,25 @@
 import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/user-placeholder.jpg";
-import { localeRegionAtom } from "@/lib/atoms/region";
-import { m } from "@/paraglide/messages";
-import { calculateAge } from "@/utils/calculate-age";
-import { formatDate } from "@/utils/format-date";
-import { getSocialUrls } from "@/utils/social-urls";
-import { sortKnownForCredits } from "@/utils/sort-known-credits";
-import { ResourceNotFound } from "../errors/resource-not-found";
-import { LoadingCentered } from "../loading/loading-centered";
-import { MediasCarousel } from "../medias/medias-carousel";
-import { SocialLinks } from "../social-links";
-import { BackButton } from "../ui/back-button";
-import { Badge } from "../ui/badge";
+import { ResourceNotFound } from "@/components/errors/resource-not-found";
+import { LoadingCentered } from "@/components/loading/loading-centered";
+import { MediasCarousel } from "@/components/medias/medias-carousel";
+import { SocialLinks } from "@/components/social-links";
+import { BackButton } from "@/components/ui/back-button";
+import { Badge } from "@/components/ui/badge";
 import {
 	Card,
 	CardContent,
 	CardFooter,
 	CardHeader,
 	CardTitle,
-} from "../ui/card";
+} from "@/components/ui/card";
+import { localeRegionAtom } from "@/lib/atoms/region";
+import { m } from "@/paraglide/messages";
+import { calculateAge } from "@/utils/calculate-age";
+import { formatDate } from "@/utils/format-date";
+import { getSocialUrls } from "@/utils/social-urls";
+import { sortKnownForCredits } from "@/utils/sort-known-credits";
 import { PersonBiography } from "./person-biography";
 import { PersonTimeline } from "./person-timeline";
 

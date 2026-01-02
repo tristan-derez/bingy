@@ -57,7 +57,7 @@ export function SettingsComponent({ accounts }: SettingsComponentProps) {
 					)}
 					<UpdateEmailForm />
 					<Separator />
-					<UpdatePasswordForm />
+					<UpdatePasswordForm hasPassword={hasPassword} />
 					<Separator />
 					<DeleteAccountForm />
 				</Card>

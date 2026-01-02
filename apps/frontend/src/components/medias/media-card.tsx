@@ -1,7 +1,12 @@
 import { Link } from "@tanstack/react-router";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
-import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
+import {
+	Card,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
 
 interface MediaCardProps {
 	media: Schemas.MediaWithCastCredits | Schemas.MediaWithCrewCredits;
