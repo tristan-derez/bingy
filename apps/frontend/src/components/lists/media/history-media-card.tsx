@@ -3,8 +3,6 @@ import { Link } from "@tanstack/react-router";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import { MovieBadge } from "@/components/badges/movie-badge";
 import { TvShowBadge } from "@/components/badges/tv-badge";
-import { Badge } from "@/components/ui/badge";
-import { formatRating } from "@/utils/format-rating";
 import { formatEpisode } from "@/utils/format-season-episode";
 import { ListDropdown } from "../list-dropdown";
 
@@ -26,6 +24,23 @@ interface HistoryMediaCardProps {
 	};
 	linkTo: string;
 }
+
+const RatingStars = ({ rating }: { rating: string }) => {
+	const numericRating = Number.parseFloat(rating);
+	const fullStars = Math.floor(numericRating);
+	const hasHalfStar = numericRating % 1 !== 0;
+
+	return (
+		<div className="flex items-center gap-0.5">
+			{Array.from({ length: fullStars }).map((_, i) => (
+				<IconStarFilled key={i} className="h-3.5 w-3.5 text-brand" />
+			))}
+			{hasHalfStar ? (
+				<span className="text-xs text-brand font-medium">½</span>
+			) : null}
+		</div>
+	);
+};
 
 export const HistoryMediaCard = ({ item, linkTo }: HistoryMediaCardProps) => {
 	const imageUrl = item.posterPath
@@ -50,16 +65,7 @@ export const HistoryMediaCard = ({ item, linkTo }: HistoryMediaCardProps) => {
 					/>
 					<div className="absolute inset-x-0 top-0 h-24 bg-linear-to-b from-black/90 to-transparent" />
 					<div className="absolute inset-x-0 bottom-0 h-12 bg-linear-to-b from-transparent to-black/90" />
-					<div className="w-full absolute top-2 flex items-center justify-between z-10 pr-2 pl-2">
-						{item.rating ? (
-							<Badge variant="outline">
-								<IconStarFilled className="h-3 w-3 mr-0.5" />
-								{formatRating(item.rating)}
-							</Badge>
-						) : (
-							<span />
-						)}
-
+					<div className="w-full absolute top-2 flex items-center justify-end z-10 pr-2">
 						{item.mediaType === "movie" ? (
 							<MovieBadge minWidth={8} />
 						) : (
@@ -68,12 +74,12 @@ export const HistoryMediaCard = ({ item, linkTo }: HistoryMediaCardProps) => {
 					</div>
 					<div className="absolute bottom-2 inset-x-0 flex items-center justify-between z-10 px-2">
 						{item.mediaType === "tv" && item.progress ? (
-							<Badge variant="secondary">
+							<div>
 								{formatEpisode(
 									item.progress.lastWatchedSeason,
 									item.progress.lastWatchedEpisode,
 								)}
-							</Badge>
+							</div>
 						) : (
 							<span />
 						)}
@@ -83,12 +89,11 @@ export const HistoryMediaCard = ({ item, linkTo }: HistoryMediaCardProps) => {
 						</div>
 					</div>
 				</div>
-				<h3
-					className="mt-2 text-sm font-medium line-clamp-1 leading-relaxed hidden sm:block"
-					title={item.title}
-				>
-					{item.title}
-				</h3>
+				{item.rating ? (
+					<div className="mt-2">
+						<RatingStars rating={item.rating} />
+					</div>
+				) : null}
 			</Link>
 		</div>
 	);
