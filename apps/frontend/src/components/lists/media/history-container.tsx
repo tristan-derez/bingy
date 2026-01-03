@@ -1,5 +1,5 @@
 import { IconDeviceTv, IconLayoutGrid, IconMovie } from "@tabler/icons-react";
-import { WatchlistMediaCard } from "@/components/lists/media/watchlist-media-card";
+import { HistoryMediaCard } from "@/components/lists/media/history-media-card";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { m } from "@/paraglide/messages";
 import { ListPagination } from "../list-pagination";
@@ -15,8 +15,14 @@ type HistoryContainerProps = {
 		originalTitle: string;
 		releaseDate: string;
 		posterPath: string | null;
-		mediaType: string;
+		mediaType: "movie" | "tv";
+		watchedAt: Date | null;
+		progress?: {
+			lastWatchedSeason: number;
+			lastWatchedEpisode: number;
+		} | null;
 		addedAt: Date;
+		rating: string;
 	}[];
 	filter: MediaFilter;
 	onFilterChange: (filter: MediaFilter) => void;
@@ -85,7 +91,7 @@ export function HistoryContainer({
 						{items.map((item) => {
 							const type = item.mediaType === "movie" ? "movies" : "tv";
 							return (
-								<WatchlistMediaCard
+								<HistoryMediaCard
 									key={`${item.mediaType}-${item.id}`}
 									item={item}
 									linkTo={`/${type}/${item.id}`}
