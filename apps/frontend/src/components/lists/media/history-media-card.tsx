@@ -18,6 +18,7 @@ interface HistoryMediaCardProps {
 		progress?: {
 			lastWatchedSeason: number;
 			lastWatchedEpisode: number;
+			absoluteEpisode?: number;
 		} | null;
 		addedAt: Date;
 		rating: string;
@@ -78,6 +79,7 @@ export const HistoryMediaCard = ({ item, linkTo }: HistoryMediaCardProps) => {
 								{formatEpisode(
 									item.progress.lastWatchedSeason,
 									item.progress.lastWatchedEpisode,
+									item.progress.absoluteEpisode,
 								)}
 							</div>
 						) : (

@@ -60,6 +60,7 @@ export type HistoryItem = TMDBMedia & {
 	progress?: {
 		lastWatchedSeason: number;
 		lastWatchedEpisode: number;
+		absoluteEpisode?: number;
 	} | null;
 	addedAt: Date;
 };
@@ -105,6 +106,7 @@ export type PostTvRating = {
 		id: string;
 		lastWatchedEpisode: number;
 		lastWatchedSeason: number;
+		absoluteEpisode?: number;
 		mediaId: string;
 		updatedAt: Date | null;
 		userId: string;
@@ -124,5 +126,6 @@ export type RateTvPayload = {
 	review?: string | null;
 	lastWatchedSeason?: number;
 	lastWatchedEpisode?: number;
+	absoluteEpisode?: number;
 	watchedAt?: Date | null;
 };

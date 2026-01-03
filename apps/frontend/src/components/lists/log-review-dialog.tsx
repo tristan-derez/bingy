@@ -28,7 +28,9 @@ import { m } from "@/paraglide/messages";
 import {
 	getLastAiredEpisodeInfo,
 	getValidSeasons,
+	usesContinuousEpisodeNumbering,
 } from "@/utils/season-helper";
+import { AbsoluteEpisodeCombobox } from "./absolute-episode-combobox";
 import { SeasonEpisodeCombobox } from "./season-episode-combobox";
 import { StarRating } from "./star-rating";
 
@@ -79,6 +81,8 @@ export function LogReviewDialog({
 	const [rating, setRating] = useState(initialRating);
 	const [season, setSeason] = useState("");
 	const [episode, setEpisode] = useState("");
+	const [useAbsoluteEpisode, setUseAbsoluteEpisode] = useState(false);
+	const [absoluteEpisode, setAbsoluteEpisode] = useState("");
 	const [isComplete, setIsComplete] = useState(false);
 	const [review, setReview] = useState("");
 	const [watchedToday, setWatchedToday] = useState(true);
@@ -86,6 +90,7 @@ export function LogReviewDialog({
 	const [watchedDate, setWatchedDate] = useState<Date>(new Date());
 
 	const seasons = getValidSeasons(tvDetails?.seasons);
+	const hasContinuousNumbering = usesContinuousEpisodeNumbering(tvDetails);
 
 	useEffect(() => {
 		if (open) {
@@ -95,6 +100,8 @@ export function LogReviewDialog({
 			setWatchedDate(new Date());
 			setSeason("");
 			setEpisode("");
+			setUseAbsoluteEpisode(false);
+			setAbsoluteEpisode("");
 			setIsComplete(false);
 			setReview("");
 		}
@@ -123,13 +130,37 @@ export function LogReviewDialog({
 		if (checked) {
 			const episodeInfo = getLastAiredEpisodeInfo(tvDetails);
 			if (episodeInfo) {
-				setSeason(episodeInfo.seasonNumber.toString());
-				setEpisode(episodeInfo.episodeNumber.toString());
+				if (useAbsoluteEpisode) {
+					// Calculate absolute episode number
+					const episodesBeforeSeason =
+						tvDetails?.seasons
+							?.filter(
+								(s) =>
+									s.season_number > 0 &&
+									s.season_number < episodeInfo.seasonNumber,
+							)
+							.reduce((sum, s) => sum + s.episode_count, 0) ?? 0;
+					setAbsoluteEpisode(
+						(episodesBeforeSeason + episodeInfo.episodeNumber).toString(),
+					);
+				} else {
+					setSeason(episodeInfo.seasonNumber.toString());
+					setEpisode(episodeInfo.episodeNumber.toString());
+				}
 			}
 		} else {
 			setSeason("");
 			setEpisode("");
+			setAbsoluteEpisode("");
 		}
+	};
+
+	const handleUseAbsoluteEpisodeChange = (checked: boolean) => {
+		setUseAbsoluteEpisode(checked);
+		setSeason("");
+		setEpisode("");
+		setAbsoluteEpisode("");
+		setIsComplete(false);
 	};
 
 	const handleSubmit = (e: React.FormEvent) => {
@@ -138,13 +169,38 @@ export function LogReviewDialog({
 		const watchedAt = watchedBefore ? undefined : watchedDate;
 
 		if (isTvShow) {
+			let lastWatchedSeason: number | undefined;
+			let lastWatchedEpisode: number | undefined;
+			let absoluteEpisodeNumber: number | undefined;
+
+			if (useAbsoluteEpisode && absoluteEpisode) {
+				// Convert absolute episode to season/episode
+				const absEp = Number(absoluteEpisode);
+				absoluteEpisodeNumber = absEp;
+				let remaining = absEp;
+				const validSeasons = seasons.filter((s) => s.season_number > 0);
+
+				for (const s of validSeasons) {
+					if (remaining <= s.episode_count) {
+						lastWatchedSeason = s.season_number;
+						lastWatchedEpisode = remaining;
+						break;
+					}
+					remaining -= s.episode_count;
+				}
+			} else if (season && episode) {
+				lastWatchedSeason = Number(season);
+				lastWatchedEpisode = Number(episode);
+			}
+
 			rateTvMutation.mutate(
 				{
 					tmdbId,
 					rating: rating || undefined,
 					review: review || undefined,
-					lastWatchedSeason: Number(season) || undefined,
-					lastWatchedEpisode: Number(episode) || undefined,
+					lastWatchedSeason,
+					lastWatchedEpisode,
+					absoluteEpisode: absoluteEpisodeNumber,
 					watchedAt,
 				},
 				{
@@ -287,13 +343,41 @@ export function LogReviewDialog({
 										</div>
 
 										{!isComplete ? (
-											<SeasonEpisodeCombobox
-												seasons={seasons}
-												selectedSeason={season}
-												selectedEpisode={episode}
-												onSeasonChange={setSeason}
-												onEpisodeChange={setEpisode}
-											/>
+											<>
+												{hasContinuousNumbering && (
+													<div className="flex items-center gap-2">
+														<Checkbox
+															id="useAbsoluteEpisode"
+															checked={useAbsoluteEpisode}
+															onCheckedChange={(checked) =>
+																handleUseAbsoluteEpisodeChange(checked === true)
+															}
+														/>
+														<Label
+															htmlFor="useAbsoluteEpisode"
+															className="text-sm font-normal cursor-pointer"
+														>
+															Use absolute episode number
+														</Label>
+													</div>
+												)}
+
+												{useAbsoluteEpisode ? (
+													<AbsoluteEpisodeCombobox
+														totalEpisodes={tvDetails?.number_of_episodes ?? 0}
+														selectedEpisode={absoluteEpisode}
+														onEpisodeChange={setAbsoluteEpisode}
+													/>
+												) : (
+													<SeasonEpisodeCombobox
+														seasons={seasons}
+														selectedSeason={season}
+														selectedEpisode={episode}
+														onSeasonChange={setSeason}
+														onEpisodeChange={setEpisode}
+													/>
+												)}
+											</>
 										) : null}
 									</>
 								) : null}
