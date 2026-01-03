@@ -47,9 +47,9 @@ export function useRateMovie() {
 
 	return useMutation({
 		mutationFn: (payload: RateMoviePayload) => rateMovie(payload),
-		onSuccess: (_, variables) => {
+		onSuccess: (_, _variables) => {
 			queryClient.invalidateQueries({
-				queryKey: ["ratings", "movie", variables.tmdbId],
+				queryKey: ["ratings"],
 			});
 			queryClient.invalidateQueries({
 				queryKey: ["lists", "watchlist"],
@@ -67,9 +67,9 @@ export function useRateTvShow() {
 
 	return useMutation({
 		mutationFn: (payload: RateTvPayload) => rateTvShow(payload),
-		onSuccess: (_, variables) => {
+		onSuccess: (_, _variables) => {
 			queryClient.invalidateQueries({
-				queryKey: ["ratings", "tv", variables.tmdbId],
+				queryKey: ["ratings"],
 			});
 			queryClient.invalidateQueries({
 				queryKey: ["lists", "watchlist"],
