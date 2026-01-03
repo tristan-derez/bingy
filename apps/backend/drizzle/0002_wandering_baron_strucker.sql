@@ -1,0 +1,1 @@
+ALTER TABLE "tv_show_progress" ADD COLUMN "absolute_episode" integer;

@@ -121,6 +121,7 @@ export const tvShowProgress = pgTable(
 			.references(() => media.id, { onDelete: "cascade" }),
 		lastWatchedSeason: integer("last_watched_season").notNull(),
 		lastWatchedEpisode: integer("last_watched_episode").notNull(),
+		absoluteEpisode: integer("absolute_episode"),
 		...timestamps,
 	},
 	(table) => [

@@ -110,6 +110,7 @@ userHistoryRoutes.post(
 			review: z.string().optional(),
 			lastWatchedSeason: z.number().optional(),
 			lastWatchedEpisode: z.number().optional(),
+			absoluteEpisode: z.number().optional(),
 			watchedAt: z.iso.datetime().optional(),
 		}),
 	),
@@ -147,12 +148,14 @@ userHistoryRoutes.post(
 						mediaId,
 						lastWatchedSeason: data.lastWatchedSeason,
 						lastWatchedEpisode: data.lastWatchedEpisode,
+						absoluteEpisode: data.absoluteEpisode,
 					})
 					.onConflictDoUpdate({
 						target: [tvShowProgress.userId, tvShowProgress.mediaId],
 						set: {
 							lastWatchedSeason: data.lastWatchedSeason,
 							lastWatchedEpisode: data.lastWatchedEpisode,
+							absoluteEpisode: data.absoluteEpisode,
 							updatedAt: new Date(),
 						},
 					});
@@ -196,6 +199,7 @@ userHistoryRoutes.post(
 			watchedAt: z.iso.datetime().optional(),
 			seasonNumber: z.number().min(1).optional(),
 			episodeNumber: z.number().min(1).optional(),
+			absoluteEpisode: z.number().optional(),
 		}),
 	),
 	async (c) => {
@@ -255,12 +259,14 @@ userHistoryRoutes.post(
 						mediaId,
 						lastWatchedSeason: data.seasonNumber,
 						lastWatchedEpisode: data.episodeNumber,
+						absoluteEpisode: data.absoluteEpisode,
 					})
 					.onConflictDoUpdate({
 						target: [tvShowProgress.userId, tvShowProgress.mediaId],
 						set: {
 							lastWatchedSeason: data.seasonNumber,
 							lastWatchedEpisode: data.episodeNumber,
+							absoluteEpisode: data.absoluteEpisode,
 							updatedAt: sql`NOW()`,
 						},
 					})
