@@ -56,6 +56,7 @@ type TMDBMedia = {
 export type HistoryItem = TMDBMedia & {
 	mediaType: "movie" | "tv";
 	watchedAt: Date | null;
+	rating: string;
 	progress?: {
 		lastWatchedSeason: number;
 		lastWatchedEpisode: number;
