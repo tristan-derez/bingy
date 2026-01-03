@@ -18,7 +18,7 @@ export function useRatings(
 	mediaType?: "movie" | "tv",
 ) {
 	return useQuery({
-		queryKey: ["ratings"],
+		queryKey: ["ratings", username, page, language, mediaType],
 		queryFn: () => getRatings(username, page, language, mediaType),
 		staleTime: 1000 * 60 * 10,
 	});
