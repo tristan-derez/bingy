@@ -1,5 +1,6 @@
 import { IconDots } from "@tabler/icons-react";
 import { useRouteContext } from "@tanstack/react-router";
+import { useAtomValue } from "jotai";
 import { useState } from "react";
 import {
 	DropdownMenu,
@@ -14,6 +15,8 @@ import {
 	useRateTvShow,
 	useTvRating,
 } from "@/hooks/useRating";
+import { useTv } from "@/hooks/useTv";
+import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { LogReviewDialog } from "./log-review-dialog";
 import { WatchlistDropdownItem } from "./media/watchlist-dropdown-item";
@@ -35,6 +38,7 @@ interface ListDropdownProps {
 
 export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 	const { session } = useRouteContext({ from: "__root__" });
+	const localeRegion = useAtomValue(localeRegionAtom);
 
 	if (!session) {
 		return null;
@@ -43,6 +47,16 @@ export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 
 	const isTvShow = !!tvShow;
 	const tmdbId = isTvShow ? tvShow.id : (movie?.id ?? 0);
+
+	const { data: tvDetails } = useTv(
+		tmdbId,
+		{
+			language: localeRegion,
+		},
+		{
+			enabled: isTvShow,
+		},
+	);
 
 	const { data: movieRating } = useMovieRating(username, tmdbId);
 	const { data: tvRating } = useTvRating(username, tmdbId);
@@ -55,15 +69,19 @@ export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 	const rating = existingRating?.rating ?? 0;
 
 	const handleRatingChange = (newRating: number) => {
-		if (isTvShow) {
-			rateTvMutation.mutate({
-				tmdbId,
-				rating: newRating,
-				lastWatchedSeason: undefined,
-				lastWatchedEpisode: undefined,
-				watchedAt: new Date(),
-			});
-		} else {
+		if (isTvShow && tvDetails?.seasons) {
+			const validSeasons = tvDetails.seasons.filter((s) => s.season_number > 0);
+			if (validSeasons.length > 0) {
+				const lastSeason = validSeasons[validSeasons.length - 1];
+				rateTvMutation.mutate({
+					tmdbId,
+					rating: newRating,
+					lastWatchedSeason: lastSeason.season_number,
+					lastWatchedEpisode: lastSeason.episode_count,
+					watchedAt: new Date(),
+				});
+			}
+		} else if (!isTvShow) {
 			rateMovieMutation.mutate({
 				tmdbId,
 				rating: newRating,
