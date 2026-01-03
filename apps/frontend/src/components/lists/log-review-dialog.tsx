@@ -116,10 +116,13 @@ export function LogReviewDialog({
 	const handleCompleteChange = (checked: boolean) => {
 		setIsComplete(checked);
 
-		if (checked && seasons.length > 0) {
-			const lastSeason = seasons[seasons.length - 1];
-			setSeason(lastSeason.season_number.toString());
-			setEpisode(lastSeason.episode_count.toString());
+		if (checked && tvDetails?.seasons) {
+			const validSeasons = tvDetails.seasons.filter((s) => s.season_number > 0);
+			if (validSeasons.length > 0) {
+				const lastSeason = validSeasons[validSeasons.length - 1];
+				setSeason(lastSeason.season_number.toString());
+				setEpisode(lastSeason.episode_count.toString());
+			}
 		} else if (!checked) {
 			setSeason("");
 			setEpisode("");
@@ -137,12 +140,8 @@ export function LogReviewDialog({
 					tmdbId,
 					rating: rating || undefined,
 					review: review || undefined,
-					lastWatchedSeason: isComplete
-						? undefined
-						: Number(season) || undefined,
-					lastWatchedEpisode: isComplete
-						? undefined
-						: Number(episode) || undefined,
+					lastWatchedSeason: Number(season) || undefined,
+					lastWatchedEpisode: Number(episode) || undefined,
 					watchedAt,
 				},
 				{
