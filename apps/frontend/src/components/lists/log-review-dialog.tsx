@@ -25,6 +25,10 @@ import { useRateMovie, useRateTvShow } from "@/hooks/useRating";
 import { useTv } from "@/hooks/useTv";
 import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
+import {
+	getLastAiredEpisodeInfo,
+	getValidSeasons,
+} from "@/utils/season-helper";
 import { SeasonEpisodeCombobox } from "./season-episode-combobox";
 import { StarRating } from "./star-rating";
 
@@ -81,7 +85,7 @@ export function LogReviewDialog({
 	const [watchedBefore, setWatchedBefore] = useState(false);
 	const [watchedDate, setWatchedDate] = useState<Date>(new Date());
 
-	const seasons = tvDetails?.seasons?.filter((s) => s.season_number > 0) || [];
+	const seasons = getValidSeasons(tvDetails?.seasons);
 
 	useEffect(() => {
 		if (open) {
@@ -116,14 +120,13 @@ export function LogReviewDialog({
 	const handleCompleteChange = (checked: boolean) => {
 		setIsComplete(checked);
 
-		if (checked && tvDetails?.seasons) {
-			const validSeasons = tvDetails.seasons.filter((s) => s.season_number > 0);
-			if (validSeasons.length > 0) {
-				const lastSeason = validSeasons[validSeasons.length - 1];
-				setSeason(lastSeason.season_number.toString());
-				setEpisode(lastSeason.episode_count.toString());
+		if (checked) {
+			const episodeInfo = getLastAiredEpisodeInfo(tvDetails);
+			if (episodeInfo) {
+				setSeason(episodeInfo.seasonNumber.toString());
+				setEpisode(episodeInfo.episodeNumber.toString());
 			}
-		} else if (!checked) {
+		} else {
 			setSeason("");
 			setEpisode("");
 		}

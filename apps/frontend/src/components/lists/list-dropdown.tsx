@@ -18,6 +18,7 @@ import {
 import { useTv } from "@/hooks/useTv";
 import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
+import { getLastAiredEpisodeInfo } from "@/utils/season-helper";
 import { LogReviewDialog } from "./log-review-dialog";
 import { WatchlistDropdownItem } from "./media/watchlist-dropdown-item";
 import { StarRating } from "./star-rating";
@@ -69,22 +70,22 @@ export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 	const rating = existingRating?.rating ?? 0;
 
 	const handleRatingChange = (newRating: number) => {
-		if (isTvShow && tvDetails?.seasons) {
-			const validSeasons = tvDetails.seasons.filter((s) => s.season_number > 0);
-			if (validSeasons.length > 0) {
-				const lastSeason = validSeasons[validSeasons.length - 1];
+		if (isTvShow) {
+			const episodeInfo = getLastAiredEpisodeInfo(tvDetails);
+			if (episodeInfo) {
 				rateTvMutation.mutate({
 					tmdbId,
 					rating: newRating,
-					lastWatchedSeason: lastSeason.season_number,
-					lastWatchedEpisode: lastSeason.episode_count,
+					lastWatchedSeason: episodeInfo.seasonNumber,
+					lastWatchedEpisode: episodeInfo.episodeNumber,
 					watchedAt: new Date(),
 				});
 			}
-		} else if (!isTvShow) {
+		} else {
 			rateMovieMutation.mutate({
 				tmdbId,
 				rating: newRating,
+				watchedAt: new Date(),
 			});
 		}
 	};
