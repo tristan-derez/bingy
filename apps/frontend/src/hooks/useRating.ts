@@ -8,6 +8,8 @@ import {
 	type RateTvPayload,
 	rateMovie,
 	rateTvShow,
+	removeMovieRating,
+	removeTvRating,
 } from "@/api/rating";
 import { m } from "@/paraglide/messages";
 
@@ -47,14 +49,18 @@ export function useRateMovie() {
 
 	return useMutation({
 		mutationFn: (payload: RateMoviePayload) => rateMovie(payload),
-		onSuccess: (_, _variables) => {
+		onSuccess: (res, _variables) => {
 			queryClient.invalidateQueries({
 				queryKey: ["ratings"],
 			});
 			queryClient.invalidateQueries({
 				queryKey: ["lists", "watchlist"],
 			});
-			toast.success(m.rate_movie_success());
+			if (!res.rating) {
+				toast.success(m.add_movie_watched());
+			} else {
+				toast.success(m.rate_movie_success());
+			}
 		},
 		onError: () => {
 			toast.error(m.rate_movie_error());
@@ -67,17 +73,62 @@ export function useRateTvShow() {
 
 	return useMutation({
 		mutationFn: (payload: RateTvPayload) => rateTvShow(payload),
-		onSuccess: (_, _variables) => {
+		onSuccess: (res, _variables) => {
 			queryClient.invalidateQueries({
 				queryKey: ["ratings"],
 			});
 			queryClient.invalidateQueries({
 				queryKey: ["lists", "watchlist"],
 			});
-			toast.success(m.rate_tv_success());
+			console.log(res);
+			if (!res.rating) {
+				toast.success(m.add_tv_watched());
+			} else {
+				toast.success(m.rate_tv_success());
+			}
 		},
 		onError: () => {
 			toast.error(m.rate_tv_error());
+		},
+	});
+}
+
+export function useRemoveMovieRating() {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: (tmdbId: number) => removeMovieRating(tmdbId),
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: ["ratings"],
+			});
+			queryClient.invalidateQueries({
+				queryKey: ["lists", "watchlist"],
+			});
+			toast.success(m.remove_movie_rating_success());
+		},
+		onError: () => {
+			toast.error(m.remove_movie_rating_error());
+		},
+	});
+}
+
+export function useRemoveTvRating() {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: (tmdbId: number) => removeTvRating(tmdbId),
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: ["ratings"],
+			});
+			queryClient.invalidateQueries({
+				queryKey: ["lists", "watchlist"],
+			});
+			toast.success(m.remove_tv_rating_success());
+		},
+		onError: () => {
+			toast.error(m.remove_tv_rating_error());
 		},
 	});
 }

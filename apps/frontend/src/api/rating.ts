@@ -28,6 +28,20 @@ export const getTvRating = async (username: string, tmdbId: number) => {
 	return res;
 };
 
+export const removeMovieRating = async (tmdbId: number) => {
+	const res = await apiFetch(`/history/movie/${tmdbId}`, {
+		method: "DELETE",
+	});
+	return res;
+};
+
+export const removeTvRating = async (tmdbId: number) => {
+	const res = await apiFetch(`/history/tv/${tmdbId}`, {
+		method: "DELETE",
+	});
+	return res;
+};
+
 export const rateMovie = async (payload: RateMoviePayload) => {
 	const res = await apiFetch<PostMovieRating>("/history/movie", {
 		method: "POST",
@@ -91,27 +105,13 @@ export type PostMovieRating = Pretty<{
 }>;
 
 export type PostTvRating = {
-	watchEntry?: {
-		id: string;
-		loggedAt: Date;
-		mediaId: string;
-		rating: number | null;
-		review: string | null;
-		userId: string;
-		watchedAt: Date | null;
-	};
-	progressEntry?: {
-		createdAt: Date;
-		deletedAt: Date | null;
-		id: string;
-		lastWatchedEpisode: number;
-		lastWatchedSeason: number;
-		absoluteEpisode?: number;
-		trackingMode?: string;
-		mediaId: string;
-		updatedAt: Date | null;
-		userId: string;
-	};
+	id: string;
+	loggedAt: Date;
+	mediaId: string;
+	rating: string | null;
+	review: string | null;
+	userId: string;
+	watchedAt: Date | null;
 };
 
 export type RateMoviePayload = {
