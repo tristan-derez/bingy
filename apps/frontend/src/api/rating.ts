@@ -107,6 +107,7 @@ export type PostTvRating = {
 		lastWatchedEpisode: number;
 		lastWatchedSeason: number;
 		absoluteEpisode?: number;
+		trackingMode?: string;
 		mediaId: string;
 		updatedAt: Date | null;
 		userId: string;
@@ -127,5 +128,6 @@ export type RateTvPayload = {
 	lastWatchedSeason?: number;
 	lastWatchedEpisode?: number;
 	absoluteEpisode?: number;
+	trackingMode: string;
 	watchedAt?: Date | null;
 };

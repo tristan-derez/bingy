@@ -78,6 +78,7 @@ export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 					rating: newRating,
 					lastWatchedSeason: episodeInfo.seasonNumber,
 					lastWatchedEpisode: episodeInfo.episodeNumber,
+					trackingMode: "season",
 					watchedAt: new Date(),
 				});
 			}

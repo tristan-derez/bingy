@@ -201,6 +201,7 @@ export function LogReviewDialog({
 					lastWatchedSeason,
 					lastWatchedEpisode,
 					absoluteEpisode: absoluteEpisodeNumber,
+					trackingMode: useAbsoluteEpisode ? "absolute" : "season",
 					watchedAt,
 				},
 				{
