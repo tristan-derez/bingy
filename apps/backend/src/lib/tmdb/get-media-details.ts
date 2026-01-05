@@ -10,6 +10,8 @@ export type NormalizedMedia = {
 	posterPath: string | null;
 	mediaType: "movie" | "tv";
 	addedAt: Date;
+	numberOfEpisodes?: number;
+	numberOfSeasons?: number;
 };
 
 export async function getMediaDetails(
@@ -24,7 +26,6 @@ export async function getMediaDetails(
 		logger.info(`Cache hit: ${cacheKey}`);
 		return JSON.parse(cached);
 	}
-
 	// Fetch from TMDB
 	try {
 		if (mediaType === "movie") {
@@ -61,6 +62,8 @@ export async function getMediaDetails(
 			releaseDate: tv.first_air_date,
 			posterPath: tv.poster_path,
 			voteAverage: tv.vote_average,
+			numberOfEpisodes: tv.number_of_episodes,
+			numberOfSeasons: tv.number_of_seasons,
 		};
 
 		await cacheClient.set(cacheKey, JSON.stringify(details), 86400);
