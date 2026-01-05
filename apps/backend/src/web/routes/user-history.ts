@@ -645,48 +645,34 @@ userHistoryRoutes.get("/:username/tv/progress", async (c) => {
 
 // delete movie from history
 // user must be logged in
-userHistoryRoutes.delete("/movie/:id", async (c) => {
+userHistoryRoutes.delete("/movie/:tmdbId", async (c) => {
 	const user = c.get("user")!;
-	const { id } = c.req.param();
+	const tmdbId = Number.parseInt(c.req.param("tmdbId"));
 
-	const entry = await db.query.movieWatchHistory.findFirst({
+	const mediaEntry = await db.query.media.findFirst({
+		where: and(eq(media.tmdbId, tmdbId), eq(media.mediaType, "movie")),
+	});
+
+	if (!mediaEntry) {
+		return c.json({ error: "Media not found" }, 404);
+	}
+
+	const watchEntry = await db.query.movieWatchHistory.findFirst({
 		where: and(
-			eq(movieWatchHistory.id, id),
 			eq(movieWatchHistory.userId, user.id),
+			eq(movieWatchHistory.mediaId, mediaEntry.id),
 		),
 	});
 
-	if (!entry) {
-		return c.json(
-			{ error: "Watch history entry not found or unauthorized" },
-			404,
-		);
+	if (!watchEntry) {
+		return c.json({ error: "Watch history entry not found" }, 404);
 	}
 
 	await db.transaction(async (tx) => {
-		await tx.delete(movieWatchHistory).where(eq(movieWatchHistory.id, id));
-
-		const allRatings = await tx.query.movieWatchHistory.findMany({
-			where: eq(movieWatchHistory.mediaId, entry.mediaId),
-			columns: { rating: true },
-		});
-
-		const ratings = allRatings
-			.map((r) => (r.rating ? parseFloat(r.rating) : null))
-			.filter((r): r is number => r !== null);
-
-		const avgRating =
-			ratings.length > 0
-				? (ratings.reduce((sum, r) => sum + r, 0) / ratings.length).toFixed(1)
-				: null;
-
 		await tx
-			.update(media)
-			.set({
-				averageRating: avgRating,
-				ratingCount: ratings.length,
-			})
-			.where(eq(media.id, entry.mediaId));
+			.delete(movieWatchHistory)
+			.where(eq(movieWatchHistory.id, watchEntry.id));
+		await updateMediaRating(tx, mediaEntry.id);
 	});
 
 	return c.body(null, 204);
@@ -694,48 +680,34 @@ userHistoryRoutes.delete("/movie/:id", async (c) => {
 
 // delete tv show from history
 // user must be logged in
-userHistoryRoutes.delete("/tv/:id", async (c) => {
+userHistoryRoutes.delete("/tv/:tmdbId", async (c) => {
 	const user = c.get("user")!;
-	const { id } = c.req.param();
+	const tmdbId = Number.parseInt(c.req.param("tmdbId"));
 
-	const entry = await db.query.tvShowWatchHistory.findFirst({
+	const mediaEntry = await db.query.media.findFirst({
+		where: and(eq(media.tmdbId, tmdbId), eq(media.mediaType, "tv")),
+	});
+
+	if (!mediaEntry) {
+		return c.json({ error: "Media not found" }, 404);
+	}
+
+	const watchEntry = await db.query.tvShowWatchHistory.findFirst({
 		where: and(
-			eq(tvShowWatchHistory.id, id),
 			eq(tvShowWatchHistory.userId, user.id),
+			eq(tvShowWatchHistory.mediaId, mediaEntry.id),
 		),
 	});
 
-	if (!entry) {
-		return c.json(
-			{ error: "Watch history entry not found or unauthorized" },
-			404,
-		);
+	if (!watchEntry) {
+		return c.json({ error: "Watch history entry not found" }, 404);
 	}
 
 	await db.transaction(async (tx) => {
-		await tx.delete(tvShowWatchHistory).where(eq(tvShowWatchHistory.id, id));
-
-		const allRatings = await tx.query.tvShowWatchHistory.findMany({
-			where: eq(tvShowWatchHistory.mediaId, entry.mediaId),
-			columns: { rating: true },
-		});
-
-		const ratings = allRatings
-			.map((r) => (r.rating ? parseFloat(r.rating) : null))
-			.filter((r): r is number => r !== null);
-
-		const avgRating =
-			ratings.length > 0
-				? (ratings.reduce((sum, r) => sum + r, 0) / ratings.length).toFixed(1)
-				: null;
-
 		await tx
-			.update(media)
-			.set({
-				averageRating: avgRating,
-				ratingCount: ratings.length,
-			})
-			.where(eq(media.id, entry.mediaId));
+			.delete(tvShowWatchHistory)
+			.where(eq(tvShowWatchHistory.id, watchEntry.id));
+		await updateMediaRating(tx, mediaEntry.id);
 	});
 
 	return c.body(null, 204);
