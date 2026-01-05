@@ -122,6 +122,7 @@ export const tvShowProgress = pgTable(
 		lastWatchedSeason: integer("last_watched_season").notNull(),
 		lastWatchedEpisode: integer("last_watched_episode").notNull(),
 		absoluteEpisode: integer("absolute_episode"),
+		trackingMode: text("tracking_mode").notNull().default("season"),
 		...timestamps,
 	},
 	(table) => [

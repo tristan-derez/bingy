@@ -1,0 +1,1 @@
+ALTER TABLE "tv_show_progress" ADD COLUMN "tracking_mode" text DEFAULT 'season' NOT NULL;
