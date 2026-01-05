@@ -14,6 +14,7 @@ import type { User } from "#db/schemas/user";
 import { activity, users } from "#db/schemas/user";
 import { db } from "#lib/database";
 import { getMediaDetails } from "#lib/tmdb/get-media-details";
+import { getTvDetails } from "#lib/tmdb/get-tv-details";
 import { sessionMiddleware } from "#web/middlewares/session";
 import { getOrCreateMedia } from "#web/utils/create-update-media";
 import { updateMediaRating } from "#web/utils/media-rating";
@@ -111,6 +112,7 @@ userHistoryRoutes.post(
 			lastWatchedSeason: z.number().optional(),
 			lastWatchedEpisode: z.number().optional(),
 			absoluteEpisode: z.number().optional(),
+			trackingMode: z.enum(["absolute", "season"]).optional(),
 			watchedAt: z.iso.datetime().optional(),
 		}),
 	),
@@ -149,6 +151,7 @@ userHistoryRoutes.post(
 						lastWatchedSeason: data.lastWatchedSeason,
 						lastWatchedEpisode: data.lastWatchedEpisode,
 						absoluteEpisode: data.absoluteEpisode,
+						trackingMode: data.trackingMode ?? "season",
 					})
 					.onConflictDoUpdate({
 						target: [tvShowProgress.userId, tvShowProgress.mediaId],
@@ -156,6 +159,7 @@ userHistoryRoutes.post(
 							lastWatchedSeason: data.lastWatchedSeason,
 							lastWatchedEpisode: data.lastWatchedEpisode,
 							absoluteEpisode: data.absoluteEpisode,
+							trackingMode: data.trackingMode ?? "season",
 							updatedAt: new Date(),
 						},
 					});
@@ -200,6 +204,7 @@ userHistoryRoutes.post(
 			seasonNumber: z.number().min(1).optional(),
 			episodeNumber: z.number().min(1).optional(),
 			absoluteEpisode: z.number().optional(),
+			trackingMode: z.enum(["season", "absolute"]).optional(),
 		}),
 	),
 	async (c) => {
@@ -260,6 +265,7 @@ userHistoryRoutes.post(
 						lastWatchedSeason: data.seasonNumber,
 						lastWatchedEpisode: data.episodeNumber,
 						absoluteEpisode: data.absoluteEpisode,
+						trackingMode: data.trackingMode ?? "season",
 					})
 					.onConflictDoUpdate({
 						target: [tvShowProgress.userId, tvShowProgress.mediaId],
@@ -267,6 +273,7 @@ userHistoryRoutes.post(
 							lastWatchedSeason: data.seasonNumber,
 							lastWatchedEpisode: data.episodeNumber,
 							absoluteEpisode: data.absoluteEpisode,
+							trackingMode: data.trackingMode ?? "season",
 							updatedAt: sql`NOW()`,
 						},
 					})
@@ -535,6 +542,105 @@ userHistoryRoutes.get("/:username", async (c) => {
 		total_pages: Math.ceil(totalResults / limit),
 		total_results: totalResults,
 	});
+});
+
+// get all tv shows with pending episodes for a user
+userHistoryRoutes.get("/:username/tv/progress", async (c) => {
+	const { username } = c.req.param();
+	const language = c.req.query("language") || "en-US";
+
+	const targetUser = await db.query.users.findFirst({
+		where: eq(users.name, username),
+	});
+
+	if (!targetUser) return c.json("User not found", 404);
+
+	const progressEntries = await db
+		.select({
+			mediaId: media.id,
+			tmdbId: media.tmdbId,
+			lastWatchedSeason: tvShowProgress.lastWatchedSeason,
+			lastWatchedEpisode: tvShowProgress.lastWatchedEpisode,
+			absoluteEpisode: tvShowProgress.absoluteEpisode,
+			trackingMode: tvShowProgress.trackingMode,
+		})
+		.from(tvShowProgress)
+		.innerJoin(media, eq(tvShowProgress.mediaId, media.id))
+		.where(eq(tvShowProgress.userId, targetUser.id));
+
+	const hydratedData = (
+		await Promise.all(
+			progressEntries.map(async (entry) => {
+				const details = await getTvDetails(entry.tmdbId, language);
+				if (!details) return null;
+
+				// Absolute tracking mode
+				if (
+					entry.trackingMode === "absolute" &&
+					entry.absoluteEpisode !== null
+				) {
+					const remainingEpisodes =
+						details.numberOfEpisodes - entry.absoluteEpisode;
+					if (remainingEpisodes <= 0) return null;
+
+					return {
+						...details,
+						mediaType: "tv" as const,
+						lastWatchedEpisode: entry.absoluteEpisode,
+						totalEpisodes: details.numberOfEpisodes,
+						remainingEpisodes,
+						trackingMode: "absolute" as const,
+					};
+				}
+
+				// Season/episode tracking mode
+				const lastAiredSeasonNumber = details.lastEpisodeToAir?.seasonNumber;
+				if (!lastAiredSeasonNumber) return null;
+
+				const lastAiredSeason = details.seasons.find(
+					(s) => s.seasonNumber === lastAiredSeasonNumber,
+				);
+				if (!lastAiredSeason) return null;
+
+				const hasPendingEpisodes =
+					lastAiredSeasonNumber > entry.lastWatchedSeason ||
+					(lastAiredSeasonNumber === entry.lastWatchedSeason &&
+						lastAiredSeason.episodeCount > entry.lastWatchedEpisode);
+
+				if (!hasPendingEpisodes) return null;
+
+				// Calculate remaining episodes up to last aired season
+				let remainingEpisodes = 0;
+
+				for (const season of details.seasons) {
+					if (
+						season.seasonNumber === 0 ||
+						season.seasonNumber > lastAiredSeasonNumber
+					)
+						continue;
+
+					if (season.seasonNumber > entry.lastWatchedSeason) {
+						remainingEpisodes += season.episodeCount;
+					} else if (season.seasonNumber === entry.lastWatchedSeason) {
+						remainingEpisodes += season.episodeCount - entry.lastWatchedEpisode;
+					}
+				}
+
+				return {
+					...details,
+					mediaType: "tv" as const,
+					lastWatchedSeason: entry.lastWatchedSeason,
+					lastWatchedEpisode: entry.lastWatchedEpisode,
+					lastAiredSeason: lastAiredSeasonNumber,
+					lastAiredEpisode: lastAiredSeason.episodeCount,
+					remainingEpisodes,
+					trackingMode: "season" as const,
+				};
+			}),
+		)
+	).filter(Boolean);
+
+	return c.json({ data: hydratedData });
 });
 
 // delete movie from history
