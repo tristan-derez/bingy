@@ -29,6 +29,13 @@
       "when": 1767618325754,
       "tag": "0003_cool_sharon_carter",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1767693185891,
+      "tag": "0004_nifty_caretaker",
+      "breakpoints": true
     }
   ]
 }

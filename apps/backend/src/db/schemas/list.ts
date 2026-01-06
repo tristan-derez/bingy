@@ -180,6 +180,25 @@ export const watchlist = pgTable(
 	],
 );
 
+export const favorites = pgTable(
+	"favorites",
+	{
+		id: uuid("id").primaryKey().default(sql`uuidv7()`),
+		userId: uuid("user_id")
+			.notNull()
+			.references(() => users.id, { onDelete: "cascade" }),
+		mediaId: uuid("media_id")
+			.notNull()
+			.references(() => media.id, { onDelete: "cascade" }),
+		addedAt: timestamp("added_at").notNull().defaultNow(),
+	},
+	(table) => [
+		unique().on(table.userId, table.mediaId),
+		index("idx_favorites_user").on(table.userId),
+		index("idx_favorites_media").on(table.mediaId),
+	],
+);
+
 export const customLists = pgTable(
 	"custom_lists",
 	{
@@ -219,6 +238,7 @@ export const mediaRelations = relations(media, ({ many }) => ({
 	tvSeasons: many(tvSeasons),
 	watchlistEntries: many(watchlist),
 	listItems: many(listItems),
+	favorites: many(favorites),
 }));
 
 export const tvSeasonsRelations = relations(tvSeasons, ({ one }) => ({
@@ -235,6 +255,7 @@ export const usersRelations = relations(users, ({ many }) => ({
 	reviewComments: many(reviewComments),
 	watchlist: many(watchlist),
 	customLists: many(customLists),
+	favorites: many(favorites),
 }));
 
 export const movieWatchHistoryRelations = relations(
@@ -323,6 +344,17 @@ export const listItemsRelations = relations(listItems, ({ one }) => ({
 	}),
 }));
 
+export const favoritesRelations = relations(favorites, ({ one }) => ({
+	user: one(users, {
+		fields: [favorites.userId],
+		references: [users.id],
+	}),
+	media: one(media, {
+		fields: [favorites.mediaId],
+		references: [media.id],
+	}),
+}));
+
 // Media types
 export type Media = InferSelectModel<typeof media>;
 export type NewMedia = InferInsertModel<typeof media>;
@@ -351,3 +383,7 @@ export type CustomList = InferSelectModel<typeof customLists>;
 export type NewCustomList = InferInsertModel<typeof customLists>;
 export type ListItem = InferSelectModel<typeof listItems>;
 export type NewListItem = InferInsertModel<typeof listItems>;
+
+// favorites
+export type Favorite = InferSelectModel<typeof favorites>;
+export type NewFavorite = InferInsertModel<typeof favorites>;
