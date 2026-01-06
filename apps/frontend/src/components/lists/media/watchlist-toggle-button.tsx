@@ -1,12 +1,15 @@
-import { IconClockMinus, IconClockPlus } from "@tabler/icons-react";
-import { Button } from "@/components/ui/button";
+import { IconClock, IconClockOff, IconClockPlus } from "@tabler/icons-react";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipTrigger,
+} from "@/components/ui/tooltip";
 import {
 	useAddMediaToWatchlist,
 	useIsInWatchlist,
 	useRemoveFromWatchlist,
 } from "@/hooks/useLists";
 import { m } from "@/paraglide/messages";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../../ui/tooltip";
 
 interface WatchlistToggleButtonProps {
 	movie?: {
@@ -20,12 +23,14 @@ interface WatchlistToggleButtonProps {
 		name: string;
 	};
 	color?: string;
+	size?: number;
 }
 
 export function WatchlistToggleButton({
 	movie,
 	tvShow,
 	color = "foreground",
+	size = 8,
 }: WatchlistToggleButtonProps) {
 	const addToWatchlist = useAddMediaToWatchlist();
 	const removeFromWatchlist = useRemoveFromWatchlist();
@@ -68,14 +73,25 @@ export function WatchlistToggleButton({
 	return (
 		<Tooltip>
 			<TooltipTrigger asChild>
-				<Button
-					variant="ghost"
+				<button
+					type="button"
 					onClick={handleWatchlistToggle}
 					disabled={isPending}
-					className={`hover:cursor-pointer hover:text-${color} hover:bg-none font-bold text-${color}`}
+					className={`group flex flex-col items-center gap-1 transition-colors hover:cursor-pointer ${
+						isInWatchlist ? "text-blue-500" : `text-${color}`
+					}`}
 				>
-					{isInWatchlist ? <IconClockMinus /> : <IconClockPlus />}
-				</Button>
+					{isInWatchlist ? (
+						<>
+							<IconClock className={`size-${size} group-hover:hidden`} />
+							<IconClockOff
+								className={`size-${size} hidden group-hover:block`}
+							/>
+						</>
+					) : (
+						<IconClockPlus className={`size-${size}`} />
+					)}
+				</button>
 			</TooltipTrigger>
 			<TooltipContent align="center">
 				<p>
