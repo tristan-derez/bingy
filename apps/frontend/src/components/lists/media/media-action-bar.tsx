@@ -24,7 +24,7 @@ export const MediaActionBar = ({
 	const passProps = { movie, tvShow, username };
 
 	return (
-		<div className="flex flex-row p-0 gap-4 rounded-md bg-card px-4 py-2 items-center justify-around lg:justify-center">
+		<div className="flex flex-row p-0 gap-4 rounded-md bg-card border px-4 py-2 items-center justify-around lg:justify-center">
 			<WatchToggleButton {...passProps} />
 			<FavoriteToggleButton {...passProps} />
 			<WatchlistToggleButton {...passProps} />
