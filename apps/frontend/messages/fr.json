@@ -542,5 +542,8 @@
 	"favorite_toggle_add": "Ajouter aux favoris",
 	"favorite_toggle_remove": "Retirer des favoris",
 	"favorite_add": "Ajouter",
-	"favorite_remove": "Supprimer"
+	"favorite_remove": "Supprimer",
+	"watch_toggle_watched": "Vu",
+	"watch_toggle_unwatch": "Supprimer",
+	"watch_toggle_watch": "Ajouter"
 }
