@@ -22,7 +22,7 @@ import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { shortenCountryName } from "@/utils/shorten-country-name";
 import { ResourceNotFound } from "../errors/resource-not-found";
-import { WatchlistToggleButton } from "../lists/media/watchlist-toggle-button";
+import { MediaActionBar } from "../lists/media/media-action-bar";
 import { LoadingCentered } from "../loading/loading-centered";
 import { MediaOverview } from "../medias/overview";
 import { CastCarousel } from "../person/cast-carousel";
@@ -124,7 +124,7 @@ export function TvDetailsView({
 
 								{session ? (
 									<div className="lg:self-start mt-3 lg:pr-2">
-										<WatchlistToggleButton tvShow={tv} />
+										<MediaActionBar username={session.user.name} tvShow={tv} />
 									</div>
 								) : null}
 							</div>
