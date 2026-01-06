@@ -534,5 +534,13 @@
 	"remove_tv_rating_success": "La série a bien été supprimée de l'historique",
 	"remove_tv_rating_error": "Une erreur est survenue lors de la suppression de la série de l'historique",
 	"add_movie_watched": "Film ajouté à l'historique",
-	"add_tv_watched": "Série ajoutée à l'historique"
+	"add_tv_watched": "Série ajoutée à l'historique",
+	"add_to_favorites_success": "{name} ajouté aux favoris",
+	"add_to_favorites_error": "Erreur lors de l'ajout de « {name} » aux favoris",
+	"remove_from_favorites_success": "{name} supprimé des favoris",
+	"remove_from_favorites_error": "Erreurs lors de la suppression de « {name} » des favoris",
+	"favorite_toggle_add": "Ajouter aux favoris",
+	"favorite_toggle_remove": "Retirer des favoris",
+	"favorite_add": "Ajouter",
+	"favorite_remove": "Supprimer"
 }

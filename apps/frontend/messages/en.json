@@ -534,5 +534,13 @@
 	"remove_tv_rating_success": "TV show removed from your watched TV shows",
 	"remove_tv_rating_error": "An error happened while removing the TV show from your history",
 	"add_movie_watched": "Movie marked as seen",
-	"add_tv_watched": "TV show marked as seen"
+	"add_tv_watched": "TV show marked as seen",
+	"add_to_favorites_success": "{name} added to favorites",
+	"add_to_favorites_error": "Failed to add {name} to favorites",
+	"remove_from_favorites_success": "{name} removed from favorites",
+	"remove_from_favorites_error": "Failed to remove {name} from favorites",
+	"favorite_toggle_add": "Add to favorites",
+	"favorite_toggle_remove": "Remove from favorites",
+	"favorite_add": "Favorite",
+	"favorite_remove": "Remove"
 }
