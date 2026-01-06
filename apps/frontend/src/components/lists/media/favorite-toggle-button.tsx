@@ -19,14 +19,12 @@ interface FavoriteToggleButtonProps {
 		name: string;
 	};
 	color?: string;
-	showText?: boolean;
 }
 
 export function FavoriteToggleButton({
 	movie,
 	tvShow,
 	color = "foreground",
-	showText = false,
 }: FavoriteToggleButtonProps) {
 	const addToFavorites = useAddToFavorites();
 	const removeFromFavorites = useRemoveFromFavorites();
@@ -84,20 +82,6 @@ export function FavoriteToggleButton({
 						</>
 					) : (
 						<IconHeart className="size-8" />
-					)}
-					{showText && (
-						<span className="text-sm">
-							{isFavorited ? (
-								<>
-									<span className="group-hover:hidden">{m.favorite_add()}</span>
-									<span className="hidden group-hover:block">
-										{m.favorite_remove()}
-									</span>
-								</>
-							) : (
-								m.favorite_add()
-							)}
-						</span>
 					)}
 				</button>
 			</TooltipTrigger>
