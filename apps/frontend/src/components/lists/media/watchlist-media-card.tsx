@@ -34,18 +34,18 @@ export const WatchlistMediaCard = ({
 				};
 
 	return (
-		<div key={`${item.mediaType}-${item.id}`} className="group">
+		<div key={`${item.mediaType}-${item.id}`}>
 			<Link to={linkTo}>
 				<div className="relative aspect-2/3 overflow-hidden rounded-lg">
 					<img
 						src={imageUrl}
 						alt={item.title}
-						className="w-full h-full object-cover transition-transform group-hover:scale-105"
+						className="w-full h-full object-cover transition-transform"
 					/>
 					<div className="absolute inset-x-0 top-0 h-24 bg-linear-to-b from-black/90 to-transparent" />
 					<div className="absolute inset-x-0 bottom-0 h-12 bg-linear-to-b from-transparent to-black/90" />
-					<div className="w-full absolute top-2 flex items-center justify-between z-10 pr-2">
-						<WatchlistToggleButton color="white" {...mediaProps} />
+					<div className="w-full absolute top-2 px-2 flex items-center justify-between z-10">
+						<WatchlistToggleButton size={5} {...mediaProps} />
 						{item.mediaType === "movie" ? (
 							<MovieBadge minWidth={8} />
 						) : (
