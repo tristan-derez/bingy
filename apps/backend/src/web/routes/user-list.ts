@@ -299,28 +299,54 @@ userListRoutes.delete("/:listId", async (c) => {
 
 // add an item to a list
 userListRoutes.post(
-	"/:listId/items",
+	"/items",
 	zValidator(
 		"json",
-		z.object({
-			tmdbId: z.number(),
-			mediaType: z.enum(["movie", "tv"]),
-		}),
+		z
+			.object({
+				tmdbId: z.number(),
+				mediaType: z.enum(["movie", "tv"]),
+				listId: z.uuidv7().optional(),
+				listName: z.string().min(1).max(50).optional(),
+			})
+			.refine((data) => data.listId || data.listName, {
+				message: "Either listId or listName must be provided",
+			}),
 	),
 	async (c) => {
 		const user = c.get("user")!;
-		const listId = c.req.param("listId");
 		const data = c.req.valid("json");
 
-		const list = await db.query.customLists.findFirst({
-			where: and(eq(customLists.id, listId), eq(customLists.userId, user.id)),
-		});
-
-		if (!list) {
-			return serveNotFound(c, "List not found");
-		}
-
 		await db.transaction(async (tx) => {
+			let listId: string;
+
+			if (data.listId) {
+				// Use existing list ID
+				listId = data.listId;
+			} else {
+				// Create new list or find existing by name
+				const existingList = await tx.query.customLists.findFirst({
+					where: and(
+						eq(customLists.userId, user.id),
+						eq(customLists.name, data.listName!),
+					),
+				});
+
+				if (existingList) {
+					listId = existingList.id;
+				} else {
+					const [newList] = await tx
+						.insert(customLists)
+						.values({
+							userId: user.id,
+							name: data.listName!,
+						})
+						.returning({ id: customLists.id });
+
+					listId = newList.id;
+				}
+			}
+
 			const [mediaEntry] = await tx
 				.insert(media)
 				.values({
