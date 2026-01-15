@@ -65,12 +65,6 @@ function MoviesPage() {
 				isLoading={nowPlayingLoading}
 				isError={nowPlayingError}
 			/>
-			<TopRatedMovies
-				title={m.movies_toprated_title()}
-				movies={topRatedMovies}
-				isLoading={topRatedLoading}
-				isError={topRatedError}
-			/>
 			<UpcomingMovies
 				title={m.movies_upcoming_title()}
 				movies={upcomingMovies}
@@ -82,6 +76,12 @@ function MoviesPage() {
 				movies={popularMovies}
 				isLoading={popularLoading}
 				isError={popularError}
+			/>
+			<TopRatedMovies
+				title={m.movies_toprated_title()}
+				movies={topRatedMovies}
+				isLoading={topRatedLoading}
+				isError={topRatedError}
 			/>
 		</div>
 	);
