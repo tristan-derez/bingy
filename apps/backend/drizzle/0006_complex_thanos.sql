@@ -1,0 +1,1 @@
+ALTER TABLE "custom_lists" ADD COLUMN "description" varchar(1000);
