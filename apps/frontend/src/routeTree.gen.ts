@@ -29,6 +29,7 @@ import { Route as AuthSettingsRouteImport } from './routes/_auth/settings'
 import { Route as AuthDashboardRouteImport } from './routes/_auth/dashboard'
 import { Route as UserUsernameIndexRouteImport } from './routes/user/$username/index'
 import { Route as UserUsernameWatchlistRouteImport } from './routes/user/$username/watchlist'
+import { Route as UserUsernameListsRouteImport } from './routes/user/$username/lists'
 import { Route as UserUsernameInProgressRouteImport } from './routes/user/$username/in-progress'
 import { Route as UserUsernameHistoryRouteImport } from './routes/user/$username/history'
 import { Route as TvTvIdSeasonsRouteImport } from './routes/tv/$tvId_/seasons'
@@ -139,6 +140,11 @@ const UserUsernameWatchlistRoute = UserUsernameWatchlistRouteImport.update({
   path: '/user/$username/watchlist',
   getParentRoute: () => rootRouteImport,
 } as any)
+const UserUsernameListsRoute = UserUsernameListsRouteImport.update({
+  id: '/user/$username/lists',
+  path: '/user/$username/lists',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const UserUsernameInProgressRoute = UserUsernameInProgressRouteImport.update({
   id: '/user/$username/in-progress',
   path: '/user/$username/in-progress',
@@ -218,6 +224,7 @@ export interface FileRoutesByFullPath {
   '/tv/$tvId/seasons': typeof TvTvIdSeasonsRoute
   '/user/$username/history': typeof UserUsernameHistoryRoute
   '/user/$username/in-progress': typeof UserUsernameInProgressRoute
+  '/user/$username/lists': typeof UserUsernameListsRoute
   '/user/$username/watchlist': typeof UserUsernameWatchlistRoute
   '/user/$username': typeof UserUsernameIndexRoute
   '/tv/$tvId/season/$seasonNumber': typeof TvTvIdSeasonSeasonNumberRoute
@@ -249,6 +256,7 @@ export interface FileRoutesByTo {
   '/tv/$tvId/seasons': typeof TvTvIdSeasonsRoute
   '/user/$username/history': typeof UserUsernameHistoryRoute
   '/user/$username/in-progress': typeof UserUsernameInProgressRoute
+  '/user/$username/lists': typeof UserUsernameListsRoute
   '/user/$username/watchlist': typeof UserUsernameWatchlistRoute
   '/user/$username': typeof UserUsernameIndexRoute
   '/tv/$tvId/season/$seasonNumber': typeof TvTvIdSeasonSeasonNumberRoute
@@ -282,6 +290,7 @@ export interface FileRoutesById {
   '/tv/$tvId_/seasons': typeof TvTvIdSeasonsRoute
   '/user/$username/history': typeof UserUsernameHistoryRoute
   '/user/$username/in-progress': typeof UserUsernameInProgressRoute
+  '/user/$username/lists': typeof UserUsernameListsRoute
   '/user/$username/watchlist': typeof UserUsernameWatchlistRoute
   '/user/$username/': typeof UserUsernameIndexRoute
   '/tv/$tvId_/season_/$seasonNumber': typeof TvTvIdSeasonSeasonNumberRoute
@@ -315,6 +324,7 @@ export interface FileRouteTypes {
     | '/tv/$tvId/seasons'
     | '/user/$username/history'
     | '/user/$username/in-progress'
+    | '/user/$username/lists'
     | '/user/$username/watchlist'
     | '/user/$username'
     | '/tv/$tvId/season/$seasonNumber'
@@ -346,6 +356,7 @@ export interface FileRouteTypes {
     | '/tv/$tvId/seasons'
     | '/user/$username/history'
     | '/user/$username/in-progress'
+    | '/user/$username/lists'
     | '/user/$username/watchlist'
     | '/user/$username'
     | '/tv/$tvId/season/$seasonNumber'
@@ -378,6 +389,7 @@ export interface FileRouteTypes {
     | '/tv/$tvId_/seasons'
     | '/user/$username/history'
     | '/user/$username/in-progress'
+    | '/user/$username/lists'
     | '/user/$username/watchlist'
     | '/user/$username/'
     | '/tv/$tvId_/season_/$seasonNumber'
@@ -407,6 +419,7 @@ export interface RootRouteChildren {
   TvTvIdSeasonsRoute: typeof TvTvIdSeasonsRoute
   UserUsernameHistoryRoute: typeof UserUsernameHistoryRoute
   UserUsernameInProgressRoute: typeof UserUsernameInProgressRoute
+  UserUsernameListsRoute: typeof UserUsernameListsRoute
   UserUsernameWatchlistRoute: typeof UserUsernameWatchlistRoute
   UserUsernameIndexRoute: typeof UserUsernameIndexRoute
   TvTvIdSeasonSeasonNumberRoute: typeof TvTvIdSeasonSeasonNumberRoute
@@ -557,6 +570,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UserUsernameWatchlistRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/user/$username/lists': {
+      id: '/user/$username/lists'
+      path: '/user/$username/lists'
+      fullPath: '/user/$username/lists'
+      preLoaderRoute: typeof UserUsernameListsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/user/$username/in-progress': {
       id: '/user/$username/in-progress'
       path: '/user/$username/in-progress'
@@ -667,6 +687,7 @@ const rootRouteChildren: RootRouteChildren = {
   TvTvIdSeasonsRoute: TvTvIdSeasonsRoute,
   UserUsernameHistoryRoute: UserUsernameHistoryRoute,
   UserUsernameInProgressRoute: UserUsernameInProgressRoute,
+  UserUsernameListsRoute: UserUsernameListsRoute,
   UserUsernameWatchlistRoute: UserUsernameWatchlistRoute,
   UserUsernameIndexRoute: UserUsernameIndexRoute,
   TvTvIdSeasonSeasonNumberRoute: TvTvIdSeasonSeasonNumberRoute,
