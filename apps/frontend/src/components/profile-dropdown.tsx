@@ -5,6 +5,7 @@ import {
 	IconExternalLink,
 	IconHistory,
 	IconLifebuoy,
+	IconList,
 	IconLogout,
 	IconUser,
 } from "@tabler/icons-react";
@@ -155,6 +156,16 @@ export const ProfileDropdown = ({
 							>
 								<IconClockBolt />
 								{m.dropdown_watchlist_text()}
+							</Link>
+						</DropdownMenuItem>
+						<DropdownMenuItem asChild>
+							<Link
+								to="/user/$username/lists"
+								params={{ username: session.user.name }}
+								onClick={onLinkClick}
+							>
+								<IconList />
+								{m.dropdown_lists_text()}
 							</Link>
 						</DropdownMenuItem>
 						<DropdownMenuItem asChild>
