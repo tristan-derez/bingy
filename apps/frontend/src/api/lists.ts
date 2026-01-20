@@ -82,7 +82,7 @@ export const fetchLists = async (
 	page = 1,
 	filter = "all",
 ) => {
-	const res = await apiFetch<ListsResponse>(`/lists/${username}/lists`, {
+	const res = await apiFetch<ListsResponse>(`/lists/${username}`, {
 		method: "GET",
 		query: { page, filter },
 	});
