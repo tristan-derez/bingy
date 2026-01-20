@@ -8,6 +8,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { m } from "@/paraglide/messages";
 import { ListPagination } from "../list-pagination";
 import { ListCard } from "./list-card";
+import { ListsEmptyState } from "./lists-empty-state";
 
 export type VisibilityFilter = "all" | "public" | "private" | "limited";
 
@@ -52,7 +53,6 @@ export function ListsContainer({
 	return (
 		<div className="container px-4 flex flex-col gap-4">
 			<h1 className="text-3xl font-bold">{m.lists_page_title()}</h1>
-
 			{isOwnProfile && (
 				<ToggleGroup
 					type="single"
@@ -94,15 +94,8 @@ export function ListsContainer({
 					</ToggleGroupItem>
 				</ToggleGroup>
 			)}
-
 			{items.length === 0 ? (
-				<div className="flex flex-col items-center justify-center py-12 gap-4">
-					<p className="text-muted-foreground">
-						{isOwnProfile
-							? m.lists_empty_state_own()
-							: m.lists_empty_state_other({ username })}
-					</p>
-				</div>
+				<ListsEmptyState isOwnProfile={isOwnProfile} username={username} />
 			) : (
 				<>
 					<div className="flex flex-col gap-4">
