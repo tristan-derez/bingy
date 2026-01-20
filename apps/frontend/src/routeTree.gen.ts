@@ -36,6 +36,7 @@ import { Route as TvTvIdSeasonsRouteImport } from './routes/tv/$tvId_/seasons'
 import { Route as TvTvIdEpisodesRouteImport } from './routes/tv/$tvId_/episodes'
 import { Route as TvTvIdCreditsRouteImport } from './routes/tv/$tvId_/credits'
 import { Route as MoviesMovieIdCreditsRouteImport } from './routes/movies/$movieId_/credits'
+import { Route as AuthListsCreateRouteImport } from './routes/_auth/lists/create'
 import { Route as TvTvIdSeasonSeasonNumberRouteImport } from './routes/tv/$tvId_/season_/$seasonNumber'
 import { Route as TvTvIdSeasonSeasonNumberCreditsRouteImport } from './routes/tv/$tvId_/season_/$seasonNumber_/credits'
 import { Route as TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberRouteImport } from './routes/tv/$tvId_/season_/$seasonNumber_/episode_/$episodeNumber'
@@ -175,6 +176,11 @@ const MoviesMovieIdCreditsRoute = MoviesMovieIdCreditsRouteImport.update({
   path: '/movies/$movieId/credits',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthListsCreateRoute = AuthListsCreateRouteImport.update({
+  id: '/lists/create',
+  path: '/lists/create',
+  getParentRoute: () => AuthRoute,
+} as any)
 const TvTvIdSeasonSeasonNumberRoute =
   TvTvIdSeasonSeasonNumberRouteImport.update({
     id: '/tv/$tvId_/season_/$seasonNumber',
@@ -218,6 +224,7 @@ export interface FileRoutesByFullPath {
   '/tv/$tvId': typeof TvTvIdRoute
   '/movies': typeof MoviesIndexRoute
   '/tv': typeof TvIndexRoute
+  '/lists/create': typeof AuthListsCreateRoute
   '/movies/$movieId/credits': typeof MoviesMovieIdCreditsRoute
   '/tv/$tvId/credits': typeof TvTvIdCreditsRoute
   '/tv/$tvId/episodes': typeof TvTvIdEpisodesRoute
@@ -250,6 +257,7 @@ export interface FileRoutesByTo {
   '/tv/$tvId': typeof TvTvIdRoute
   '/movies': typeof MoviesIndexRoute
   '/tv': typeof TvIndexRoute
+  '/lists/create': typeof AuthListsCreateRoute
   '/movies/$movieId/credits': typeof MoviesMovieIdCreditsRoute
   '/tv/$tvId/credits': typeof TvTvIdCreditsRoute
   '/tv/$tvId/episodes': typeof TvTvIdEpisodesRoute
@@ -284,6 +292,7 @@ export interface FileRoutesById {
   '/tv/$tvId': typeof TvTvIdRoute
   '/movies/': typeof MoviesIndexRoute
   '/tv/': typeof TvIndexRoute
+  '/_auth/lists/create': typeof AuthListsCreateRoute
   '/movies/$movieId_/credits': typeof MoviesMovieIdCreditsRoute
   '/tv/$tvId_/credits': typeof TvTvIdCreditsRoute
   '/tv/$tvId_/episodes': typeof TvTvIdEpisodesRoute
@@ -318,6 +327,7 @@ export interface FileRouteTypes {
     | '/tv/$tvId'
     | '/movies'
     | '/tv'
+    | '/lists/create'
     | '/movies/$movieId/credits'
     | '/tv/$tvId/credits'
     | '/tv/$tvId/episodes'
@@ -350,6 +360,7 @@ export interface FileRouteTypes {
     | '/tv/$tvId'
     | '/movies'
     | '/tv'
+    | '/lists/create'
     | '/movies/$movieId/credits'
     | '/tv/$tvId/credits'
     | '/tv/$tvId/episodes'
@@ -383,6 +394,7 @@ export interface FileRouteTypes {
     | '/tv/$tvId'
     | '/movies/'
     | '/tv/'
+    | '/_auth/lists/create'
     | '/movies/$movieId_/credits'
     | '/tv/$tvId_/credits'
     | '/tv/$tvId_/episodes'
@@ -619,6 +631,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MoviesMovieIdCreditsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_auth/lists/create': {
+      id: '/_auth/lists/create'
+      path: '/lists/create'
+      fullPath: '/lists/create'
+      preLoaderRoute: typeof AuthListsCreateRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/tv/$tvId_/season_/$seasonNumber': {
       id: '/tv/$tvId_/season_/$seasonNumber'
       path: '/tv/$tvId/season/$seasonNumber'
@@ -655,6 +674,7 @@ interface AuthRouteChildren {
   AuthSettingsRoute: typeof AuthSettingsRoute
   AuthVerifyEmailRoute: typeof AuthVerifyEmailRoute
   AuthWelcomeRoute: typeof AuthWelcomeRoute
+  AuthListsCreateRoute: typeof AuthListsCreateRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
@@ -662,6 +682,7 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthSettingsRoute: AuthSettingsRoute,
   AuthVerifyEmailRoute: AuthVerifyEmailRoute,
   AuthWelcomeRoute: AuthWelcomeRoute,
+  AuthListsCreateRoute: AuthListsCreateRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
