@@ -260,23 +260,59 @@ userListRoutes.post(
 // get lists from a user by username
 userListRoutes.get("/:username/lists", async (c) => {
 	const { username } = c.req.param();
+	const currentUser = c.get("user");
+	const page = Math.max(1, parseInt(c.req.query("page") || "1"));
+	const filter = c.req.query("filter") || "all";
 
 	const targetUser = await db.query.users.findFirst({
-		where: eq(users.name, username),
+		where: eq(users.name, username.toLocaleLowerCase()),
 	});
 
 	if (!targetUser) return c.json("User not found", 404);
 
-	const lists = await db.query.customLists.findMany({
-		where: eq(customLists.userId, targetUser.id),
-		orderBy: (customLists, { desc }) => [desc(customLists.createdAt)],
-	});
+	const isOwnProfile = currentUser?.id === targetUser.id;
 
-	if (!lists) {
-		return serveNotFound(c, "Lists not found");
+	const limit = 24;
+	const offset = (page - 1) * limit;
+
+	let filters = isOwnProfile
+		? eq(customLists.userId, targetUser.id)
+		: and(
+				eq(customLists.userId, targetUser.id),
+				eq(customLists.visibility, "public"),
+			);
+
+	// Apply visibility filter if user is viewing their own profile
+	if (isOwnProfile && filter !== "all") {
+		filters = and(
+			eq(customLists.userId, targetUser.id),
+			eq(customLists.visibility, filter as "public" | "private" | "limited"),
+		);
 	}
 
-	return serveData(c, lists);
+	const [lists, totalCountResult] = await Promise.all([
+		db
+			.select()
+			.from(customLists)
+			.where(filters)
+			.orderBy(desc(customLists.createdAt))
+			.limit(limit)
+			.offset(offset),
+
+		db
+			.select({ count: sql<number>`count(*)` })
+			.from(customLists)
+			.where(filters),
+	]);
+
+	const totalResults = totalCountResult[0].count;
+
+	return c.json({
+		data: lists,
+		page,
+		total_pages: Math.ceil(totalResults / limit),
+		total_results: totalResults,
+	});
 });
 
 // delete list
