@@ -4,11 +4,14 @@ import { toast } from "sonner";
 import {
 	type AddMediaToListPayload,
 	type AddMediaToWatchlistPayload,
+	type CreateListPayload,
 	deleteMediaList,
 	deleteMediaWatchlist,
 	fetchCheckItemInWatchlist,
+	fetchListBySlug,
 	fetchLists,
 	fetchWatchlist,
+	postList,
 	postMediaList,
 	postMediaWatchlist,
 	type RemoveMediaFromListPayload,
@@ -84,6 +87,29 @@ export function useLists(username: string, page = 1, filter = "all") {
 		queryKey: ["lists", "custom-list", username, page, filter],
 		queryFn: () => fetchLists(username, page, filter),
 		staleTime: 1000 * 60 * 50,
+	});
+}
+
+export function useListBySlug(username: string, slug: string) {
+	return useQuery({
+		queryKey: ["lists", "custom-list", username, slug],
+		queryFn: () => fetchListBySlug(username, slug),
+		staleTime: 1000 * 60 * 10,
+	});
+}
+
+export function useCreateList() {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: async (payload: CreateListPayload) => {
+			return postList(payload);
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: ["lists"],
+			});
+		},
 	});
 }
 

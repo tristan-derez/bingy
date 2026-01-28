@@ -25,6 +25,7 @@ type ListsResponse = Pretty<{
 		id: string;
 		userId: string;
 		name: string;
+		slug: string;
 		description: string | null;
 		visibility: "limited" | "private" | "public";
 	}>;
@@ -89,6 +90,24 @@ export const fetchLists = async (
 	return res;
 };
 
+export const fetchListBySlug = async (username: string, slug: string) => {
+	const res = await apiFetch<FetchListBySlugResponse>(
+		`/lists/${username}/lists/${slug}`,
+		{
+			method: "GET",
+		},
+	);
+	return res;
+};
+
+export const postList = async (payload: CreateListPayload) => {
+	const res = await apiFetch<CreateListResponse>("/lists", {
+		method: "POST",
+		body: payload,
+	});
+	return res;
+};
+
 export const postMediaList = async (payload: AddMediaToListPayload) => {
 	const res = await apiFetch(`/lists/items`, {
 		method: "POST",
@@ -125,6 +144,29 @@ export type RemoveMediaFromListPayload = Pretty<{
 	name?: string;
 }>;
 
+export type CreateListPayload = Pretty<{
+	name: string;
+	description?: string;
+	visibility: "public" | "limited" | "private";
+	items?: Array<{
+		tmdbId: number;
+		mediaType: "movie" | "tv";
+		note?: string;
+	}>;
+}>;
+
+export type CreateListResponse = Pretty<{
+	id: string;
+	userId: string;
+	name: string;
+	slug: string;
+	description: string | null;
+	visibility: "limited" | "private" | "public";
+	createdAt: Date;
+	updatedAt: Date | null;
+	deletedAt: Date | null;
+}>;
+
 export type AddMediaToWatchlistPayload = Pretty<{
 	tmdbId: number;
 	mediaType: "movie" | "tv";
@@ -138,3 +180,29 @@ export type RemoveMediaFromWatchlistPayload = {
 	title?: string;
 	name?: string;
 };
+
+export type FetchListBySlugResponse = Pretty<{
+	id: string;
+	userId: string;
+	name: string;
+	slug: string;
+	description: string | null;
+	visibility: "limited" | "private" | "public";
+	createdAt: Date;
+	updatedAt: Date | null;
+	deletedAt: Date | null;
+	items: Array<{
+		id: string;
+		listId: string;
+		mediaId: string;
+		note: string | null;
+		addedAt: Date;
+		media: {
+			id: string;
+			tmdbId: number;
+			mediaType: "movie" | "tv";
+			createdAt: Date;
+			updatedAt: Date | null;
+		};
+	}>;
+}>;
