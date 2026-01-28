@@ -564,5 +564,43 @@
 	"list_visibility_limited_aria_label": "Limited lists only",
 	"list_visibility_public_aria_label": "Public lists only",
 	"list_visibility_all_aria_label": "All lists",
-	"list_created_at": "Created {date}"
+	"list_created_at": "Created {date}",
+	"added_item_note_placeholder": "Add note",
+	"list_search_add_no_results": "No results found",
+	"list_search_add_searching": "Searching...",
+	"list_search_add_placeholder_all": "Search for movies and TV shows...",
+	"list_search_add_placeholder_all_combobox": "Start typing to search...",
+	"create_list_title": "Create new list",
+	"form_create_list_name_label": "Name",
+	"form_create_list_description_label": "Description",
+	"form_create_list_visibility_label": "Visibility",
+	"form_create_list_visibility_item_public": "Public - Anyone can see",
+	"form_create_list_visibility_item_limited": "Limited - Anyone with the link",
+	"form_create_list_visibility_item_private": "Private - Only you can see",
+	"form_create_list_visibility_item_public_short": "Public",
+	"form_create_list_visibility_item_limited_short": "Limited",
+	"form_create_list_visibility_item_private_short": "Private",
+	"form_create_list_visibility_select_trigger_placeholder": "Select visibility",
+	"form_create_list_add_items_label": "Add Items",
+	"form_create_list_add_items_helper": "Search for movies and TV shows to add to your list",
+	"form_create_list_btn_create": "Create list",
+	"form_create_list_btn_creating": "Creating...",
+	"form_create_list_btn_cancel": "Cancel",
+	"toast_form_create_list_action": "View list",
+	"toast_form_create_list_success": "List {list_name} created successfully",
+	"toast_form_create_list_error": "Failed to create list {list_name}",
+	"schema_create_list_name_min": "Name is required",
+	"schema_create_list_name_max": "Name must be less than 50 chars",
+	"schema_create_list_description_max": "Description must be less than 1000 chars",
+	"list_added_items": [
+		{
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Added item ({total_items})",
+				"countPlural=other": "Added items ({total_items})"
+			}
+		}
+	],
+	"list_added_items_clear_all": "Clear all"
 }

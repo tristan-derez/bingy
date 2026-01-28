@@ -564,5 +564,41 @@
 	"list_visibility_limited_aria_label": "Listes limitées uniquement",
 	"list_visibility_public_aria_label": "Listes publiques uniquement",
 	"list_visibility_all_aria_label": "Toutes les listes",
-	"list_created_at": "Créée le {date}"
+	"list_created_at": "Créée le {date}",
+	"added_item_note_placeholder": "Ajouter une note",
+	"list_search_add_no_results": "Aucun résultat",
+	"list_search_add_searching": "Recherche en cours...",
+	"list_search_add_placeholder_all": "Recherche un film ou une série...",
+	"list_search_add_placeholder_all_combobox": "Commence à écrire pour chercher un média",
+	"create_list_title": "Créer une liste",
+	"form_create_list_name_label": "Nom",
+	"form_create_list_description_label": "Description",
+	"form_create_list_visibility_label": "Visibilité",
+	"form_create_list_visibility_item_public": "Publique - Tout le monde peut voir",
+	"form_create_list_visibility_item_limited": "Limitée - Toute personne avec le lien",
+	"form_create_list_visibility_item_private": "Privée - Toi seul peux voir",
+	"form_create_list_visibility_item_public_short": "Publique",
+	"form_create_list_visibility_item_limited_short": "Limitée",
+	"form_create_list_visibility_item_private_short": "Privée",
+	"form_create_list_add_items_label": "Ajouter des éléments",
+	"form_create_list_btn_create": "Créer la liste",
+	"form_create_list_btn_creating": "Création...",
+	"form_create_list_btn_cancel": "Annuler",
+	"toast_form_create_list_action": "Voir la liste",
+	"toast_form_create_list_success": "Liste {list_name} créée avec succès",
+	"toast_form_create_list_error": "Échec de la création de la liste {list_name}",
+	"schema_create_list_name_min": "Le nom est requis",
+	"schema_create_list_name_max": "Le nom ne doit pas dépasser 50 caractères",
+	"schema_create_list_description_max": "La description ne doit pas dépasser 1000 caractères",
+	"list_added_items": [
+		{
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Média ajouté ({total_items})",
+				"countPlural=other": "Médias ajoutés ({total_items})"
+			}
+		}
+	],
+	"list_added_items_clear_all": "Supprimer tous les médias"
 }
