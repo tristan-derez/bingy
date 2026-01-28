@@ -1,5 +1,6 @@
 import { IconEye, IconLock, IconUsers } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
+import { useAtomValue } from "jotai";
 import { Badge } from "@/components/ui/badge";
 import {
 	Card,
@@ -8,18 +9,21 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
+import { formatDate } from "@/utils/format-date";
 
 type ListCardProps = {
 	item: {
 		id: string;
 		name: string;
+		slug: string;
 		description: string | null;
 		visibility: "limited" | "private" | "public";
 		createdAt: Date;
 		updatedAt: Date | null;
 	};
-	linkTo: string;
+	username: string;
 };
 
 const visibilityConfig = {
@@ -37,11 +41,16 @@ const visibilityConfig = {
 	},
 };
 
-export function ListCard({ item, linkTo }: ListCardProps) {
+export function ListCard({ item, username }: ListCardProps) {
+	const localeRegion = useAtomValue(localeRegionAtom);
 	const VisibilityIcon = visibilityConfig[item.visibility].icon;
+	const formattedDate = formatDate(item.createdAt.toString(), localeRegion);
 
 	return (
-		<Link to={linkTo}>
+		<Link
+			to="/user/$username/lists/$slug"
+			params={{ username: username, slug: item.slug }}
+		>
 			<Card className="hover:bg-accent transition-colors h-full">
 				<CardHeader>
 					<div className="flex items-start justify-between gap-2">
@@ -52,7 +61,7 @@ export function ListCard({ item, linkTo }: ListCardProps) {
 						</Badge>
 					</div>
 					{item.description && (
-						<CardDescription className="line-clamp-3">
+						<CardDescription className="line-clamp-2 leading-relaxed">
 							{item.description}
 						</CardDescription>
 					)}
@@ -60,7 +69,7 @@ export function ListCard({ item, linkTo }: ListCardProps) {
 				<CardContent>
 					<p className="text-sm text-muted-foreground">
 						{m.list_created_at({
-							date: item.createdAt.toLocaleDateString(),
+							date: formattedDate,
 						})}
 					</p>
 				</CardContent>
