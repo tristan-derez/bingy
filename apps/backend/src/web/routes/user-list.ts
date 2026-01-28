@@ -228,12 +228,24 @@ userListRoutes.post(
 	zValidator(
 		"json",
 		z.object({
-			name: z.string().min(1).max(256),
+			name: z.string().min(1).max(50),
+			description: z.string().min(1).max(1000).optional(),
+			visibility: z.enum(["public", "limited", "private"]),
+			items: z
+				.array(
+					z.object({
+						tmdbId: z.number(),
+						mediaType: z.enum(["movie", "tv"]),
+						note: z.string().max(500).optional(),
+					}),
+				)
+				.optional(),
 		}),
 	),
 	async (c) => {
 		const user = c.get("user")!;
-		const { name } = c.req.valid("json");
+		const { name, description, visibility, items } = c.req.valid("json");
+		const slug = name.toLowerCase().replace(/\s+/g, "-");
 
 		const list = await db.transaction(async (tx) => {
 			const [newList] = await tx
@@ -241,8 +253,40 @@ userListRoutes.post(
 				.values({
 					userId: user.id,
 					name,
+					slug,
+					description,
+					visibility,
 				})
 				.returning();
+
+			if (items && items.length > 0) {
+				// Upsert media records and get their IDs
+				const mediaIds = await Promise.all(
+					items.map(async (item) => {
+						const [mediaRecord] = await tx
+							.insert(media)
+							.values({
+								tmdbId: item.tmdbId,
+								mediaType: item.mediaType,
+							})
+							.onConflictDoUpdate({
+								target: [media.tmdbId, media.mediaType],
+								set: { updatedAt: sql`now()` },
+							})
+							.returning({ id: media.id });
+
+						return { mediaId: mediaRecord.id, note: item.note };
+					}),
+				);
+
+				await tx.insert(listItems).values(
+					mediaIds.map(({ mediaId, note }) => ({
+						listId: newList.id,
+						mediaId,
+						note,
+					})),
+				);
+			}
 
 			await tx.insert(activity).values({
 				userId: user.id,
@@ -253,12 +297,66 @@ userListRoutes.post(
 			return newList;
 		});
 
-		return serveCreated(c, list, 201);
+		return c.json(list, 201);
+	},
+);
+
+// add an item to a list
+userListRoutes.post(
+	"/items",
+	zValidator(
+		"json",
+		z.object({
+			tmdbId: z.number(),
+			mediaType: z.enum(["movie", "tv"]),
+			listId: z.uuidv7(),
+			note: z.string().max(500).optional(),
+		}),
+	),
+	async (c) => {
+		const user = c.get("user")!;
+		const { tmdbId, mediaType, listId, note } = c.req.valid("json");
+
+		await db.transaction(async (tx) => {
+			// Verify list belongs to user
+			const list = await tx.query.customLists.findFirst({
+				where: and(eq(customLists.id, listId), eq(customLists.userId, user.id)),
+			});
+
+			if (!list) {
+				throw new Error("List not found");
+			}
+
+			// Upsert media
+			const [mediaRecord] = await tx
+				.insert(media)
+				.values({
+					tmdbId,
+					mediaType,
+				})
+				.onConflictDoUpdate({
+					target: [media.tmdbId, media.mediaType],
+					set: { updatedAt: sql`now()` },
+				})
+				.returning({ id: media.id });
+
+			// Add to list
+			await tx
+				.insert(listItems)
+				.values({
+					listId,
+					mediaId: mediaRecord.id,
+					note,
+				})
+				.onConflictDoNothing();
+		});
+
+		return serveCreated(c, { success: true }, 201);
 	},
 );
 
 // get lists from a user by username
-userListRoutes.get("/:username/lists", async (c) => {
+userListRoutes.get("/:username", async (c) => {
 	const { username } = c.req.param();
 	const currentUser = c.get("user");
 	const page = Math.max(1, parseInt(c.req.query("page") || "1"));
@@ -333,93 +431,6 @@ userListRoutes.delete("/:listId", async (c) => {
 	return serveNoContent(c);
 });
 
-// add an item to a list
-userListRoutes.post(
-	"/items",
-	zValidator(
-		"json",
-		z
-			.object({
-				tmdbId: z.number(),
-				mediaType: z.enum(["movie", "tv"]),
-				listId: z.uuidv7().optional(),
-				listName: z.string().min(1).max(50).optional(),
-			})
-			.refine((data) => data.listId || data.listName, {
-				message: "Either listId or listName must be provided",
-			}),
-	),
-	async (c) => {
-		const user = c.get("user")!;
-		const data = c.req.valid("json");
-
-		await db.transaction(async (tx) => {
-			let listId: string;
-
-			if (data.listId) {
-				// Use existing list ID
-				listId = data.listId;
-			} else {
-				// Create new list or find existing by name
-				const existingList = await tx.query.customLists.findFirst({
-					where: and(
-						eq(customLists.userId, user.id),
-						eq(customLists.name, data.listName!),
-					),
-				});
-
-				if (existingList) {
-					listId = existingList.id;
-				} else {
-					const [newList] = await tx
-						.insert(customLists)
-						.values({
-							userId: user.id,
-							name: data.listName!,
-						})
-						.returning({ id: customLists.id });
-
-					listId = newList.id;
-				}
-			}
-
-			const [mediaEntry] = await tx
-				.insert(media)
-				.values({
-					tmdbId: data.tmdbId,
-					mediaType: data.mediaType,
-				})
-				.onConflictDoNothing()
-				.returning();
-
-			const mediaId =
-				mediaEntry?.id ||
-				(
-					await tx.query.media.findFirst({
-						where: and(
-							eq(media.tmdbId, data.tmdbId),
-							eq(media.mediaType, data.mediaType),
-						),
-					})
-				)?.id;
-
-			if (!mediaId) {
-				throw new Error("Failed to create or find media entry");
-			}
-
-			await tx
-				.insert(listItems)
-				.values({
-					listId,
-					mediaId,
-				})
-				.onConflictDoNothing();
-		});
-
-		return serveCreated(c, { success: true }, 201);
-	},
-);
-
 // delete an item from a list
 userListRoutes.delete("/:listId/items/:mediaType/:tmdbId", async (c) => {
 	const user = c.get("user")!;
@@ -452,9 +463,10 @@ userListRoutes.delete("/:listId/items/:mediaType/:tmdbId", async (c) => {
 	return serveNoContent(c);
 });
 
-// get items from a list by username
-userListRoutes.get("/:username/lists/:listId/items", async (c) => {
-	const { username, listId } = c.req.param();
+// get list with items by username and slug
+userListRoutes.get("/:username/lists/:slug", async (c) => {
+	const { username, slug } = c.req.param();
+	const currentUser = c.get("user");
 
 	const targetUser = await db.query.users.findFirst({
 		where: eq(users.name, username),
@@ -462,26 +474,29 @@ userListRoutes.get("/:username/lists/:listId/items", async (c) => {
 
 	if (!targetUser) return c.json("User not found", 404);
 
+	const isOwner = currentUser?.id === targetUser.id;
+
 	const list = await db.query.customLists.findFirst({
 		where: and(
-			eq(customLists.id, listId),
+			eq(customLists.slug, slug),
 			eq(customLists.userId, targetUser.id),
+			isOwner ? undefined : sql`${customLists.visibility} != 'private'`,
 		),
+		with: {
+			items: {
+				with: {
+					media: true,
+				},
+				orderBy: (listItems, { desc }) => [desc(listItems.addedAt)],
+			},
+		},
 	});
 
 	if (!list) {
 		return serveNotFound(c, "List not found");
 	}
 
-	const items = await db.query.listItems.findMany({
-		where: eq(listItems.listId, listId),
-		with: {
-			media: true,
-		},
-		orderBy: (listItems, { desc }) => [desc(listItems.addedAt)],
-	});
-
-	return serveData(c, items);
+	return c.json(list);
 });
 
 export default userListRoutes;
