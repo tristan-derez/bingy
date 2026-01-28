@@ -8,7 +8,7 @@ import { GlobalLoadingIndicator } from "@/components/loading/loading-global";
 import { useLists } from "@/hooks/useLists";
 import { m } from "@/paraglide/messages";
 
-export const Route = createFileRoute("/user/$username/lists")({
+export const Route = createFileRoute("/user/$username/lists_/")({
 	component: ListsPage,
 });
 
