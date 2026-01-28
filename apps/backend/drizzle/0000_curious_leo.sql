@@ -1,15 +1,28 @@
 CREATE TABLE "custom_lists" (
 	"id" uuid PRIMARY KEY DEFAULT uuidv7() NOT NULL,
 	"user_id" uuid NOT NULL,
-	"name" varchar(256) NOT NULL,
+	"name" varchar(50) NOT NULL,
+	"slug" varchar(200) NOT NULL,
+	"description" varchar(1000),
+	"visibility" varchar(20) DEFAULT 'public' NOT NULL,
 	"updated_at" timestamp,
 	"created_at" timestamp DEFAULT now() NOT NULL,
-	"deleted_at" timestamp
+	"deleted_at" timestamp,
+	CONSTRAINT "unique_user_slug" UNIQUE("user_id","slug")
+);
+--> statement-breakpoint
+CREATE TABLE "favorites" (
+	"id" uuid PRIMARY KEY DEFAULT uuidv7() NOT NULL,
+	"user_id" uuid NOT NULL,
+	"media_id" uuid NOT NULL,
+	"added_at" timestamp DEFAULT now() NOT NULL,
+	CONSTRAINT "favorites_user_id_media_id_unique" UNIQUE("user_id","media_id")
 );
 --> statement-breakpoint
 CREATE TABLE "list_items" (
 	"list_id" uuid NOT NULL,
 	"media_id" uuid NOT NULL,
+	"note" varchar(500),
 	"added_at" timestamp DEFAULT now() NOT NULL,
 	CONSTRAINT "list_items_list_id_media_id_pk" PRIMARY KEY("list_id","media_id")
 );
@@ -67,6 +80,8 @@ CREATE TABLE "tv_show_progress" (
 	"media_id" uuid NOT NULL,
 	"last_watched_season" integer NOT NULL,
 	"last_watched_episode" integer NOT NULL,
+	"absolute_episode" integer,
+	"tracking_mode" text DEFAULT 'season' NOT NULL,
 	"updated_at" timestamp,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"deleted_at" timestamp,
@@ -170,6 +185,8 @@ CREATE TABLE "verifications" (
 );
 --> statement-breakpoint
 ALTER TABLE "custom_lists" ADD CONSTRAINT "custom_lists_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "favorites" ADD CONSTRAINT "favorites_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "favorites" ADD CONSTRAINT "favorites_media_id_media_id_fk" FOREIGN KEY ("media_id") REFERENCES "public"."media"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "list_items" ADD CONSTRAINT "list_items_list_id_custom_lists_id_fk" FOREIGN KEY ("list_id") REFERENCES "public"."custom_lists"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "list_items" ADD CONSTRAINT "list_items_media_id_media_id_fk" FOREIGN KEY ("media_id") REFERENCES "public"."media"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "movie_watch_history" ADD CONSTRAINT "movie_watch_history_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
@@ -195,6 +212,8 @@ ALTER TABLE "activity" ADD CONSTRAINT "activity_watchlist_id_watchlist_id_fk" FO
 ALTER TABLE "sessions" ADD CONSTRAINT "sessions_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "two_factor" ADD CONSTRAINT "two_factor_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 CREATE INDEX "idx_custom_lists_user" ON "custom_lists" USING btree ("user_id");--> statement-breakpoint
+CREATE INDEX "idx_favorites_user" ON "favorites" USING btree ("user_id");--> statement-breakpoint
+CREATE INDEX "idx_favorites_media" ON "favorites" USING btree ("media_id");--> statement-breakpoint
 CREATE INDEX "idx_list_items_list" ON "list_items" USING btree ("list_id");--> statement-breakpoint
 CREATE INDEX "idx_list_items_media" ON "list_items" USING btree ("media_id");--> statement-breakpoint
 CREATE INDEX "idx_media_type" ON "media" USING btree ("media_type");--> statement-breakpoint
@@ -211,6 +230,7 @@ CREATE INDEX "idx_tv_show_progress_user" ON "tv_show_progress" USING btree ("use
 CREATE INDEX "idx_tv_show_progress_media" ON "tv_show_progress" USING btree ("media_id");--> statement-breakpoint
 CREATE INDEX "idx_tv_show_watch_user" ON "tv_show_watch_history" USING btree ("user_id");--> statement-breakpoint
 CREATE INDEX "idx_tv_show_watch_media" ON "tv_show_watch_history" USING btree ("media_id");--> statement-breakpoint
+CREATE INDEX "idx_tv_show_watch_date" ON "tv_show_watch_history" USING btree ("watched_at");--> statement-breakpoint
 CREATE INDEX "idx_watchlist_user" ON "watchlist" USING btree ("user_id");--> statement-breakpoint
 CREATE INDEX "idx_watchlist_media" ON "watchlist" USING btree ("media_id");--> statement-breakpoint
 CREATE UNIQUE INDEX "unique_user_provider" ON "accounts" USING btree ("user_id","provider_id");--> statement-breakpoint

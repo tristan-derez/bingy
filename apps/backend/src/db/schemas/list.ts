@@ -207,6 +207,7 @@ export const customLists = pgTable(
 			.notNull()
 			.references(() => users.id, { onDelete: "cascade" }),
 		name: varchar("name", { length: 50 }).notNull(),
+		slug: varchar("slug", { length: 200 }).notNull(),
 		description: varchar("description", { length: 1000 }),
 		visibility: varchar("visibility", { length: 20 })
 			.notNull()
@@ -214,7 +215,10 @@ export const customLists = pgTable(
 			.$type<"private" | "public" | "limited">(),
 		...timestamps,
 	},
-	(table) => [index("idx_custom_lists_user").on(table.userId)],
+	(table) => [
+		index("idx_custom_lists_user").on(table.userId),
+		unique("unique_user_slug").on(table.userId, table.slug),
+	],
 );
 
 export const listItems = pgTable(
