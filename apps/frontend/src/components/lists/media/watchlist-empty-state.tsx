@@ -21,31 +21,25 @@ export function WatchlistEmptyState({ filter }: WatchlistEmptyStateProps) {
 		<div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
 			<p className="text-muted-foreground text-2xl">{headerMessages[filter]}</p>
 
-			<p className="text-muted-foreground flex gap-1">
-				{m.watchlist_page_empty_cta_prefix()}
-
-				{showMoviesLink ? (
+			<p className="text-muted-foreground text-center text-sm sm:text-base">
+				{m.watchlist_page_empty_cta_prefix()}{" "}
+				{showMoviesLink && (
 					<Link
 						to="/movies"
 						className="text-primary underline hover:text-primary/80"
 					>
 						{m.watchlist_page_link_movies()}
 					</Link>
-				) : null}
-
-				{filter === "all" ? (
-					<span>{m.watchlist_page_empty_cta_separator()}</span>
-				) : null}
-
-				{showTvLink ? (
+				)}
+				{filter === "all" && <> {m.watchlist_page_empty_cta_separator()} </>}
+				{showTvLink && (
 					<Link
 						to="/tv"
 						className="text-primary underline hover:text-primary/80"
 					>
 						{m.watchlist_page_link_tv()}
 					</Link>
-				) : null}
-
+				)}{" "}
 				{m.watchlist_page_empty_cta_followup()}
 			</p>
 		</div>
