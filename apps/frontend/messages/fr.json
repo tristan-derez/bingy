@@ -9,7 +9,7 @@
 	"toast_error_generic": "Une erreur s'est produite. Veuillez réessayer plus tard.",
 	"toast_email_sent_account_delete": "Un e-mail de confirmation vient de vous être envoyé. Veuillez consulter votre boîte de réception et suivre le lien fourni afin de confirmer la suppression de votre compte.",
 	"delete_account_short_desc": "Cette action est définitive. Vous recevrez un e-mail pour confirmer la suppression.",
-	"dialog_confirm_action": "Êtes-vous certain ?",
+	"dialog_confirm_action": "Es-tu sûr ?",
 	"dialog_cancel_action": "Annuler",
 	"dialog_delete_account_warning": "Cette action est irréversible. Cela entraînera la suppression de votre compte et de ses données de nos serveurs. Vous recevrez un e-mail de confirmation avec un lien pour compléter la suppression. Votre compte restera actif tant que vous n'aurez pas confirmé via le lien dans l'email.",
 	"two_factor_disable_short_desc": "Désactiver la double authentification",
@@ -585,7 +585,7 @@
 	"form_create_list_btn_creating": "Création...",
 	"form_create_list_btn_cancel": "Annuler",
 	"toast_form_create_list_action": "Voir la liste",
-	"toast_form_create_list_success": "Liste {list_name} créée avec succès",
+	"toast_form_create_list_success": "Liste « {list_name} » créée",
 	"toast_form_create_list_error": "Échec de la création de la liste {list_name}",
 	"schema_create_list_name_min": "Le nom est requis",
 	"schema_create_list_name_max": "Le nom ne doit pas dépasser 50 caractères",
@@ -600,5 +600,16 @@
 			}
 		}
 	],
-	"list_added_items_clear_all": "Supprimer tous les médias"
+	"list_added_items_clear_all": "Supprimer tous les médias",
+	"btn_delete_list_aria_label": "Supprimer la liste",
+	"delete_list_tooltip": "Supprimer la liste « {list_name} »",
+	"delete_list_dialog_title": "Es-tu sûr ?",
+	"delete_list_dialog_description": "Cette action est irréversible. La liste: « {list_name} » sera supprimée définitivement.",
+	"delete_list_dialog_cancel": "Annuler",
+	"delete_list_dialog_confirm": "Confirmer",
+	"toast_delete_list_success": "Liste supprimée",
+	"toast_delete_list_error": "Erreur lors de la suppression de la liste",
+	"list_container_empty": "Cette liste est vide pour le moment",
+	"list_container_empty_own": "Ta liste est vide.",
+	"list_container_empty_own_cta": "Ajoute des médias!"
 }

@@ -602,5 +602,16 @@
 			}
 		}
 	],
-	"list_added_items_clear_all": "Clear all"
+	"list_added_items_clear_all": "Clear all",
+	"btn_delete_list_aria_label": "Delete list",
+	"delete_list_tooltip": "Delete list {list_name}",
+	"delete_list_dialog_title": "Are you sure?",
+	"delete_list_dialog_description": "This action cannot be undone. This will permanently delete the list: {list_name}",
+	"delete_list_dialog_cancel": "Cancel",
+	"delete_list_dialog_confirm": "Confirm",
+	"toast_delete_list_success": "List deleted successfully",
+	"toast_delete_list_error": "Failed to delete list",
+	"list_container_empty": "This list is empty",
+	"list_container_empty_own": "Your list is empty.",
+	"list_container_empty_own_cta": "Add items!"
 }
