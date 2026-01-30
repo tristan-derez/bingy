@@ -35,8 +35,8 @@ export function ListDetailsContainer({
 	isOwnList,
 }: ListDetailsContainerProps) {
 	return (
-		<div className="container px-4 flex flex-col gap-4">
-			<div className="flex flex-col">
+		<div className="container px-4 flex flex-col gap-6">
+			<div className="flex flex-col gap-2">
 				<div className="flex items-center justify-between">
 					<h1 className="text-3xl font-bold">{list.name}</h1>
 					<Link
@@ -49,7 +49,7 @@ export function ListDetailsContainer({
 				</div>
 
 				{list.description ? (
-					<p className="mt-2 text-muted-foreground">{list.description}</p>
+					<p className="text-muted-foreground">{list.description}</p>
 				) : null}
 			</div>
 
