@@ -17,7 +17,7 @@ function ListsPage() {
 	const [filter, setFilter] = useState<VisibilityFilter>("all");
 	const [page, setPage] = useState(1);
 	const { session } = useRouteContext({ from: "__root__" });
-	const currentUsername = session?.user?.name;
+	const userNameFromSession = session?.user?.name;
 
 	const { data, isLoading, isError } = useLists(username, page, filter);
 
@@ -38,7 +38,7 @@ function ListsPage() {
 			totalPages={data?.total_pages ?? 1}
 			onPageChange={setPage}
 			username={username}
-			currentUsername={currentUsername}
+			userNameFromSession={userNameFromSession}
 		/>
 	);
 }

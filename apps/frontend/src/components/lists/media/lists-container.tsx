@@ -17,7 +17,7 @@ export type VisibilityFilter = "all" | "public" | "private" | "limited";
 
 type ListsContainerProps = {
 	username: string;
-	currentUsername?: string;
+	userNameFromSession?: string;
 	items?: {
 		id: string;
 		name: string;
@@ -36,7 +36,7 @@ type ListsContainerProps = {
 
 export function ListsContainer({
 	username,
-	currentUsername,
+	userNameFromSession,
 	items = [],
 	filter,
 	onFilterChange,
@@ -45,7 +45,7 @@ export function ListsContainer({
 	onPageChange,
 }: ListsContainerProps) {
 	const isOwnProfile =
-		currentUsername?.toLowerCase() === username.toLowerCase();
+		userNameFromSession?.toLowerCase() === username.toLowerCase();
 
 	const handleFilterChange = (value: string) => {
 		if (value) {
