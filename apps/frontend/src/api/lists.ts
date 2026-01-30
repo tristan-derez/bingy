@@ -90,9 +90,13 @@ export const fetchLists = async (
 	return res;
 };
 
-export const fetchListBySlug = async (username: string, slug: string) => {
+export const fetchListBySlug = async (
+	username: string,
+	slug: string,
+	page = 1,
+) => {
 	const res = await apiFetch<FetchListBySlugResponse>(
-		`/lists/${username}/lists/${slug}`,
+		`/lists/${username}/lists/${slug}?page=${page}`,
 		{
 			method: "GET",
 		},
@@ -106,6 +110,12 @@ export const postList = async (payload: CreateListPayload) => {
 		body: payload,
 	});
 	return res;
+};
+
+export const deleteList = async (listId: string) => {
+	await apiFetch(`/lists/${listId}`, {
+		method: "DELETE",
+	});
 };
 
 export const postMediaList = async (payload: AddMediaToListPayload) => {
@@ -192,17 +202,16 @@ export type FetchListBySlugResponse = Pretty<{
 	updatedAt: Date | null;
 	deletedAt: Date | null;
 	items: Array<{
-		id: string;
-		listId: string;
-		mediaId: string;
-		note: string | null;
+		id: number;
+		title: string;
+		originalTitle: string;
+		releaseDate: string;
+		posterPath: string | null;
+		mediaType: "movie" | "tv";
 		addedAt: Date;
-		media: {
-			id: string;
-			tmdbId: number;
-			mediaType: "movie" | "tv";
-			createdAt: Date;
-			updatedAt: Date | null;
-		};
+		note: string | null;
 	}>;
+	page: number;
+	total_pages: number;
+	total_results: number;
 }>;

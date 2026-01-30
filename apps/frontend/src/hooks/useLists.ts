@@ -5,6 +5,7 @@ import {
 	type AddMediaToListPayload,
 	type AddMediaToWatchlistPayload,
 	type CreateListPayload,
+	deleteList,
 	deleteMediaList,
 	deleteMediaWatchlist,
 	fetchCheckItemInWatchlist,
@@ -90,10 +91,10 @@ export function useLists(username: string, page = 1, filter = "all") {
 	});
 }
 
-export function useListBySlug(username: string, slug: string) {
+export function useListBySlug(username: string, slug: string, page = 1) {
 	return useQuery({
-		queryKey: ["lists", "custom-list", username, slug],
-		queryFn: () => fetchListBySlug(username, slug),
+		queryKey: ["lists", "custom-list", username, slug, page],
+		queryFn: () => fetchListBySlug(username, slug, page),
 		staleTime: 1000 * 60 * 10,
 	});
 }
@@ -109,6 +110,25 @@ export function useCreateList() {
 			queryClient.invalidateQueries({
 				queryKey: ["lists"],
 			});
+		},
+	});
+}
+
+export function useDeleteList() {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: async (listId: string) => {
+			return deleteList(listId);
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: ["lists"],
+			});
+			toast.success("List deleted successfully");
+		},
+		onError: () => {
+			toast.error("Failed to delete list");
 		},
 	});
 }
