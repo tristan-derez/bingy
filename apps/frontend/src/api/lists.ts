@@ -93,12 +93,14 @@ export const fetchLists = async (
 export const fetchListBySlug = async (
 	username: string,
 	slug: string,
+	language: string,
 	page = 1,
 ) => {
 	const res = await apiFetch<FetchListBySlugResponse>(
-		`/lists/${username}/lists/${slug}?page=${page}`,
+		`/lists/${username}/lists/${slug}`,
 		{
 			method: "GET",
+			query: { language, page },
 		},
 	);
 	return res;

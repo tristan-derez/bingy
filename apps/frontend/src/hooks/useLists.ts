@@ -91,10 +91,15 @@ export function useLists(username: string, page = 1, filter = "all") {
 	});
 }
 
-export function useListBySlug(username: string, slug: string, page = 1) {
+export function useListBySlug(
+	username: string,
+	slug: string,
+	language = "en-US",
+	page = 1,
+) {
 	return useQuery({
 		queryKey: ["lists", "custom-list", username, slug, page],
-		queryFn: () => fetchListBySlug(username, slug, page),
+		queryFn: () => fetchListBySlug(username, slug, language, page),
 		staleTime: 1000 * 60 * 10,
 	});
 }
