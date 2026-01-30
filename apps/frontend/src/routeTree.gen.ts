@@ -39,6 +39,7 @@ import { Route as AuthListsCreateRouteImport } from './routes/_auth/lists/create
 import { Route as UserUsernameListsIndexRouteImport } from './routes/user/$username/lists_/index'
 import { Route as UserUsernameListsSlugRouteImport } from './routes/user/$username/lists_/$slug'
 import { Route as TvTvIdSeasonSeasonNumberRouteImport } from './routes/tv/$tvId_/season_/$seasonNumber'
+import { Route as UserUsernameListsSlugDetailsRouteImport } from './routes/user/$username/lists_/$slug_/details'
 import { Route as TvTvIdSeasonSeasonNumberCreditsRouteImport } from './routes/tv/$tvId_/season_/$seasonNumber_/credits'
 import { Route as TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberRouteImport } from './routes/tv/$tvId_/season_/$seasonNumber_/episode_/$episodeNumber'
 import { Route as AuthUserUsernameListsListnameEditRouteImport } from './routes/_auth/user/$username/lists/$listname/edit'
@@ -194,6 +195,12 @@ const TvTvIdSeasonSeasonNumberRoute =
     path: '/tv/$tvId/season/$seasonNumber',
     getParentRoute: () => rootRouteImport,
   } as any)
+const UserUsernameListsSlugDetailsRoute =
+  UserUsernameListsSlugDetailsRouteImport.update({
+    id: '/user/$username/lists_/$slug_/details',
+    path: '/user/$username/lists/$slug/details',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const TvTvIdSeasonSeasonNumberCreditsRoute =
   TvTvIdSeasonSeasonNumberCreditsRouteImport.update({
     id: '/tv/$tvId_/season_/$seasonNumber_/credits',
@@ -250,6 +257,7 @@ export interface FileRoutesByFullPath {
   '/user/$username/lists/$slug': typeof UserUsernameListsSlugRoute
   '/user/$username/lists': typeof UserUsernameListsIndexRoute
   '/tv/$tvId/season/$seasonNumber/credits': typeof TvTvIdSeasonSeasonNumberCreditsRoute
+  '/user/$username/lists/$slug/details': typeof UserUsernameListsSlugDetailsRoute
   '/user/$username/lists/$listname/edit': typeof AuthUserUsernameListsListnameEditRoute
   '/tv/$tvId/season/$seasonNumber/episode/$episodeNumber': typeof TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberRoute
   '/tv/$tvId/season/$seasonNumber/episode/$episodeNumber/credits': typeof TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberCreditsRoute
@@ -285,6 +293,7 @@ export interface FileRoutesByTo {
   '/user/$username/lists/$slug': typeof UserUsernameListsSlugRoute
   '/user/$username/lists': typeof UserUsernameListsIndexRoute
   '/tv/$tvId/season/$seasonNumber/credits': typeof TvTvIdSeasonSeasonNumberCreditsRoute
+  '/user/$username/lists/$slug/details': typeof UserUsernameListsSlugDetailsRoute
   '/user/$username/lists/$listname/edit': typeof AuthUserUsernameListsListnameEditRoute
   '/tv/$tvId/season/$seasonNumber/episode/$episodeNumber': typeof TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberRoute
   '/tv/$tvId/season/$seasonNumber/episode/$episodeNumber/credits': typeof TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberCreditsRoute
@@ -322,6 +331,7 @@ export interface FileRoutesById {
   '/user/$username/lists_/$slug': typeof UserUsernameListsSlugRoute
   '/user/$username/lists_/': typeof UserUsernameListsIndexRoute
   '/tv/$tvId_/season_/$seasonNumber_/credits': typeof TvTvIdSeasonSeasonNumberCreditsRoute
+  '/user/$username/lists_/$slug_/details': typeof UserUsernameListsSlugDetailsRoute
   '/_auth/user/$username/lists/$listname/edit': typeof AuthUserUsernameListsListnameEditRoute
   '/tv/$tvId_/season_/$seasonNumber_/episode_/$episodeNumber': typeof TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberRoute
   '/tv/$tvId_/season_/$seasonNumber_/episode_/$episodeNumber_/credits': typeof TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberCreditsRoute
@@ -359,6 +369,7 @@ export interface FileRouteTypes {
     | '/user/$username/lists/$slug'
     | '/user/$username/lists'
     | '/tv/$tvId/season/$seasonNumber/credits'
+    | '/user/$username/lists/$slug/details'
     | '/user/$username/lists/$listname/edit'
     | '/tv/$tvId/season/$seasonNumber/episode/$episodeNumber'
     | '/tv/$tvId/season/$seasonNumber/episode/$episodeNumber/credits'
@@ -394,6 +405,7 @@ export interface FileRouteTypes {
     | '/user/$username/lists/$slug'
     | '/user/$username/lists'
     | '/tv/$tvId/season/$seasonNumber/credits'
+    | '/user/$username/lists/$slug/details'
     | '/user/$username/lists/$listname/edit'
     | '/tv/$tvId/season/$seasonNumber/episode/$episodeNumber'
     | '/tv/$tvId/season/$seasonNumber/episode/$episodeNumber/credits'
@@ -430,6 +442,7 @@ export interface FileRouteTypes {
     | '/user/$username/lists_/$slug'
     | '/user/$username/lists_/'
     | '/tv/$tvId_/season_/$seasonNumber_/credits'
+    | '/user/$username/lists_/$slug_/details'
     | '/_auth/user/$username/lists/$listname/edit'
     | '/tv/$tvId_/season_/$seasonNumber_/episode_/$episodeNumber'
     | '/tv/$tvId_/season_/$seasonNumber_/episode_/$episodeNumber_/credits'
@@ -462,6 +475,7 @@ export interface RootRouteChildren {
   UserUsernameListsSlugRoute: typeof UserUsernameListsSlugRoute
   UserUsernameListsIndexRoute: typeof UserUsernameListsIndexRoute
   TvTvIdSeasonSeasonNumberCreditsRoute: typeof TvTvIdSeasonSeasonNumberCreditsRoute
+  UserUsernameListsSlugDetailsRoute: typeof UserUsernameListsSlugDetailsRoute
   TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberRoute: typeof TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberRoute
   TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberCreditsRoute: typeof TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberCreditsRoute
 }
@@ -678,6 +692,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TvTvIdSeasonSeasonNumberRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/user/$username/lists_/$slug_/details': {
+      id: '/user/$username/lists_/$slug_/details'
+      path: '/user/$username/lists/$slug/details'
+      fullPath: '/user/$username/lists/$slug/details'
+      preLoaderRoute: typeof UserUsernameListsSlugDetailsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tv/$tvId_/season_/$seasonNumber_/credits': {
       id: '/tv/$tvId_/season_/$seasonNumber_/credits'
       path: '/tv/$tvId/season/$seasonNumber/credits'
@@ -757,6 +778,7 @@ const rootRouteChildren: RootRouteChildren = {
   UserUsernameListsSlugRoute: UserUsernameListsSlugRoute,
   UserUsernameListsIndexRoute: UserUsernameListsIndexRoute,
   TvTvIdSeasonSeasonNumberCreditsRoute: TvTvIdSeasonSeasonNumberCreditsRoute,
+  UserUsernameListsSlugDetailsRoute: UserUsernameListsSlugDetailsRoute,
   TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberRoute:
     TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberRoute,
   TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberCreditsRoute:

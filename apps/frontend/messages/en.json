@@ -613,5 +613,7 @@
 	"toast_delete_list_error": "Failed to delete list",
 	"list_container_empty": "This list is empty",
 	"list_container_empty_own": "Your list is empty.",
-	"list_container_empty_own_cta": "Add items!"
+	"list_container_empty_own_cta": "Add items!",
+	"list_container_see_notes": "See notes",
+	"list_details_container_hide_notes": "Hide notes"
 }

@@ -611,5 +611,7 @@
 	"toast_delete_list_error": "Erreur lors de la suppression de la liste",
 	"list_container_empty": "Cette liste est vide pour le moment",
 	"list_container_empty_own": "Ta liste est vide.",
-	"list_container_empty_own_cta": "Ajoute des médias!"
+	"list_container_empty_own_cta": "Ajoute des médias!",
+	"list_container_see_notes": "Voir les notes",
+	"list_details_container_hide_notes": "Cacher les notes"
 }

@@ -1,9 +1,9 @@
 import { Link } from "@tanstack/react-router";
-import { ListMediaCard } from "@/components/lists/media/list-media-card";
+import { ListMediaDetailsCard } from "@/components/lists/media/list-media-details-card";
 import { m } from "@/paraglide/messages";
 import { ListPagination } from "../list-pagination";
 
-type ListContainerProps = {
+type ListDetailsContainerProps = {
 	username: string;
 	list: {
 		name: string;
@@ -26,25 +26,31 @@ type ListContainerProps = {
 	isOwnList: boolean;
 };
 
-export function ListContainer({
+export function ListDetailsContainer({
 	username,
 	list,
 	page,
 	totalPages,
 	onPageChange,
 	isOwnList,
-}: ListContainerProps) {
+}: ListDetailsContainerProps) {
 	return (
 		<div className="container px-4 flex flex-col gap-4">
-			<div className="flex items-center justify-between">
-				<h1 className="text-3xl font-bold">{list.name}</h1>
-				<Link
-					to="/user/$username/lists/$slug/details"
-					params={{ username: username, slug: list.slug }}
-					className="text-primary underline hover:text-primary/80"
-				>
-					{m.list_container_see_notes()}
-				</Link>
+			<div className="flex flex-col">
+				<div className="flex items-center justify-between">
+					<h1 className="text-3xl font-bold">{list.name}</h1>
+					<Link
+						to="/user/$username/lists/$slug"
+						params={{ username: username, slug: list.slug }}
+						className="text-primary underline hover:text-primary/80"
+					>
+						{m.list_details_container_hide_notes()}
+					</Link>
+				</div>
+
+				{list.description ? (
+					<p className="mt-2 text-muted-foreground">{list.description}</p>
+				) : null}
 			</div>
 
 			{list.items.length === 0 ? (
@@ -56,9 +62,14 @@ export function ListContainer({
 				</p>
 			) : (
 				<>
-					<div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-5 xl:grid-cols-8 gap-2 sm:gap-4">
+					<div className="flex flex-col divide-y">
 						{list.items.map((item) => (
-							<ListMediaCard key={`${item.mediaType}-${item.id}`} item={item} />
+							<div
+								key={`${item.mediaType}-${item.id}`}
+								className="py-3 first:pt-0 last:pb-0"
+							>
+								<ListMediaDetailsCard item={item} />
+							</div>
 						))}
 					</div>
 
