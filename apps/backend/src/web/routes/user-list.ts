@@ -466,6 +466,8 @@ userListRoutes.delete("/:listId/items/:mediaType/:tmdbId", async (c) => {
 // get list with items by username and slug
 userListRoutes.get("/:username/lists/:slug", async (c) => {
 	const { username, slug } = c.req.param();
+	const language = c.req.query("language") || "en-US";
+	const page = Math.max(1, parseInt(c.req.query("page") || "1"));
 	const currentUser = c.get("user");
 
 	const targetUser = await db.query.users.findFirst({
@@ -482,21 +484,65 @@ userListRoutes.get("/:username/lists/:slug", async (c) => {
 			eq(customLists.userId, targetUser.id),
 			isOwner ? undefined : sql`${customLists.visibility} != 'private'`,
 		),
-		with: {
-			items: {
-				with: {
-					media: true,
-				},
-				orderBy: (listItems, { desc }) => [desc(listItems.addedAt)],
-			},
-		},
 	});
 
 	if (!list) {
 		return serveNotFound(c, "List not found");
 	}
 
-	return c.json(list);
+	const limit = 24;
+	const offset = (page - 1) * limit;
+
+	const filters = and(eq(listItems.listId, list.id));
+
+	const [dbItems, totalCountResult] = await Promise.all([
+		db
+			.select({
+				listItem: listItems,
+				media: media,
+			})
+			.from(listItems)
+			.innerJoin(media, eq(listItems.mediaId, media.id))
+			.where(filters)
+			.orderBy(desc(listItems.addedAt))
+			.limit(limit)
+			.offset(offset),
+
+		db.select({ count: sql<number>`count(*)` }).from(listItems).where(filters),
+	]);
+
+	const totalResults = totalCountResult[0].count;
+
+	const hydratedItems = (
+		await Promise.all(
+			dbItems.map(async (item) => {
+				const details = await getMediaDetails(
+					item.media.tmdbId,
+					item.media.mediaType,
+					language,
+				);
+
+				if (!details) return null;
+
+				return {
+					...details,
+					mediaType: item.media.mediaType,
+					addedAt: item.listItem.addedAt,
+					note: item.listItem.note,
+				};
+			}),
+		)
+	).filter(
+		(item): item is NormalizedMedia & { note: string | null } => item !== null,
+	);
+
+	return c.json({
+		...list,
+		items: hydratedItems,
+		page,
+		total_pages: Math.ceil(totalResults / limit),
+		total_results: totalResults,
+	});
 });
 
 export default userListRoutes;
