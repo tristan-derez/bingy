@@ -6,12 +6,14 @@ import {
 	Card,
 	CardContent,
 	CardDescription,
+	CardFooter,
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
 import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
+import { DeleteListButton } from "./delete-list-button";
 
 type ListCardProps = {
 	item: {
@@ -54,25 +56,31 @@ export function ListCard({ item, username }: ListCardProps) {
 			<Card className="hover:bg-accent transition-colors h-full">
 				<CardHeader>
 					<div className="flex items-start justify-between gap-2">
-						<CardTitle className="line-clamp-2">{item.name}</CardTitle>
-						<Badge variant="secondary" className="shrink-0">
-							<VisibilityIcon className="h-3 w-3 mr-1" />
-							{visibilityConfig[item.visibility].label()}
-						</Badge>
+						<div className="flex items-center gap-2 flex-1 min-w-0">
+							<CardTitle className="line-clamp-2">{item.name}</CardTitle>
+							<Badge variant="outline" className="shrink-0">
+								<VisibilityIcon className="h-3 w-3 mr-1" />
+								{visibilityConfig[item.visibility].label()}
+							</Badge>
+						</div>
+						<div onClick={(e) => e.preventDefault()}>
+							<DeleteListButton listId={item.id} listName={item.name} />
+						</div>
 					</div>
 					{item.description && (
-						<CardDescription className="line-clamp-2 leading-relaxed">
+						<CardDescription className="line-clamp-1 leading-relaxed">
 							{item.description}
 						</CardDescription>
 					)}
 				</CardHeader>
-				<CardContent>
+				<CardContent></CardContent>
+				<CardFooter>
 					<p className="text-sm text-muted-foreground">
 						{m.list_created_at({
 							date: formattedDate,
 						})}
 					</p>
-				</CardContent>
+				</CardFooter>
 			</Card>
 		</Link>
 	);
