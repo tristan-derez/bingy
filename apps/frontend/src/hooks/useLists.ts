@@ -125,10 +125,10 @@ export function useDeleteList() {
 			queryClient.invalidateQueries({
 				queryKey: ["lists"],
 			});
-			toast.success("List deleted successfully");
+			toast.success(m.toast_delete_list_success());
 		},
 		onError: () => {
-			toast.error("Failed to delete list");
+			toast.error(m.toast_delete_list_error());
 		},
 	});
 }
