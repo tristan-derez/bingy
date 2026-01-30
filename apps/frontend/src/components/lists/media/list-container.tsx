@@ -35,16 +35,21 @@ export function ListContainer({
 	isOwnList,
 }: ListContainerProps) {
 	return (
-		<div className="container px-4 flex flex-col gap-4">
-			<div className="flex items-center justify-between">
-				<h1 className="text-3xl font-bold">{list.name}</h1>
-				<Link
-					to="/user/$username/lists/$slug/details"
-					params={{ username: username, slug: list.slug }}
-					className="text-primary underline hover:text-primary/80"
-				>
-					{m.list_container_see_notes()}
-				</Link>
+		<div className="container px-4 flex flex-col gap-6">
+			<div className="flex flex-col gap-2">
+				<div className="flex items-center justify-between">
+					<h1 className="text-3xl font-bold">{list.name}</h1>
+					<Link
+						to="/user/$username/lists/$slug/details"
+						params={{ username: username, slug: list.slug }}
+						className="text-primary underline hover:text-primary/80"
+					>
+						{m.list_container_see_notes()}
+					</Link>
+				</div>
+				{list.description ? (
+					<p className="text-muted-foreground">{list.description}</p>
+				) : null}
 			</div>
 
 			{list.items.length === 0 ? (
