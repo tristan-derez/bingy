@@ -217,6 +217,7 @@ export const customLists = pgTable(
 	},
 	(table) => [
 		index("idx_custom_lists_user").on(table.userId),
+		unique("unique_user_name").on(table.userId, table.name),
 		unique("unique_user_slug").on(table.userId, table.slug),
 	],
 );

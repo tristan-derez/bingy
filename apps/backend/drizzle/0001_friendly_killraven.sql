@@ -1,0 +1,1 @@
+ALTER TABLE "custom_lists" ADD CONSTRAINT "unique_user_name" UNIQUE("user_id","name");
