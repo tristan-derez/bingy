@@ -39,13 +39,15 @@ export function ListContainer({
 			<div className="flex flex-col gap-2">
 				<div className="flex items-center justify-between">
 					<h1 className="text-3xl font-bold">{list.name}</h1>
-					<Link
-						to="/user/$username/lists/$slug/details"
-						params={{ username: username, slug: list.slug }}
-						className="text-primary underline hover:text-primary/80"
-					>
-						{m.list_container_see_notes()}
-					</Link>
+					{list.items.length > 0 ? (
+						<Link
+							to="/user/$username/lists/$slug/details"
+							params={{ username: username, slug: list.slug }}
+							className="text-primary underline hover:text-primary/80"
+						>
+							{m.list_container_see_notes()}
+						</Link>
+					) : null}
 				</div>
 				{list.description ? (
 					<p className="text-muted-foreground">{list.description}</p>
@@ -54,10 +56,19 @@ export function ListContainer({
 
 			{list.items.length === 0 ? (
 				<p className="text-center py-12 text-muted-foreground">
-					{isOwnList ? m.list_container_empty_own() : m.list_container_empty()}{" "}
-					<Link to="/" className="text-primary underline hover:text-primary/80">
-						{m.list_container_empty_own_cta()}
-					</Link>
+					{isOwnList ? (
+						<>
+							{m.list_container_empty_own()}{" "}
+							<Link
+								to="/"
+								className="text-primary underline hover:text-primary/80"
+							>
+								{m.list_container_empty_own_cta()}
+							</Link>
+						</>
+					) : (
+						m.list_container_empty()
+					)}
 				</p>
 			) : (
 				<>
