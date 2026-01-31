@@ -7,11 +7,11 @@ const options = {
 	trim: true,
 };
 
-export function createSlug(text: string): string {
+export function createSlug(text: string, prefix = "item"): string {
 	const base = slugify(text, options);
 
 	if (base.length === 0) {
-		return `list-${nanoid(8)}`;
+		return `${prefix}-${nanoid(8)}`;
 	}
 
 	return base;

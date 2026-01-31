@@ -248,7 +248,7 @@ userListRoutes.post(
 		try {
 			const user = c.get("user")!;
 			const { name, description, visibility, items } = c.req.valid("json");
-			let slug = createSlug(name);
+			let slug = createSlug(name, "list");
 
 			const list = await db.transaction(async (tx) => {
 				// check if list name already exists for this user
@@ -274,7 +274,7 @@ userListRoutes.post(
 					.limit(1);
 
 				if (existingSlug.length > 0) {
-					slug = createSlug(`${name}-${nanoid(3)}`);
+					slug = createSlug(`${name}-${nanoid(3)}`, "list");
 				}
 
 				const [newList] = await tx
