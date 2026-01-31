@@ -57,7 +57,7 @@ export const PersonBiography = ({ biography }: PersonBiographyProps) => {
 			<p className="whitespace-pre-line">{displayText}</p>
 			<Collapsible open={isExpanded} onOpenChange={setIsExpanded}>
 				<div className={isExpanded ? "hidden" : ""}>
-					<CollapsibleTrigger asChild>
+					<CollapsibleTrigger>
 						<Button variant="link" size="sm" className="p-0">
 							{m.btn_see_more()}
 						</Button>
