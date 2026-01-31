@@ -8,6 +8,11 @@ const options = {
 };
 
 export function createSlug(text: string): string {
-	const base = slugify(text, options) || "list";
-	return `${base}-${nanoid(8)}`;
+	const base = slugify(text, options);
+
+	if (base.length === 0) {
+		return `list-${nanoid(8)}`;
+	}
+
+	return base;
 }
