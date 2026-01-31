@@ -80,7 +80,9 @@ export function DeleteAccountForm() {
 
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>{m.dialog_confirm_action()}</AlertDialogTitle>
+						<AlertDialogTitle>
+							{m.dialog_delete_account_title()}
+						</AlertDialogTitle>
 						<AlertDialogDescription>
 							{m.dialog_delete_account_warning()}
 						</AlertDialogDescription>

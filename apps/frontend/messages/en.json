@@ -8,7 +8,7 @@
 	"toast_error_disable_twofactor": "Failed to disable two-factor authentication",
 	"toast_error_generic": "Something went wrong",
 	"toast_email_sent_account_delete": "An email has been sent. Check your inbox and click on the link to confirm account deletion",
-	"dialog_confirm_action": "Are you absolutely sure?",
+	"dialog_delete_account_title": "Are you absolutely sure?",
 	"dialog_cancel_action": "Cancel",
 	"delete_account_short_desc": "This action is permanent. You’ll receive a confirmation email to complete the deletion.",
 	"dialog_delete_account_warning": "This action cannot be undone. This will permanently delete your account and remove your data from our servers. You'll receive a confirmation email with a link to complete the deletion. Your account will remain active until you confirm via email.",
