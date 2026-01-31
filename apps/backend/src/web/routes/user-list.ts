@@ -8,6 +8,7 @@ import { activity, users } from "#db/schemas/user";
 import { db } from "#lib/database";
 import { serveNotFound } from "#lib/responses/error";
 import { serveCreated, serveData, serveNoContent } from "#lib/responses/resp";
+import { createSlug } from "#lib/slug";
 import { getMediaDetails, NormalizedMedia } from "#lib/tmdb/get-media-details";
 import { sessionMiddleware } from "#web/middlewares/session";
 
@@ -229,7 +230,7 @@ userListRoutes.post(
 		"json",
 		z.object({
 			name: z.string().min(1).max(50),
-			description: z.string().min(1).max(1000).optional(),
+			description: z.string().max(1000).optional(),
 			visibility: z.enum(["public", "limited", "private"]),
 			items: z
 				.array(
@@ -245,7 +246,7 @@ userListRoutes.post(
 	async (c) => {
 		const user = c.get("user")!;
 		const { name, description, visibility, items } = c.req.valid("json");
-		const slug = name.toLowerCase().replace(/\s+/g, "-");
+		const slug = createSlug(name);
 
 		const list = await db.transaction(async (tx) => {
 			const [newList] = await tx
