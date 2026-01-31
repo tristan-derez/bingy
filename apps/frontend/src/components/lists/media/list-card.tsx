@@ -57,7 +57,9 @@ export function ListCard({ item, username }: ListCardProps) {
 				<CardHeader>
 					<div className="flex items-start justify-between gap-2">
 						<div className="flex items-center gap-2 flex-1 min-w-0">
-							<CardTitle className="line-clamp-2">{item.name}</CardTitle>
+							<CardTitle className="line-clamp-1 leading-relaxed">
+								{item.name}
+							</CardTitle>
 							<Badge variant="outline" className="shrink-0">
 								<VisibilityIcon className="h-3 w-3 mr-1" />
 								{visibilityConfig[item.visibility].label()}
