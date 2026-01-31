@@ -54,6 +54,8 @@ export function ListsContainer({
 		}
 	};
 
+	const emptyList = items.length === 0;
+
 	return (
 		<div className="container px-4 flex flex-col gap-4">
 			<h1 className="text-3xl font-bold">{m.lists_page_title()}</h1>
@@ -107,11 +109,13 @@ export function ListsContainer({
 				</div>
 			) : null}
 
-			{items.length === 0 ? (
+			{emptyList ? (
 				<ListsEmptyState isOwnProfile={isOwnProfile} username={username} />
 			) : (
 				<>
-					<div className="flex flex-col gap-4">
+					<div
+						className={`grid gap-4 ${items.length === 1 ? "grid-cols-1" : "grid-cols-1 lg:grid-cols-2"}`}
+					>
 						{items.map((item) => (
 							<ListCard key={item.id} item={item} username={username} />
 						))}
