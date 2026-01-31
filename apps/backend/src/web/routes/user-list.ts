@@ -225,7 +225,6 @@ userListRoutes.get("/watchlist/check/:mediaType/:tmdbId", async (c) => {
 });
 
 // create list
-// create list
 userListRoutes.post(
 	"/",
 	zValidator(
