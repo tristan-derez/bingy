@@ -1,6 +1,7 @@
 import { zValidator } from "@hono/zod-validator";
 import { and, desc, eq, sql } from "drizzle-orm";
 import { Hono } from "hono";
+import { nanoid } from "nanoid";
 import { z } from "zod";
 import { customLists, listItems, media, watchlist } from "#db/schemas/list";
 import type { User } from "#db/schemas/user";
@@ -224,6 +225,7 @@ userListRoutes.get("/watchlist/check/:mediaType/:tmdbId", async (c) => {
 });
 
 // create list
+// create list
 userListRoutes.post(
 	"/",
 	zValidator(
@@ -244,61 +246,93 @@ userListRoutes.post(
 		}),
 	),
 	async (c) => {
-		const user = c.get("user")!;
-		const { name, description, visibility, items } = c.req.valid("json");
-		const slug = createSlug(name);
+		try {
+			const user = c.get("user")!;
+			const { name, description, visibility, items } = c.req.valid("json");
+			let slug = createSlug(name);
 
-		const list = await db.transaction(async (tx) => {
-			const [newList] = await tx
-				.insert(customLists)
-				.values({
+			const list = await db.transaction(async (tx) => {
+				// check if list name already exists for this user
+				const existingName = await tx
+					.select({ id: customLists.id })
+					.from(customLists)
+					.where(
+						and(eq(customLists.name, name), eq(customLists.userId, user.id)),
+					)
+					.limit(1);
+
+				if (existingName.length > 0) {
+					throw new Error("LIST_NAME_EXISTS");
+				}
+
+				// check if slug exists for this user
+				const existingSlug = await tx
+					.select({ id: customLists.id })
+					.from(customLists)
+					.where(
+						and(eq(customLists.slug, slug), eq(customLists.userId, user.id)),
+					)
+					.limit(1);
+
+				if (existingSlug.length > 0) {
+					slug = createSlug(`${name}-${nanoid(3)}`);
+				}
+
+				const [newList] = await tx
+					.insert(customLists)
+					.values({
+						userId: user.id,
+						name: name.trim(),
+						slug,
+						description,
+						visibility,
+					})
+					.returning();
+
+				if (items && items.length > 0) {
+					const mediaIds = await Promise.all(
+						items.map(async (item) => {
+							const [mediaRecord] = await tx
+								.insert(media)
+								.values({
+									tmdbId: item.tmdbId,
+									mediaType: item.mediaType,
+								})
+								.onConflictDoUpdate({
+									target: [media.tmdbId, media.mediaType],
+									set: { updatedAt: sql`now()` },
+								})
+								.returning({ id: media.id });
+
+							return { mediaId: mediaRecord.id, note: item.note };
+						}),
+					);
+
+					await tx.insert(listItems).values(
+						mediaIds.map(({ mediaId, note }) => ({
+							listId: newList.id,
+							mediaId,
+							note,
+						})),
+					);
+				}
+
+				await tx.insert(activity).values({
 					userId: user.id,
-					name,
-					slug,
-					description,
-					visibility,
-				})
-				.returning();
+					activityType: "created_list",
+					customListId: newList.id,
+				});
 
-			if (items && items.length > 0) {
-				// Upsert media records and get their IDs
-				const mediaIds = await Promise.all(
-					items.map(async (item) => {
-						const [mediaRecord] = await tx
-							.insert(media)
-							.values({
-								tmdbId: item.tmdbId,
-								mediaType: item.mediaType,
-							})
-							.onConflictDoUpdate({
-								target: [media.tmdbId, media.mediaType],
-								set: { updatedAt: sql`now()` },
-							})
-							.returning({ id: media.id });
-
-						return { mediaId: mediaRecord.id, note: item.note };
-					}),
-				);
-
-				await tx.insert(listItems).values(
-					mediaIds.map(({ mediaId, note }) => ({
-						listId: newList.id,
-						mediaId,
-						note,
-					})),
-				);
-			}
-
-			await tx.insert(activity).values({
-				userId: user.id,
-				activityType: "created_list",
-				customListId: newList.id,
+				return newList;
 			});
 
-			return newList;
-		});
-
-		return c.json(list, 201);
+			return c.json(list, 201);
+		} catch (error) {
+			if (error instanceof Error && error.message === "LIST_NAME_EXISTS") {
+				return c.json({ error: "You already have a list with this name" }, 409);
+			}
+			return c.json({ error: "Failed to create list" }, 500);
+		}
 	},
 );
 
