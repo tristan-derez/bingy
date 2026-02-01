@@ -60,28 +60,26 @@ export function ListCard({ item, username }: ListCardProps) {
 							<CardTitle className="line-clamp-1 leading-relaxed">
 								{item.name}
 							</CardTitle>
-							<Badge variant="outline" className="shrink-0">
-								<VisibilityIcon className="h-3 w-3 mr-1" />
-								{visibilityConfig[item.visibility].label()}
-							</Badge>
 						</div>
 						<div onClick={(e) => e.preventDefault()}>
 							<DeleteListButton listId={item.id} listName={item.name} />
 						</div>
 					</div>
-					{item.description && (
-						<CardDescription className="line-clamp-1 leading-relaxed">
-							{item.description}
-						</CardDescription>
-					)}
+					<CardDescription className="line-clamp-1 leading-relaxed">
+						{item.description || "\u00A0"}
+					</CardDescription>
 				</CardHeader>
 				<CardContent></CardContent>
-				<CardFooter>
+				<CardFooter className="flex justify-between">
 					<p className="text-sm text-muted-foreground">
 						{m.list_created_at({
 							date: formattedDate,
 						})}
 					</p>
+					<Badge variant="outline" className="shrink-0">
+						<VisibilityIcon className="h-3 w-3 mr-1" />
+						{visibilityConfig[item.visibility].label()}
+					</Badge>
 				</CardFooter>
 			</Card>
 		</Link>
