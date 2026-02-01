@@ -9,12 +9,15 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import { ListAddedItemMediaCard } from "@/components/lists/media/list-added-item-card";
+import { ListRankedItemsContainer } from "@/components/lists/media/list-ranked-items-container";
 import { ListSearchAddInput } from "@/components/lists/media/list-search-add";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
 	Form,
 	FormControl,
+	FormDescription,
 	FormField,
 	FormItem,
 	FormLabel,
@@ -54,8 +57,11 @@ function CreateListPage() {
 			name: "",
 			description: "",
 			visibility: "public",
+			type: "unranked",
 		},
 	});
+
+	const listType = form.watch("type");
 
 	const handleRemoveItem = (tmdbId: number, mediaType: string) => {
 		setSelectedItems(
@@ -63,6 +69,10 @@ function CreateListPage() {
 				(item) => !(item.tmdbId === tmdbId && item.mediaType === mediaType),
 			),
 		);
+	};
+
+	const handleReorder = (reorderedItems: typeof selectedItems) => {
+		setSelectedItems(reorderedItems);
 	};
 
 	const handleUpdateNote = (
@@ -84,10 +94,11 @@ function CreateListPage() {
 			...values,
 			items:
 				selectedItems.length > 0
-					? selectedItems.map((item) => ({
+					? selectedItems.map((item, index) => ({
 							tmdbId: item.tmdbId,
 							mediaType: item.mediaType,
 							note: item.note,
+							position: values.type === "ranked" ? index + 1 : undefined,
 						}))
 					: undefined,
 		};
@@ -185,6 +196,30 @@ function CreateListPage() {
 
 							<FormField
 								control={form.control}
+								name="type"
+								render={({ field }) => (
+									<FormItem className="flex items-center justify-between">
+										<div className="flex gap-2">
+											<FormControl>
+												<Checkbox
+													checked={field.value === "ranked"}
+													onCheckedChange={(checked) =>
+														field.onChange(checked ? "ranked" : "unranked")
+													}
+												/>
+											</FormControl>
+											<FormLabel>{m.form_create_list_type_ranked()}</FormLabel>
+										</div>
+
+										<FormDescription>
+											{m.form_create_list_type_ranked_description()}
+										</FormDescription>
+									</FormItem>
+								)}
+							/>
+
+							<FormField
+								control={form.control}
 								name="description"
 								render={({ field }) => (
 									<FormItem>
@@ -246,23 +281,32 @@ function CreateListPage() {
 							{m.list_added_items_clear_all()}
 						</Button>
 					</div>
-					<div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
-						{selectedItems.toReversed().map((item) => {
-							return (
-								<ListAddedItemMediaCard
-									key={`${item.tmdbId}-${item.mediaType}`}
-									tmdbId={item.tmdbId}
-									mediaType={item.mediaType}
-									posterPath={item.posterPath}
-									title={item.title}
-									releaseDate={item.releaseDate}
-									note={item.note}
-									onRemove={handleRemoveItem}
-									onUpdateNote={handleUpdateNote}
-								/>
-							);
-						})}
-					</div>
+					{listType === "ranked" ? (
+						<ListRankedItemsContainer
+							items={selectedItems}
+							onRemove={handleRemoveItem}
+							onUpdateNote={handleUpdateNote}
+							onReorder={handleReorder}
+						/>
+					) : (
+						<div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+							{selectedItems.toReversed().map((item) => {
+								return (
+									<ListAddedItemMediaCard
+										key={`${item.tmdbId}-${item.mediaType}`}
+										tmdbId={item.tmdbId}
+										mediaType={item.mediaType}
+										posterPath={item.posterPath}
+										title={item.title}
+										releaseDate={item.releaseDate}
+										note={item.note}
+										onRemove={handleRemoveItem}
+										onUpdateNote={handleUpdateNote}
+									/>
+								);
+							})}
+						</div>
+					)}
 				</div>
 			) : null}
 		</div>

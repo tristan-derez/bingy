@@ -27,6 +27,7 @@ type ListsResponse = Pretty<{
 		name: string;
 		slug: string;
 		description: string | null;
+		type: "unranked" | "ranked";
 		visibility: "limited" | "private" | "public";
 	}>;
 	page: number;
@@ -128,6 +129,14 @@ export const postMediaList = async (payload: AddMediaToListPayload) => {
 	return res.data;
 };
 
+export const patchList = async (listId: string, payload: UpdateListPayload) => {
+	const res = await apiFetch<UpdateListResponse>(`/lists/${listId}`, {
+		method: "PATCH",
+		body: payload,
+	});
+	return res;
+};
+
 export const deleteMediaList = async (payload: RemoveMediaFromListPayload) => {
 	await apiFetch(
 		`/lists/${payload.listId}/items/${payload.mediaType}/${payload.tmdbId}`,
@@ -159,10 +168,25 @@ export type RemoveMediaFromListPayload = Pretty<{
 export type CreateListPayload = Pretty<{
 	name: string;
 	description?: string;
+	type: "unranked" | "ranked";
 	visibility: "public" | "limited" | "private";
 	items?: Array<{
 		tmdbId: number;
 		mediaType: "movie" | "tv";
+		position?: number;
+		note?: string;
+	}>;
+}>;
+
+export type UpdateListPayload = Pretty<{
+	name?: string;
+	description?: string | null;
+	type?: "unranked" | "ranked";
+	visibility?: "public" | "limited" | "private";
+	items?: Array<{
+		tmdbId: number;
+		mediaType: "movie" | "tv";
+		position?: number;
 		note?: string;
 	}>;
 }>;
@@ -173,6 +197,20 @@ export type CreateListResponse = Pretty<{
 	name: string;
 	slug: string;
 	description: string | null;
+	type: "unranked" | "ranked";
+	visibility: "limited" | "private" | "public";
+	createdAt: Date;
+	updatedAt: Date | null;
+	deletedAt: Date | null;
+}>;
+
+export type UpdateListResponse = Pretty<{
+	id: string;
+	userId: string;
+	name: string;
+	slug: string;
+	description: string | null;
+	type: "unranked" | "ranked";
 	visibility: "limited" | "private" | "public";
 	createdAt: Date;
 	updatedAt: Date | null;
@@ -199,6 +237,7 @@ export type FetchListBySlugResponse = Pretty<{
 	name: string;
 	slug: string;
 	description: string | null;
+	type: "unranked" | "ranked";
 	visibility: "limited" | "private" | "public";
 	createdAt: Date;
 	updatedAt: Date | null;

@@ -10,5 +10,6 @@ export const createListSchema = z.object({
 		.string()
 		.max(1000, m.schema_create_list_description_max())
 		.optional(),
+	type: z.enum(["unranked", "ranked"]),
 	visibility: z.enum(["public", "limited", "private"]),
 });

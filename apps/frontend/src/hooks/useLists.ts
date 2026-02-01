@@ -12,11 +12,13 @@ import {
 	fetchListBySlug,
 	fetchLists,
 	fetchWatchlist,
+	patchList,
 	postList,
 	postMediaList,
 	postMediaWatchlist,
 	type RemoveMediaFromListPayload,
 	type RemoveMediaFromWatchlistPayload,
+	type UpdateListPayload,
 } from "@/api/lists";
 import { m } from "@/paraglide/messages";
 
@@ -110,6 +112,27 @@ export function useCreateList() {
 	return useMutation({
 		mutationFn: async (payload: CreateListPayload) => {
 			return postList(payload);
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: ["lists"],
+			});
+		},
+	});
+}
+
+export function useUpdateList() {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: async ({
+			listId,
+			payload,
+		}: {
+			listId: string;
+			payload: UpdateListPayload;
+		}) => {
+			return patchList(listId, payload);
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({

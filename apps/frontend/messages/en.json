@@ -581,6 +581,8 @@
 	"form_create_list_visibility_item_limited_short": "Limited",
 	"form_create_list_visibility_item_private_short": "Private",
 	"form_create_list_visibility_select_trigger_placeholder": "Select visibility",
+	"form_create_list_type_ranked": "Ranked list",
+	"form_create_list_type_ranked_description": "Show position for medias",
 	"form_create_list_add_items_label": "Add Items",
 	"form_create_list_add_items_helper": "Search for movies and TV shows to add to your list",
 	"form_create_list_btn_create": "Create list",

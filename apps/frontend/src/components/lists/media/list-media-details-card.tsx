@@ -13,10 +13,15 @@ interface ListMediaDetailsCardProps {
 		mediaType: "movie" | "tv";
 		addedAt: Date;
 		note: string | null;
+		position?: number;
 	};
+	showPosition?: boolean;
 }
 
-export const ListMediaDetailsCard = ({ item }: ListMediaDetailsCardProps) => {
+export const ListMediaDetailsCard = ({
+	item,
+	showPosition,
+}: ListMediaDetailsCardProps) => {
 	const imageUrl = item.posterPath
 		? `https://image.tmdb.org/t/p/w500${item.posterPath}`
 		: fallbackPoster;
@@ -30,6 +35,14 @@ export const ListMediaDetailsCard = ({ item }: ListMediaDetailsCardProps) => {
 
 	return (
 		<div className="flex gap-4">
+			{showPosition && item.position !== undefined && (
+				<div className="flex items-center justify-center w-8 shrink-0">
+					<span className="text-lg font-bold text-muted-foreground">
+						{item.position}
+					</span>
+				</div>
+			)}
+
 			<div className="relative w-24 h-36 shrink-0 overflow-hidden rounded-lg">
 				<img
 					src={imageUrl}

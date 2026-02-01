@@ -580,6 +580,8 @@
 	"form_create_list_visibility_item_public_short": "Publique",
 	"form_create_list_visibility_item_limited_short": "Limitée",
 	"form_create_list_visibility_item_private_short": "Privée",
+	"form_create_list_type_ranked": "Liste classée",
+	"form_create_list_type_ranked_description": "Affiche la position des médias",
 	"form_create_list_add_items_label": "Ajouter des éléments",
 	"form_create_list_btn_create": "Créer la liste",
 	"form_create_list_btn_creating": "Création...",

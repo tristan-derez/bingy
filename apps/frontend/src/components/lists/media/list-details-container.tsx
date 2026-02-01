@@ -9,6 +9,8 @@ type ListDetailsContainerProps = {
 		name: string;
 		slug: string;
 		description: string | null;
+		visibility: "public" | "limited" | "private";
+		type: "unranked" | "ranked";
 		items: Array<{
 			id: number;
 			title: string;
@@ -18,6 +20,7 @@ type ListDetailsContainerProps = {
 			mediaType: "movie" | "tv";
 			addedAt: Date;
 			note: string | null;
+			position?: number;
 		}>;
 	};
 	page?: number;
@@ -34,6 +37,11 @@ export function ListDetailsContainer({
 	onPageChange,
 	isOwnList,
 }: ListDetailsContainerProps) {
+	const sortedItems =
+		list.type === "ranked"
+			? [...list.items].sort((a, b) => (a.position ?? 0) - (b.position ?? 0))
+			: list.items;
+
 	return (
 		<div className="container px-4 flex flex-col gap-6">
 			<div className="flex flex-col gap-2">
@@ -63,12 +71,15 @@ export function ListDetailsContainer({
 			) : (
 				<>
 					<div className="flex flex-col divide-y">
-						{list.items.map((item) => (
+						{sortedItems.map((item) => (
 							<div
 								key={`${item.mediaType}-${item.id}`}
 								className="py-3 first:pt-0 last:pb-0"
 							>
-								<ListMediaDetailsCard item={item} />
+								<ListMediaDetailsCard
+									item={item}
+									showPosition={list.type === "ranked"}
+								/>
 							</div>
 						))}
 					</div>
