@@ -15,6 +15,13 @@
       "when": 1769880190048,
       "tag": "0001_friendly_killraven",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1769962341602,
+      "tag": "0002_plain_warlock",
+      "breakpoints": true
     }
   ]
 }

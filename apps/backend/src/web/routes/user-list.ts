@@ -232,13 +232,15 @@ userListRoutes.post(
 		z.object({
 			name: z.string().min(1).max(50),
 			description: z.string().max(1000).optional(),
-			visibility: z.enum(["public", "limited", "private"]),
+			visibility: z.enum(["public", "limited", "private"]).default("public"),
+			type: z.enum(["unranked", "ranked"]).default("unranked"),
 			items: z
 				.array(
 					z.object({
 						tmdbId: z.number(),
 						mediaType: z.enum(["movie", "tv"]),
 						note: z.string().max(500).optional(),
+						position: z.number().optional(),
 					}),
 				)
 				.optional(),
@@ -247,7 +249,8 @@ userListRoutes.post(
 	async (c) => {
 		try {
 			const user = c.get("user")!;
-			const { name, description, visibility, items } = c.req.valid("json");
+			const { name, description, visibility, type, items } =
+				c.req.valid("json");
 			let slug = createSlug(name, "list");
 
 			const list = await db.transaction(async (tx) => {
@@ -285,10 +288,27 @@ userListRoutes.post(
 						slug,
 						description,
 						visibility,
+						type,
 					})
 					.returning();
 
 				if (items && items.length > 0) {
+					// validate positions for ranked lists
+					if (type === "ranked") {
+						const positions = items
+							.map((item) => item.position)
+							.filter((p): p is number => p !== undefined);
+
+						if (positions.length !== items.length) {
+							throw new Error("RANKED_LIST_MISSING_POSITIONS");
+						}
+
+						const uniquePositions = new Set(positions);
+						if (uniquePositions.size !== positions.length) {
+							throw new Error("RANKED_LIST_DUPLICATE_POSITIONS");
+						}
+					}
+
 					const mediaIds = await Promise.all(
 						items.map(async (item) => {
 							const [mediaRecord] = await tx
@@ -303,15 +323,20 @@ userListRoutes.post(
 								})
 								.returning({ id: media.id });
 
-							return { mediaId: mediaRecord.id, note: item.note };
+							return {
+								mediaId: mediaRecord.id,
+								note: item.note,
+								position: item.position,
+							};
 						}),
 					);
 
 					await tx.insert(listItems).values(
-						mediaIds.map(({ mediaId, note }) => ({
+						mediaIds.map(({ mediaId, note, position }) => ({
 							listId: newList.id,
 							mediaId,
 							note,
+							position: type === "ranked" ? position : null,
 						})),
 					);
 				}
@@ -327,8 +352,25 @@ userListRoutes.post(
 
 			return c.json(list, 201);
 		} catch (error) {
-			if (error instanceof Error && error.message === "LIST_NAME_EXISTS") {
-				return c.json({ error: "You already have a list with this name" }, 409);
+			if (error instanceof Error) {
+				if (error.message === "LIST_NAME_EXISTS") {
+					return c.json(
+						{ error: "You already have a list with this name" },
+						409,
+					);
+				}
+				if (error.message === "RANKED_LIST_MISSING_POSITIONS") {
+					return c.json(
+						{ error: "All items must have positions for ranked lists" },
+						400,
+					);
+				}
+				if (error.message === "RANKED_LIST_DUPLICATE_POSITIONS") {
+					return c.json(
+						{ error: "Positions must be unique in ranked lists" },
+						400,
+					);
+				}
 			}
 			return c.json({ error: "Failed to create list" }, 500);
 		}
@@ -345,47 +387,89 @@ userListRoutes.post(
 			mediaType: z.enum(["movie", "tv"]),
 			listId: z.uuidv7(),
 			note: z.string().max(500).optional(),
+			position: z.number().optional(),
 		}),
 	),
 	async (c) => {
-		const user = c.get("user")!;
-		const { tmdbId, mediaType, listId, note } = c.req.valid("json");
+		try {
+			const user = c.get("user")!;
+			const { tmdbId, mediaType, listId, note, position } = c.req.valid("json");
 
-		await db.transaction(async (tx) => {
-			// Verify list belongs to user
-			const list = await tx.query.customLists.findFirst({
-				where: and(eq(customLists.id, listId), eq(customLists.userId, user.id)),
+			const updatedList = await db.transaction(async (tx) => {
+				// verify list belongs to user
+				const list = await tx.query.customLists.findFirst({
+					where: and(
+						eq(customLists.id, listId),
+						eq(customLists.userId, user.id),
+					),
+				});
+
+				if (!list) {
+					throw new Error("LIST_NOT_FOUND");
+				}
+
+				// validate position for ranked lists
+				if (list.type === "ranked") {
+					if (position === undefined) {
+						throw new Error("RANKED_LIST_REQUIRES_POSITION");
+					}
+
+					// check if position already exists
+					const existingPosition = await tx.query.listItems.findFirst({
+						where: and(
+							eq(listItems.listId, listId),
+							eq(listItems.position, position),
+						),
+					});
+
+					if (existingPosition) {
+						throw new Error("POSITION_ALREADY_EXISTS");
+					}
+				}
+
+				// upsert media
+				const [mediaRecord] = await tx
+					.insert(media)
+					.values({
+						tmdbId,
+						mediaType,
+					})
+					.onConflictDoUpdate({
+						target: [media.tmdbId, media.mediaType],
+						set: { updatedAt: sql`now()` },
+					})
+					.returning({ id: media.id });
+
+				// add to list
+				await tx
+					.insert(listItems)
+					.values({
+						listId,
+						mediaId: mediaRecord.id,
+						note,
+						position: list.type === "ranked" ? position : null,
+					})
+					.onConflictDoNothing();
 			});
 
-			if (!list) {
-				throw new Error("List not found");
+			return c.json(updatedList, 201);
+		} catch (error) {
+			if (error instanceof Error) {
+				if (error.message === "LIST_NOT_FOUND") {
+					return c.json({ error: "List not found" }, 404);
+				}
+				if (error.message === "RANKED_LIST_REQUIRES_POSITION") {
+					return c.json(
+						{ error: "Position is required for ranked lists" },
+						400,
+					);
+				}
+				if (error.message === "POSITION_ALREADY_EXISTS") {
+					return c.json({ error: "Position already taken in this list" }, 409);
+				}
 			}
-
-			// Upsert media
-			const [mediaRecord] = await tx
-				.insert(media)
-				.values({
-					tmdbId,
-					mediaType,
-				})
-				.onConflictDoUpdate({
-					target: [media.tmdbId, media.mediaType],
-					set: { updatedAt: sql`now()` },
-				})
-				.returning({ id: media.id });
-
-			// Add to list
-			await tx
-				.insert(listItems)
-				.values({
-					listId,
-					mediaId: mediaRecord.id,
-					note,
-				})
-				.onConflictDoNothing();
-		});
-
-		return serveCreated(c, { success: true }, 201);
+			return c.json({ error: "Failed to add item to list" }, 500);
+		}
 	},
 );
 
@@ -414,7 +498,7 @@ userListRoutes.get("/:username", async (c) => {
 				eq(customLists.visibility, "public"),
 			);
 
-	// Apply visibility filter if user is viewing their own profile
+	// apply visibility filter if user is viewing their own profile
 	if (isOwnProfile && filter !== "all") {
 		filters = and(
 			eq(customLists.userId, targetUser.id),

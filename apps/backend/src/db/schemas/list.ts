@@ -208,6 +208,10 @@ export const customLists = pgTable(
 			.references(() => users.id, { onDelete: "cascade" }),
 		name: varchar("name", { length: 50 }).notNull(),
 		slug: varchar("slug", { length: 200 }).notNull(),
+		type: varchar("type", { length: 20 })
+			.notNull()
+			.default("unranked")
+			.$type<"unranked" | "ranked">(),
 		description: varchar("description", { length: 1000 }),
 		visibility: varchar("visibility", { length: 20 })
 			.notNull()
@@ -231,6 +235,7 @@ export const listItems = pgTable(
 		mediaId: uuid("media_id")
 			.notNull()
 			.references(() => media.id, { onDelete: "cascade" }),
+		position: integer("position"), // null for unranked
 		note: varchar("note", { length: 500 }),
 		addedAt: timestamp("added_at").notNull().defaultNow(),
 	},
@@ -238,6 +243,8 @@ export const listItems = pgTable(
 		primaryKey({ columns: [table.listId, table.mediaId] }),
 		index("idx_list_items_list").on(table.listId),
 		index("idx_list_items_media").on(table.mediaId),
+		index("idx_list_items_position").on(table.listId, table.position),
+		unique("unique_list_position").on(table.listId, table.position),
 	],
 );
 
