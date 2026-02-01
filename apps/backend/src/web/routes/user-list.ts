@@ -647,11 +647,19 @@ userListRoutes.get("/:username/lists/:slug", async (c) => {
 					mediaType: item.media.mediaType,
 					addedAt: item.listItem.addedAt,
 					note: item.listItem.note,
+					position: item.listItem.position,
 				};
 			}),
 		)
 	).filter(
-		(item): item is NormalizedMedia & { note: string | null } => item !== null,
+		(
+			item,
+		): item is NormalizedMedia & {
+			note: string | null;
+			position: number | null;
+			addedAt: Date;
+			mediaType: string;
+		} => item !== null,
 	);
 
 	return c.json({
