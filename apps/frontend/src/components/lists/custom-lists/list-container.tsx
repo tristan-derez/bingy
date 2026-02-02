@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { ListMediaCard } from "@/components/lists/custom-lists/unranked-list/list-media-card";
+import { ListPagination } from "@/components/lists/list-pagination";
 import { m } from "@/paraglide/messages";
-import { ListPagination } from "../../list-pagination";
 
 type ListContainerProps = {
 	username: string;

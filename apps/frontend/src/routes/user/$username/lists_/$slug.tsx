@@ -1,7 +1,7 @@
 import { createFileRoute, useRouteContext } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import { useState } from "react";
-import { ListContainer } from "@/components/lists/media/list-container";
+import { ListContainer } from "@/components/lists/custom-lists/list-container";
 import { useListBySlug } from "@/hooks/useLists";
 import { localeRegionAtom } from "@/lib/atoms/region";
 
