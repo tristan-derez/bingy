@@ -1,6 +1,6 @@
+import { WatchlistToggleButton } from "../watchlist/watchlist-toggle-button";
 import { FavoriteToggleButton } from "./favorite-toggle-button";
 import { WatchToggleButton } from "./watch-toggle-button";
-import { WatchlistToggleButton } from "./watchlist-toggle-button";
 
 interface MediaActionBarProps {
 	movie?: {

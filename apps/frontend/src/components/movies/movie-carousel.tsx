@@ -1,6 +1,7 @@
 import useEmblaCarousel from "embla-carousel-react";
 import { useId } from "react";
 import type { Schemas } from "shared";
+import { MovieCard } from "@/components/movies/movie-card";
 import {
 	NextButton,
 	PrevButton,
@@ -10,7 +11,6 @@ import {
 	CarouselGradient,
 	useCarouselGradient,
 } from "@/components/ui/embla/embla-carousel-gradient";
-import { MovieCard } from "./movie-card";
 
 interface MovieCarouselProps {
 	movies: Schemas.Movie[];

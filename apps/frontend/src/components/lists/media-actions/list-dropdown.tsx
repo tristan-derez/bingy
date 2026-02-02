@@ -19,8 +19,8 @@ import { useTv } from "@/hooks/useTv";
 import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { getLastAiredEpisodeInfo } from "@/utils/season-helper";
+import { WatchlistDropdownItem } from "../watchlist/watchlist-dropdown-item";
 import { LogReviewDialog } from "./log-review-dialog";
-import { WatchlistDropdownItem } from "./media/watchlist-dropdown-item";
 import { StarRating } from "./star-rating";
 
 interface ListDropdownProps {

@@ -1,5 +1,5 @@
 import { IconDeviceTv, IconLayoutGrid, IconMovie } from "@tabler/icons-react";
-import { HistoryMediaCard } from "@/components/lists/media/history-media-card";
+import { HistoryMediaCard } from "@/components/lists/history/history-media-card";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { m } from "@/paraglide/messages";
 import { ListPagination } from "../list-pagination";

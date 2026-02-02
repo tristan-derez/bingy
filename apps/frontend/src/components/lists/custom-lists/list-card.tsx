@@ -13,7 +13,7 @@ import {
 import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
-import { DeleteListButton } from "./delete-list-button";
+import { DeleteListButton } from "../custom-lists/delete-list-button";
 
 type ListCardProps = {
 	item: {

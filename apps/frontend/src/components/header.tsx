@@ -7,11 +7,10 @@ import {
 } from "@tabler/icons-react";
 import { useRouteContext } from "@tanstack/react-router";
 import { useState } from "react";
-import { m } from "@/paraglide/messages";
-import { LocaleRegionDropdown } from "./locale-region-dropdown";
-import { ProfileDropdown } from "./profile-dropdown";
-import { SearchCombobox } from "./search/search-combobox";
-import { MobileBottomNav, MobileTopBar } from "./ui/mobile-navbar";
+import { LocaleRegionDropdown } from "@/components/locale-region-dropdown";
+import { ProfileDropdown } from "@/components/profile-dropdown";
+import { SearchCombobox } from "@/components/search/search-combobox";
+import { MobileBottomNav, MobileTopBar } from "@/components/ui/mobile-navbar";
 import {
 	MobileNavbarLogo,
 	NavBody,
@@ -19,7 +18,8 @@ import {
 	NavbarButton,
 	NavbarLogo,
 	NavItems,
-} from "./ui/resizable-navbar";
+} from "@/components/ui/resizable-navbar";
+import { m } from "@/paraglide/messages";
 
 export default function Header() {
 	const { session } = useRouteContext({ from: "__root__" });

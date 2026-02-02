@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import { MovieBadge } from "@/components/badges/movie-badge";
 import { TvShowBadge } from "@/components/badges/tv-badge";
-import { ListDropdown } from "../list-dropdown";
+import { ListDropdown } from "../media-actions/list-dropdown";
 import { WatchlistToggleButton } from "./watchlist-toggle-button";
 
 interface WatchlistMediaCardProps {

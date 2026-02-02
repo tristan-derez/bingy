@@ -12,19 +12,19 @@ import {
 import { Link, useRouter } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
-import { queryClient } from "@/integrations/tanstack-query/root-provider";
-import { authClient } from "@/lib/auth-client";
-import { sessionQueryOptions } from "@/lib/queries/session";
-import { cn } from "@/lib/utils";
-import { m } from "@/paraglide/messages";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu";
+import { queryClient } from "@/integrations/tanstack-query/root-provider";
+import { authClient } from "@/lib/auth-client";
+import { sessionQueryOptions } from "@/lib/queries/session";
+import { cn } from "@/lib/utils";
+import { m } from "@/paraglide/messages";
 
 type SessionData = ReturnType<typeof authClient.useSession>["data"];
 

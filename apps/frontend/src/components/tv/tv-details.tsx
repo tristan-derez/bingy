@@ -9,6 +9,13 @@ import { Link, useRouteContext } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
+import { ResourceNotFound } from "@/components/errors/resource-not-found";
+import { MediaActionBar } from "@/components/lists/media-actions/media-action-bar";
+import { LoadingCentered } from "@/components/loading/loading-centered";
+import { MediaOverview } from "@/components/medias/overview";
+import { CastCarousel } from "@/components/person/cast-carousel";
+import { SocialLinks } from "@/components/social-links";
+import { BackButton } from "@/components/ui/back-button";
 import { Badge } from "@/components/ui/badge";
 import {
 	Card,
@@ -17,19 +24,12 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { WatchProvidersSection } from "@/components/watch-providers/watch-providers-section";
 import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { shortenCountryName } from "@/utils/shorten-country-name";
-import { ResourceNotFound } from "../errors/resource-not-found";
-import { MediaActionBar } from "../lists/media/media-action-bar";
-import { LoadingCentered } from "../loading/loading-centered";
-import { MediaOverview } from "../medias/overview";
-import { CastCarousel } from "../person/cast-carousel";
-import { SocialLinks } from "../social-links";
-import { BackButton } from "../ui/back-button";
-import { Separator } from "../ui/separator";
-import { WatchProvidersSection } from "../watch-providers/watch-providers-section";
 import { TVStatusCard } from "./tv-details/status-card";
 
 interface TvDetailViewProps {

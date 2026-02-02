@@ -1,16 +1,16 @@
 import { Link } from "@tanstack/react-router";
-import { ListMediaCard } from "@/components/lists/media/list-media-card";
+import { ListMediaDetailsCard } from "@/components/lists/custom-lists/details/list-media-details-card";
 import { m } from "@/paraglide/messages";
-import { ListPagination } from "../list-pagination";
+import { ListPagination } from "../../list-pagination";
 
-type ListContainerProps = {
+type ListDetailsContainerProps = {
 	username: string;
 	list: {
 		name: string;
 		slug: string;
 		description: string | null;
-		type: "unranked" | "ranked";
 		visibility: "public" | "limited" | "private";
+		type: "unranked" | "ranked";
 		items: Array<{
 			id: number;
 			title: string;
@@ -29,14 +29,14 @@ type ListContainerProps = {
 	isOwnList: boolean;
 };
 
-export function ListContainer({
+export function ListDetailsContainer({
 	username,
 	list,
 	page,
 	totalPages,
 	onPageChange,
 	isOwnList,
-}: ListContainerProps) {
+}: ListDetailsContainerProps) {
 	const sortedItems =
 		list.type === "ranked"
 			? [...list.items].sort((a, b) => (a.position ?? 0) - (b.position ?? 0))
@@ -47,16 +47,15 @@ export function ListContainer({
 			<div className="flex flex-col gap-2">
 				<div className="flex items-center justify-between">
 					<h1 className="text-3xl font-bold">{list.name}</h1>
-					{list.items.length > 0 ? (
-						<Link
-							to="/user/$username/lists/$slug/details"
-							params={{ username: username, slug: list.slug }}
-							className="text-primary underline hover:text-primary/80"
-						>
-							{m.list_container_see_notes()}
-						</Link>
-					) : null}
+					<Link
+						to="/user/$username/lists/$slug"
+						params={{ username: username, slug: list.slug }}
+						className="text-primary underline hover:text-primary/80"
+					>
+						{m.list_details_container_hide_notes()}
+					</Link>
 				</div>
+
 				{list.description ? (
 					<p className="text-muted-foreground">{list.description}</p>
 				) : null}
@@ -64,29 +63,24 @@ export function ListContainer({
 
 			{list.items.length === 0 ? (
 				<p className="text-center py-12 text-muted-foreground">
-					{isOwnList ? (
-						<>
-							{m.list_container_empty_own()}{" "}
-							<Link
-								to="/"
-								className="text-primary underline hover:text-primary/80"
-							>
-								{m.list_container_empty_own_cta()}
-							</Link>
-						</>
-					) : (
-						m.list_container_empty()
-					)}
+					{isOwnList ? m.list_container_empty_own() : m.list_container_empty()}{" "}
+					<Link to="/" className="text-primary underline hover:text-primary/80">
+						{m.list_container_empty_own_cta()}
+					</Link>
 				</p>
 			) : (
 				<>
-					<div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-5 xl:grid-cols-8 gap-2 sm:gap-4">
+					<div className="flex flex-col divide-y">
 						{sortedItems.map((item) => (
-							<ListMediaCard
+							<div
 								key={`${item.mediaType}-${item.id}`}
-								item={item}
-								showPosition={list.type === "ranked"}
-							/>
+								className="py-3 first:pt-0 last:pb-0"
+							>
+								<ListMediaDetailsCard
+									item={item}
+									showPosition={list.type === "ranked"}
+								/>
+							</div>
 						))}
 					</div>
 

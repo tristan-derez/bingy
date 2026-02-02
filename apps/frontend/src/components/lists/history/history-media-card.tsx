@@ -4,7 +4,7 @@ import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import { MovieBadge } from "@/components/badges/movie-badge";
 import { TvShowBadge } from "@/components/badges/tv-badge";
 import { formatEpisode } from "@/utils/format-season-episode";
-import { ListDropdown } from "../list-dropdown";
+import { ListDropdown } from "../media-actions/list-dropdown";
 
 interface HistoryMediaCardProps {
 	item: {

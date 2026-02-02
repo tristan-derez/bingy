@@ -4,7 +4,7 @@ import { useState } from "react";
 import {
 	type MediaFilter,
 	WatchlistContainer,
-} from "@/components/lists/media/watchlist-container";
+} from "@/components/lists/watchlist/watchlist-container";
 import { GlobalLoadingIndicator } from "@/components/loading/loading-global";
 import { useWatchlist } from "@/hooks/useLists";
 import { localeRegionAtom } from "@/lib/atoms/region";

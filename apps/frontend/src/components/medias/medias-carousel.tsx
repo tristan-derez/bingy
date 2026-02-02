@@ -1,6 +1,7 @@
 import useEmblaCarousel from "embla-carousel-react";
 import { useId } from "react";
 import type { Schemas } from "shared";
+import { MediaCard } from "@/components/medias/media-card";
 import {
 	NextButton,
 	PrevButton,
@@ -10,7 +11,6 @@ import {
 	CarouselGradient,
 	useCarouselGradient,
 } from "@/components/ui/embla/embla-carousel-gradient";
-import { MediaCard } from "./media-card";
 
 interface MediaCarouselProps {
 	medias:

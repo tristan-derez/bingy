@@ -3,7 +3,7 @@ import { useState } from "react";
 import {
 	ListsContainer,
 	type VisibilityFilter,
-} from "@/components/lists/media/lists-container";
+} from "@/components/lists/custom-lists/lists-container";
 import { GlobalLoadingIndicator } from "@/components/loading/loading-global";
 import { useLists } from "@/hooks/useLists";
 import { m } from "@/paraglide/messages";

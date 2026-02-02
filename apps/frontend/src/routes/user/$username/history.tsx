@@ -4,7 +4,7 @@ import { useState } from "react";
 import {
 	HistoryContainer,
 	type MediaFilter,
-} from "@/components/lists/media/history-container";
+} from "@/components/lists/history/history-container";
 import { GlobalLoadingIndicator } from "@/components/loading/loading-global";
 import { useRatings } from "@/hooks/useRating";
 import { localeRegionAtom } from "@/lib/atoms/region";

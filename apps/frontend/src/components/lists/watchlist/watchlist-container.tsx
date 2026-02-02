@@ -1,5 +1,5 @@
 import { IconDeviceTv, IconLayoutGrid, IconMovie } from "@tabler/icons-react";
-import { WatchlistMediaCard } from "@/components/lists/media/watchlist-media-card";
+import { WatchlistMediaCard } from "@/components/lists/watchlist/watchlist-media-card";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { m } from "@/paraglide/messages";
 import { ListPagination } from "../list-pagination";

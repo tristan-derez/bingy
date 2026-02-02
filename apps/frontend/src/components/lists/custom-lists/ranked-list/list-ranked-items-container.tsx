@@ -17,7 +17,7 @@ import {
 	sortableKeyboardCoordinates,
 	verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { ListRankedItemCard } from "@/components/lists/media/list-ranked-item-card";
+import { ListRankedItemCard } from "@/components/lists/custom-lists/ranked-list/list-ranked-item-card";
 import type { CreateListDraftItem } from "@/lib/atoms/draft-list";
 
 interface ListRankedItemsContainerProps {

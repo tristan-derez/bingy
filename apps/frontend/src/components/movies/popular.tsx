@@ -1,8 +1,8 @@
 import type { Schemas } from "shared";
 import { toast } from "sonner";
 import { LoadingSection } from "@/components/loading/loading-section";
+import { MovieCarousel } from "@/components/movies/movie-carousel";
 import { m } from "@/paraglide/messages";
-import { MovieCarousel } from "./movie-carousel";
 
 interface PopularMoviesProps {
 	title: string;
