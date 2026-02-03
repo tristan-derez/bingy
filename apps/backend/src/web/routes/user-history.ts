@@ -643,7 +643,7 @@ userHistoryRoutes.get("/:username/tv/progress", async (c) => {
 	return c.json({ data: hydratedData });
 });
 
-// delete movie from history
+// delete movie from history and delete rating associated to it
 // user must be logged in
 userHistoryRoutes.delete("/movie/:tmdbId", async (c) => {
 	const user = c.get("user")!;
