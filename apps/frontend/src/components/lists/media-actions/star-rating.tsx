@@ -44,46 +44,48 @@ export function StarRating({
 	const displayRating = hoverRating ?? rating;
 
 	return (
-		<div className="flex gap-1 py-2" onMouseLeave={() => setHoverRating(null)}>
-			{[0, 1, 2, 3, 4].map((starIndex) => {
-				const filled = displayRating >= starIndex + 1;
-				const halfFilled =
-					displayRating > starIndex && displayRating < starIndex + 1;
+		<div className="flex gap-2 items-center py-1">
+			<div className="flex gap-1" onMouseLeave={() => setHoverRating(null)}>
+				{[0, 1, 2, 3, 4].map((starIndex) => {
+					const filled = displayRating >= starIndex + 1;
+					const halfFilled =
+						displayRating > starIndex && displayRating < starIndex + 1;
 
-				return (
-					<div key={starIndex} className="relative cursor-pointer text-brand">
-						<div
-							className="absolute left-0 w-1/2 h-full z-10"
-							onMouseEnter={() => setHoverRating(starIndex + 0.5)}
-							onClick={() => handleClick(starIndex, true)}
-						/>
-						<div
-							className="absolute right-0 w-1/2 h-full z-10"
-							onMouseEnter={() => setHoverRating(starIndex + 1)}
-							onClick={() => handleClick(starIndex, false)}
-						/>
+					return (
+						<div key={starIndex} className="relative cursor-pointer text-brand">
+							<div
+								className="absolute left-0 w-1/2 h-full z-10"
+								onMouseEnter={() => setHoverRating(starIndex + 0.5)}
+								onClick={() => handleClick(starIndex, true)}
+							/>
+							<div
+								className="absolute right-0 w-1/2 h-full z-10"
+								onMouseEnter={() => setHoverRating(starIndex + 1)}
+								onClick={() => handleClick(starIndex, false)}
+							/>
 
-						<IconStar
-							className="w-6 h-6 absolute top-0 left-0"
-							fill="none"
-							stroke="currentColor"
-						/>
+							<IconStar
+								className="w-6 h-6 absolute top-0 left-0"
+								fill="none"
+								stroke="currentColor"
+							/>
 
-						<IconStar
-							className="w-6 h-6 relative"
-							fill={filled || halfFilled ? "currentColor" : "none"}
-							stroke="none"
-							style={
-								halfFilled
-									? {
-											clipPath: "polygon(0 0, 50% 0, 50% 100%, 0 100%)",
-										}
-									: undefined
-							}
-						/>
-					</div>
-				);
-			})}
+							<IconStar
+								className="w-6 h-6 relative"
+								fill={filled || halfFilled ? "currentColor" : "none"}
+								stroke="none"
+								style={
+									halfFilled
+										? {
+												clipPath: "polygon(0 0, 50% 0, 50% 100%, 0 100%)",
+											}
+										: undefined
+								}
+							/>
+						</div>
+					);
+				})}
+			</div>
 		</div>
 	);
 }
