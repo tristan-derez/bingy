@@ -529,7 +529,7 @@
 	"history_error": "Erreur lors du chargement de l'historique",
 	"btn_error_retry": "Réessayer",
 	"watch_toggle_remove": "Supprimer de l'historique",
-	"watch_toggle_add": "Indiquer comme vu",
+	"watch_toggle_add": "Marquer comme visionné",
 	"remove_movie_rating_success": "Le film a bien été supprimé de l'historique",
 	"remove_movie_rating_error": "Une erreur est survenue lors de la suppression du film de l'historique",
 	"remove_tv_rating_success": "La série a bien été supprimée de l'historique",
