@@ -678,7 +678,7 @@ userHistoryRoutes.delete("/movie/:tmdbId", async (c) => {
 	return c.body(null, 204);
 });
 
-// delete tv show from history
+// delete tv show from history and the rating associated to it
 // user must be logged in
 userHistoryRoutes.delete("/tv/:tmdbId", async (c) => {
 	const user = c.get("user")!;
