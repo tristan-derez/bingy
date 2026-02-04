@@ -1,4 +1,15 @@
 import { useAtomValue } from "jotai";
+import { useState } from "react";
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import {
 	useAddMovieToHistory,
@@ -29,6 +40,7 @@ export function HistoryToggleDropdownItem({
 	tvShow,
 	username,
 }: HistoryToggleDropdownItemProps) {
+	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const localeRegion = useAtomValue(localeRegionAtom);
 	const addMovieToHistory = useAddMovieToHistory();
 	const addTvToHistory = useAddTvToHistory();
@@ -45,12 +57,18 @@ export function HistoryToggleDropdownItem({
 	const tvRating = useTvRating(username, tvShow?.id ?? 0);
 
 	const currentData = movie ? movieRating.data : tvRating.data;
+	const hasRating = movie
+		? !!movieRating.data?.rating
+		: !!tvRating.data?.rating;
 	const isWatched = !!currentData;
 
 	if (!movie?.id && !tvShow?.id) return null;
 
-	const handleHistoryToggle = () => {
-		if (isWatched) {
+	const handleHistoryToggle = (e: Event) => {
+		if (isWatched && hasRating) {
+			e.preventDefault();
+			setIsDialogOpen(true);
+		} else if (isWatched) {
 			if (movie) {
 				removeMovieHistory.mutate(movie.id);
 			} else if (tvShow) {
@@ -77,17 +95,51 @@ export function HistoryToggleDropdownItem({
 		}
 	};
 
+	const handleConfirmRemove = () => {
+		if (movie) {
+			removeMovieHistory.mutate(movie.id);
+		} else if (tvShow) {
+			removeTvHistory.mutate(tvShow.id);
+		}
+		setIsDialogOpen(false);
+	};
+
 	const isPending =
 		addMovieToHistory.isPending ||
 		addTvToHistory.isPending ||
 		removeMovieHistory.isPending ||
 		removeTvHistory.isPending;
 
+	const title = movie?.title ?? tvShow?.name ?? "";
+
 	return (
-		<DropdownMenuItem onSelect={handleHistoryToggle} disabled={isPending}>
-			{isWatched
-				? m.list_dropdown_item_remove_history()
-				: m.list_dropdown_item_mark_as_seen()}
-		</DropdownMenuItem>
+		<>
+			<DropdownMenuItem onSelect={handleHistoryToggle} disabled={isPending}>
+				{isWatched
+					? m.list_dropdown_item_remove_history()
+					: m.list_dropdown_item_mark_as_seen()}
+			</DropdownMenuItem>
+
+			<AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+				<AlertDialogContent>
+					<AlertDialogHeader>
+						<AlertDialogTitle>
+							{m.alert_dialog_remove_media_history_title()}
+						</AlertDialogTitle>
+						<AlertDialogDescription>
+							{m.alert_dialog_remove_media_history_desc({ media_name: title })}
+						</AlertDialogDescription>
+					</AlertDialogHeader>
+					<AlertDialogFooter>
+						<AlertDialogCancel>
+							{m.alert_dialog_remove_media_history_cancel_btn()}
+						</AlertDialogCancel>
+						<AlertDialogAction onClick={handleConfirmRemove}>
+							{m.alert_dialog_remove_media_history_confirm_btn()}
+						</AlertDialogAction>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
+		</>
 	);
 }

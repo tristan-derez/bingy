@@ -624,5 +624,9 @@
 	"list_details_container_hide_notes": "Cacher les notes",
 	"list_dropdown_item_remove_rating": "Supprimer la review",
 	"list_dropdown_item_remove_history": "Supprimer de l'historique",
-	"list_dropdown_item_mark_as_seen": "Marquer comme vu"
+	"list_dropdown_item_mark_as_seen": "Marquer comme vu",
+	"alert_dialog_remove_media_history_title": "Supprimer de l'historique ?",
+	"alert_dialog_remove_media_history_desc": "Supprimer « {media_name} » de l'historique supprimera la review associée",
+	"alert_dialog_remove_media_history_cancel_btn": "Annuler",
+	"alert_dialog_remove_media_history_confirm_btn": "Supprimer"
 }

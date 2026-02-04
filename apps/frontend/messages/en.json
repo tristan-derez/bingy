@@ -626,5 +626,9 @@
 	"list_details_container_hide_notes": "Hide notes",
 	"list_dropdown_item_remove_rating": "Remove rating",
 	"list_dropdown_item_remove_history": "Remove from history",
-	"list_dropdown_item_mark_as_seen": "Mark as seen"
+	"list_dropdown_item_mark_as_seen": "Mark as seen",
+	"alert_dialog_remove_media_history_title": "Remove from history?",
+	"alert_dialog_remove_media_history_desc": "Removing {media_name} from history will also remove the rating associated to it",
+	"alert_dialog_remove_media_history_cancel_btn": "Cancel",
+	"alert_dialog_remove_media_history_confirm_btn": "Delete from history"
 }
