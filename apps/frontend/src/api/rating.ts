@@ -28,22 +28,8 @@ export const getTvRating = async (username: string, tmdbId: number) => {
 	return res;
 };
 
-export const removeMovieRating = async (tmdbId: number) => {
-	const res = await apiFetch(`/history/movie/${tmdbId}`, {
-		method: "DELETE",
-	});
-	return res;
-};
-
-export const removeTvRating = async (tmdbId: number) => {
-	const res = await apiFetch(`/history/tv/${tmdbId}`, {
-		method: "DELETE",
-	});
-	return res;
-};
-
 export const rateMovie = async (payload: RateMoviePayload) => {
-	const res = await apiFetch<PostMovieRating>("/history/movie", {
+	const res = await apiFetch<PostMovieRatingResponse>("/history/movie", {
 		method: "POST",
 		body: payload,
 	});
@@ -51,9 +37,28 @@ export const rateMovie = async (payload: RateMoviePayload) => {
 };
 
 export const rateTvShow = async (payload: RateTvPayload) => {
-	const res = await apiFetch<PostTvRating>("/history/tv", {
+	const res = await apiFetch<PostTvRatingResponse>("/history/tv", {
 		method: "POST",
 		body: payload,
+	});
+	return res;
+};
+
+export const removeMovieRating = async (tmdbId: number) => {
+	const res = await apiFetch<PostMovieRatingResponse>(
+		`/history/movie/${tmdbId}`,
+		{
+			method: "PATCH",
+			body: { rating: null, review: null },
+		},
+	);
+	return res;
+};
+
+export const removeTvRating = async (tmdbId: number) => {
+	const res = await apiFetch<PostTvRatingResponse>(`/history/tv/${tmdbId}`, {
+		method: "PATCH",
+		body: { rating: null, review: null },
 	});
 	return res;
 };
@@ -94,7 +99,7 @@ export type GetRatingResponse = Pretty<{
 	episodeNumber?: string | null;
 }>;
 
-export type PostMovieRating = Pretty<{
+export type PostMovieRatingResponse = Pretty<{
 	id: string;
 	loggedAt: Date;
 	mediaId: string;
@@ -104,7 +109,7 @@ export type PostMovieRating = Pretty<{
 	watchedAt: Date | null;
 }>;
 
-export type PostTvRating = {
+export type PostTvRatingResponse = {
 	id: string;
 	loggedAt: Date;
 	mediaId: string;

@@ -41,10 +41,14 @@ export function useAddToFavorites() {
 			queryClient.invalidateQueries({
 				queryKey: ["favorites"],
 			});
-			toast.success(m.add_to_favorites_success({ name: variables.mediaName }));
+			toast.success(
+				m.toast_add_to_favorites_success({ name: variables.mediaName }),
+			);
 		},
 		onError: (_error, variables) => {
-			toast.error(m.add_to_favorites_error({ name: variables.mediaName }));
+			toast.error(
+				m.toast_add_to_favorites_error({ name: variables.mediaName }),
+			);
 		},
 	});
 }
@@ -67,13 +71,15 @@ export function useRemoveFromFavorites() {
 			});
 
 			toast.success(
-				m.remove_from_favorites_success({
+				m.toast_remove_from_favorites_success({
 					name: variables.mediaName,
 				}),
 			);
 		},
 		onError: (_error, variables) => {
-			toast.error(m.remove_from_favorites_error({ name: variables.mediaName }));
+			toast.error(
+				m.toast_remove_from_favorites_error({ name: variables.mediaName }),
+			);
 		},
 	});
 }

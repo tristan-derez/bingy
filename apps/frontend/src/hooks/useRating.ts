@@ -56,14 +56,15 @@ export function useRateMovie() {
 			queryClient.invalidateQueries({
 				queryKey: ["lists", "watchlist"],
 			});
-			if (!res.rating) {
-				toast.success(m.add_movie_watched());
+
+			if (res.rating) {
+				toast.success(m.toast_rate_movie_success());
 			} else {
-				toast.success(m.rate_movie_success());
+				toast.success(m.toast_add_movie_watched_success());
 			}
 		},
 		onError: () => {
-			toast.error(m.rate_movie_error());
+			toast.error(m.toast_rate_movie_error());
 		},
 	});
 }
@@ -80,15 +81,15 @@ export function useRateTvShow() {
 			queryClient.invalidateQueries({
 				queryKey: ["lists", "watchlist"],
 			});
-			console.log(res);
-			if (!res.rating) {
-				toast.success(m.add_tv_watched());
+
+			if (res.rating) {
+				toast.success(m.toast_rate_tv_success());
 			} else {
-				toast.success(m.rate_tv_success());
+				toast.success(m.toast_add_tv_watched_success());
 			}
 		},
 		onError: () => {
-			toast.error(m.rate_tv_error());
+			toast.error(m.toast_rate_tv_error());
 		},
 	});
 }
@@ -98,17 +99,18 @@ export function useRemoveMovieRating() {
 
 	return useMutation({
 		mutationFn: (tmdbId: number) => removeMovieRating(tmdbId),
-		onSuccess: () => {
+		onSuccess: (_res, tmdbId) => {
 			queryClient.invalidateQueries({
 				queryKey: ["ratings"],
 			});
 			queryClient.invalidateQueries({
-				queryKey: ["lists", "watchlist"],
+				queryKey: ["ratings", "movie", tmdbId],
 			});
-			toast.success(m.remove_movie_rating_success());
+
+			toast.success(m.toast_remove_movie_rating_success());
 		},
 		onError: () => {
-			toast.error(m.remove_movie_rating_error());
+			toast.error(m.toast_remove_movie_rating_error());
 		},
 	});
 }
@@ -118,17 +120,18 @@ export function useRemoveTvRating() {
 
 	return useMutation({
 		mutationFn: (tmdbId: number) => removeTvRating(tmdbId),
-		onSuccess: () => {
+		onSuccess: (_res, tmdbId) => {
 			queryClient.invalidateQueries({
 				queryKey: ["ratings"],
 			});
 			queryClient.invalidateQueries({
-				queryKey: ["lists", "watchlist"],
+				queryKey: ["ratings", "tv", tmdbId],
 			});
-			toast.success(m.remove_tv_rating_success());
+
+			toast.success(m.toast_remove_tv_rating_success());
 		},
 		onError: () => {
-			toast.error(m.remove_tv_rating_error());
+			toast.error(m.toast_remove_tv_rating_error());
 		},
 	});
 }

@@ -1,13 +1,12 @@
 import { IconEye, IconEyeFilled, IconEyeOff } from "@tabler/icons-react";
 import { useAtomValue } from "jotai";
 import {
-	useMovieRating,
-	useRateMovie,
-	useRateTvShow,
-	useRemoveMovieRating,
-	useRemoveTvRating,
-	useTvRating,
-} from "@/hooks/useRating";
+	useAddMovieToHistory,
+	useAddTvToHistory,
+	useRemoveMovieHistory,
+	useRemoveTvHistory,
+} from "@/hooks/useHistory";
+import { useMovieRating, useTvRating } from "@/hooks/useRating";
 import { useTv } from "@/hooks/useTv";
 import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
@@ -36,10 +35,10 @@ export function WatchToggleButton({
 	color = "foreground",
 }: WatchToggleButtonProps) {
 	const localeRegion = useAtomValue(localeRegionAtom);
-	const rateMovie = useRateMovie();
-	const rateTv = useRateTvShow();
-	const removeMovieRating = useRemoveMovieRating();
-	const removeTvRating = useRemoveTvRating();
+	const addMovieToHistory = useAddMovieToHistory();
+	const addTvToHistory = useAddTvToHistory();
+	const removeMovieHistory = useRemoveMovieHistory();
+	const removeTvHistory = useRemoveTvHistory();
 
 	const { data: tvDetails } = useTv(
 		tvShow?.id ?? 0,
@@ -61,21 +60,21 @@ export function WatchToggleButton({
 
 		if (isWatched) {
 			if (movie) {
-				removeMovieRating.mutate(movie.id);
+				removeMovieHistory.mutate(movie.id);
 			} else if (tvShow) {
-				removeTvRating.mutate(tvShow.id);
+				removeTvHistory.mutate(tvShow.id);
 			}
 		} else {
-			const episodeInfo = getLastAiredEpisodeInfo(tvDetails);
 			const date = new Date();
 
 			if (movie) {
-				rateMovie.mutate({
+				addMovieToHistory.mutate({
 					tmdbId: movie.id,
 					watchedAt: date,
 				});
 			} else if (tvShow) {
-				rateTv.mutate({
+				const episodeInfo = getLastAiredEpisodeInfo(tvDetails);
+				addTvToHistory.mutate({
 					tmdbId: tvShow.id,
 					lastWatchedSeason: episodeInfo?.seasonNumber,
 					lastWatchedEpisode: episodeInfo?.episodeNumber,
@@ -87,10 +86,10 @@ export function WatchToggleButton({
 	};
 
 	const isPending =
-		rateMovie.isPending ||
-		rateTv.isPending ||
-		removeMovieRating.isPending ||
-		removeTvRating.isPending;
+		addMovieToHistory.isPending ||
+		addTvToHistory.isPending ||
+		removeMovieHistory.isPending ||
+		removeTvHistory.isPending;
 
 	return (
 		<Tooltip>
