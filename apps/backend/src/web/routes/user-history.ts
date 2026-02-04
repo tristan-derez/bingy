@@ -716,24 +716,38 @@ userHistoryRoutes.delete("/tv/:tmdbId", async (c) => {
 // update a movie entry from history
 // user must be logged in
 userHistoryRoutes.patch(
-	"/movie/:id",
+	"/movie/:tmdbId",
+	zValidator(
+		"param",
+		z.object({
+			tmdbId: z.coerce.number(),
+		}),
+	),
 	zValidator(
 		"json",
 		z.object({
-			rating: z.number().min(0.5).max(5.0).optional(),
-			review: z.string().optional(),
+			rating: z.number().min(0.5).max(5.0).nullable().optional(),
+			review: z.string().nullable().optional(),
 			watchedAt: z.iso.datetime().optional(),
 		}),
 	),
 	async (c) => {
 		const user = c.get("user")!;
-		const { id } = c.req.param();
+		const { tmdbId } = c.req.valid("param");
 		const data = c.req.valid("json");
+
+		const mediaEntry = await db.query.media.findFirst({
+			where: and(eq(media.tmdbId, tmdbId), eq(media.mediaType, "movie")),
+		});
+
+		if (!mediaEntry) {
+			return c.json({ error: "Media not found" }, 404);
+		}
 
 		const entry = await db.query.movieWatchHistory.findFirst({
 			where: and(
-				eq(movieWatchHistory.id, id),
 				eq(movieWatchHistory.userId, user.id),
+				eq(movieWatchHistory.mediaId, mediaEntry.id),
 			),
 		});
 
@@ -748,37 +762,18 @@ userHistoryRoutes.patch(
 			const [updatedEntry] = await tx
 				.update(movieWatchHistory)
 				.set({
-					rating: data.rating?.toString(),
-					review: data.review,
+					rating:
+						data.rating === undefined
+							? undefined
+							: (data.rating?.toString() ?? null),
+					review: data.review === undefined ? undefined : (data.review ?? null),
 					watchedAt: data.watchedAt ? new Date(data.watchedAt) : undefined,
 				})
-				.where(eq(movieWatchHistory.id, id))
+				.where(eq(movieWatchHistory.id, entry.id))
 				.returning();
 
 			if (data.rating !== undefined) {
-				const allRatings = await tx.query.movieWatchHistory.findMany({
-					where: eq(movieWatchHistory.mediaId, entry.mediaId),
-					columns: { rating: true },
-				});
-
-				const ratings = allRatings
-					.map((r) => (r.rating ? parseFloat(r.rating) : null))
-					.filter((r): r is number => r !== null);
-
-				const avgRating =
-					ratings.length > 0
-						? (ratings.reduce((sum, r) => sum + r, 0) / ratings.length).toFixed(
-								1,
-							)
-						: null;
-
-				await tx
-					.update(media)
-					.set({
-						averageRating: avgRating,
-						ratingCount: ratings.length,
-					})
-					.where(eq(media.id, entry.mediaId));
+				await updateMediaRating(tx, mediaEntry.id);
 			}
 
 			return updatedEntry;
@@ -791,24 +786,38 @@ userHistoryRoutes.patch(
 // update a tv entry
 // user must be logged in
 userHistoryRoutes.patch(
-	"/tv/:id",
+	"/tv/:tmdbId",
+	zValidator(
+		"param",
+		z.object({
+			tmdbId: z.coerce.number(),
+		}),
+	),
 	zValidator(
 		"json",
 		z.object({
-			rating: z.number().min(0.5).max(5.0).optional(),
-			review: z.string().optional(),
+			rating: z.number().min(0.5).max(5.0).nullable().optional(),
+			review: z.string().nullable().optional(),
 			watchedAt: z.iso.datetime().optional(),
 		}),
 	),
 	async (c) => {
 		const user = c.get("user")!;
-		const { id } = c.req.param();
+		const { tmdbId } = c.req.valid("param");
 		const data = c.req.valid("json");
+
+		const mediaEntry = await db.query.media.findFirst({
+			where: and(eq(media.tmdbId, tmdbId), eq(media.mediaType, "tv")),
+		});
+
+		if (!mediaEntry) {
+			return c.json({ error: "Media not found" }, 404);
+		}
 
 		const entry = await db.query.tvShowWatchHistory.findFirst({
 			where: and(
-				eq(tvShowWatchHistory.id, id),
 				eq(tvShowWatchHistory.userId, user.id),
+				eq(tvShowWatchHistory.mediaId, mediaEntry.id),
 			),
 		});
 
@@ -823,37 +832,18 @@ userHistoryRoutes.patch(
 			const [updatedEntry] = await tx
 				.update(tvShowWatchHistory)
 				.set({
-					rating: data.rating?.toString(),
-					review: data.review,
+					rating:
+						data.rating === undefined
+							? undefined
+							: (data.rating?.toString() ?? null),
+					review: data.review === undefined ? undefined : (data.review ?? null),
 					watchedAt: data.watchedAt ? new Date(data.watchedAt) : undefined,
 				})
-				.where(eq(tvShowWatchHistory.id, id))
+				.where(eq(tvShowWatchHistory.id, entry.id))
 				.returning();
 
 			if (data.rating !== undefined) {
-				const allRatings = await tx.query.tvShowWatchHistory.findMany({
-					where: eq(tvShowWatchHistory.mediaId, entry.mediaId),
-					columns: { rating: true },
-				});
-
-				const ratings = allRatings
-					.map((r) => (r.rating ? parseFloat(r.rating) : null))
-					.filter((r): r is number => r !== null);
-
-				const avgRating =
-					ratings.length > 0
-						? (ratings.reduce((sum, r) => sum + r, 0) / ratings.length).toFixed(
-								1,
-							)
-						: null;
-
-				await tx
-					.update(media)
-					.set({
-						averageRating: avgRating,
-						ratingCount: ratings.length,
-					})
-					.where(eq(media.id, entry.mediaId));
+				await updateMediaRating(tx, mediaEntry.id);
 			}
 
 			return updatedEntry;
