@@ -117,12 +117,12 @@ export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 						{m.list_dropdown_logreview()}
 					</DropdownMenuItem>
 					<WatchlistDropdownItem movie={movie} tvShow={tvShow} />
-					<HistoryToggleDropdownItem
+					<RemoveRatingDropdownItem
 						movie={movie}
 						tvShow={tvShow}
 						username={username}
 					/>
-					<RemoveRatingDropdownItem
+					<HistoryToggleDropdownItem
 						movie={movie}
 						tvShow={tvShow}
 						username={username}
