@@ -495,9 +495,9 @@
 	"toast_rate_tv_success": "Votre note a été enregistrée",
 	"toast_rate_tv_error": "Impossible d'enregistrer votre note",
 	"toast_remove_movie_rating_success": "Note supprimée",
-	"toast_remove_movie_rating_error": "Erreur lors de la suppression de la note",
+	"toast_remove_movie_rating_error": "Erreur lors de la suppression de la review",
 	"toast_remove_tv_rating_success": "Note supprimée",
-	"toast_remove_tv_rating_error": "Erreur lors de la suppression de la note",
+	"toast_remove_tv_rating_error": "Erreur lors de la suppression de la review",
 	"schema_name_required": "Le nom est requis",
 	"schema_name_invalid_type": "Le nom n'est pas valide",
 	"schema_name_min_length": "Le nom doit contenir au moins 2 caractères",
@@ -621,5 +621,8 @@
 	"list_container_empty_own": "Ta liste est vide.",
 	"list_container_empty_own_cta": "Ajoute des médias!",
 	"list_container_see_notes": "Voir les notes",
-	"list_details_container_hide_notes": "Cacher les notes"
+	"list_details_container_hide_notes": "Cacher les notes",
+	"list_dropdown_item_remove_rating": "Supprimer la review",
+	"list_dropdown_item_remove_history": "Supprimer de l'historique",
+	"list_dropdown_item_mark_as_seen": "Marquer comme vu"
 }

@@ -623,5 +623,8 @@
 	"list_container_empty_own": "Your list is empty.",
 	"list_container_empty_own_cta": "Add items!",
 	"list_container_see_notes": "See notes",
-	"list_details_container_hide_notes": "Hide notes"
+	"list_details_container_hide_notes": "Hide notes",
+	"list_dropdown_item_remove_rating": "Remove rating",
+	"list_dropdown_item_remove_history": "Remove from history",
+	"list_dropdown_item_mark_as_seen": "Mark as seen"
 }

@@ -20,7 +20,9 @@ import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { getLastAiredEpisodeInfo } from "@/utils/season-helper";
 import { WatchlistDropdownItem } from "../watchlist/watchlist-dropdown-item";
+import { HistoryToggleDropdownItem } from "./history-toggle-dropdown-item";
 import { LogReviewDialog } from "./log-review-dialog";
+import { RemoveRatingDropdownItem } from "./remove-rating-dropdown-item";
 import { StarRating } from "./star-rating";
 
 interface ListDropdownProps {
@@ -115,6 +117,16 @@ export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 						{m.list_dropdown_logreview()}
 					</DropdownMenuItem>
 					<WatchlistDropdownItem movie={movie} tvShow={tvShow} />
+					<HistoryToggleDropdownItem
+						movie={movie}
+						tvShow={tvShow}
+						username={username}
+					/>
+					<RemoveRatingDropdownItem
+						movie={movie}
+						tvShow={tvShow}
+						username={username}
+					/>
 				</DropdownMenuContent>
 			</DropdownMenu>
 
