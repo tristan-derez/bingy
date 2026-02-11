@@ -85,11 +85,10 @@ export function UpdatePasswordForm({ hasPassword }: UpdatePasswordFormProps) {
 			</div>
 			{hasPassword ? (
 				<Dialog open={open} onOpenChange={setOpen}>
-					<DialogTrigger>
-						<Button variant="default" className="mt-2">
-							{m.btn_update_password()}
-						</Button>
-					</DialogTrigger>
+					<DialogTrigger
+						render={<Button>{m.btn_update_password()}</Button>}
+						className="w-full"
+					></DialogTrigger>
 					<DialogContent>
 						<DialogHeader>
 							<DialogTitle>{m.dialog_title_update_password()}</DialogTitle>

@@ -74,12 +74,12 @@ export function UpdateEmailForm() {
 		}
 	};
 	return (
-		<div className="grid gap-2">
-			<div>
+		<div className="flex flex-col gap-2 w-full">
+			<div className="flex flex-col gap-2">
 				<p className="text-md font-semibold leading-none tracking-tight">
 					{m.update_email_title()}
 				</p>
-				<p className="text-sm text-muted-foreground mt-1.5">
+				<p className="text-sm text-muted-foreground">
 					{user.emailVerified
 						? m.update_email_desc_email_verified()
 						: m.update_email_desc()}
@@ -99,11 +99,10 @@ export function UpdateEmailForm() {
 				className="bg-muted"
 			/>
 			<Dialog open={open} onOpenChange={setOpen}>
-				<DialogTrigger>
-					<Button variant="default" className="mt-2">
-						{m.btn_update_email()}
-					</Button>
-				</DialogTrigger>
+				<DialogTrigger
+					render={<Button>{m.btn_update_email()}</Button>}
+					className="w-full"
+				/>
 				<DialogContent>
 					<DialogHeader>
 						<DialogTitle>{m.dialog_title_update_email()}</DialogTitle>
