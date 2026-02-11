@@ -36,7 +36,7 @@ export function LinkAccountComponent({ accounts }: LinkAccountComponentProps) {
 
 			if (googleConnected) {
 				if (accounts.length <= 1) {
-					toast.error(m.toast_error_unlink_account());
+					toast.error(m.toast_error_unlink_account({ provider: "Google" }));
 					return;
 				}
 
