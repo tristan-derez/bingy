@@ -29,7 +29,7 @@ function OAuthButton({
 	return (
 		<TooltipProvider>
 			<Tooltip>
-				<TooltipTrigger className="w-full" asChild>
+				<TooltipTrigger className="w-full">
 					<Button
 						variant="outline"
 						className="w-full hover:cursor-pointer justify-center relative"
