@@ -1,10 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { IconLoader } from "@tabler/icons-react";
+import { IconExclamationCircleFilled, IconLoader } from "@tabler/icons-react";
 import { useRouteContext, useRouter } from "@tanstack/react-router";
 import { useId, useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
 	Form,
@@ -30,6 +31,8 @@ export function EnableTwoFactorForm() {
 	const [showDialog, setShowDialog] = useState(false);
 	const [totpUri, setTotpUri] = useState("");
 	const id = useId();
+
+	const isEmailVerified = session?.user?.emailVerified ?? false;
 
 	const form = useForm<z.infer<typeof twoFactorSchema>>({
 		resolver: zodResolver(twoFactorSchema),
@@ -109,27 +112,35 @@ export function EnableTwoFactorForm() {
 
 	return (
 		<>
-			<div className="grid gap-2">
-				<div>
-					<p className="text-md font-semibold leading-none tracking-tight">
-						{m.two_factor_title()}
-					</p>
-					<p className="text-sm text-muted-foreground mt-1.5">
-						{m.two_factor_enable_short_desc()}
-					</p>
-				</div>
+			<div className="flex flex-col gap-2">
+				<p className="text-md font-semibold leading-none tracking-tight">
+					{m.two_factor_title()}
+				</p>
+				<p className="text-sm text-muted-foreground mt-1.5">
+					{m.two_factor_enable_short_desc()}
+				</p>
+				{!isEmailVerified && (
+					<Alert className="border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-50">
+						<IconExclamationCircleFilled />
+						<AlertTitle>{m.two_factor_enable_alert_mail()}</AlertTitle>
+						<AlertDescription>{m.email_not_verified()}</AlertDescription>
+					</Alert>
+				)}
 
 				<Form {...form}>
 					<form
 						onSubmit={form.handleSubmit(onFormSubmit)}
-						className="grid gap-4"
+						className="flex flex-col gap-2"
 					>
-						<fieldset disabled={isSubmitting}>
+						<fieldset
+							disabled={isSubmitting || !isEmailVerified}
+							className="flex flex-col gap-2"
+						>
 							<FormField
 								control={form.control}
 								name="password"
 								render={({ field }) => (
-									<FormItem className="grid gap-2">
+									<FormItem className="flex flex-col gap-2">
 										<FormLabel htmlFor={`${id}-password`}>
 											{m.form_password_label()}
 										</FormLabel>
@@ -148,8 +159,8 @@ export function EnableTwoFactorForm() {
 							/>
 							<Button
 								type="submit"
-								disabled={!session?.user?.emailVerified}
-								className="w-full mt-4 disabled:bg-gray-300 disabled:text-gray-500"
+								disabled={!isEmailVerified}
+								className="w-full disabled:bg-gray-300 disabled:text-gray-500"
 							>
 								{isSubmitting ? (
 									<span className="flex items-center justify-center gap-2">
@@ -160,11 +171,6 @@ export function EnableTwoFactorForm() {
 									m.btn_enable_two_factor()
 								)}
 							</Button>
-							{!session?.user?.emailVerified && (
-								<p className="text-sm text-gray-500 mt-2">
-									{m.email_not_verified()}
-								</p>
-							)}
 						</fieldset>
 					</form>
 				</Form>
