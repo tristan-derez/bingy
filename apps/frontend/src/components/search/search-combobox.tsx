@@ -1,4 +1,3 @@
-import { DialogTitle } from "@radix-ui/react-dialog";
 import { IconSearch } from "@tabler/icons-react";
 import { useNavigate } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
@@ -127,9 +126,6 @@ export function SearchCombobox({
 			) : null}
 
 			<Dialog open={open} onOpenChange={setOpen}>
-				<VisuallyHidden.Root>
-					<DialogTitle>Search</DialogTitle>
-				</VisuallyHidden.Root>
 				<DialogContent className="p-0 w-xs md:w-md lg:w-lg rounded-lg">
 					<VisuallyHidden.Root>
 						<DialogDescription>Search results</DialogDescription>

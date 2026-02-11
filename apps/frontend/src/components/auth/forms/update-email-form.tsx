@@ -99,7 +99,7 @@ export function UpdateEmailForm() {
 				className="bg-muted"
 			/>
 			<Dialog open={open} onOpenChange={setOpen}>
-				<DialogTrigger asChild>
+				<DialogTrigger>
 					<Button variant="default" className="mt-2">
 						{m.btn_update_email()}
 					</Button>
