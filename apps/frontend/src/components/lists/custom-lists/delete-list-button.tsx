@@ -36,17 +36,19 @@ export function DeleteListButton({ listId, listName }: DeleteListButtonProps) {
 	return (
 		<>
 			<Tooltip>
-				<TooltipTrigger asChild>
-					<Button
-						variant="ghost"
-						size="icon"
-						onClick={() => setOpen(true)}
-						disabled={isPending}
-						aria-label="Delete list"
-					>
-						<IconTrash />
-					</Button>
-				</TooltipTrigger>
+				<TooltipTrigger
+					render={
+						<Button
+							variant="ghost"
+							size="icon"
+							onClick={() => setOpen(true)}
+							disabled={isPending}
+							aria-label="Delete list"
+						>
+							<IconTrash />
+						</Button>
+					}
+				></TooltipTrigger>
 				<TooltipContent>
 					<p>{m.delete_list_tooltip({ list_name: listName })}</p>
 				</TooltipContent>

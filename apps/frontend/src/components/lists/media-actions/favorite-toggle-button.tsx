@@ -66,25 +66,27 @@ export function FavoriteToggleButton({
 
 	return (
 		<Tooltip>
-			<TooltipTrigger asChild>
-				<button
-					type="button"
-					onClick={handleToggle}
-					disabled={isPending}
-					className={`group flex flex-col items-center gap-1 transition-colors hover:cursor-pointer ${
-						isFavorited ? "text-red-500" : `text-${color}`
-					}`}
-				>
-					{isFavorited ? (
-						<>
-							<IconHeartFilled className="size-8 group-hover:hidden" />
-							<IconHeartOff className="size-8 hidden group-hover:block" />
-						</>
-					) : (
-						<IconHeart className="size-8" />
-					)}
-				</button>
-			</TooltipTrigger>
+			<TooltipTrigger
+				render={
+					<button
+						type="button"
+						onClick={handleToggle}
+						disabled={isPending}
+						className={`group flex flex-col items-center gap-1 transition-colors hover:cursor-pointer ${
+							isFavorited ? "text-red-500" : `text-${color}`
+						}`}
+					>
+						{isFavorited ? (
+							<>
+								<IconHeartFilled className="size-8 group-hover:hidden" />
+								<IconHeartOff className="size-8 hidden group-hover:block" />
+							</>
+						) : (
+							<IconHeart className="size-8" />
+						)}
+					</button>
+				}
+			></TooltipTrigger>
 			<TooltipContent>
 				<p>
 					{isFavorited ? m.favorite_toggle_remove() : m.favorite_toggle_add()}

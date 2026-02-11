@@ -72,27 +72,29 @@ export function WatchlistToggleButton({
 
 	return (
 		<Tooltip>
-			<TooltipTrigger asChild>
-				<button
-					type="button"
-					onClick={handleWatchlistToggle}
-					disabled={isPending}
-					className={`group flex flex-col items-center gap-1 transition-colors hover:cursor-pointer ${
-						isInWatchlist ? "text-blue-500" : `text-${color}`
-					}`}
-				>
-					{isInWatchlist ? (
-						<>
-							<IconClock className={`size-${size} group-hover:hidden`} />
-							<IconClockOff
-								className={`size-${size} hidden group-hover:block`}
-							/>
-						</>
-					) : (
-						<IconClockPlus className={`size-${size}`} />
-					)}
-				</button>
-			</TooltipTrigger>
+			<TooltipTrigger
+				render={
+					<button
+						type="button"
+						onClick={handleWatchlistToggle}
+						disabled={isPending}
+						className={`group flex flex-col items-center gap-1 transition-colors hover:cursor-pointer ${
+							isInWatchlist ? "text-blue-500" : `text-${color}`
+						}`}
+					>
+						{isInWatchlist ? (
+							<>
+								<IconClock className={`size-${size} group-hover:hidden`} />
+								<IconClockOff
+									className={`size-${size} hidden group-hover:block`}
+								/>
+							</>
+						) : (
+							<IconClockPlus className={`size-${size}`} />
+						)}
+					</button>
+				}
+			></TooltipTrigger>
 			<TooltipContent align="center">
 				<p>
 					{isInWatchlist

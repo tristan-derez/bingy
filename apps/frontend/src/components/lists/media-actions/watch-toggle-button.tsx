@@ -93,25 +93,27 @@ export function WatchToggleButton({
 
 	return (
 		<Tooltip>
-			<TooltipTrigger asChild>
-				<button
-					type="button"
-					onClick={handleToggle}
-					disabled={isPending}
-					className={`group flex flex-col items-center gap-1 transition-colors hover:cursor-pointer ${
-						isWatched ? "text-green-500" : `text-${color}`
-					}`}
-				>
-					{isWatched ? (
-						<>
-							<IconEyeFilled className="size-8 group-hover:hidden" />
-							<IconEyeOff className="size-8 hidden group-hover:block" />
-						</>
-					) : (
-						<IconEye className="size-8" />
-					)}
-				</button>
-			</TooltipTrigger>
+			<TooltipTrigger
+				render={
+					<button
+						type="button"
+						onClick={handleToggle}
+						disabled={isPending}
+						className={`group flex flex-col items-center gap-1 transition-colors hover:cursor-pointer ${
+							isWatched ? "text-green-500" : `text-${color}`
+						}`}
+					>
+						{isWatched ? (
+							<>
+								<IconEyeFilled className="size-8 group-hover:hidden" />
+								<IconEyeOff className="size-8 hidden group-hover:block" />
+							</>
+						) : (
+							<IconEye className="size-8" />
+						)}
+					</button>
+				}
+			></TooltipTrigger>
 			<TooltipContent>
 				{isWatched ? m.watch_toggle_remove() : m.watch_toggle_add()}
 			</TooltipContent>
