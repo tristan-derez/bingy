@@ -1,7 +1,6 @@
 import { IconBrandWindowsFilled, IconMoon, IconSun } from "@tabler/icons-react";
 import { useRef } from "react";
 import { flushSync } from "react-dom";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { m } from "@/paraglide/messages";
 import { useTheme } from "./use-theme";
@@ -49,23 +48,6 @@ export function ModeToggle({ duration = 700 }: ModeToggleProps) {
 				pseudoElement: "::view-transition-new(root)",
 			},
 		);
-
-		const messages: Record<typeof newTheme, string[]> = {
-			light: [
-				m.toast_light_joke(),
-				m.toast_light_joke_two(),
-				m.toast_light_joke_three(),
-			],
-			dark: [
-				m.toast_dark_joke(),
-				m.toast_dark_joke_two(),
-				m.toast_dark_joke_three(),
-			],
-			system: [m.toast_system_joke()],
-		};
-
-		const choices = messages[newTheme];
-		toast.success(choices[Math.floor(Math.random() * choices.length)]);
 	};
 
 	return (
