@@ -2,12 +2,6 @@ import type { Icon } from "@tabler/icons-react";
 import { Badge } from "@/components/ui/badge";
 import { m } from "@/paraglide/messages";
 import { Button } from "./button";
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipProvider,
-	TooltipTrigger,
-} from "./tooltip";
 
 interface OAuthButtonProps {
 	icon: Icon;
@@ -27,33 +21,24 @@ function OAuthButton({
 	lastMethod,
 }: OAuthButtonProps) {
 	return (
-		<TooltipProvider>
-			<Tooltip>
-				<TooltipTrigger className="w-full">
-					<Button
-						variant="outline"
-						className="w-full hover:cursor-pointer justify-center relative"
-						aria-label={`${label}`}
-						onClick={onClick}
-						disabled={disabled}
-					>
-						<Icon className="h-5 w-5" />
-						<p>{text}</p>
-						{lastMethod ? (
-							<Badge
-								variant="secondary"
-								className="hidden right-2 rounded-md md:absolute"
-							>
-								{m.signin_last_method_badge()}
-							</Badge>
-						) : null}
-					</Button>
-				</TooltipTrigger>
-				<TooltipContent>
-					<p>{label}</p>
-				</TooltipContent>
-			</Tooltip>
-		</TooltipProvider>
+		<Button
+			variant="outline"
+			className="w-full justify-center relative"
+			aria-label={`${label}`}
+			onClick={onClick}
+			disabled={disabled}
+		>
+			<Icon className="h-5 w-5" />
+			<p>{text}</p>
+			{lastMethod ? (
+				<Badge
+					variant="secondary"
+					className="hidden right-2 rounded-md md:absolute"
+				>
+					{m.signin_last_method_badge()}
+				</Badge>
+			) : null}
+		</Button>
 	);
 }
 
