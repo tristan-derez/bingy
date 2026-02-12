@@ -198,7 +198,7 @@ function CreateListPage() {
 								control={form.control}
 								name="type"
 								render={({ field }) => (
-									<FormItem className="flex items-center justify-between">
+									<FormItem className="flex flex-col justify-center">
 										<div className="flex gap-2">
 											<FormControl>
 												<Checkbox
@@ -210,7 +210,6 @@ function CreateListPage() {
 											</FormControl>
 											<FormLabel>{m.form_create_list_type_ranked()}</FormLabel>
 										</div>
-
 										<FormDescription>
 											{m.form_create_list_type_ranked_description()}
 										</FormDescription>
@@ -240,19 +239,19 @@ function CreateListPage() {
 									<ListSearchAddInput />
 								</div>
 							</div>
-							<div className="flex w-full lg:w-2/4 lg:ml-auto gap-2 mt-2">
+							<div className="flex w-full gap-2">
 								<Button
 									type="button"
 									variant="destructive"
-									className="w-full"
 									onClick={() => navigate({ to: "/" })}
+									className="flex-1"
 								>
 									{m.form_create_list_btn_cancel()}
 								</Button>
 								<Button
 									type="submit"
-									className="w-full"
 									disabled={createList.isPending}
+									className="flex-1"
 								>
 									{createList.isPending
 										? m.form_create_list_btn_creating()
@@ -263,6 +262,7 @@ function CreateListPage() {
 					</Form>
 				</CardContent>
 			</Card>
+
 			{selectedItems.length > 0 ? (
 				<div className="flex flex-col gap-2">
 					<div className="flex justify-between items-center">
