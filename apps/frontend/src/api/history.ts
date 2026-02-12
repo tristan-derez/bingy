@@ -44,7 +44,7 @@ export const addMovieToHistory = async (payload: TrackMoviePayload) => {
 };
 
 export const addTvToHistory = async (payload: TrackTvPayload) => {
-	const res = await apiFetch<TrackTvResponse>(`history/movie`, {
+	const res = await apiFetch<TrackTvResponse>(`history/tv`, {
 		method: "POST",
 		body: payload,
 	});
