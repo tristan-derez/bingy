@@ -57,11 +57,13 @@ export const PersonBiography = ({ biography }: PersonBiographyProps) => {
 			<p className="whitespace-pre-line">{displayText}</p>
 			<Collapsible open={isExpanded} onOpenChange={setIsExpanded}>
 				<div className={isExpanded ? "hidden" : ""}>
-					<CollapsibleTrigger>
-						<Button variant="link" size="sm" className="p-0">
-							{m.btn_see_more()}
-						</Button>
-					</CollapsibleTrigger>
+					<CollapsibleTrigger
+						render={
+							<Button variant="link" size="sm" className="p-0">
+								{m.btn_see_more()}
+							</Button>
+						}
+					></CollapsibleTrigger>
 				</div>
 				<CollapsibleContent>
 					<p className="whitespace-pre-line">{hiddenText}</p>
