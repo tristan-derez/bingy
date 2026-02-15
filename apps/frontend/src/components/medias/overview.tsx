@@ -47,11 +47,13 @@ export const MediaOverview = ({ overview, bg }: MediaOverviewProps) => {
 			</p>
 			<Collapsible open={isExpanded} onOpenChange={setIsExpanded}>
 				<div className={isExpanded ? "hidden" : ""}>
-					<CollapsibleTrigger>
-						<Button variant="link" size="sm" className={`p-0 ${textColor}`}>
-							{m.btn_show_more()}
-						</Button>
-					</CollapsibleTrigger>
+					<CollapsibleTrigger
+						render={
+							<Button variant="link" size="sm" className={`p-0 ${textColor}`}>
+								{m.btn_show_more()}
+							</Button>
+						}
+					></CollapsibleTrigger>
 				</div>
 				<CollapsibleContent>
 					<p className={`w-full xl:w-2/3 whitespace-pre-line ${textColor}`}>
