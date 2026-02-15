@@ -48,7 +48,6 @@ export function CollectionCard({ collection }: CollectionCardProps) {
 			</CardHeader>
 			<CardContent>
 				<Button
-					asChild
 					variant="outline"
 					className="w-full lg:w-1/2 xl:w-1/3 text-foreground"
 				>

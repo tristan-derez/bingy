@@ -71,7 +71,6 @@ export function ListsContainer({
 						<ToggleGroupItem
 							value="all"
 							aria-label={m.list_visibility_all_aria_label()}
-							className="hover:cursor-pointer"
 						>
 							<IconLayoutGrid className="h-4 w-4" />
 							{m.list_visibility_all()}
@@ -79,7 +78,6 @@ export function ListsContainer({
 						<ToggleGroupItem
 							value="public"
 							aria-label={m.list_visibility_public_aria_label()}
-							className="hover:cursor-pointer"
 						>
 							<IconWorld className="h-4 w-4" />
 							{m.list_visibility_public()}
@@ -87,7 +85,6 @@ export function ListsContainer({
 						<ToggleGroupItem
 							value="limited"
 							aria-label={m.list_visibility_limited_aria_label()}
-							className="hover:cursor-pointer"
 						>
 							<IconUsers className="h-4 w-4" />
 							{m.list_visibility_limited()}
@@ -95,14 +92,13 @@ export function ListsContainer({
 						<ToggleGroupItem
 							value="private"
 							aria-label={m.list_visibility_private_aria_label()}
-							className="hover:cursor-pointer"
 						>
 							<IconLock className="h-4 w-4" />
 							{m.list_visibility_private()}
 						</ToggleGroupItem>
 					</ToggleGroup>
-					<Button asChild>
-						<Link to="/lists/create" className="text-primary hover:underline">
+					<Button size="icon-lg">
+						<Link to="/lists/create" className="hover:cursor-default">
 							<IconPlus className="h-4 w-4" />
 						</Link>
 					</Button>

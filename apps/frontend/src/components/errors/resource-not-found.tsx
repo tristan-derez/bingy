@@ -35,8 +35,8 @@ export function ResourceNotFound({
 				<CardContent className="flex flex-col gap-2">
 					<BackButton onBack={onBack} style="w-full" />
 
-					<Button asChild variant="outline" className="w-full">
-						<Link to="/">
+					<Button variant="outline" className="w-full">
+						<Link to="/" className="hover:cursor-default">
 							<IconSmartHome className="h-4 w-4" /> Home
 						</Link>
 					</Button>
