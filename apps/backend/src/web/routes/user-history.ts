@@ -15,7 +15,9 @@ import { activity, users } from "#db/schemas/user";
 import { db } from "#lib/database";
 import { getMediaDetails } from "#lib/tmdb/get-media-details";
 import { getTvDetails } from "#lib/tmdb/get-tv-details";
+import { tmdbClient } from "#lib/tmdb/tmdb.client";
 import { sessionMiddleware } from "#web/middlewares/session";
+import { convertAbsoluteToSeasonEpisode } from "#web/utils/absolute-to-season-episode";
 import { getOrCreateMedia } from "#web/utils/create-update-media";
 import { updateMediaRating } from "#web/utils/media-rating";
 
@@ -120,6 +122,25 @@ userHistoryRoutes.post(
 		const user = c.get("user")!;
 		const data = c.req.valid("json");
 
+		let lastWatchedSeason = data.lastWatchedSeason;
+		let lastWatchedEpisode = data.lastWatchedEpisode;
+
+		// find the corresponding season and episode when user rate a tv show with absolute episode instead of traditionnal season/episode
+		if (data.absoluteEpisode && !lastWatchedSeason && !lastWatchedEpisode) {
+			const tvDetails = await tmdbClient.get("/tv/{series_id}", {
+				query: {},
+				path: { series_id: data.tmdbId },
+			});
+
+			const result = convertAbsoluteToSeasonEpisode(
+				data.absoluteEpisode,
+				tvDetails.seasons,
+			);
+
+			lastWatchedSeason = result.season;
+			lastWatchedEpisode = result.episode;
+		}
+
 		const entry = await db.transaction(async (tx) => {
 			const mediaId = await getOrCreateMedia(tx, data.tmdbId, "tv");
 
@@ -142,22 +163,23 @@ userHistoryRoutes.post(
 				})
 				.returning();
 
-			if (data.lastWatchedSeason && data.lastWatchedEpisode) {
+			// add to tv show progress
+			if (lastWatchedSeason && lastWatchedEpisode) {
 				await tx
 					.insert(tvShowProgress)
 					.values({
 						userId: user.id,
 						mediaId,
-						lastWatchedSeason: data.lastWatchedSeason,
-						lastWatchedEpisode: data.lastWatchedEpisode,
+						lastWatchedSeason,
+						lastWatchedEpisode,
 						absoluteEpisode: data.absoluteEpisode,
 						trackingMode: data.trackingMode ?? "season",
 					})
 					.onConflictDoUpdate({
 						target: [tvShowProgress.userId, tvShowProgress.mediaId],
 						set: {
-							lastWatchedSeason: data.lastWatchedSeason,
-							lastWatchedEpisode: data.lastWatchedEpisode,
+							lastWatchedSeason: lastWatchedSeason,
+							lastWatchedEpisode: lastWatchedEpisode,
 							absoluteEpisode: data.absoluteEpisode,
 							trackingMode: data.trackingMode ?? "season",
 							updatedAt: new Date(),
@@ -190,7 +212,7 @@ userHistoryRoutes.post(
 	},
 );
 
-// create entry in progress for tv seasonNumber and episodeNumber are the last episode the user watched
+// create entry in progress for tv - seasonNumber and episodeNumber are the last episode the user watched
 // user must be logged in
 userHistoryRoutes.post(
 	"/progress/tv",
@@ -699,14 +721,27 @@ userHistoryRoutes.delete("/tv/:tmdbId", async (c) => {
 		),
 	});
 
-	if (!watchEntry) {
-		return c.json({ error: "Watch history entry not found" }, 404);
+	const showProgress = await db.query.tvShowProgress.findFirst({
+		where: and(
+			eq(tvShowProgress.userId, user.id),
+			eq(tvShowProgress.mediaId, mediaEntry.id),
+		),
+	});
+
+	const entry = watchEntry ?? showProgress;
+
+	if (!entry) {
+		return c.json({ error: "Entry not found" }, 404);
 	}
 
+	// delete tv show watch history & the show progress
 	await db.transaction(async (tx) => {
 		await tx
 			.delete(tvShowWatchHistory)
-			.where(eq(tvShowWatchHistory.id, watchEntry.id));
+			.where(eq(tvShowWatchHistory.id, entry.id));
+
+		await tx.delete(tvShowProgress).where(eq(tvShowProgress.id, entry.id));
+
 		await updateMediaRating(tx, mediaEntry.id);
 	});
 
