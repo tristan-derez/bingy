@@ -1,6 +1,5 @@
 import { IconDots } from "@tabler/icons-react";
 import { useRouteContext } from "@tanstack/react-router";
-import { useAtomValue } from "jotai";
 import { useState } from "react";
 import {
 	DropdownMenu,
@@ -16,7 +15,6 @@ import {
 	useTvRating,
 } from "@/hooks/useRating";
 import { useTv } from "@/hooks/useTv";
-import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { getLastAiredEpisodeInfo } from "@/utils/season-helper";
 import { WatchlistDropdownItem } from "../watchlist/watchlist-dropdown-item";
@@ -41,7 +39,6 @@ interface ListDropdownProps {
 
 export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 	const { session } = useRouteContext({ from: "__root__" });
-	const localeRegion = useAtomValue(localeRegionAtom);
 
 	if (!session) {
 		return null;
@@ -53,9 +50,7 @@ export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 
 	const { data: tvDetails } = useTv(
 		tmdbId,
-		{
-			language: localeRegion,
-		},
+		{},
 		{
 			enabled: isTvShow,
 		},
@@ -70,28 +65,27 @@ export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 	const [showLogReviewDialog, setShowLogReviewDialog] = useState(false);
 
 	const existingRating = isTvShow ? tvRating : movieRating;
-	const rating = existingRating?.rating ?? 0;
 
 	const handleRatingChange = (newRating: number) => {
-		if (isTvShow) {
-			const episodeInfo = getLastAiredEpisodeInfo(tvDetails);
-			if (episodeInfo) {
-				rateTvMutation.mutate({
-					tmdbId,
-					rating: newRating,
-					lastWatchedSeason: episodeInfo.seasonNumber,
-					lastWatchedEpisode: episodeInfo.episodeNumber,
-					trackingMode: "season",
-					watchedAt: new Date(),
-				});
-			}
-		} else {
-			rateMovieMutation.mutate({
+		if (!isTvShow) {
+			return rateMovieMutation.mutate({
 				tmdbId,
 				rating: newRating,
 				watchedAt: new Date(),
 			});
 		}
+
+		const episodeInfo = getLastAiredEpisodeInfo(tvDetails);
+		if (!episodeInfo) return;
+
+		rateTvMutation.mutate({
+			tmdbId,
+			rating: newRating,
+			lastWatchedSeason: episodeInfo.seasonNumber,
+			lastWatchedEpisode: episodeInfo.episodeNumber,
+			trackingMode: "season",
+			watchedAt: new Date(),
+		});
 	};
 
 	return (
@@ -139,7 +133,6 @@ export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 				onOpenChange={setShowLogReviewDialog}
 				movie={movie}
 				tvShow={tvShow}
-				initialRating={rating}
 				imageUrl={imageUrl}
 				existingData={existingRating}
 			/>
