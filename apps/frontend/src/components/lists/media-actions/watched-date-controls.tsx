@@ -1,5 +1,5 @@
 import { IconCalendarWeekFilled } from "@tabler/icons-react";
-import { format } from "date-fns";
+import { useAtomValue } from "jotai";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -9,32 +9,31 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover";
+import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 
 interface WatchedDateControlProps {
 	hasSpecificDate: boolean;
-	unknownDate: boolean;
 	watchedDate: Date;
 	handleHasSpecificDateChange: (checked: boolean) => void;
-	handleUnknownDateChange: (checked: boolean) => void;
 	setWatchedDate: (date: Date) => void;
 }
 
 export function WatchedDateControl({
 	hasSpecificDate,
-	unknownDate,
 	watchedDate,
 	handleHasSpecificDateChange,
-	handleUnknownDateChange,
 	setWatchedDate,
 }: WatchedDateControlProps) {
+	const localeRegion = useAtomValue(localeRegionAtom);
+
 	return (
 		<div className="flex flex-col lg:flex-row gap-3">
 			<div className="flex items-center gap-2">
 				<Checkbox
 					id="hasSpecificDate"
 					checked={hasSpecificDate}
-					onCheckedChange={(c) => handleHasSpecificDateChange(c === true)}
+					onCheckedChange={handleHasSpecificDateChange}
 				/>
 				<Label htmlFor="watchedToday" className="text-sm">
 					{m.log_review_dialog_seen_specific_date()}
@@ -45,10 +44,14 @@ export function WatchedDateControl({
 							variant="outline"
 							size="sm"
 							className="text-sm"
-							disabled={unknownDate}
+							disabled={!hasSpecificDate}
 						>
 							<IconCalendarWeekFilled />
-							{format(watchedDate, "MMMM d, yyyy")}
+							{watchedDate.toLocaleDateString(localeRegion, {
+								year: "numeric",
+								month: "short",
+								day: "numeric",
+							})}
 						</Button>
 					</PopoverTrigger>
 					<PopoverContent>
@@ -64,8 +67,8 @@ export function WatchedDateControl({
 			<div className="flex items-center gap-2">
 				<Checkbox
 					id="unknownDate"
-					checked={unknownDate}
-					onCheckedChange={(c) => handleUnknownDateChange(c === true)}
+					checked={!hasSpecificDate}
+					onCheckedChange={(c) => handleHasSpecificDateChange(!c)}
 				/>
 				<Label
 					htmlFor="unknownDate"

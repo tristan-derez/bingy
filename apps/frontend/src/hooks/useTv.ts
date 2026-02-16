@@ -1,4 +1,5 @@
 import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
+import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
 import { fetchMultiPagesTrending } from "@/api/trending";
 import {
@@ -12,6 +13,7 @@ import {
 	type TvParams,
 	type TvSeasonEndpoints,
 } from "@/api/tv";
+import { localeRegionAtom } from "@/lib/atoms/region";
 
 export function useLatestTv(params?: TvParams) {
 	return useQuery({
@@ -60,9 +62,12 @@ export function useTv(
 	params?: TvParams,
 	options?: Omit<UseQueryOptions<Schemas.TvDetails>, "queryKey" | "queryFn">,
 ) {
+	const localeRegion = useAtomValue(localeRegionAtom);
+
 	return useQuery<Schemas.TvDetails>({
 		queryKey: ["tv", id, params],
-		queryFn: () => fetchTvResources(id, { params }),
+		queryFn: () =>
+			fetchTvResources(id, { params: { language: localeRegion, ...params } }),
 		staleTime: 1000 * 60 * 20,
 		...options,
 	});
