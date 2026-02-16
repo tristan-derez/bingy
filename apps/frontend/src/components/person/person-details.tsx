@@ -7,13 +7,7 @@ import { MediasCarousel } from "@/components/medias/medias-carousel";
 import { SocialLinks } from "@/components/social-links";
 import { BackButton } from "@/components/ui/back-button";
 import { Badge } from "@/components/ui/badge";
-import {
-	Card,
-	CardContent,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { calculateAge } from "@/utils/calculate-age";
@@ -93,8 +87,8 @@ export const PersonDetailsView = ({
 					) : null}
 				</div>
 				<div className="w-full flex flex-col gap-4 overflow-hidden">
-					<Card className="shadow-none bg-transparent py-2 xl:p-0 border-none">
-						<CardContent className="xl:p-0">
+					<Card className="shadow-none bg-transparent ring-0">
+						<CardContent className="lg:p-0">
 							<div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2">
 								<div className="flex flex-col gap-2">
 									<h1 className="text-4xl font-bold leading-relaxed">
@@ -165,10 +159,8 @@ export const PersonDetailsView = ({
 						</CardHeader>
 						<CardContent className="text-muted-foreground gap-4">
 							<PersonBiography biography={person.biography} />
-						</CardContent>
-						{person.place_of_birth ? (
-							<CardFooter>
-								<div className="flex flex-wrap gap-2">
+							{person.place_of_birth ? (
+								<div className="flex flex-wrap gap-2 pt-4">
 									<Badge
 										variant="secondary"
 										className="flex items-center gap-2"
@@ -183,8 +175,8 @@ export const PersonDetailsView = ({
 												})}
 									</Badge>
 								</div>
-							</CardFooter>
-						) : null}
+							) : null}
+						</CardContent>
 					</Card>
 					{person.combined_credits ? (
 						<div className="flex flex-col gap-4">

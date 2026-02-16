@@ -63,7 +63,7 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
 					) : null}
 				</CardContent>
 
-				<CardFooter className="text-sm text-muted-foreground">
+				<CardFooter className="text-sm text-muted-foreground border-none bg-card">
 					<div className="flex items-center gap-1">
 						<IconCalendarWeekFilled className="h-4 w-4" />
 						<span>

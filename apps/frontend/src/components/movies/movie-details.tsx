@@ -20,13 +20,7 @@ import { CastCarousel } from "@/components/person/cast-carousel";
 import { SocialLinks } from "@/components/social-links";
 import { BackButton } from "@/components/ui/back-button";
 import { Badge } from "@/components/ui/badge";
-import {
-	Card,
-	CardContent,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { WatchProvidersSection } from "@/components/watch-providers/watch-providers-section";
 import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
@@ -114,11 +108,11 @@ export function MovieDetailView({
 				</div>
 
 				<div className="w-full flex flex-col gap-4 overflow-hidden">
-					<Card className="shadow-none bg-transparent py-2 lg:p-0 border-none">
+					<Card className="shadow-none bg-transparent border-none ring-0">
 						<CardContent className="lg:p-0">
 							<div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2">
 								<div className="flex flex-col gap-2">
-									<h1 className="text-4xl font-bold leading-relaxed">
+									<h1 className="text-4xl font-bold leading-relaxed line-clamp-1">
 										{movie.title}
 									</h1>
 									{movie.tagline && (
@@ -174,6 +168,7 @@ export function MovieDetailView({
 						<CardContent className="flex flex-col gap-4">
 							<MediaOverview overview={movie.overview} bg={backgroundImage} />
 							<Separator />
+
 							{crew.length > 0 && (
 								<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 									{crew.slice(0, 3).map((person) => (
@@ -188,9 +183,7 @@ export function MovieDetailView({
 									))}
 								</div>
 							)}
-						</CardContent>
-						<CardFooter>
-							<div className="flex flex-wrap gap-2">
+							<div className="flex flex-wrap gap-2 pt-2">
 								{movie.production_countries.map(
 									(country: Schemas.ProductionCountry) => (
 										<Badge
@@ -209,7 +202,7 @@ export function MovieDetailView({
 									),
 								)}
 							</div>
-						</CardFooter>
+						</CardContent>
 					</Card>
 
 					<div className="grid lg:grid-cols-3 gap-2">

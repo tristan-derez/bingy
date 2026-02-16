@@ -17,13 +17,7 @@ import { CastCarousel } from "@/components/person/cast-carousel";
 import { SocialLinks } from "@/components/social-links";
 import { BackButton } from "@/components/ui/back-button";
 import { Badge } from "@/components/ui/badge";
-import {
-	Card,
-	CardContent,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { WatchProvidersSection } from "@/components/watch-providers/watch-providers-section";
 import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
@@ -102,11 +96,11 @@ export function TvDetailsView({
 				</div>
 
 				<div className="w-full flex flex-col gap-4 overflow-hidden">
-					<Card className="shadow-none bg-transparent py-2 xl:p-0 border-none">
+					<Card className="shadow-none bg-transparent py-2 ring-0">
 						<CardContent className="lg:p-0">
 							<div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2">
 								<div className="flex flex-col gap-2">
-									<h1 className="text-4xl font-bold leading-relaxed">
+									<h1 className="text-4xl font-bold leading-relaxed line-clamp-1">
 										{tv.name}
 									</h1>
 									{tv.tagline ? (
@@ -155,6 +149,7 @@ export function TvDetailsView({
 						<CardContent className="flex flex-col gap-4">
 							<MediaOverview overview={tv.overview} bg={backgroundImage} />
 							<Separator />
+
 							{tv.created_by.length > 0 ? (
 								<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 									{tv.created_by.slice(0, 3).map((creator) => (
@@ -177,10 +172,8 @@ export function TvDetailsView({
 									))}
 								</div>
 							) : null}
-						</CardContent>
 
-						<CardFooter>
-							<div className="flex flex-wrap gap-2">
+							<div className="flex flex-wrap gap-2 pt-2">
 								{tv.production_countries.map((country) => (
 									<Badge
 										key={country.iso_3166_1}
@@ -195,7 +188,7 @@ export function TvDetailsView({
 									</Badge>
 								))}
 							</div>
-						</CardFooter>
+						</CardContent>
 					</Card>
 
 					<div className="grid lg:grid-cols-3 gap-3">
