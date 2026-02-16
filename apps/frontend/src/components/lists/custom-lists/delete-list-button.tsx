@@ -39,8 +39,8 @@ export function DeleteListButton({ listId, listName }: DeleteListButtonProps) {
 				<TooltipTrigger
 					render={
 						<Button
-							variant="ghost"
-							size="icon"
+							variant={"destructive"}
+							size="icon-sm"
 							onClick={() => setOpen(true)}
 							disabled={isPending}
 							aria-label="Delete list"
