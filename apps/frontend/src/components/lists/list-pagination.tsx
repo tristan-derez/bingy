@@ -12,19 +12,17 @@ type ListPaginationProps = {
 	page: number;
 	totalPages: number;
 	onPageChange: (page: number) => void;
-	className?: string;
 };
 
 export function ListPagination({
 	page,
 	totalPages,
 	onPageChange,
-	className,
 }: ListPaginationProps) {
 	if (totalPages <= 1) return null;
 
 	return (
-		<Pagination className={className}>
+		<Pagination>
 			<PaginationContent>
 				<PaginationItem>
 					<PaginationPrevious
