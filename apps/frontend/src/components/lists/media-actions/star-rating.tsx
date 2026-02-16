@@ -1,10 +1,11 @@
-import { IconStar } from "@tabler/icons-react";
+import { IconStar, IconX } from "@tabler/icons-react";
 import { useState } from "react";
 import { useMovieRating, useTvRating } from "@/hooks/useRating";
 
 interface StarRatingProps {
 	rating?: number;
 	onRatingChange: (rating: number) => void;
+	onRatingDelete?: () => void;
 	movie?: {
 		id: number;
 	};
@@ -18,6 +19,7 @@ interface StarRatingProps {
 export function StarRating({
 	rating: externalRating,
 	onRatingChange,
+	onRatingDelete,
 	movie,
 	tvShow,
 	fetchRating = false,
@@ -86,6 +88,17 @@ export function StarRating({
 					);
 				})}
 			</div>
+
+			{rating > 0 && onRatingDelete && (
+				<button
+					type="button"
+					onClick={onRatingDelete}
+					className="text-muted-foreground hover:text-foreground transition-colors"
+					aria-label="Delete rating"
+				>
+					<IconX className="w-5 h-5" />
+				</button>
+			)}
 		</div>
 	);
 }

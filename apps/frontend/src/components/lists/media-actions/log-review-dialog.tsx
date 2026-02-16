@@ -1,26 +1,16 @@
-import { IconCalendarWeekFilled } from "@tabler/icons-react";
-import { format } from "date-fns";
 import { useAtomValue } from "jotai";
-import { useEffect, useState } from "react";
+import { type FormEvent, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
 	Dialog,
 	DialogClose,
 	DialogContent,
 	DialogDescription,
-	DialogFooter,
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from "@/components/ui/popover";
-import { Textarea } from "@/components/ui/textarea";
 import { useRateMovie, useRateTvShow } from "@/hooks/useRating";
 import { useTv } from "@/hooks/useTv";
 import { localeRegionAtom } from "@/lib/atoms/region";
@@ -31,8 +21,10 @@ import {
 	usesContinuousEpisodeNumbering,
 } from "@/utils/season-helper";
 import { AbsoluteEpisodeCombobox } from "./absolute-episode-combobox";
+import { ReviewTextarea } from "./review-text-area";
 import { SeasonEpisodeCombobox } from "./season-episode-combobox";
 import { StarRating } from "./star-rating";
+import { WatchedDateControl } from "./watched-date-controls";
 
 interface LogReviewDialogProps {
 	open: boolean;
@@ -50,6 +42,13 @@ interface LogReviewDialogProps {
 	initialRating?: number;
 	imageUrl?: string;
 	username: string;
+	existingData?: {
+		rating: number | null;
+		review: string | null;
+		watchedAt: Date | null;
+		seasonNumber?: string | null;
+		episodeNumber?: string | null;
+	};
 }
 
 export function LogReviewDialog({
@@ -60,6 +59,7 @@ export function LogReviewDialog({
 	initialRating = 0,
 	imageUrl,
 	username,
+	existingData,
 }: LogReviewDialogProps) {
 	const localeRegion = useAtomValue(localeRegionAtom);
 	const isTvShow = !!tvShow;
@@ -67,12 +67,8 @@ export function LogReviewDialog({
 
 	const { data: tvDetails } = useTv(
 		tmdbId,
-		{
-			language: localeRegion,
-		},
-		{
-			enabled: isTvShow,
-		},
+		{ language: localeRegion },
+		{ enabled: isTvShow },
 	);
 
 	const rateMovieMutation = useRateMovie();
@@ -85,18 +81,20 @@ export function LogReviewDialog({
 	const [absoluteEpisode, setAbsoluteEpisode] = useState("");
 	const [isComplete, setIsComplete] = useState(false);
 	const [review, setReview] = useState("");
-	const [watchedToday, setWatchedToday] = useState(true);
-	const [watchedBefore, setWatchedBefore] = useState(false);
+	const [hasSpecificDate, setHasSpecificDate] = useState(true);
+	const [unknownDate, setUnknownDate] = useState(false);
 	const [watchedDate, setWatchedDate] = useState<Date>(new Date());
 
 	const seasons = getValidSeasons(tvDetails?.seasons);
 	const hasContinuousNumbering = usesContinuousEpisodeNumbering(tvDetails);
+	const totalEpisodes = tvDetails?.number_of_episodes ?? 0;
+	const mediaTitle = isTvShow ? tvShow.name : movie?.title;
 
-	useEffect(() => {
-		if (open) {
+	const handleOpenChange = (newOpen: boolean) => {
+		if (!newOpen) {
 			setRating(initialRating);
-			setWatchedToday(true);
-			setWatchedBefore(false);
+			setHasSpecificDate(true);
+			setUnknownDate(false);
 			setWatchedDate(new Date());
 			setSeason("");
 			setEpisode("");
@@ -105,33 +103,54 @@ export function LogReviewDialog({
 			setIsComplete(false);
 			setReview("");
 		}
-	}, [open, initialRating]);
+		onOpenChange(newOpen);
+	};
 
-	const mediaTitle = isTvShow ? tvShow.name : movie?.title;
+	useEffect(() => {
+		if (open && existingData) {
+			setRating(existingData.rating ?? initialRating);
+			setReview(existingData.review ?? "");
 
-	const handleWatchedTodayChange = (checked: boolean) => {
-		setWatchedToday(checked);
+			if (existingData.watchedAt) {
+				setWatchedDate(new Date(existingData.watchedAt));
+				setHasSpecificDate(true);
+				setUnknownDate(false);
+			} else {
+				setHasSpecificDate(false);
+				setUnknownDate(true);
+			}
+
+			if (isTvShow && existingData.seasonNumber && existingData.episodeNumber) {
+				setSeason(existingData.seasonNumber);
+				setEpisode(existingData.episodeNumber);
+			}
+		}
+	}, [open, existingData, initialRating, isTvShow]);
+
+	const handleHasSpecificDateChange = (checked: boolean) => {
+		setHasSpecificDate(checked);
 		if (checked) {
-			setWatchedBefore(false);
-			setWatchedDate(new Date());
+			setUnknownDate(false);
+		} else {
+			setUnknownDate(true);
 		}
 	};
 
-	const handleWatchedBeforeChange = (checked: boolean) => {
-		setWatchedBefore(checked);
+	const handleUnknownDateChange = (checked: boolean) => {
+		setUnknownDate(checked);
 		if (checked) {
-			setWatchedToday(false);
+			setHasSpecificDate(false);
+		} else {
+			setHasSpecificDate(true);
 		}
 	};
 
 	const handleCompleteChange = (checked: boolean) => {
 		setIsComplete(checked);
-
 		if (checked) {
 			const episodeInfo = getLastAiredEpisodeInfo(tvDetails);
 			if (episodeInfo) {
 				if (useAbsoluteEpisode) {
-					// Calculate absolute episode number
 					const episodesBeforeSeason =
 						tvDetails?.seasons
 							?.filter(
@@ -163,10 +182,9 @@ export function LogReviewDialog({
 		setIsComplete(false);
 	};
 
-	const handleSubmit = (e: React.FormEvent) => {
+	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
-
-		const watchedAt = watchedBefore ? undefined : watchedDate;
+		const watchedAt = hasSpecificDate ? watchedDate : undefined;
 
 		if (isTvShow) {
 			let lastWatchedSeason: number | undefined;
@@ -174,7 +192,6 @@ export function LogReviewDialog({
 			let absoluteEpisodeNumber: number | undefined;
 
 			if (useAbsoluteEpisode && absoluteEpisode) {
-				// Convert absolute episode to season/episode
 				const absEp = Number(absoluteEpisode);
 				absoluteEpisodeNumber = absEp;
 				let remaining = absEp;
@@ -204,9 +221,7 @@ export function LogReviewDialog({
 					trackingMode: useAbsoluteEpisode ? "absolute" : "season",
 					watchedAt,
 				},
-				{
-					onSuccess: () => onOpenChange(false),
-				},
+				{ onSuccess: () => handleOpenChange(false) },
 			);
 		} else {
 			rateMovieMutation.mutate(
@@ -216,9 +231,7 @@ export function LogReviewDialog({
 					review: review || undefined,
 					watchedAt,
 				},
-				{
-					onSuccess: () => onOpenChange(false),
-				},
+				{ onSuccess: () => handleOpenChange(false) },
 			);
 		}
 	};
@@ -226,10 +239,10 @@ export function LogReviewDialog({
 	const isSubmitting = rateMovieMutation.isPending || rateTvMutation.isPending;
 
 	return (
-		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className="max-w-[95vw] lg:max-w-4xl max-h-[90vh] flex flex-col p-0 overflow-hidden">
+		<Dialog open={open} onOpenChange={handleOpenChange}>
+			<DialogContent className="lg:max-w-4xl max-h-[90vh] flex flex-col p-0 overflow-hidden">
 				<div className="flex flex-col lg:flex-row flex-1 min-h-0 overflow-hidden gap-8 p-6">
-					{imageUrl ? (
+					{imageUrl && (
 						<div className="hidden lg:flex items-start justify-center shrink-0">
 							<div className="w-full max-w-2xs sticky top-0">
 								<img
@@ -239,7 +252,7 @@ export function LogReviewDialog({
 								/>
 							</div>
 						</div>
-					) : null}
+					)}
 
 					<div className="flex flex-col flex-1 min-h-0 overflow-hidden">
 						<DialogHeader className="shrink-0">
@@ -259,113 +272,67 @@ export function LogReviewDialog({
 							onSubmit={handleSubmit}
 							className="flex flex-col flex-1 min-h-0 overflow-hidden"
 						>
-							<div className="flex flex-col gap-4 py-4 flex-1 overflow-y-auto min-h-0">
+							<div className="flex flex-col gap-4 py-4 flex-1 overflow-y-auto min-h-0 pr-2">
 								<div className="flex flex-col gap-2">
-									<Label>Rating (optional)</Label>
+									<Label>{m.log_review_dialog_rating_label()}</Label>
 									<StarRating
 										username={username}
 										rating={rating}
 										onRatingChange={setRating}
+										onRatingDelete={() => setRating(0)}
 									/>
 								</div>
 
-								<div className="flex flex-col lg:flex-row gap-3">
-									<div className="flex items-center gap-2">
-										<Checkbox
-											id="watchedToday"
-											checked={watchedToday}
-											onCheckedChange={(checked) =>
-												handleWatchedTodayChange(checked === true)
-											}
-										/>
-										<Label
-											htmlFor="watchedToday"
-											className="text-sm font-normal"
-										>
-											Watched on
-										</Label>
-										<Popover>
-											<PopoverTrigger asChild>
-												<Button
-													variant="outline"
-													size="sm"
-													className="h-7 px-2 text-sm font-normal"
-													type="button"
-												>
-													<IconCalendarWeekFilled className="mr-1.5 h-3.5 w-3.5" />
-													{format(watchedDate, "MMMM d, yyyy")}
-												</Button>
-											</PopoverTrigger>
-											<PopoverContent align="start">
-												<Calendar
-													className="w-full"
-													mode="single"
-													selected={watchedDate}
-													onSelect={(date) => date && setWatchedDate(date)}
-													captionLayout="dropdown"
-												/>
-											</PopoverContent>
-										</Popover>
-									</div>
+								<WatchedDateControl
+									hasSpecificDate={hasSpecificDate}
+									unknownDate={unknownDate}
+									watchedDate={watchedDate}
+									handleHasSpecificDateChange={handleHasSpecificDateChange}
+									handleUnknownDateChange={handleUnknownDateChange}
+									setWatchedDate={setWatchedDate}
+								/>
 
-									<div className="flex items-center gap-2">
-										<Checkbox
-											id="watchedBefore"
-											checked={watchedBefore}
-											onCheckedChange={(checked) =>
-												handleWatchedBeforeChange(checked === true)
-											}
-										/>
-										<Label
-											htmlFor="watchedBefore"
-											className="text-sm font-normal cursor-pointer"
-										>
-											I watched this before
-										</Label>
-									</div>
-								</div>
-
-								{isTvShow ? (
-									<>
+								{isTvShow && (
+									<div className="flex flex-col gap-4 border-t pt-4">
 										<div className="flex items-center gap-2">
 											<Checkbox
 												id="isComplete"
 												checked={isComplete}
-												onCheckedChange={(checked) =>
-													handleCompleteChange(checked === true)
+												onCheckedChange={(c) =>
+													handleCompleteChange(c === true)
 												}
 											/>
 											<Label
 												htmlFor="isComplete"
 												className="text-sm font-normal cursor-pointer"
 											>
-												Completed
+												{m.log_review_dialog_tv_show_completed_label()}
 											</Label>
 										</div>
 
-										{!isComplete ? (
+										{!isComplete && (
 											<>
 												{hasContinuousNumbering && (
 													<div className="flex items-center gap-2">
 														<Checkbox
 															id="useAbsoluteEpisode"
 															checked={useAbsoluteEpisode}
-															onCheckedChange={(checked) =>
-																handleUseAbsoluteEpisodeChange(checked === true)
+															onCheckedChange={(c) =>
+																handleUseAbsoluteEpisodeChange(c === true)
 															}
 														/>
 														<Label
 															htmlFor="useAbsoluteEpisode"
 															className="text-sm font-normal cursor-pointer"
 														>
-															Use absolute episode number
+															{m.log_review_dialog_absolute_episode_label()}
 														</Label>
 													</div>
 												)}
 
 												{useAbsoluteEpisode ? (
 													<AbsoluteEpisodeCombobox
-														totalEpisodes={tvDetails?.number_of_episodes ?? 0}
+														totalEpisodes={totalEpisodes}
 														selectedEpisode={absoluteEpisode}
 														onEpisodeChange={setAbsoluteEpisode}
 													/>
@@ -379,37 +346,31 @@ export function LogReviewDialog({
 													/>
 												)}
 											</>
-										) : null}
-									</>
-								) : null}
+										)}
+									</div>
+								)}
 
-								<div className="flex flex-col gap-2 flex-1">
-									<Label htmlFor="review">Review (optional)</Label>
-									<Textarea
-										id="review"
-										value={review}
-										onChange={(e) => setReview(e.target.value)}
-										placeholder="Share your thoughts..."
-										className="flex-1 min-h-[120px]"
-									/>
-								</div>
+								<ReviewTextarea
+									value={review}
+									onChange={setReview}
+									label={m.log_review_dialog_review_label()}
+									placeholder={m.log_review_dialog_review_placeholder()}
+								/>
 							</div>
 
-							<div className="sticky bottom-0 bg-background pt-4 shrink-0">
-								<DialogFooter className="gap-2">
-									<DialogClose asChild>
-										<Button
-											variant="outline"
-											type="button"
-											disabled={isSubmitting}
-										>
-											Cancel
+							<div className="sticky bottom-0 pt-4 shrink-0 flex gap-2 self-end">
+								<DialogClose
+									render={
+										<Button variant="outline" disabled={isSubmitting}>
+											{m.log_review_dialog_cancel_btn()}
 										</Button>
-									</DialogClose>
-									<Button type="submit" disabled={isSubmitting}>
-										{isSubmitting ? "Saving..." : "Save"}
-									</Button>
-								</DialogFooter>
+									}
+								/>
+								<Button type="submit" disabled={isSubmitting}>
+									{isSubmitting
+										? m.log_review_dialog_submitting_btn()
+										: m.log_review_dialog_submit_btn()}
+								</Button>
 							</div>
 						</form>
 					</div>

@@ -46,8 +46,8 @@ export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 	if (!session) {
 		return null;
 	}
-	const username = session.user.name;
 
+	const username = session.user.name;
 	const isTvShow = !!tvShow;
 	const tmdbId = isTvShow ? tvShow.id : (movie?.id ?? 0);
 
@@ -63,6 +63,7 @@ export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 
 	const { data: movieRating } = useMovieRating(username, tmdbId);
 	const { data: tvRating } = useTvRating(username, tmdbId);
+
 	const rateMovieMutation = useRateMovie();
 	const rateTvMutation = useRateTvShow();
 
@@ -114,7 +115,9 @@ export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 					</div>
 					<DropdownMenuSeparator />
 					<DropdownMenuItem onSelect={() => setShowLogReviewDialog(true)}>
-						{m.list_dropdown_logreview()}
+						{existingRating
+							? m.list_dropdown_editreview()
+							: m.list_dropdown_logreview()}
 					</DropdownMenuItem>
 					<WatchlistDropdownItem movie={movie} tvShow={tvShow} />
 					<RemoveRatingDropdownItem
@@ -138,6 +141,7 @@ export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 				tvShow={tvShow}
 				initialRating={rating}
 				imageUrl={imageUrl}
+				existingData={existingRating}
 			/>
 		</>
 	);

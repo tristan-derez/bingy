@@ -1,21 +1,14 @@
-import { Check, ChevronsUpDown } from "lucide-react";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { useMemo, useState } from "react";
 import {
-	Command,
-	CommandEmpty,
-	CommandGroup,
-	CommandInput,
-	CommandItem,
-	CommandList,
-} from "@/components/ui/command";
+	Combobox,
+	ComboboxContent,
+	ComboboxEmpty,
+	ComboboxInput,
+	ComboboxItem,
+	ComboboxList,
+} from "@/components/ui/combobox";
 import { Label } from "@/components/ui/label";
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
+import { m } from "@/paraglide/messages";
 
 interface AbsoluteEpisodeComboboxProps {
 	totalEpisodes: number;
@@ -28,63 +21,60 @@ export function AbsoluteEpisodeCombobox({
 	selectedEpisode,
 	onEpisodeChange,
 }: AbsoluteEpisodeComboboxProps) {
-	const [open, setOpen] = useState(false);
+	const episodes = useMemo(
+		() =>
+			Array.from({ length: totalEpisodes }, (_, i) => {
+				const num = (i + 1).toString();
+				return { value: num, label: num };
+			}),
+		[totalEpisodes],
+	);
 
-	const episodes = Array.from({ length: totalEpisodes }, (_, i) => ({
-		value: (i + 1).toString(),
-		label: `Episode ${i + 1}`,
-	}));
+	const [inputValue, setInputValue] = useState(selectedEpisode);
+	const [isOpen, setIsOpen] = useState(false);
+
+	const shouldShowClear = Boolean(selectedEpisode);
+
+	const filteredEpisodes = useMemo(() => {
+		if (!inputValue) return episodes;
+		return episodes.filter((ep) => ep.label.includes(inputValue));
+	}, [episodes, inputValue]);
 
 	return (
 		<div className="flex flex-col gap-2">
-			<Label>Episode</Label>
-			<Popover open={open} onOpenChange={setOpen}>
-				<PopoverTrigger asChild>
-					<Button
-						variant="outline"
-						role="combobox"
-						aria-expanded={open}
-						className="justify-between"
-					>
-						{selectedEpisode
-							? `Episode ${selectedEpisode}`
-							: "Select episode..."}
-						<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-					</Button>
-				</PopoverTrigger>
-				<PopoverContent className="w-[200px] p-0">
-					<Command>
-						<CommandInput placeholder="Search episode..." />
-						<CommandList>
-							<CommandEmpty>No episode found.</CommandEmpty>
-							<CommandGroup>
-								{episodes.map((episode) => (
-									<CommandItem
-										key={episode.value}
-										value={episode.value}
-										onSelect={(currentValue) => {
-											onEpisodeChange(
-												currentValue === selectedEpisode ? "" : currentValue,
-											);
-											setOpen(false);
-										}}
-									>
-										<Check
-											className={cn(
-												"mr-2 h-4 w-4",
-												selectedEpisode === episode.value
-													? "opacity-100"
-													: "opacity-0",
-											)}
-										/>
-										{episode.label}
-									</CommandItem>
-								))}
-							</CommandGroup>
-						</CommandList>
-					</Command>
-				</PopoverContent>
-			</Popover>
+			<Label>{m.log_review_dialog_absolute_episode_combobox_label()}</Label>
+			<Combobox
+				open={isOpen}
+				onOpenChange={setIsOpen}
+				value={selectedEpisode}
+				onValueChange={(val) => {
+					onEpisodeChange(val ?? "");
+					if (val) setInputValue(val);
+				}}
+				inputValue={inputValue}
+				onInputValueChange={setInputValue}
+			>
+				<ComboboxInput
+					placeholder={m.log_review_dialog_absolute_episode_combobox_placeholder()}
+					showClear={shouldShowClear}
+				/>
+
+				<ComboboxContent>
+					{filteredEpisodes.length === 0 ? (
+						<ComboboxEmpty>
+							{m.log_review_dialog_absolute_episode_combobox_no_result()}
+						</ComboboxEmpty>
+					) : null}
+
+					<ComboboxList>
+						{filteredEpisodes.map((episode) => (
+							<ComboboxItem key={episode.value} value={episode.value}>
+								{episode.label}
+							</ComboboxItem>
+						))}
+					</ComboboxList>
+				</ComboboxContent>
+			</Combobox>
 		</div>
 	);
 }

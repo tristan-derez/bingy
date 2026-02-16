@@ -1,21 +1,14 @@
-import { IconCheck, IconSelector } from "@tabler/icons-react";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { useMemo, useState } from "react";
 import {
-	Command,
-	CommandEmpty,
-	CommandGroup,
-	CommandInput,
-	CommandItem,
-	CommandList,
-} from "@/components/ui/command";
+	Combobox,
+	ComboboxContent,
+	ComboboxEmpty,
+	ComboboxInput,
+	ComboboxItem,
+	ComboboxList,
+} from "@/components/ui/combobox";
 import { Label } from "@/components/ui/label";
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
+import { m } from "@/paraglide/messages";
 
 interface Season {
 	season_number: number;
@@ -37,121 +30,114 @@ export function SeasonEpisodeCombobox({
 	onSeasonChange,
 	onEpisodeChange,
 }: SeasonEpisodeComboboxProps) {
-	const [openSeason, setOpenSeason] = useState(false);
-	const [openEpisode, setOpenEpisode] = useState(false);
+	const [seasonInputValue, setSeasonInputValue] = useState(selectedSeason);
+	const [episodeInputValue, setEpisodeInputValue] = useState(selectedEpisode);
+	const [seasonOpen, setSeasonOpen] = useState(false);
+	const [episodeOpen, setEpisodeOpen] = useState(false);
+
+	const seasonNumbers = useMemo(
+		() => seasons.map((s) => s.season_number),
+		[seasons],
+	);
 
 	const availableEpisodes = selectedSeason
 		? seasons.find((s) => s.season_number === Number(selectedSeason))
 				?.episode_count || 0
 		: 0;
 
-	const handleSeasonSelect = (value: string) => {
-		onSeasonChange(value === selectedSeason ? "" : value);
-		onEpisodeChange("");
-		setOpenSeason(false);
-	};
+	const episodeNumbers = useMemo(
+		() => Array.from({ length: availableEpisodes }, (_, i) => i + 1),
+		[availableEpisodes],
+	);
 
-	const handleEpisodeSelect = (value: string) => {
-		onEpisodeChange(value === selectedEpisode ? "" : value);
-		setOpenEpisode(false);
-	};
+	const filteredSeasons = useMemo(() => {
+		if (!seasonInputValue) return seasonNumbers;
+		return seasonNumbers.filter((num) =>
+			num.toString().includes(seasonInputValue),
+		);
+	}, [seasonNumbers, seasonInputValue]);
+
+	const filteredEpisodes = useMemo(() => {
+		if (!episodeInputValue) return episodeNumbers;
+		return episodeNumbers.filter((num) =>
+			num.toString().includes(episodeInputValue),
+		);
+	}, [episodeNumbers, episodeInputValue]);
 
 	return (
-		<div className="grid grid-cols-2 gap-4">
-			<div className="flex flex-col gap-2">
-				<Label htmlFor="season">Watched up to Season</Label>
-				<Popover open={openSeason} onOpenChange={setOpenSeason}>
-					<PopoverTrigger asChild>
-						<Button
-							variant="outline"
-							role="combobox"
-							aria-expanded={openSeason}
-							className="justify-between"
-							type="button"
-						>
-							{selectedSeason ? `Season ${selectedSeason}` : "Select season"}
-							<IconSelector className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-						</Button>
-					</PopoverTrigger>
-					<PopoverContent className="w-[200px] p-0">
-						<Command>
-							<CommandInput placeholder="Search season..." />
-							<CommandList>
-								<CommandEmpty>No season found.</CommandEmpty>
-								<CommandGroup>
-									{seasons.map((s) => (
-										<CommandItem
-											key={s.season_number}
-											value={s.season_number.toString()}
-											onSelect={handleSeasonSelect}
-										>
-											<IconCheck
-												className={cn(
-													"mr-2 h-4 w-4",
-													selectedSeason === s.season_number.toString()
-														? "opacity-100"
-														: "opacity-0",
-												)}
-											/>
-											Season {s.season_number}
-										</CommandItem>
-									))}
-								</CommandGroup>
-							</CommandList>
-						</Command>
-					</PopoverContent>
-				</Popover>
+		<div className="flex flex-col gap-4 lg:flex-row">
+			<div className="flex flex-col gap-2 flex-1">
+				<Label>{m.log_review_dialog_season_combobox_label()}</Label>
+				<Combobox
+					open={seasonOpen}
+					onOpenChange={setSeasonOpen}
+					value={selectedSeason}
+					onValueChange={(val) => {
+						const newValue = val ?? "";
+						onSeasonChange(newValue);
+						if (newValue !== selectedSeason) {
+							onEpisodeChange("");
+						}
+						if (val) setSeasonInputValue(val);
+					}}
+					inputValue={seasonInputValue}
+					onInputValueChange={setSeasonInputValue}
+				>
+					<ComboboxInput
+						placeholder={m.log_review_dialog_season_combobox_placeholder()}
+						showClear={!!selectedSeason}
+					/>
+					<ComboboxContent>
+						{filteredSeasons.length === 0 ? (
+							<ComboboxEmpty>
+								{m.log_review_dialog_season_combobox_no_result()}
+							</ComboboxEmpty>
+						) : null}
+						<ComboboxList>
+							{filteredSeasons.map((seasonNum) => (
+								<ComboboxItem key={seasonNum} value={seasonNum.toString()}>
+									{seasonNum}
+								</ComboboxItem>
+							))}
+						</ComboboxList>
+					</ComboboxContent>
+				</Combobox>
 			</div>
 
-			<div className="flex flex-col gap-2">
-				<Label htmlFor="episode">Episode</Label>
-				<Popover open={openEpisode} onOpenChange={setOpenEpisode}>
-					<PopoverTrigger asChild>
-						<Button
-							variant="outline"
-							role="combobox"
-							aria-expanded={openEpisode}
-							className="justify-between"
-							type="button"
-							disabled={!selectedSeason}
-						>
-							{selectedEpisode
-								? `Episode ${selectedEpisode}`
-								: "Select episode"}
-							<IconSelector className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-						</Button>
-					</PopoverTrigger>
-					<PopoverContent className="w-[200px] p-0">
-						<Command>
-							<CommandInput placeholder="Search episode..." />
-							<CommandList>
-								<CommandEmpty>No episode found.</CommandEmpty>
-								<CommandGroup>
-									{Array.from(
-										{ length: availableEpisodes },
-										(_, i) => i + 1,
-									).map((ep) => (
-										<CommandItem
-											key={ep}
-											value={ep.toString()}
-											onSelect={handleEpisodeSelect}
-										>
-											<IconCheck
-												className={cn(
-													"mr-2 h-4 w-4",
-													selectedEpisode === ep.toString()
-														? "opacity-100"
-														: "opacity-0",
-												)}
-											/>
-											Episode {ep}
-										</CommandItem>
-									))}
-								</CommandGroup>
-							</CommandList>
-						</Command>
-					</PopoverContent>
-				</Popover>
+			<div className="flex flex-col gap-2 flex-1">
+				<Label>{m.log_review_dialog_episode_combobox_label()}</Label>
+				<Combobox
+					open={episodeOpen}
+					onOpenChange={setEpisodeOpen}
+					value={selectedEpisode}
+					onValueChange={(val) => {
+						onEpisodeChange(val ?? "");
+						if (val) setEpisodeInputValue(val);
+					}}
+					inputValue={episodeInputValue}
+					onInputValueChange={setEpisodeInputValue}
+					disabled={!selectedSeason}
+				>
+					<ComboboxInput
+						placeholder={m.log_review_dialog_episode_combobox_placeholder()}
+						showClear={!!selectedEpisode}
+						disabled={!selectedSeason}
+					/>
+					<ComboboxContent>
+						{filteredEpisodes.length === 0 ? (
+							<ComboboxEmpty>
+								{m.log_review_dialog_episode_combobox_no_result()}
+							</ComboboxEmpty>
+						) : null}
+						<ComboboxList>
+							{filteredEpisodes.map((episodeNum) => (
+								<ComboboxItem key={episodeNum} value={episodeNum.toString()}>
+									{episodeNum}
+								</ComboboxItem>
+							))}
+						</ComboboxList>
+					</ComboboxContent>
+				</Combobox>
 			</div>
 		</div>
 	);
