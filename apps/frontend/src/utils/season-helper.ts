@@ -22,7 +22,7 @@ interface TvDetails {
  * Detects if a TV show uses continuous/absolute episode numbering
  * (common in anime) vs per-season numbering (common in western TV shows)
  */
-export function usesContinuousEpisodeNumbering(
+export function getHasContinuousEpisodeNumbering(
 	tvDetails: TvDetails | undefined,
 ): boolean {
 	if (!tvDetails?.last_episode_to_air || !tvDetails.seasons) {
@@ -89,7 +89,7 @@ export function getLastAiredEpisodeInfo(tvDetails: TvDetails | undefined): {
 		(s) => s.season_number === season_number,
 	);
 
-	if (season && usesContinuousEpisodeNumbering(tvDetails)) {
+	if (season && getHasContinuousEpisodeNumbering(tvDetails)) {
 		// Calculate episodes before this season
 		const episodesBeforeSeason =
 			tvDetails.seasons
