@@ -45,6 +45,7 @@ type CreateListFormValues = z.infer<typeof createListSchema>;
 
 function CreateListPage() {
 	const { session } = useRouteContext({ from: "__root__" });
+	const username = session?.user?.name;
 	const navigate = useNavigate();
 	const createList = useCreateList();
 
@@ -107,13 +108,12 @@ function CreateListPage() {
 			onSuccess: (data) => {
 				setSelectedItems([]);
 
-				const username = session?.user?.name;
 				toast.success(
 					m.toast_form_create_list_success({ list_name: values.name }),
 				);
 				navigate({
 					to: "/user/$username/lists/$slug",
-					params: { username: username, slug: data.slug },
+					params: { username, slug: data.slug },
 				});
 			},
 			onError: () => {
@@ -247,7 +247,12 @@ function CreateListPage() {
 								<Button
 									type="button"
 									variant="destructive"
-									onClick={() => navigate({ to: "/" })}
+									onClick={() =>
+										navigate({
+											to: "/user/$username/lists",
+											params: { username },
+										})
+									}
 									className="flex-1"
 								>
 									{m.form_create_list_btn_cancel()}
