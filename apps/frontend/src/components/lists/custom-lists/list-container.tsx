@@ -58,7 +58,9 @@ export function ListContainer({
 					) : null}
 				</div>
 				{list.description ? (
-					<p className="text-muted-foreground">{list.description}</p>
+					<p className="text-muted-foreground whitespace-pre-wrap">
+						{list.description}
+					</p>
 				) : null}
 			</div>
 

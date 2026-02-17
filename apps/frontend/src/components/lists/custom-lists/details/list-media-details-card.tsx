@@ -66,7 +66,9 @@ export const ListMediaDetailsCard = ({
 					</div>
 				</div>
 				{item.note ? (
-					<p className="text-sm text-muted-foreground">{item.note}</p>
+					<p className="text-sm text-muted-foreground whitespace-pre-wrap">
+						{item.note}
+					</p>
 				) : null}
 			</div>
 		</div>
