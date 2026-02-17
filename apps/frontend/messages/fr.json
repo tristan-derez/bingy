@@ -578,7 +578,7 @@
 	"lists_empty_state_own_private": "Tu n'as pas encore de liste privée. ",
 	"lists_empty_state_own_limited": "Tu n'as pas encore de liste limitée. ",
 	"lists_empty_state_own_cta": "Crée-en une !",
-	"lists_empty_state_other": "{username} n'a pas encore de listes.",
+	"lists_empty_state_other": "{username} n'a pas encore de liste.",
 	"list_visibility_private": "Privée",
 	"list_visibility_limited": "Limitée",
 	"list_visibility_public": "Publique",
