@@ -132,7 +132,12 @@ export function ListsContainer({
 						className={`grid gap-4 ${items.length === 1 ? "grid-cols-1" : "grid-cols-1 lg:grid-cols-2"}`}
 					>
 						{items.map((item) => (
-							<ListCard key={item.id} item={item} username={username} />
+							<ListCard
+								key={item.id}
+								item={item}
+								username={username}
+								isOwnProfile={isOwnProfile}
+							/>
 						))}
 					</div>
 

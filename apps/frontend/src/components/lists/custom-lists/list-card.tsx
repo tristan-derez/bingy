@@ -26,6 +26,7 @@ type ListCardProps = {
 		updatedAt: Date | null;
 	};
 	username: string;
+	isOwnProfile: boolean;
 };
 
 const visibilityConfig = {
@@ -43,7 +44,7 @@ const visibilityConfig = {
 	},
 };
 
-export function ListCard({ item, username }: ListCardProps) {
+export function ListCard({ item, username, isOwnProfile }: ListCardProps) {
 	const localeRegion = useAtomValue(localeRegionAtom);
 	const VisibilityIcon = visibilityConfig[item.visibility].icon;
 	const formattedDate = formatDate(item.createdAt.toString(), localeRegion);
@@ -64,9 +65,11 @@ export function ListCard({ item, username }: ListCardProps) {
 								{item.name}
 							</CardTitle>
 						</div>
-						<div onClick={(e) => e.preventDefault()}>
-							<DeleteListButton listId={item.id} listName={item.name} />
-						</div>
+						{isOwnProfile ? (
+							<div onClick={(e) => e.preventDefault()}>
+								<DeleteListButton listId={item.id} listName={item.name} />
+							</div>
+						) : null}
 					</div>
 					<CardDescription className="line-clamp-1 leading-relaxed max-w-2/3 ">
 						{displayDescription}
