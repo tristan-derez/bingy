@@ -226,7 +226,11 @@ function CreateListPage() {
 											{m.form_create_list_description_label()}
 										</FormLabel>
 										<FormControl>
-											<Textarea className="resize-none" rows={4} {...field} />
+											<Textarea
+												className="resize-y field-sizing-content"
+												rows={4}
+												{...field}
+											/>
 										</FormControl>
 										<FormMessage />
 									</FormItem>
@@ -289,7 +293,7 @@ function CreateListPage() {
 							onReorder={handleReorder}
 						/>
 					) : (
-						<div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+						<div className="grid grid-cols-1 gap-2">
 							{selectedItems.toReversed().map((item) => {
 								return (
 									<ListAddedItemMediaCard
