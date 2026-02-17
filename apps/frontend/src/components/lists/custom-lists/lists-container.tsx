@@ -121,7 +121,11 @@ export function ListsContainer({
 			) : null}
 
 			{emptyList ? (
-				<ListsEmptyState isOwnProfile={isOwnProfile} username={username} />
+				<ListsEmptyState
+					isOwnProfile={isOwnProfile}
+					username={username}
+					filter={filter}
+				/>
 			) : (
 				<>
 					<div
