@@ -48,6 +48,8 @@ export function ListCard({ item, username }: ListCardProps) {
 	const VisibilityIcon = visibilityConfig[item.visibility].icon;
 	const formattedDate = formatDate(item.createdAt.toString(), localeRegion);
 
+	const displayDescription = item.description?.split("\n")[0] || "\u00A0";
+
 	return (
 		<Link
 			to="/user/$username/lists/$slug"
@@ -66,8 +68,8 @@ export function ListCard({ item, username }: ListCardProps) {
 							<DeleteListButton listId={item.id} listName={item.name} />
 						</div>
 					</div>
-					<CardDescription className="line-clamp-1 leading-relaxed max-w-2/3 whitespace-pre-wrap">
-						{item.description || "\u00A0"}
+					<CardDescription className="line-clamp-1 leading-relaxed max-w-2/3 ">
+						{displayDescription}
 					</CardDescription>
 				</CardHeader>
 				<CardContent></CardContent>

@@ -73,33 +73,48 @@ export function ListsContainer({
 							aria-label={m.list_visibility_all_aria_label()}
 						>
 							<IconLayoutGrid className="h-4 w-4" />
-							{m.list_visibility_all()}
+							<span className="hidden xs:inline">
+								{m.list_visibility_all()}
+							</span>
 						</ToggleGroupItem>
 						<ToggleGroupItem
 							value="public"
 							aria-label={m.list_visibility_public_aria_label()}
 						>
 							<IconWorld className="h-4 w-4" />
-							{m.list_visibility_public()}
+							<span className="hidden xs:inline">
+								{m.list_visibility_public()}
+							</span>
 						</ToggleGroupItem>
 						<ToggleGroupItem
 							value="limited"
 							aria-label={m.list_visibility_limited_aria_label()}
 						>
 							<IconUsers className="h-4 w-4" />
-							{m.list_visibility_limited()}
+							<span className="hidden xs:inline">
+								{m.list_visibility_limited()}
+							</span>
 						</ToggleGroupItem>
 						<ToggleGroupItem
 							value="private"
 							aria-label={m.list_visibility_private_aria_label()}
 						>
 							<IconLock className="h-4 w-4" />
-							{m.list_visibility_private()}
+							<span className="hidden xs:inline">
+								{m.list_visibility_private()}
+							</span>
 						</ToggleGroupItem>
 					</ToggleGroup>
-					<Button size="icon-lg">
-						<Link to="/lists/create" className="hover:cursor-default">
-							<IconPlus className="h-4 w-4" />
+
+					<Button>
+						<Link
+							to="/lists/create"
+							className="hover:cursor-default flex items-center gap-2"
+						>
+							<IconPlus className="h-4 w-4 font-bold" />
+							<span className="font-semibold hidden xs:inline">
+								{m.btn_create_list()}
+							</span>
 						</Link>
 					</Button>
 				</div>

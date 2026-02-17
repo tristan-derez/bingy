@@ -642,5 +642,6 @@
 	"alert_dialog_remove_media_history_title": "Supprimer de l'historique ?",
 	"alert_dialog_remove_media_history_desc": "Supprimer « {media_name} » de l'historique supprimera la review associée",
 	"alert_dialog_remove_media_history_cancel_btn": "Annuler",
-	"alert_dialog_remove_media_history_confirm_btn": "Supprimer"
+	"alert_dialog_remove_media_history_confirm_btn": "Supprimer",
+	"btn_create_list": "Créer une liste"
 }
