@@ -66,7 +66,7 @@ export function ListCard({ item, username }: ListCardProps) {
 							<DeleteListButton listId={item.id} listName={item.name} />
 						</div>
 					</div>
-					<CardDescription className="line-clamp-1 leading-relaxed">
+					<CardDescription className="line-clamp-1 leading-relaxed max-w-2/3 whitespace-pre-wrap">
 						{item.description || "\u00A0"}
 					</CardDescription>
 				</CardHeader>
