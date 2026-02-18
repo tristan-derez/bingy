@@ -1,11 +1,15 @@
-import { Link } from "@tanstack/react-router";
+import { IconPencil } from "@tabler/icons-react";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { ListMediaDetailsCard } from "@/components/lists/custom-lists/details/list-media-details-card";
+import { Button } from "@/components/ui/button";
 import { m } from "@/paraglide/messages";
 import { ListPagination } from "../../list-pagination";
+import { DeleteListButton } from "../delete-list-button";
 
 type ListDetailsContainerProps = {
 	username: string;
 	list: {
+		id: string;
 		name: string;
 		slug: string;
 		description: string | null;
@@ -37,6 +41,7 @@ export function ListDetailsContainer({
 	onPageChange,
 	isOwnList,
 }: ListDetailsContainerProps) {
+	const navigate = useNavigate();
 	const sortedItems =
 		list.type === "ranked"
 			? [...list.items].sort((a, b) => (a.position ?? 0) - (b.position ?? 0))
@@ -46,29 +51,74 @@ export function ListDetailsContainer({
 		<div className="container px-4 flex flex-col gap-6">
 			<div className="flex flex-col gap-2">
 				<div className="flex items-center justify-between">
-					<h1 className="text-3xl font-bold">{list.name}</h1>
-					<Link
-						to="/user/$username/lists/$slug"
-						params={{ username: username, slug: list.slug }}
-						className="text-primary underline hover:text-primary/80"
+					<h1
+						className="text-3xl font-bold truncate max-w-[5ch] sm:max-w-[12ch] md:max-w-[20ch] lg:max-w-[30ch]"
+						title={list.name}
 					>
-						{m.list_details_container_hide_notes()}
-					</Link>
-				</div>
+						{list.name}
+					</h1>
 
-				{list.description ? (
-					<p className="text-muted-foreground whitespace-pre-wrap">
-						{list.description}
-					</p>
-				) : null}
+					{isOwnList ? (
+						<div className="flex gap-2">
+							<Button
+								size="lg"
+								onClick={() =>
+									navigate({
+										to: "/user/$username/lists/$listslug/edit",
+										params: { username, listslug: list.slug },
+									})
+								}
+							>
+								<IconPencil />
+								<span className="hidden xs:inline">{m.btn_edit_list()}</span>
+							</Button>
+							<div onClick={(e) => e.preventDefault()}>
+								<DeleteListButton
+									listId={list.id}
+									listName={list.name}
+									size="icon-lg"
+								/>
+							</div>
+						</div>
+					) : null}
+				</div>
+				<div className="flex flex-col justify-between gap-4">
+					{list.description ? (
+						<p className="text-muted-foreground whitespace-pre-wrap max-w-3/4">
+							{list.description}
+						</p>
+					) : (
+						<span></span>
+					)}
+
+					{list.items.length > 0 ? (
+						<Link
+							to="/user/$username/lists/$slug"
+							params={{ username: username, slug: list.slug }}
+							className="text-primary underline hover:text-primary/80 self-end"
+						>
+							{m.list_details_container_hide_notes()}
+						</Link>
+					) : null}
+				</div>
 			</div>
 
 			{list.items.length === 0 ? (
 				<p className="text-center py-12 text-muted-foreground">
-					{isOwnList ? m.list_container_empty_own() : m.list_container_empty()}{" "}
-					<Link to="/" className="text-primary underline hover:text-primary/80">
-						{m.list_container_empty_own_cta()}
-					</Link>
+					{isOwnList ? (
+						<>
+							{m.list_container_empty_own()}{" "}
+							<Link
+								to="/user/$username/lists/$listslug/edit"
+								params={{ username, listslug: list.slug }}
+								className="text-primary underline hover:text-primary/80"
+							>
+								{m.list_container_empty_own_cta()}
+							</Link>
+						</>
+					) : (
+						m.list_container_empty()
+					)}
 				</p>
 			) : (
 				<>
