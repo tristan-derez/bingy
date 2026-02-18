@@ -1,9 +1,9 @@
 import { IconDeviceTv, IconLayoutGrid, IconMovie } from "@tabler/icons-react";
+import { ListPagination } from "@/components/lists/list-pagination";
+import { WatchlistEmptyState } from "@/components/lists/watchlist/watchlist-empty-state";
 import { WatchlistMediaCard } from "@/components/lists/watchlist/watchlist-media-card";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { m } from "@/paraglide/messages";
-import { ListPagination } from "../list-pagination";
-import { WatchlistEmptyState } from "./watchlist-empty-state";
 
 export type MediaFilter = "all" | "movie" | "tv";
 

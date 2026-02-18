@@ -1,4 +1,4 @@
-import { ArrowDown } from "lucide-react";
+import { IconArrowDown } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import { m } from "@/paraglide/messages";
 
@@ -23,7 +23,7 @@ export const ScrollToCrewButton = ({
 				className="hover:cursor-default flex flex-row gap-1"
 			>
 				{m.btn_jump_to_crew()}
-				<ArrowDown className="h-4 w-4 self-center" />
+				<IconArrowDown className="h-4 w-4 self-center" />
 			</a>
 		</Button>
 	);

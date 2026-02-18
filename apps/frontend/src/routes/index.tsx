@@ -1,5 +1,5 @@
+import { IconArrowRight } from "@tabler/icons-react";
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
-import { FaArrowRight } from "react-icons/fa";
 import { CenteredLayout } from "@/components/layout/centered-layout";
 import { useTheme } from "@/components/theme/use-theme";
 import { Button } from "@/components/ui/button";
@@ -64,7 +64,7 @@ function App() {
 						}}
 						as="button"
 					>
-						{m.landing_page_btn_get_started()} <FaArrowRight />
+						{m.landing_page_btn_get_started()} <IconArrowRight />
 					</HoverBorderGradient>
 				</div>
 			</div>
