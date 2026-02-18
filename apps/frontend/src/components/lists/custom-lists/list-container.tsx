@@ -54,7 +54,7 @@ export function ListContainer({
 								to="/user/$username/lists/$listslug/edit"
 								params={{ username, listslug: list.slug }}
 							>
-								Modifier liste
+								{m.btn_edit_list()}
 							</Link>
 						) : null}
 
