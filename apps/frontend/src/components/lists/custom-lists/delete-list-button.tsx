@@ -22,9 +22,14 @@ import { m } from "@/paraglide/messages";
 interface DeleteListButtonProps {
 	listId: string;
 	listName: string;
+	size: "icon-lg" | "icon-sm";
 }
 
-export function DeleteListButton({ listId, listName }: DeleteListButtonProps) {
+export function DeleteListButton({
+	listId,
+	listName,
+	size,
+}: DeleteListButtonProps) {
 	const [open, setOpen] = useState(false);
 	const { mutate: deleteList, isPending } = useDeleteList();
 
@@ -40,7 +45,7 @@ export function DeleteListButton({ listId, listName }: DeleteListButtonProps) {
 					render={
 						<Button
 							variant={"destructive"}
-							size="icon-sm"
+							size={size}
 							onClick={() => setOpen(true)}
 							disabled={isPending}
 							aria-label="Delete list"

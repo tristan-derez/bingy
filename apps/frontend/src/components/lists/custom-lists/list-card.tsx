@@ -67,7 +67,11 @@ export function ListCard({ item, username, isOwnProfile }: ListCardProps) {
 						</div>
 						{isOwnProfile ? (
 							<div onClick={(e) => e.preventDefault()}>
-								<DeleteListButton listId={item.id} listName={item.name} />
+								<DeleteListButton
+									listId={item.id}
+									listName={item.name}
+									size="icon-sm"
+								/>
 							</div>
 						) : null}
 					</div>
