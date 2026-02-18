@@ -103,7 +103,7 @@ export function UpdateEmailForm() {
 					render={<Button>{m.btn_update_email()}</Button>}
 					className="w-full"
 				/>
-				<DialogContent>
+				<DialogContent className="max-w-lg">
 					<DialogHeader>
 						<DialogTitle>{m.dialog_title_update_email()}</DialogTitle>
 						<DialogDescription>

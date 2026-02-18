@@ -89,10 +89,10 @@ export function UpdatePasswordForm({ hasPassword }: UpdatePasswordFormProps) {
 						render={<Button>{m.btn_update_password()}</Button>}
 						className="w-full"
 					></DialogTrigger>
-					<DialogContent>
+					<DialogContent className="max-w-lg">
 						<DialogHeader>
 							<DialogTitle>{m.dialog_title_update_password()}</DialogTitle>
-							<DialogDescription>
+							<DialogDescription className="w-6/7">
 								{m.dialog_desc_update_password()}
 							</DialogDescription>
 						</DialogHeader>
