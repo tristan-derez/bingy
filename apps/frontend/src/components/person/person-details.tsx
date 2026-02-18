@@ -153,7 +153,7 @@ export const PersonDetailsView = ({
 						</CardContent>
 					</Card>
 
-					<Card className="relative overflow-hidden border-none justify-center">
+					<Card className="relative overflow-hidden border-none justify-center ring-0">
 						<CardHeader className="text-foreground">
 							<CardTitle>{m.person_biography()}</CardTitle>
 						</CardHeader>
