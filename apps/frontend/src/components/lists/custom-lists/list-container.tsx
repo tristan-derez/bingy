@@ -47,15 +47,27 @@ export function ListContainer({
 			<div className="flex flex-col gap-2">
 				<div className="flex items-center justify-between">
 					<h1 className="text-3xl font-bold">{list.name}</h1>
-					{list.items.length > 0 ? (
-						<Link
-							to="/user/$username/lists/$slug/details"
-							params={{ username: username, slug: list.slug }}
-							className="text-primary underline hover:text-primary/80"
-						>
-							{m.list_container_see_notes()}
-						</Link>
-					) : null}
+
+					<div className="flex flex-row gap-2">
+						{isOwnList ? (
+							<Link
+								to="/user/$username/lists/$listslug/edit"
+								params={{ username, listslug: list.slug }}
+							>
+								Modifier liste
+							</Link>
+						) : null}
+
+						{list.items.length > 0 ? (
+							<Link
+								to="/user/$username/lists/$slug/details"
+								params={{ username: username, slug: list.slug }}
+								className="text-primary underline hover:text-primary/80"
+							>
+								{m.list_container_see_notes()}
+							</Link>
+						) : null}
+					</div>
 				</div>
 				{list.description ? (
 					<p className="text-muted-foreground whitespace-pre-wrap">
