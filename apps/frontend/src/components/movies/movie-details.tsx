@@ -205,7 +205,7 @@ export function MovieDetailView({
 						</CardContent>
 					</Card>
 
-					<div className="grid lg:grid-cols-3 gap-2">
+					<div className="grid lg:grid-cols-3 gap-2 p-px">
 						{movie.vote_count ? (
 							<Card>
 								<CardContent className="flex items-center gap-4">
@@ -334,7 +334,7 @@ export function MovieDetailView({
 
 					{movie.production_companies &&
 						movie.production_companies.length > 0 && (
-							<Card>
+							<Card className="border ring-0">
 								<CardHeader>
 									<CardTitle>
 										{m.movie_details_production_companies({

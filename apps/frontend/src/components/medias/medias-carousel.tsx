@@ -47,7 +47,7 @@ export const MediasCarousel = ({ medias, title }: MediaCarouselProps) => {
 			<h2 className="text-xl font-semibold">{title}</h2>
 			<div className="relative">
 				<div className="overflow-hidden hover:cursor-grab" ref={emblaRef}>
-					<div className="flex gap-4">
+					<div className="flex gap-4 p-px">
 						{medias.map((media) => (
 							<div
 								key={`${carouselId}-${media.id}`}

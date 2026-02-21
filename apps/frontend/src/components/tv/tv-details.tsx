@@ -18,12 +18,12 @@ import { SocialLinks } from "@/components/social-links";
 import { BackButton } from "@/components/ui/back-button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { WatchProvidersSection } from "@/components/watch-providers/watch-providers-section";
 import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { shortenCountryName } from "@/utils/shorten-country-name";
+import { Separator } from "../ui/separator";
 import { TVStatusCard } from "./tv-details/status-card";
 
 interface TvDetailViewProps {
@@ -103,6 +103,7 @@ export function TvDetailsView({
 									<h1 className="text-4xl font-bold leading-relaxed line-clamp-1">
 										{tv.name}
 									</h1>
+									<Separator />
 									{tv.tagline ? (
 										<p className="text-muted-foreground italic">{tv.tagline}</p>
 									) : null}
@@ -191,7 +192,7 @@ export function TvDetailsView({
 						</CardContent>
 					</Card>
 
-					<div className="grid lg:grid-cols-3 gap-3">
+					<div className="grid lg:grid-cols-3 gap-3 p-px">
 						{tv.vote_count > 0 ? (
 							<Card>
 								<CardContent className="flex items-center gap-4">
@@ -297,7 +298,7 @@ export function TvDetailsView({
 					) : null}
 
 					{tv.networks.length > 0 ? (
-						<Card>
+						<Card className="border ring-0">
 							<CardHeader>
 								<CardTitle>
 									{m.tv_details_networks({
@@ -328,7 +329,7 @@ export function TvDetailsView({
 					) : null}
 
 					{tv.production_companies.length > 0 ? (
-						<Card>
+						<Card className="border ring-0">
 							<CardHeader>
 								<CardTitle>
 									{m.tv_details_companies({

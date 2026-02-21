@@ -46,7 +46,7 @@ export function TVStatusCard({ status }: TVStatusCardProps) {
 	const statusMessage = m[config.key as keyof typeof m] as () => string;
 
 	return (
-		<Card>
+		<Card className="border ring-0">
 			<CardContent className="flex items-center gap-4">
 				<Icon />
 				<div>

@@ -7,7 +7,6 @@ import { Link } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
-import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
@@ -39,11 +38,6 @@ export const MovieCard = ({ movie }: MovieCardProps) => {
 						}}
 						className="h-full w-full object-cover"
 					/>
-					{movie.adult && (
-						<Badge className="absolute top-2 right-2" variant="destructive">
-							18+
-						</Badge>
-					)}
 				</div>
 
 				<CardContent className="flex flex-col gap-4 grow pt-2">

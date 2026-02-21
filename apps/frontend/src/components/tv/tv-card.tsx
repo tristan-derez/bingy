@@ -40,7 +40,7 @@ export const TvCard = ({ tvShow }: TvCardProps) => {
 					/>
 				</div>
 
-				<CardContent className="flex flex-col gap-4 grow">
+				<CardContent className="flex flex-col gap-4 grow pt-2">
 					{tvShow.vote_count > 10 ? (
 						<div className="flex items-center gap-4 text-sm">
 							<div className="flex items-center gap-1">
