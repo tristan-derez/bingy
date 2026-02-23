@@ -1,6 +1,6 @@
 import { atomWithStorage } from "jotai/utils";
 
-export type CreateListDraftItem = {
+export type ListDraftItem = {
 	tmdbId: number;
 	mediaType: "movie" | "tv";
 	position?: number;
@@ -10,7 +10,12 @@ export type CreateListDraftItem = {
 	note?: string;
 };
 
-export const createListDraftItemsAtom = atomWithStorage<CreateListDraftItem[]>(
+export const createListDraftItemsAtom = atomWithStorage<ListDraftItem[]>(
 	"create-list-draft-items",
+	[],
+);
+
+export const editListDraftItemsAtom = atomWithStorage<ListDraftItem[]>(
+	"edit-list-draft-items",
 	[],
 );
