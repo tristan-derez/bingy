@@ -8,9 +8,8 @@ import { useAtom } from "jotai";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { ListItemsPreview } from "@/components/lists/custom-lists/list-items-preview";
 import { ListSearchAddInput } from "@/components/lists/custom-lists/list-search-add";
-import { ListRankedItemsContainer } from "@/components/lists/custom-lists/ranked-list/list-ranked-items-container";
-import { ListAddedItemMediaCard } from "@/components/lists/custom-lists/unranked-list/list-added-item-card";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -240,7 +239,9 @@ function CreateListPage() {
 							<div className="flex flex-col gap-2">
 								<div className="flex flex-col gap-2">
 									<FormLabel>{m.form_create_list_add_items_label()}</FormLabel>
-									<ListSearchAddInput />
+									<ListSearchAddInput
+										draftItemsAtom={createListDraftItemsAtom}
+									/>
 								</div>
 							</div>
 							<div className="flex w-full gap-2">
@@ -272,52 +273,15 @@ function CreateListPage() {
 				</CardContent>
 			</Card>
 
-			{selectedItems.length > 0 ? (
-				<div className="flex flex-col gap-2">
-					<div className="flex justify-between items-center">
-						<h3 className="text-sm font-medium">
-							{m.list_added_items({
-								count: selectedItems.length,
-								total_items: selectedItems.length,
-							})}
-						</h3>
-						<Button
-							type="button"
-							variant="outline"
-							size="sm"
-							onClick={() => setSelectedItems([])}
-						>
-							{m.list_added_items_clear_all()}
-						</Button>
-					</div>
-					{listType === "ranked" ? (
-						<ListRankedItemsContainer
-							items={selectedItems}
-							onRemove={handleRemoveItem}
-							onUpdateNote={handleUpdateNote}
-							onReorder={handleReorder}
-						/>
-					) : (
-						<div className="grid grid-cols-1 gap-2">
-							{selectedItems.toReversed().map((item) => {
-								return (
-									<ListAddedItemMediaCard
-										key={`${item.tmdbId}-${item.mediaType}`}
-										tmdbId={item.tmdbId}
-										mediaType={item.mediaType}
-										posterPath={item.posterPath}
-										title={item.title}
-										releaseDate={item.releaseDate}
-										note={item.note}
-										onRemove={handleRemoveItem}
-										onUpdateNote={handleUpdateNote}
-									/>
-								);
-							})}
-						</div>
-					)}
-				</div>
-			) : null}
+			{/* items (movies/tv shows) added to the list */}
+			<ListItemsPreview
+				selectedItems={selectedItems}
+				listType={listType}
+				clearItems={() => setSelectedItems([])}
+				handleRemoveItem={handleRemoveItem}
+				handleUpdateNote={handleUpdateNote}
+				handleReorder={handleReorder}
+			/>
 		</div>
 	);
 }
