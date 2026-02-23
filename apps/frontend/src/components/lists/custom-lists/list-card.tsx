@@ -14,11 +14,13 @@ import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { DeleteListButton } from "../custom-lists/delete-list-button";
+import { EditListButton } from "../custom-lists/edit-list-button";
 
 type ListCardProps = {
 	item: {
 		id: string;
 		name: string;
+		type: "ranked" | "unranked";
 		slug: string;
 		description: string | null;
 		visibility: "limited" | "private" | "public";
@@ -47,8 +49,11 @@ const visibilityConfig = {
 export function ListCard({ item, username, isOwnProfile }: ListCardProps) {
 	const localeRegion = useAtomValue(localeRegionAtom);
 	const VisibilityIcon = visibilityConfig[item.visibility].icon;
-	const formattedDate = formatDate(item.createdAt.toString(), localeRegion);
-
+	const formattedDate = formatDate(item.createdAt.toString(), localeRegion, {
+		month: "2-digit",
+		day: "2-digit",
+		year: "2-digit",
+	});
 	const displayDescription = item.description?.split("\n")[0] || "\u00A0";
 
 	return (
@@ -61,12 +66,18 @@ export function ListCard({ item, username, isOwnProfile }: ListCardProps) {
 				<CardHeader>
 					<div className="flex items-start justify-between gap-2">
 						<div className="flex items-center gap-2 flex-1 min-w-0">
-							<CardTitle className="line-clamp-1 leading-relaxed">
+							<CardTitle className="line-clamp-1 leading-relaxed gap-2 flex">
 								{item.name}
 							</CardTitle>
 						</div>
 						{isOwnProfile ? (
-							<div onClick={(e) => e.preventDefault()}>
+							<div onClick={(e) => e.preventDefault()} className="flex gap-2">
+								<EditListButton
+									username={username}
+									listSlug={item.slug}
+									size="icon-sm"
+									showText={false}
+								/>
 								<DeleteListButton
 									listId={item.id}
 									listName={item.name}
@@ -86,10 +97,20 @@ export function ListCard({ item, username, isOwnProfile }: ListCardProps) {
 							date: formattedDate,
 						})}
 					</p>
-					<Badge variant="outline" className="shrink-0">
-						<VisibilityIcon className="h-3 w-3 mr-1" />
-						{visibilityConfig[item.visibility].label()}
-					</Badge>
+					<div className="flex gap-2">
+						<Badge
+							variant="default"
+							className="shrink-0 bg-accent text-accent-foreground"
+						>
+							{item.type === "ranked"
+								? m.list_type_ranked()
+								: m.list_type_unranked()}
+						</Badge>
+						<Badge variant="outline" className="shrink-0">
+							<VisibilityIcon className="h-3 w-3 mr-1" />
+							{visibilityConfig[item.visibility].label()}
+						</Badge>
+					</div>
 				</CardFooter>
 			</Card>
 		</Link>
