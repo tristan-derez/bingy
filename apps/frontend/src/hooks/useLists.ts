@@ -115,7 +115,8 @@ export function useCreateList() {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: ["lists"],
+				queryKey: ["lists", "custom-list"],
+				exact: false,
 			});
 		},
 	});
@@ -136,7 +137,8 @@ export function useUpdateList() {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: ["lists"],
+				queryKey: ["lists", "custom-list"],
+				exact: false,
 			});
 		},
 	});
@@ -151,7 +153,8 @@ export function useDeleteList() {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: ["lists"],
+				queryKey: ["lists", "custom-list"],
+				exact: false,
 			});
 			toast.success(m.toast_delete_list_success());
 		},
