@@ -531,6 +531,189 @@ userListRoutes.get("/:username", async (c) => {
 	});
 });
 
+// update list
+userListRoutes.patch(
+	"/:listId",
+	zValidator(
+		"json",
+		z.object({
+			name: z.string().min(1).max(50).optional(),
+			description: z.string().max(1000).nullable().optional(),
+			visibility: z.enum(["public", "limited", "private"]).optional(),
+			type: z.enum(["unranked", "ranked"]).optional(),
+			items: z
+				.array(
+					z.object({
+						tmdbId: z.number(),
+						mediaType: z.enum(["movie", "tv"]),
+						note: z.string().max(500).optional(),
+						position: z.number().optional(),
+					}),
+				)
+				.optional(),
+		}),
+	),
+	async (c) => {
+		try {
+			const user = c.get("user")!;
+			const listId = c.req.param("listId");
+			const { name, description, visibility, type, items } =
+				c.req.valid("json");
+
+			const updatedList = await db.transaction(async (tx) => {
+				// verify list exist and belongs to user
+				const existingList = await tx.query.customLists.findFirst({
+					where: and(
+						eq(customLists.id, listId),
+						eq(customLists.userId, user.id),
+					),
+				});
+
+				if (!existingList) {
+					throw new Error("LIST_NOT_FOUND");
+				}
+
+				const updates: Partial<{
+					name: string;
+					slug: string;
+					description: string | null;
+					visibility: "public" | "limited" | "private";
+					type: "unranked" | "ranked";
+				}> = {};
+
+				// handle name change (requires slug regeneration and uniqueness check)
+				if (name !== undefined && name !== existingList.name) {
+					const existingName = await tx
+						.select({ id: customLists.id })
+						.from(customLists)
+						.where(
+							and(eq(customLists.name, name), eq(customLists.userId, user.id)),
+						)
+						.limit(1);
+
+					if (existingName.length > 0) {
+						throw new Error("LIST_NAME_EXISTS");
+					}
+
+					let newSlug = createSlug(name, "list");
+					const existingSlug = await tx
+						.select({ id: customLists.id })
+						.from(customLists)
+						.where(
+							and(
+								eq(customLists.slug, newSlug),
+								eq(customLists.userId, user.id),
+							),
+						)
+						.limit(1);
+
+					if (existingSlug.length > 0) {
+						newSlug = createSlug(`${name}-${nanoid(3)}`, "list");
+					}
+
+					updates.name = name.trim();
+					updates.slug = newSlug;
+				}
+
+				if (description !== undefined) updates.description = description;
+				if (visibility !== undefined) updates.visibility = visibility;
+
+				// handle type change
+				if (type !== undefined && type !== existingList.type) {
+					updates.type = type;
+				}
+
+				const finalType = type ?? existingList.type;
+
+				// update list metadata if there are changes
+				let updatedListData = existingList;
+				if (Object.keys(updates).length > 0) {
+					[updatedListData] = await tx
+						.update(customLists)
+						.set(updates)
+						.where(eq(customLists.id, listId))
+						.returning();
+				}
+
+				// handle items replacement if provided
+				if (items !== undefined) {
+					// validate positions for ranked lists
+					if (finalType === "ranked") {
+						const positions = items
+							.map((item) => item.position)
+							.filter((p): p is number => p !== undefined);
+
+						if (positions.length !== items.length) {
+							throw new Error("RANKED_LIST_MISSING_POSITIONS");
+						}
+
+						const uniquePositions = new Set(positions);
+						if (uniquePositions.size !== positions.length) {
+							throw new Error("RANKED_LIST_DUPLICATE_POSITIONS");
+						}
+					}
+
+					// delete existing items
+					await tx.delete(listItems).where(eq(listItems.listId, listId));
+
+					// add new items
+					if (items.length > 0) {
+						const mediaIds = await Promise.all(
+							items.map(async (item) => {
+								const [mediaRecord] = await tx
+									.insert(media)
+									.values({
+										tmdbId: item.tmdbId,
+										mediaType: item.mediaType,
+									})
+									.onConflictDoUpdate({
+										target: [media.tmdbId, media.mediaType],
+										set: { updatedAt: sql`now()` },
+									})
+									.returning({ id: media.id });
+
+								return {
+									mediaId: mediaRecord.id,
+									note: item.note,
+									position: item.position,
+								};
+							}),
+						);
+
+						await tx.insert(listItems).values(
+							mediaIds.map(({ mediaId, note, position }) => ({
+								listId,
+								mediaId,
+								note,
+								position: finalType === "ranked" ? position : null,
+							})),
+						);
+					}
+				}
+
+				return updatedListData;
+			});
+
+			return c.json(updatedList);
+		} catch (error) {
+			// @todo: implement global error handling as AppError
+			if (error instanceof Error) {
+				switch (error.message) {
+					case "LIST_NOT_FOUND":
+						return c.json({ error: { code: "LIST_NOT_FOUND" } }, 404);
+					case "LIST_NAME_EXISTS":
+						return c.json({ error: { code: "LIST_NAME_EXISTS" } }, 409);
+					case "RANKED_LIST_MISSING_POSITIONS":
+					case "RANKED_LIST_DUPLICATE_POSITIONS":
+						console.error("Client validation error:", error.message);
+						return c.json({ error: { code: "INVALID_REQUEST" } }, 400);
+				}
+			}
+			return c.json({ error: { code: "UPDATE_FAILED" } }, 500);
+		}
+	},
+);
+
 // delete list
 userListRoutes.delete("/:listId", async (c) => {
 	const user = c.get("user")!;
