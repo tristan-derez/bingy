@@ -71,7 +71,7 @@ export function ListCard({ item, username, isOwnProfile }: ListCardProps) {
 							</CardTitle>
 						</div>
 						{isOwnProfile ? (
-							<div onClick={(e) => e.preventDefault()} className="flex gap-2">
+							<div className="flex gap-2" onClick={(e) => e.preventDefault()}>
 								<EditListButton
 									username={username}
 									listSlug={item.slug}

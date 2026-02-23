@@ -1,10 +1,9 @@
-import { IconPencil } from "@tabler/icons-react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { ListMediaCard } from "@/components/lists/custom-lists/unranked-list/list-media-card";
 import { ListPagination } from "@/components/lists/list-pagination";
-import { Button } from "@/components/ui/button";
 import { m } from "@/paraglide/messages";
 import { DeleteListButton } from "./delete-list-button";
+import { EditListButton } from "./edit-list-button";
 
 type ListContainerProps = {
 	username: string;
@@ -59,26 +58,24 @@ export function ListContainer({
 					</h1>
 
 					{isOwnList ? (
-						<div className="flex gap-2">
-							<Button
+						<div className="flex gap-2" onClick={(e) => e.preventDefault()}>
+							<EditListButton
+								listSlug={list.slug}
+								username={username}
 								size="lg"
-								onClick={() =>
+								showText={true}
+							/>
+							<DeleteListButton
+								listId={list.id}
+								listName={list.name}
+								size="icon-lg"
+								onRedirect={() =>
 									navigate({
-										to: "/user/$username/lists/$listslug/edit",
-										params: { username, listslug: list.slug },
+										to: "/user/$username/lists",
+										params: { username },
 									})
 								}
-							>
-								<IconPencil />
-								<span className="hidden xs:inline">{m.btn_edit_list()}</span>
-							</Button>
-							<div onClick={(e) => e.preventDefault()}>
-								<DeleteListButton
-									listId={list.id}
-									listName={list.name}
-									size="icon-lg"
-								/>
-							</div>
+							/>
 						</div>
 					) : null}
 				</div>
