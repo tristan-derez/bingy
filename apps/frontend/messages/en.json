@@ -649,5 +649,11 @@
 	"alert_dialog_remove_media_history_cancel_btn": "Cancel",
 	"alert_dialog_remove_media_history_confirm_btn": "Delete from history",
 	"btn_create_list": "Create list",
-	"btn_edit_list": "Edit list"
+	"btn_edit_list": "Edit list",
+	"toast_form_update_list_success": "List updated successfully",
+	"toast_form_update_list_error": "Failed to update list",
+	"btn_update_list": "Update list",
+	"btn_updating_list": "Updating...",
+	"list_type_ranked": "Ranked list",
+	"list_type_unranked": "Unranked list"
 }

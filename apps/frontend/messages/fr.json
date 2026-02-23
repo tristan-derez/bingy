@@ -647,5 +647,11 @@
 	"alert_dialog_remove_media_history_cancel_btn": "Annuler",
 	"alert_dialog_remove_media_history_confirm_btn": "Supprimer",
 	"btn_create_list": "Créer une liste",
-	"btn_edit_list": "Modifier la liste"
+	"btn_edit_list": "Modifier la liste",
+	"toast_form_update_list_success": "Liste mise à jour",
+	"toast_form_update_list_error": "La liste n'a pas pu être mise à jour",
+	"btn_update_list": "Mettre à jour la liste",
+	"btn_updating_list": "Mise à jour...",
+	"list_type_ranked": "Liste classée",
+	"list_type_unranked": "Liste libre"
 }
