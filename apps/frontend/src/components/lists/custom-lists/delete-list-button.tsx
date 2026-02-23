@@ -23,12 +23,14 @@ interface DeleteListButtonProps {
 	listId: string;
 	listName: string;
 	size: "icon-lg" | "icon-sm";
+	onRedirect?: () => void;
 }
 
 export function DeleteListButton({
 	listId,
 	listName,
 	size,
+	onRedirect,
 }: DeleteListButtonProps) {
 	const [open, setOpen] = useState(false);
 	const { mutate: deleteList, isPending } = useDeleteList();
@@ -36,6 +38,7 @@ export function DeleteListButton({
 	const handleDelete = () => {
 		deleteList(listId);
 		setOpen(false);
+		onRedirect?.();
 	};
 
 	return (
@@ -48,7 +51,7 @@ export function DeleteListButton({
 							size={size}
 							onClick={() => setOpen(true)}
 							disabled={isPending}
-							aria-label="Delete list"
+							aria-label={m.btn_delete_list_aria_label()}
 						>
 							<IconTrash />
 						</Button>
