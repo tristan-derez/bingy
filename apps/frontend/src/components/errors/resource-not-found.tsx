@@ -14,13 +14,11 @@ import {
 interface ResourceNotFoundProps {
 	title: string;
 	description: string;
-	onBack: () => void;
 }
 
 export function ResourceNotFound({
 	title,
 	description,
-	onBack,
 }: ResourceNotFoundProps) {
 	return (
 		<CenteredLayout>
@@ -33,7 +31,7 @@ export function ResourceNotFound({
 					<CardDescription>{description}</CardDescription>
 				</CardHeader>
 				<CardContent className="flex flex-col gap-2">
-					<BackButton onBack={onBack} style="w-full" />
+					<BackButton style="w-full" />
 
 					<Button variant="outline" className="w-full">
 						<Link to="/" className="hover:cursor-default">

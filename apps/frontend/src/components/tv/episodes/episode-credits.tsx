@@ -13,7 +13,6 @@ interface TvEpisodeCreditsViewProps {
 	credits: Schemas.TvEpisodeCredits | undefined;
 	isLoading: boolean;
 	isError: boolean;
-	onBack: () => void;
 }
 
 export function TvEpisodeCreditsView({
@@ -21,7 +20,6 @@ export function TvEpisodeCreditsView({
 	episodeNumber,
 	isLoading,
 	isError,
-	onBack,
 }: TvEpisodeCreditsViewProps) {
 	const crewSectionId = useId();
 	if (isLoading) {
@@ -32,7 +30,6 @@ export function TvEpisodeCreditsView({
 			<ResourceNotFound
 				title={m.episode_credits_not_found_title()}
 				description={m.episode_credits_not_found_desc()}
-				onBack={onBack}
 			/>
 		);
 	}
@@ -40,7 +37,7 @@ export function TvEpisodeCreditsView({
 	return (
 		<div className="container scroll-smooth">
 			<div className="mb-4 flex justify-between">
-				<BackButton onBack={onBack} />
+				<BackButton />
 
 				{credits.crew.length > 0 && credits.cast.length > 0 ? (
 					<ScrollToCrewButton crewSectionId={crewSectionId} />

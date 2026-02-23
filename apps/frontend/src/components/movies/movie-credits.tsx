@@ -12,14 +12,12 @@ interface MovieCreditsViewProps {
 	credits: Schemas.MovieCredits | undefined;
 	isLoading: boolean;
 	isError: boolean;
-	onBack: () => void;
 }
 
 export function MovieCreditsView({
 	credits,
 	isLoading,
 	isError,
-	onBack,
 }: MovieCreditsViewProps) {
 	const crewSectionId = useId();
 	if (isLoading) {
@@ -30,14 +28,13 @@ export function MovieCreditsView({
 			<ResourceNotFound
 				title={m.movie_credits_not_found_title()}
 				description={m.movie_credits_not_found_desc()}
-				onBack={onBack}
 			/>
 		);
 	}
 	return (
 		<div className="container scroll-smooth">
 			<div className="mb-4 flex justify-between">
-				<BackButton onBack={onBack} />
+				<BackButton />
 				{credits.crew.length > 0 && credits.cast.length > 0 ? (
 					<ScrollToCrewButton crewSectionId={crewSectionId} />
 				) : null}

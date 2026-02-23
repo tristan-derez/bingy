@@ -14,7 +14,6 @@ interface CreditEpisodesListProps {
 	job?: string;
 	showName: string;
 	posterPath: string | null;
-	onBack: () => void;
 	guestEpisodeIds: Set<number>;
 	episodes: Omit<Schemas.Episode, "media_type">[];
 }
@@ -26,14 +25,14 @@ export const CreditEpisodesList = ({
 	job,
 	showName,
 	posterPath,
-	onBack,
 	guestEpisodeIds,
 	episodes,
 }: CreditEpisodesListProps) => {
 	const role = character || job || m.credit_episodes_list_unknown_role();
+
 	return (
 		<div className="container">
-			<BackButton onBack={onBack} />
+			<BackButton />
 
 			<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
 				<div className="flex flex-col gap-2 items-center lg:items-start max-w-[250px] md:max-w-[300px] lg:max-w-[400px]">

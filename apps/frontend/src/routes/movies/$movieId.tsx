@@ -1,4 +1,4 @@
-import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import { MovieDetailView } from "@/components/movies/movie-details";
 import { useMovie, useMovieResource } from "@/hooks/useMovies";
@@ -19,7 +19,6 @@ type ReleaseDates = {
 };
 
 function MovieDetailsPage() {
-	const router = useRouter();
 	const { movieId } = Route.useParams();
 	const localeRegion = useAtomValue(localeRegionAtom);
 	const region = useAtomValue(regionAtom);
@@ -81,7 +80,6 @@ function MovieDetailsPage() {
 			isError={isError}
 			releaseDate={releaseDate}
 			releaseRegion={releaseRegion}
-			onBack={() => router.history.back()}
 		/>
 	);
 }

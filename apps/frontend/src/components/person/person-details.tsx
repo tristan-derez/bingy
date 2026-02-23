@@ -21,14 +21,12 @@ interface PersonDetailsViewProps {
 	person: Schemas.PersonDetailsWithCombinedCreditsAndSocials | undefined;
 	isLoading: boolean;
 	isError: boolean;
-	onBack: () => void;
 }
 
 export const PersonDetailsView = ({
 	person,
 	isLoading,
 	isError,
-	onBack,
 }: PersonDetailsViewProps) => {
 	const localeRegion = useAtomValue(localeRegionAtom);
 
@@ -41,7 +39,6 @@ export const PersonDetailsView = ({
 			<ResourceNotFound
 				title={m.error_title_not_found_person()}
 				description={m.error_desc_not_found_person()}
-				onBack={onBack}
 			/>
 		);
 	}
@@ -58,7 +55,7 @@ export const PersonDetailsView = ({
 
 	return (
 		<div className="container">
-			<BackButton onBack={onBack} />
+			<BackButton />
 
 			<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
 				<div className="flex flex-col gap-2 items-center lg:items-start max-w-[250px] md:max-w-[300px] lg:max-w-[400px]">

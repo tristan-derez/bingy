@@ -1,5 +1,5 @@
 import { useQueries } from "@tanstack/react-query";
-import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
 import { fetchMovie } from "@/api/movies";
@@ -13,7 +13,6 @@ export const Route = createFileRoute("/collections/$collectionId")({
 
 function CollectionDetailsPage() {
 	const { collectionId } = Route.useParams();
-	const router = useRouter();
 	const localeRegion = useAtomValue(localeRegionAtom);
 	const region = useAtomValue(regionAtom);
 
@@ -43,7 +42,6 @@ function CollectionDetailsPage() {
 			moviesData={moviesData}
 			isLoading={isLoading}
 			isError={isError}
-			onBack={() => router.history.back()}
 		/>
 	);
 }

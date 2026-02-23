@@ -20,7 +20,6 @@ interface CollectionDetailsViewProps {
 	moviesData: Schemas.MovieDetails[] | [];
 	isLoading: boolean;
 	isError: boolean;
-	onBack: () => void;
 }
 
 export function CollectionDetailsView({
@@ -28,7 +27,6 @@ export function CollectionDetailsView({
 	moviesData,
 	isLoading,
 	isError,
-	onBack,
 }: CollectionDetailsViewProps) {
 	if (isLoading) {
 		return <LoadingCentered />;
@@ -39,7 +37,6 @@ export function CollectionDetailsView({
 			<ResourceNotFound
 				title={m.error_title_not_found_collection()}
 				description={m.error_desc_not_found_collection()}
-				onBack={onBack}
 			/>
 		);
 	}
@@ -104,7 +101,7 @@ export function CollectionDetailsView({
 
 	return (
 		<div className="container">
-			<BackButton onBack={onBack} />
+			<BackButton />
 
 			<div className="flex flex-col gap-4 pt-2">
 				<Card

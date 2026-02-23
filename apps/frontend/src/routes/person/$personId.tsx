@@ -1,4 +1,4 @@
-import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
 import { PersonDetailsView } from "@/components/person/person-details";
@@ -11,7 +11,6 @@ export const Route = createFileRoute("/person/$personId")({
 
 function PersonPage() {
 	const { personId } = Route.useParams();
-	const router = useRouter();
 	const localeRegion = useAtomValue(localeRegionAtom);
 
 	const {
@@ -31,7 +30,6 @@ function PersonPage() {
 			person={person}
 			isLoading={isLoading}
 			isError={isError}
-			onBack={() => router.history.back()}
 		/>
 	);
 }

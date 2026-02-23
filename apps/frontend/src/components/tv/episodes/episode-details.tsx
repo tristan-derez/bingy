@@ -25,7 +25,6 @@ interface TvEpisodeDetailViewProps {
 	tvId: number;
 	isLoading: boolean;
 	isError: boolean;
-	onBack: () => void;
 }
 
 export function TvEpisodeDetailsView({
@@ -34,7 +33,6 @@ export function TvEpisodeDetailsView({
 	tvId,
 	isLoading,
 	isError,
-	onBack,
 }: TvEpisodeDetailViewProps) {
 	const localeRegion = useAtomValue(localeRegionAtom);
 	if (isLoading) {
@@ -46,7 +44,6 @@ export function TvEpisodeDetailsView({
 			<ResourceNotFound
 				title={m.episode_details_not_found_title()}
 				description={m.episode_details_not_found_desc()}
-				onBack={onBack}
 			/>
 		);
 	}
@@ -98,7 +95,7 @@ export function TvEpisodeDetailsView({
 
 	return (
 		<div className="container">
-			<BackButton onBack={onBack} />
+			<BackButton />
 
 			<div className="flex flex-col gap-4 pt-4">
 				<div className="flex flex-col gap-2">

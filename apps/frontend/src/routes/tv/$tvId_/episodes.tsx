@@ -1,4 +1,4 @@
-import { createFileRoute, redirect, useRouter } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import { z } from "zod";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
@@ -23,7 +23,6 @@ export const Route = createFileRoute("/tv/$tvId_/episodes")({
 
 function CreditEpisodesPage() {
 	const { credit_id } = Route.useSearch();
-	const router = useRouter();
 	const localeRegion = useAtomValue(localeRegionAtom);
 
 	const {
@@ -41,15 +40,9 @@ function CreditEpisodesPage() {
 			<ResourceNotFound
 				title="Something went wrong"
 				description="The episodes you're looking for could not be found."
-				onBack={() => router.history.back()}
 			/>
 		);
 	}
 
-	return (
-		<CreditEpisodesContainer
-			creditDetails={creditDetails}
-			onBack={() => router.history.back()}
-		/>
-	);
+	return <CreditEpisodesContainer creditDetails={creditDetails} />;
 }

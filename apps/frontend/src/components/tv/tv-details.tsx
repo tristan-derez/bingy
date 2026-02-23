@@ -33,7 +33,6 @@ interface TvDetailViewProps {
 	cast: Schemas.CastMember[];
 	isLoading: boolean;
 	isError: boolean;
-	onBack: () => void;
 }
 
 export function TvDetailsView({
@@ -43,7 +42,6 @@ export function TvDetailsView({
 	cast,
 	isLoading,
 	isError,
-	onBack,
 }: TvDetailViewProps) {
 	const { session } = useRouteContext({ from: "__root__" });
 	const localeRegion = useAtomValue(localeRegionAtom);
@@ -58,7 +56,6 @@ export function TvDetailsView({
 			<ResourceNotFound
 				title={m.tv_details_not_found_title()}
 				description={m.tv_details_not_found_desc()}
-				onBack={onBack}
 			/>
 		);
 	}
@@ -73,7 +70,7 @@ export function TvDetailsView({
 
 	return (
 		<div className="container">
-			<BackButton onBack={onBack} />
+			<BackButton />
 
 			<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
 				<div className="flex flex-col gap-2 items-center lg:items-start max-w-[250px] md:max-w-[300px] lg:max-w-[400px]">

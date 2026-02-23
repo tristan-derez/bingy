@@ -40,7 +40,6 @@ interface MovieDetailViewProps {
 	releaseRegion: string | undefined;
 	isLoading: boolean;
 	isError: boolean;
-	onBack: () => void;
 }
 
 export function MovieDetailView({
@@ -54,7 +53,6 @@ export function MovieDetailView({
 	releaseRegion,
 	isLoading,
 	isError,
-	onBack,
 }: MovieDetailViewProps) {
 	const { session } = useRouteContext({ from: "__root__" });
 	const id = useId();
@@ -70,7 +68,6 @@ export function MovieDetailView({
 			<ResourceNotFound
 				title={m.error_title_not_found_movie()}
 				description={m.error_desc_not_found_movie()}
-				onBack={onBack}
 			/>
 		);
 	}
@@ -85,7 +82,7 @@ export function MovieDetailView({
 
 	return (
 		<div className="container">
-			<BackButton onBack={onBack} />
+			<BackButton />
 
 			<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
 				<div className="flex flex-col gap-2 items-center lg:items-start max-w-[250px] md:max-w-[300px] lg:max-w-[400px]">
