@@ -648,6 +648,7 @@
 	"alert_dialog_remove_media_history_desc": "Removing {media_name} from history will also remove the rating associated to it",
 	"alert_dialog_remove_media_history_cancel_btn": "Cancel",
 	"alert_dialog_remove_media_history_confirm_btn": "Delete from history",
+	"edit_list_page_title": "Edit list",
 	"btn_create_list": "Create list",
 	"btn_edit_list": "Edit list",
 	"toast_form_update_list_success": "List updated successfully",
