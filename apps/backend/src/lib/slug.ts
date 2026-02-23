@@ -8,6 +8,7 @@ const options = {
 };
 
 export function createSlug(text: string, prefix = "item"): string {
+	// @todo: add node-emoji to get the string corresponding to an emoji
 	const base = slugify(text, options);
 
 	if (base.length === 0) {
