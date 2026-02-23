@@ -1,5 +1,5 @@
 import { IconDeviceTv, IconMovie } from "@tabler/icons-react";
-import { useAtom, useAtomValue } from "jotai";
+import { type PrimitiveAtom, useAtom, useAtomValue } from "jotai";
 import { useState } from "react";
 import type { Schemas } from "shared";
 import { MovieBadge } from "@/components/badges/movie-badge";
@@ -15,8 +15,8 @@ import {
 import { LoaderFive } from "@/components/ui/loader";
 import { useSearchQuery } from "@/hooks/useSearch";
 import {
-	type CreateListDraftItem,
 	createListDraftItemsAtom,
+	type ListDraftItem,
 } from "@/lib/atoms/draft-list";
 import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
@@ -26,14 +26,16 @@ type SearchResult = Schemas.MovieMedia | Schemas.TvMedia;
 
 interface ListSearchAddInputProps {
 	placeholder?: string;
+	draftItemsAtom?: PrimitiveAtom<ListDraftItem[]>;
 }
 
 export function ListSearchAddInput({
 	placeholder = m.list_search_add_placeholder_all(),
+	draftItemsAtom = createListDraftItemsAtom,
 }: ListSearchAddInputProps) {
 	const [query, setQuery] = useState("");
 	const localeRegion = useAtomValue(localeRegionAtom);
-	const [selectedItems, setSelectedItems] = useAtom(createListDraftItemsAtom);
+	const [selectedItems, setSelectedItems] = useAtom(draftItemsAtom);
 
 	const { data, isLoading, isFetching } = useSearchQuery<
 		Schemas.PaginatedResponse<Schemas.MediaMulti>
@@ -47,7 +49,7 @@ export function ListSearchAddInput({
 	const loading = isLoading || isFetching;
 
 	const handleSelect = (result: SearchResult) => {
-		const item: CreateListDraftItem = {
+		const item: ListDraftItem = {
 			tmdbId: result.id,
 			mediaType: result.media_type,
 			title: result.media_type === "movie" ? result.title : result.name,

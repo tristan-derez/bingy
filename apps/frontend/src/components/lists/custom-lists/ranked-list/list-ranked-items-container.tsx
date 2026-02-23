@@ -18,13 +18,13 @@ import {
 	verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { ListRankedItemCard } from "@/components/lists/custom-lists/ranked-list/list-ranked-item-card";
-import type { CreateListDraftItem } from "@/lib/atoms/draft-list";
+import type { ListDraftItem } from "@/lib/atoms/draft-list";
 
 interface ListRankedItemsContainerProps {
-	items: CreateListDraftItem[];
+	items: ListDraftItem[];
 	onRemove: (tmdbId: number, mediaType: string) => void;
 	onUpdateNote: (tmdbId: number, mediaType: string, note: string) => void;
-	onReorder: (items: CreateListDraftItem[]) => void;
+	onReorder: (items: ListDraftItem[]) => void;
 }
 
 export function ListRankedItemsContainer({

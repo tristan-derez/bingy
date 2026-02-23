@@ -4,11 +4,11 @@ import { IconGripVertical, IconX } from "@tabler/icons-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import type { CreateListDraftItem } from "@/lib/atoms/draft-list";
+import type { ListDraftItem } from "@/lib/atoms/draft-list";
 import { m } from "@/paraglide/messages";
 
 interface ListRankedItemCardProps {
-	item: CreateListDraftItem;
+	item: ListDraftItem;
 	position: number;
 	onRemove: (tmdbId: number, mediaType: string) => void;
 	onUpdateNote: (tmdbId: number, mediaType: string, note: string) => void;
