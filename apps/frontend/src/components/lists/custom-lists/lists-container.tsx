@@ -23,6 +23,7 @@ type ListsContainerProps = {
 		name: string;
 		slug: string;
 		description: string | null;
+		type: "ranked" | "unranked";
 		visibility: "limited" | "private" | "public";
 		createdAt: Date;
 		updatedAt: Date | null;
