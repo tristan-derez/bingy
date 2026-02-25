@@ -18,6 +18,7 @@ import { useTv } from "@/hooks/useTv";
 import { m } from "@/paraglide/messages";
 import { getLastAiredEpisodeInfo } from "@/utils/season-helper";
 import { WatchlistDropdownItem } from "../watchlist/watchlist-dropdown-item";
+import { AddToListDialog } from "./add-to-list-dialog";
 import { HistoryToggleDropdownItem } from "./history-toggle-dropdown-item";
 import { LogReviewDialog } from "./log-review-dialog";
 import { RemoveRatingDropdownItem } from "./remove-rating-dropdown-item";
@@ -28,11 +29,15 @@ interface ListDropdownProps {
 		mediaType?: string;
 		id: number;
 		title: string;
+		posterPath: string | null;
+		releaseDate: string;
 	};
 	tvShow?: {
 		mediaType?: string;
 		id: number;
 		name: string;
+		posterPath: string | null;
+		releaseDate: string;
 	};
 	imageUrl?: string;
 }
@@ -63,6 +68,7 @@ export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 	const rateTvMutation = useRateTvShow();
 
 	const [showLogReviewDialog, setShowLogReviewDialog] = useState(false);
+	const [showAddToListDialog, setShowAddToListDialog] = useState(false);
 
 	const existingRating = isTvShow ? tvRating : movieRating;
 
@@ -114,11 +120,20 @@ export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 							: m.list_dropdown_logreview()}
 					</DropdownMenuItem>
 					<WatchlistDropdownItem movie={movie} tvShow={tvShow} />
+					<DropdownMenuItem
+						onSelect={(e) => {
+							e.preventDefault();
+							setShowAddToListDialog(true);
+						}}
+					>
+						{m.list_dropdown_item_add_to_list()}
+					</DropdownMenuItem>
 					<RemoveRatingDropdownItem
 						movie={movie}
 						tvShow={tvShow}
 						username={username}
 					/>
+					{/* will only be shown if media is is history */}
 					<HistoryToggleDropdownItem
 						movie={movie}
 						tvShow={tvShow}
@@ -135,6 +150,13 @@ export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 				tvShow={tvShow}
 				imageUrl={imageUrl}
 				existingData={existingRating}
+			/>
+			<AddToListDialog
+				open={showAddToListDialog}
+				onOpenChange={setShowAddToListDialog}
+				movie={movie}
+				tvShow={tvShow}
+				username={username}
 			/>
 		</>
 	);

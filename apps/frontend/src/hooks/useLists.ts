@@ -1,5 +1,11 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { redirect } from "@tanstack/react-router";
+import {
+	useInfiniteQuery,
+	useMutation,
+	useQuery,
+	useQueryClient,
+} from "@tanstack/react-query";
+import { useNavigate } from "@tanstack/react-router";
+import type { Pretty } from "shared";
 import { toast } from "sonner";
 import {
 	type AddMediaToListPayload,
@@ -21,6 +27,26 @@ import {
 	type UpdateListPayload,
 } from "@/api/lists";
 import { m } from "@/paraglide/messages";
+
+export type AddMediaToListMutationVariables = Pretty<
+	AddMediaToListPayload & {
+		username: string;
+		listName: string;
+		listSlug: string;
+		listId: string;
+		title?: string;
+		name?: string;
+	}
+>;
+
+export type RemoveMediaFromListMutationVariables = Pretty<
+	RemoveMediaFromListPayload & {
+		listSlug: string;
+		title?: string;
+		name?: string;
+		listName: string;
+	}
+>;
 
 export function useWatchlist(
 	username: string,
@@ -89,6 +115,20 @@ export function useLists(username: string, page = 1, filter = "all") {
 	return useQuery({
 		queryKey: ["lists", "custom-list", username, page, filter],
 		queryFn: () => fetchLists(username, page, filter),
+		staleTime: 1000 * 60 * 50,
+	});
+}
+
+export function useInfiniteLists(username: string, filter = "all") {
+	return useInfiniteQuery({
+		queryKey: ["lists", "custom-list", username, filter],
+		queryFn: ({ pageParam }) => fetchLists(username, pageParam, filter),
+		initialPageParam: 1,
+		getNextPageParam: (lastPage) => {
+			return lastPage.page < lastPage.total_pages
+				? lastPage.page + 1
+				: undefined;
+		},
 		staleTime: 1000 * 60 * 50,
 	});
 }
@@ -166,51 +206,66 @@ export function useDeleteList() {
 
 export function useAddMediaToList() {
 	const queryClient = useQueryClient();
+	const navigate = useNavigate();
 
 	return useMutation({
-		mutationFn: async (payload: AddMediaToListPayload) => {
+		mutationFn: async (variables: AddMediaToListMutationVariables) => {
+			const { listName, title, name, ...payload } = variables;
 			return postMediaList(payload);
 		},
 		onSuccess: (_, variables) => {
 			queryClient.invalidateQueries({
-				queryKey: ["lists", "list", variables.name],
+				queryKey: [
+					"lists",
+					"custom-list",
+					variables.username,
+					variables.listSlug,
+				],
 			});
-			const title = variables.title || variables.name;
+			const mediaTitle = variables.title || variables.name;
 			toast.success(
 				m.toast_add_to_list_media_success({
-					media: `"${title}"`,
+					media: `"${mediaTitle}"`,
 					list: variables.listName,
 				}),
 				{
 					action: {
-						label: "See list",
-						onClick: () => redirect({ to: "/" }),
+						label: m.item_added_to_list_success_cta(),
+						onClick: () => {
+							navigate({
+								to: "/user/$username/lists/$slug",
+								params: {
+									username: variables.username,
+									slug: variables.listSlug,
+								},
+							});
+						},
 					},
 				},
 			);
 		},
 		onError: (_, variables) => {
-			const title = variables.title || variables.name;
+			const mediaTitle = variables.title || variables.name;
 			toast.error(
 				m.toast_add_to_list_media_error({
-					media: `"${title}"`,
+					media: `"${mediaTitle}"`,
 					list: variables.listName,
 				}),
 			);
 		},
 	});
 }
-
 export function useRemoveFromList() {
 	const queryClient = useQueryClient();
 
 	return useMutation({
-		mutationFn: async (payload: RemoveMediaFromListPayload) => {
+		mutationFn: async (variables: RemoveMediaFromListMutationVariables) => {
+			const { listName, title, name, ...payload } = variables;
 			return deleteMediaList(payload);
 		},
 		onSuccess: (_, variables) => {
 			queryClient.invalidateQueries({
-				queryKey: ["lists", "list", variables.listName],
+				queryKey: ["lists", "custom-list", variables.listSlug],
 			});
 			const title = variables.title || variables.name;
 			toast.success(
