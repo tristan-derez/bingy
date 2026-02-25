@@ -479,6 +479,7 @@
 	"pagination_next": "Next",
 	"list_dropdown_item_remove_watchlist": "Remove from your watchlist",
 	"list_dropdown_item_add_watchlist": "Add to your watchlist",
+	"list_dropdown_item_add_to_list": "Add to a list",
 	"list_dropdown_logreview": "Log or review",
 	"list_dropdown_editreview": "Edit review",
 	"log_review_dialog_title_movie": "Rate Movie",
@@ -656,5 +657,11 @@
 	"btn_update_list": "Update list",
 	"btn_updating_list": "Updating...",
 	"list_type_ranked": "Ranked list",
-	"list_type_unranked": "Unranked list"
+	"list_type_unranked": "Unranked list",
+	"dialog_add_to_list_title": "Add to list",
+	"dialog_add_to_list_desc": "Select a list for \"{media_name}\"",
+	"dialog_add_to_list_generic_err": "An error occured",
+	"dialog_add_to_list_no_desc": "No description available",
+	"dialog_add_to_list_btn_footer": "Create new list",
+	"item_added_to_list_success_cta": "See list"
 }

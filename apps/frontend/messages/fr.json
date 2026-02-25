@@ -479,6 +479,7 @@
 	"pagination_next": "Suivant",
 	"list_dropdown_item_remove_watchlist": "Supprimer de la watchlist",
 	"list_dropdown_item_add_watchlist": "Ajouter à la watchlist",
+	"list_dropdown_item_add_to_list": "Ajouter à une liste",
 	"list_dropdown_logreview": "Marquer comme vu ou noter",
 	"list_dropdown_editreview": "Modifier la review",
 	"log_review_dialog_title_movie": "Noter le film",
@@ -654,5 +655,11 @@
 	"btn_update_list": "Mettre à jour la liste",
 	"btn_updating_list": "Mise à jour...",
 	"list_type_ranked": "Liste classée",
-	"list_type_unranked": "Liste libre"
+	"list_type_unranked": "Liste libre",
+	"dialog_add_to_list_title": "Ajouter à une liste",
+	"dialog_add_to_list_desc": "Sélectionnez une liste pour « {media_name} »",
+	"dialog_add_to_list_generic_err": "Une erreur s'est produite",
+	"dialog_add_to_list_no_desc": "Aucune description disponible",
+	"dialog_add_to_list_btn_footer": "Créer une nouvelle liste",
+	"item_added_to_list_success_cta": "Voir la liste"
 }
