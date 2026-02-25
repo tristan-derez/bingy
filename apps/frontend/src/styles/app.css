@@ -131,6 +131,14 @@
 	--brand: oklch(0.7104 0.1908 42.84);
 }
 
+@utility no-scrollbar {
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
 @layer base {
 	* {
 		@apply border-border outline-ring/50;
