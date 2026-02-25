@@ -50,9 +50,23 @@ export const HistoryMediaCard = ({ item, linkTo }: HistoryMediaCardProps) => {
 
 	const mediaProps =
 		item.mediaType === "movie"
-			? { movie: { mediaType: item.mediaType, id: item.id, title: item.title } }
+			? {
+					movie: {
+						mediaType: item.mediaType,
+						id: item.id,
+						title: item.title,
+						posterPath: item.posterPath,
+						releaseDate: item.releaseDate,
+					},
+				}
 			: {
-					tvShow: { mediaType: item.mediaType, id: item.id, name: item.title },
+					tvShow: {
+						mediaType: item.mediaType,
+						id: item.id,
+						name: item.title,
+						posterPath: item.posterPath,
+						releaseDate: item.releaseDate,
+					},
 				};
 
 	return (
