@@ -28,9 +28,23 @@ export const WatchlistMediaCard = ({
 
 	const mediaProps =
 		item.mediaType === "movie"
-			? { movie: { mediaType: item.mediaType, id: item.id, title: item.title } }
+			? {
+					movie: {
+						mediaType: item.mediaType,
+						id: item.id,
+						title: item.title,
+						posterPath: item.posterPath,
+						releaseDate: item.releaseDate,
+					},
+				}
 			: {
-					tvShow: { mediaType: item.mediaType, id: item.id, name: item.title },
+					tvShow: {
+						mediaType: item.mediaType,
+						id: item.id,
+						name: item.title,
+						posterPath: item.posterPath,
+						releaseDate: item.releaseDate,
+					},
 				};
 
 	return (
@@ -53,7 +67,7 @@ export const WatchlistMediaCard = ({
 						)}
 					</div>
 					<div
-						className="absolute bottom-2 right-2 z-10"
+						className="absolute bottom-1.5 right-1.5 z-10"
 						onClick={(e) => e.stopPropagation()}
 					>
 						<ListDropdown {...mediaProps} imageUrl={imageUrl} />
