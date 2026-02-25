@@ -387,15 +387,14 @@ userListRoutes.post(
 			mediaType: z.enum(["movie", "tv"]),
 			listId: z.uuidv7(),
 			note: z.string().max(500).optional(),
-			position: z.number().optional(),
 		}),
 	),
 	async (c) => {
 		try {
 			const user = c.get("user")!;
-			const { tmdbId, mediaType, listId, note, position } = c.req.valid("json");
+			const { tmdbId, mediaType, listId, note } = c.req.valid("json");
 
-			const updatedList = await db.transaction(async (tx) => {
+			await db.transaction(async (tx) => {
 				// verify list belongs to user
 				const list = await tx.query.customLists.findFirst({
 					where: and(
@@ -408,23 +407,17 @@ userListRoutes.post(
 					throw new Error("LIST_NOT_FOUND");
 				}
 
-				// validate position for ranked lists
-				if (list.type === "ranked") {
-					if (position === undefined) {
-						throw new Error("RANKED_LIST_REQUIRES_POSITION");
-					}
+				let finalPosition: number | null = null;
 
-					// check if position already exists
-					const existingPosition = await tx.query.listItems.findFirst({
-						where: and(
-							eq(listItems.listId, listId),
-							eq(listItems.position, position),
-						),
+				if (list.type === "ranked") {
+					// auto-assign next position
+					const maxPosition = await tx.query.listItems.findFirst({
+						where: eq(listItems.listId, listId),
+						orderBy: (items, { desc }) => [desc(items.position)],
+						columns: { position: true },
 					});
 
-					if (existingPosition) {
-						throw new Error("POSITION_ALREADY_EXISTS");
-					}
+					finalPosition = (maxPosition?.position ?? 0) + 1;
 				}
 
 				// upsert media
@@ -447,25 +440,16 @@ userListRoutes.post(
 						listId,
 						mediaId: mediaRecord.id,
 						note,
-						position: list.type === "ranked" ? position : null,
+						position: finalPosition,
 					})
 					.onConflictDoNothing();
 			});
 
-			return c.json(updatedList, 201);
+			return c.json({ success: true }, 200);
 		} catch (error) {
 			if (error instanceof Error) {
 				if (error.message === "LIST_NOT_FOUND") {
 					return c.json({ error: "List not found" }, 404);
-				}
-				if (error.message === "RANKED_LIST_REQUIRES_POSITION") {
-					return c.json(
-						{ error: "Position is required for ranked lists" },
-						400,
-					);
-				}
-				if (error.message === "POSITION_ALREADY_EXISTS") {
-					return c.json({ error: "Position already taken in this list" }, 409);
 				}
 			}
 			return c.json({ error: "Failed to add item to list" }, 500);
