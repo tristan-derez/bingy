@@ -122,11 +122,11 @@ export const deleteList = async (listId: string) => {
 };
 
 export const postMediaList = async (payload: AddMediaToListPayload) => {
-	const res = await apiFetch(`/lists/items`, {
+	const res = await apiFetch<AddMediaToListResponse>(`/lists/items`, {
 		method: "POST",
 		body: payload,
 	});
-	return res.data;
+	return res;
 };
 
 export const patchList = async (listId: string, payload: UpdateListPayload) => {
@@ -149,20 +149,19 @@ export const deleteMediaList = async (payload: RemoveMediaFromListPayload) => {
 export type AddMediaToListPayload = Pretty<{
 	tmdbId: number;
 	mediaType: "movie" | "tv";
-	visibility: "private" | "public" | "limited";
-	listId?: string;
-	listName: string;
-	title?: string;
-	name?: string;
+	listId: string;
+	note?: string;
+	position?: number;
+}>;
+
+export type AddMediaToListResponse = Pretty<{
+	success: boolean;
 }>;
 
 export type RemoveMediaFromListPayload = Pretty<{
 	listId: string;
 	tmdbId: number;
 	mediaType: "movie" | "tv";
-	listName: string;
-	title?: string;
-	name?: string;
 }>;
 
 export type CreateListPayload = Pretty<{
