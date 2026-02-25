@@ -1,4 +1,5 @@
 import { IconClock, IconClockOff, IconClockPlus } from "@tabler/icons-react";
+import { useRouteContext } from "@tanstack/react-router";
 import {
 	Tooltip,
 	TooltipContent,
@@ -32,6 +33,12 @@ export function WatchlistToggleButton({
 	color = "foreground",
 	size = 8,
 }: WatchlistToggleButtonProps) {
+	const { session } = useRouteContext({ from: "__root__" });
+
+	if (!session) {
+		return <span className="invisible" aria-hidden="true" />;
+	}
+
 	const addToWatchlist = useAddMediaToWatchlist();
 	const removeFromWatchlist = useRemoveFromWatchlist();
 
