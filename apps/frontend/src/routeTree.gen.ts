@@ -27,6 +27,7 @@ import { Route as AuthWelcomeRouteImport } from './routes/_auth/welcome'
 import { Route as AuthVerifyEmailRouteImport } from './routes/_auth/verify-email'
 import { Route as AuthSettingsRouteImport } from './routes/_auth/settings'
 import { Route as AuthDashboardRouteImport } from './routes/_auth/dashboard'
+import { Route as UserUsernameRouteRouteImport } from './routes/user/$username/route'
 import { Route as UserUsernameIndexRouteImport } from './routes/user/$username/index'
 import { Route as UserUsernameWatchlistRouteImport } from './routes/user/$username/watchlist'
 import { Route as UserUsernameInProgressRouteImport } from './routes/user/$username/in-progress'
@@ -134,25 +135,30 @@ const AuthDashboardRoute = AuthDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthRoute,
 } as any)
-const UserUsernameIndexRoute = UserUsernameIndexRouteImport.update({
-  id: '/user/$username/',
-  path: '/user/$username/',
+const UserUsernameRouteRoute = UserUsernameRouteRouteImport.update({
+  id: '/user/$username',
+  path: '/user/$username',
   getParentRoute: () => rootRouteImport,
+} as any)
+const UserUsernameIndexRoute = UserUsernameIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => UserUsernameRouteRoute,
 } as any)
 const UserUsernameWatchlistRoute = UserUsernameWatchlistRouteImport.update({
-  id: '/user/$username/watchlist',
-  path: '/user/$username/watchlist',
-  getParentRoute: () => rootRouteImport,
+  id: '/watchlist',
+  path: '/watchlist',
+  getParentRoute: () => UserUsernameRouteRoute,
 } as any)
 const UserUsernameInProgressRoute = UserUsernameInProgressRouteImport.update({
-  id: '/user/$username/in-progress',
-  path: '/user/$username/in-progress',
-  getParentRoute: () => rootRouteImport,
+  id: '/in-progress',
+  path: '/in-progress',
+  getParentRoute: () => UserUsernameRouteRoute,
 } as any)
 const UserUsernameHistoryRoute = UserUsernameHistoryRouteImport.update({
-  id: '/user/$username/history',
-  path: '/user/$username/history',
-  getParentRoute: () => rootRouteImport,
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => UserUsernameRouteRoute,
 } as any)
 const TvTvIdSeasonsRoute = TvTvIdSeasonsRouteImport.update({
   id: '/tv/$tvId_/seasons',
@@ -180,14 +186,14 @@ const AuthListsCreateRoute = AuthListsCreateRouteImport.update({
   getParentRoute: () => AuthRoute,
 } as any)
 const UserUsernameListsIndexRoute = UserUsernameListsIndexRouteImport.update({
-  id: '/user/$username/lists_/',
-  path: '/user/$username/lists/',
-  getParentRoute: () => rootRouteImport,
+  id: '/lists_/',
+  path: '/lists/',
+  getParentRoute: () => UserUsernameRouteRoute,
 } as any)
 const UserUsernameListsSlugRoute = UserUsernameListsSlugRouteImport.update({
-  id: '/user/$username/lists_/$slug',
-  path: '/user/$username/lists/$slug',
-  getParentRoute: () => rootRouteImport,
+  id: '/lists_/$slug',
+  path: '/lists/$slug',
+  getParentRoute: () => UserUsernameRouteRoute,
 } as any)
 const TvTvIdSeasonSeasonNumberRoute =
   TvTvIdSeasonSeasonNumberRouteImport.update({
@@ -197,9 +203,9 @@ const TvTvIdSeasonSeasonNumberRoute =
   } as any)
 const UserUsernameListsSlugDetailsRoute =
   UserUsernameListsSlugDetailsRouteImport.update({
-    id: '/user/$username/lists_/$slug_/details',
-    path: '/user/$username/lists/$slug/details',
-    getParentRoute: () => rootRouteImport,
+    id: '/lists_/$slug_/details',
+    path: '/lists/$slug/details',
+    getParentRoute: () => UserUsernameRouteRoute,
   } as any)
 const TvTvIdSeasonSeasonNumberCreditsRoute =
   TvTvIdSeasonSeasonNumberCreditsRouteImport.update({
@@ -234,6 +240,7 @@ export interface FileRoutesByFullPath {
   '/search': typeof SearchRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/user/$username': typeof UserUsernameRouteRouteWithChildren
   '/dashboard': typeof AuthDashboardRoute
   '/settings': typeof AuthSettingsRoute
   '/verify-email': typeof AuthVerifyEmailRoute
@@ -252,7 +259,7 @@ export interface FileRoutesByFullPath {
   '/user/$username/history': typeof UserUsernameHistoryRoute
   '/user/$username/in-progress': typeof UserUsernameInProgressRoute
   '/user/$username/watchlist': typeof UserUsernameWatchlistRoute
-  '/user/$username': typeof UserUsernameIndexRoute
+  '/user/$username/': typeof UserUsernameIndexRoute
   '/tv/$tvId/season/$seasonNumber': typeof TvTvIdSeasonSeasonNumberRoute
   '/user/$username/lists/$slug': typeof UserUsernameListsSlugRoute
   '/user/$username/lists': typeof UserUsernameListsIndexRoute
@@ -308,6 +315,7 @@ export interface FileRoutesById {
   '/search': typeof SearchRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/user/$username': typeof UserUsernameRouteRouteWithChildren
   '/_auth/dashboard': typeof AuthDashboardRoute
   '/_auth/settings': typeof AuthSettingsRoute
   '/_auth/verify-email': typeof AuthVerifyEmailRoute
@@ -346,6 +354,7 @@ export interface FileRouteTypes {
     | '/search'
     | '/signin'
     | '/signup'
+    | '/user/$username'
     | '/dashboard'
     | '/settings'
     | '/verify-email'
@@ -364,7 +373,7 @@ export interface FileRouteTypes {
     | '/user/$username/history'
     | '/user/$username/in-progress'
     | '/user/$username/watchlist'
-    | '/user/$username'
+    | '/user/$username/'
     | '/tv/$tvId/season/$seasonNumber'
     | '/user/$username/lists/$slug'
     | '/user/$username/lists'
@@ -419,6 +428,7 @@ export interface FileRouteTypes {
     | '/search'
     | '/signin'
     | '/signup'
+    | '/user/$username'
     | '/_auth/dashboard'
     | '/_auth/settings'
     | '/_auth/verify-email'
@@ -457,6 +467,7 @@ export interface RootRouteChildren {
   SearchRoute: typeof SearchRoute
   SigninRoute: typeof SigninRoute
   SignupRoute: typeof SignupRoute
+  UserUsernameRouteRoute: typeof UserUsernameRouteRouteWithChildren
   CollectionsCollectionIdRoute: typeof CollectionsCollectionIdRoute
   MoviesMovieIdRoute: typeof MoviesMovieIdRoute
   PersonPersonIdRoute: typeof PersonPersonIdRoute
@@ -467,15 +478,8 @@ export interface RootRouteChildren {
   TvTvIdCreditsRoute: typeof TvTvIdCreditsRoute
   TvTvIdEpisodesRoute: typeof TvTvIdEpisodesRoute
   TvTvIdSeasonsRoute: typeof TvTvIdSeasonsRoute
-  UserUsernameHistoryRoute: typeof UserUsernameHistoryRoute
-  UserUsernameInProgressRoute: typeof UserUsernameInProgressRoute
-  UserUsernameWatchlistRoute: typeof UserUsernameWatchlistRoute
-  UserUsernameIndexRoute: typeof UserUsernameIndexRoute
   TvTvIdSeasonSeasonNumberRoute: typeof TvTvIdSeasonSeasonNumberRoute
-  UserUsernameListsSlugRoute: typeof UserUsernameListsSlugRoute
-  UserUsernameListsIndexRoute: typeof UserUsernameListsIndexRoute
   TvTvIdSeasonSeasonNumberCreditsRoute: typeof TvTvIdSeasonSeasonNumberCreditsRoute
-  UserUsernameListsSlugDetailsRoute: typeof UserUsernameListsSlugDetailsRoute
   TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberRoute: typeof TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberRoute
   TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberCreditsRoute: typeof TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberCreditsRoute
 }
@@ -608,33 +612,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthDashboardRouteImport
       parentRoute: typeof AuthRoute
     }
-    '/user/$username/': {
-      id: '/user/$username/'
+    '/user/$username': {
+      id: '/user/$username'
       path: '/user/$username'
       fullPath: '/user/$username'
-      preLoaderRoute: typeof UserUsernameIndexRouteImport
+      preLoaderRoute: typeof UserUsernameRouteRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/user/$username/': {
+      id: '/user/$username/'
+      path: '/'
+      fullPath: '/user/$username/'
+      preLoaderRoute: typeof UserUsernameIndexRouteImport
+      parentRoute: typeof UserUsernameRouteRoute
     }
     '/user/$username/watchlist': {
       id: '/user/$username/watchlist'
-      path: '/user/$username/watchlist'
+      path: '/watchlist'
       fullPath: '/user/$username/watchlist'
       preLoaderRoute: typeof UserUsernameWatchlistRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof UserUsernameRouteRoute
     }
     '/user/$username/in-progress': {
       id: '/user/$username/in-progress'
-      path: '/user/$username/in-progress'
+      path: '/in-progress'
       fullPath: '/user/$username/in-progress'
       preLoaderRoute: typeof UserUsernameInProgressRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof UserUsernameRouteRoute
     }
     '/user/$username/history': {
       id: '/user/$username/history'
-      path: '/user/$username/history'
+      path: '/history'
       fullPath: '/user/$username/history'
       preLoaderRoute: typeof UserUsernameHistoryRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof UserUsernameRouteRoute
     }
     '/tv/$tvId_/seasons': {
       id: '/tv/$tvId_/seasons'
@@ -673,17 +684,17 @@ declare module '@tanstack/react-router' {
     }
     '/user/$username/lists_/': {
       id: '/user/$username/lists_/'
-      path: '/user/$username/lists'
+      path: '/lists'
       fullPath: '/user/$username/lists'
       preLoaderRoute: typeof UserUsernameListsIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof UserUsernameRouteRoute
     }
     '/user/$username/lists_/$slug': {
       id: '/user/$username/lists_/$slug'
-      path: '/user/$username/lists/$slug'
+      path: '/lists/$slug'
       fullPath: '/user/$username/lists/$slug'
       preLoaderRoute: typeof UserUsernameListsSlugRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof UserUsernameRouteRoute
     }
     '/tv/$tvId_/season_/$seasonNumber': {
       id: '/tv/$tvId_/season_/$seasonNumber'
@@ -694,10 +705,10 @@ declare module '@tanstack/react-router' {
     }
     '/user/$username/lists_/$slug_/details': {
       id: '/user/$username/lists_/$slug_/details'
-      path: '/user/$username/lists/$slug/details'
+      path: '/lists/$slug/details'
       fullPath: '/user/$username/lists/$slug/details'
       preLoaderRoute: typeof UserUsernameListsSlugDetailsRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof UserUsernameRouteRoute
     }
     '/tv/$tvId_/season_/$seasonNumber_/credits': {
       id: '/tv/$tvId_/season_/$seasonNumber_/credits'
@@ -751,6 +762,29 @@ const AuthRouteChildren: AuthRouteChildren = {
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
+interface UserUsernameRouteRouteChildren {
+  UserUsernameHistoryRoute: typeof UserUsernameHistoryRoute
+  UserUsernameInProgressRoute: typeof UserUsernameInProgressRoute
+  UserUsernameWatchlistRoute: typeof UserUsernameWatchlistRoute
+  UserUsernameIndexRoute: typeof UserUsernameIndexRoute
+  UserUsernameListsSlugRoute: typeof UserUsernameListsSlugRoute
+  UserUsernameListsIndexRoute: typeof UserUsernameListsIndexRoute
+  UserUsernameListsSlugDetailsRoute: typeof UserUsernameListsSlugDetailsRoute
+}
+
+const UserUsernameRouteRouteChildren: UserUsernameRouteRouteChildren = {
+  UserUsernameHistoryRoute: UserUsernameHistoryRoute,
+  UserUsernameInProgressRoute: UserUsernameInProgressRoute,
+  UserUsernameWatchlistRoute: UserUsernameWatchlistRoute,
+  UserUsernameIndexRoute: UserUsernameIndexRoute,
+  UserUsernameListsSlugRoute: UserUsernameListsSlugRoute,
+  UserUsernameListsIndexRoute: UserUsernameListsIndexRoute,
+  UserUsernameListsSlugDetailsRoute: UserUsernameListsSlugDetailsRoute,
+}
+
+const UserUsernameRouteRouteWithChildren =
+  UserUsernameRouteRoute._addFileChildren(UserUsernameRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRouteWithChildren,
@@ -760,6 +794,7 @@ const rootRouteChildren: RootRouteChildren = {
   SearchRoute: SearchRoute,
   SigninRoute: SigninRoute,
   SignupRoute: SignupRoute,
+  UserUsernameRouteRoute: UserUsernameRouteRouteWithChildren,
   CollectionsCollectionIdRoute: CollectionsCollectionIdRoute,
   MoviesMovieIdRoute: MoviesMovieIdRoute,
   PersonPersonIdRoute: PersonPersonIdRoute,
@@ -770,15 +805,8 @@ const rootRouteChildren: RootRouteChildren = {
   TvTvIdCreditsRoute: TvTvIdCreditsRoute,
   TvTvIdEpisodesRoute: TvTvIdEpisodesRoute,
   TvTvIdSeasonsRoute: TvTvIdSeasonsRoute,
-  UserUsernameHistoryRoute: UserUsernameHistoryRoute,
-  UserUsernameInProgressRoute: UserUsernameInProgressRoute,
-  UserUsernameWatchlistRoute: UserUsernameWatchlistRoute,
-  UserUsernameIndexRoute: UserUsernameIndexRoute,
   TvTvIdSeasonSeasonNumberRoute: TvTvIdSeasonSeasonNumberRoute,
-  UserUsernameListsSlugRoute: UserUsernameListsSlugRoute,
-  UserUsernameListsIndexRoute: UserUsernameListsIndexRoute,
   TvTvIdSeasonSeasonNumberCreditsRoute: TvTvIdSeasonSeasonNumberCreditsRoute,
-  UserUsernameListsSlugDetailsRoute: UserUsernameListsSlugDetailsRoute,
   TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberRoute:
     TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberRoute,
   TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberCreditsRoute:
