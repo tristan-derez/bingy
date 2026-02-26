@@ -66,7 +66,7 @@ export const PersonBiography = ({ biography }: PersonBiographyProps) => {
 					></CollapsibleTrigger>
 				</div>
 				<CollapsibleContent>
-					<p className="whitespace-pre-line">{hiddenText}</p>
+					<p className="whitespace-pre-line pt-2">{hiddenText}</p>
 				</CollapsibleContent>
 			</Collapsible>
 		</>
