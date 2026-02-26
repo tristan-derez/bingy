@@ -9,22 +9,22 @@ import { Link, useRouteContext } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
+import { ProductionCountriesBadge } from "@/components/badges/production-countries-badge";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
 import { MediaActionBar } from "@/components/lists/media-actions/media-action-bar";
 import { LoadingCentered } from "@/components/loading/loading-centered";
 import { MediaOverview } from "@/components/medias/overview";
 import { CastCarousel } from "@/components/person/cast-carousel";
 import { SocialLinks } from "@/components/social-links";
+import { TVStatusCard } from "@/components/tv/tv-details/status-card";
 import { BackButton } from "@/components/ui/back-button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import { WatchProvidersSection } from "@/components/watch-providers/watch-providers-section";
 import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
-import { shortenCountryName } from "@/utils/shorten-country-name";
-import { Separator } from "../ui/separator";
-import { TVStatusCard } from "./tv-details/status-card";
 
 interface TvDetailViewProps {
 	tv: Schemas.TvDetails | undefined;
@@ -171,21 +171,7 @@ export function TvDetailsView({
 								</div>
 							) : null}
 
-							<div className="flex flex-wrap gap-2 pt-2">
-								{tv.production_countries.map((country) => (
-									<Badge
-										key={country.iso_3166_1}
-										variant="secondary"
-										className="flex items-center gap-3"
-									>
-										<span
-											className={`fi fi-${country.iso_3166_1.toLowerCase()}`}
-											style={{ width: 18, height: 14 }}
-										/>
-										<span>{shortenCountryName(country.name)}</span>
-									</Badge>
-								))}
-							</div>
+							<ProductionCountriesBadge countries={tv.production_countries} />
 						</CardContent>
 					</Card>
 

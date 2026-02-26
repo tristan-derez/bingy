@@ -11,6 +11,7 @@ import { useAtomValue } from "jotai";
 import { useId } from "react";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
+import { ProductionCountriesBadge } from "@/components/badges/production-countries-badge";
 import { CollectionCard } from "@/components/collections/collection-card";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
 import { MediaActionBar } from "@/components/lists/media-actions/media-action-bar";
@@ -27,7 +28,6 @@ import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { formatRuntime } from "@/utils/format-runtime";
-import { shortenCountryName } from "@/utils/shorten-country-name";
 
 interface MovieDetailViewProps {
 	movie: Schemas.MovieDetails | undefined;
@@ -180,25 +180,10 @@ export function MovieDetailView({
 									))}
 								</div>
 							)}
-							<div className="flex flex-wrap gap-2 pt-2">
-								{movie.production_countries.map(
-									(country: Schemas.ProductionCountry) => (
-										<Badge
-											key={country.iso_3166_1}
-											variant="secondary"
-											className="flex items-center gap-2"
-										>
-											<span
-												className={`fi fi-${country.iso_3166_1.toLowerCase()}`}
-												style={{ width: 18, height: 14 }}
-											></span>
-											<span className="font-medium">
-												{shortenCountryName(country.name)}
-											</span>
-										</Badge>
-									),
-								)}
-							</div>
+
+							<ProductionCountriesBadge
+								countries={movie.production_countries}
+							/>
 						</CardContent>
 					</Card>
 
