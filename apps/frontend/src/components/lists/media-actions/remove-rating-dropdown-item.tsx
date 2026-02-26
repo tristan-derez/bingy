@@ -37,8 +37,9 @@ export function RemoveRatingDropdownItem({
 		tvShow?.id ?? 0,
 	);
 
-	const hasRating = movie ? !!movieRating?.rating : !!tvRating?.rating;
-	const isLoading = isLoadingMovie || isLoadingTv;
+	const rating = movie ? movieRating : tvRating;
+	const hasRating = !!rating?.rating;
+	const isLoading = movie ? isLoadingMovie : isLoadingTv;
 
 	if (!mediaId || !hasRating) {
 		return null;
