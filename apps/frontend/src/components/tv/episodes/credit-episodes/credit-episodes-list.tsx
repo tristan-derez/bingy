@@ -3,7 +3,6 @@ import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import { BackButton } from "@/components/ui/back-button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { m } from "@/paraglide/messages";
 import { CreditEpisodeCard } from "./credit-episode-card";
 
@@ -53,9 +52,9 @@ export const CreditEpisodesList = ({
 					/>
 				</div>
 
-				<div className="w-full flex flex-col gap-4 overflow-hidden">
-					<Card className="shadow-none bg-transparent pt-0 lg:p-0 border-none">
-						<CardContent className="lg:p-0">
+				<div className="w-full flex flex-col gap-4 overflow-hidden px-0.5">
+					<Card className="shadow-none bg-transparent pt-0 lg:p-0 border-none ring-0 rounded-none">
+						<CardContent>
 							<div className="flex flex-col gap-2">
 								<Link to="/tv/$tvId" params={{ tvId: tvId.toString() }}>
 									<h1 className="text-4xl font-bold leading-relaxed">
@@ -70,7 +69,7 @@ export const CreditEpisodesList = ({
 							</div>
 						</CardContent>
 					</Card>
-					<Separator />
+
 					{episodes.map((episode) => (
 						<CreditEpisodeCard
 							key={episode.id}

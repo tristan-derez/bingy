@@ -38,11 +38,25 @@ export const CreditEpisodeCard = ({
 		? `https://image.tmdb.org/t/p/w500${episode.still_path}`
 		: null;
 
+	const getAirDateText = () => {
+		if (!episode.air_date) {
+			return m.credit_episode_card_not_aired_text();
+		}
+
+		const airDate = new Date(episode.air_date);
+		const isUpcoming = airDate > new Date();
+		const formattedDate = formatDate(episode.air_date, localeRegion);
+
+		return isUpcoming
+			? m.credit_episode_card_airs_text({ date: formattedDate })
+			: m.credit_episode_card_aired_text({ date: formattedDate });
+	};
+
 	return (
 		<Card
-			className={`relative overflow-hidden min-h-[200px] rounded-md ${
+			className={`relative overflow-hidden rounded-md ${
 				backgroundImage
-					? "text-dark-card-foreground border-none"
+					? "text-dark-card-foreground min-h-[200px]"
 					: "text-foreground border"
 			}`}
 			style={
@@ -66,7 +80,7 @@ export const CreditEpisodeCard = ({
 								episodeNumber: episode.episode_number.toString(),
 							}}
 						>
-							<CardTitle>{episode.name}</CardTitle>
+							<CardTitle className="font-bold">{episode.name}</CardTitle>
 						</Link>
 						{episode.runtime ? (
 							<Badge variant="secondary">
@@ -83,26 +97,16 @@ export const CreditEpisodeCard = ({
 				</div>
 				<CardDescription
 					className={`w-full xl:max-w-2/3 ${
-						backgroundImage ? "text-dark-card-foreground" : "text-foreground"
+						backgroundImage
+							? "text-dark-card-foreground"
+							: "text-muted-foreground"
 					}`}
 				>
 					{episode.overview || m.overview_none()}
 				</CardDescription>
 			</CardHeader>
 			<CardContent className="flex flex-col gap-1 mt-auto">
-				{episode.air_date ? (
-					<div className="text-sm">
-						{new Date(episode.air_date) > new Date()
-							? m.credit_episode_card_airs_text({
-									date: formatDate(episode.air_date, localeRegion),
-								})
-							: m.credit_episode_card_aired_text({
-									date: formatDate(episode.air_date, localeRegion),
-								})}
-					</div>
-				) : (
-					<p className="text-sm">{m.credit_episode_card_not_aired_text()}</p>
-				)}
+				<p className="text-sm">{getAirDateText()}</p>
 			</CardContent>
 		</Card>
 	);
