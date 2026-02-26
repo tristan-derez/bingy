@@ -1,4 +1,5 @@
 import { nanoid } from "nanoid";
+import * as emoji from "node-emoji";
 import slugify from "slugify";
 
 const options = {
@@ -8,8 +9,8 @@ const options = {
 };
 
 export function createSlug(text: string, prefix = "item"): string {
-	// @todo: add node-emoji to get the string corresponding to an emoji
-	const base = slugify(text, options);
+	const emojiConverted = emoji.unemojify(text);
+	const base = slugify(emojiConverted, options);
 
 	if (base.length === 0) {
 		return `${prefix}-${nanoid(8)}`;
