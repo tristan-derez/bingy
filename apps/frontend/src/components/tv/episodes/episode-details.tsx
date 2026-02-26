@@ -35,6 +35,7 @@ export function TvEpisodeDetailsView({
 	isError,
 }: TvEpisodeDetailViewProps) {
 	const localeRegion = useAtomValue(localeRegionAtom);
+
 	if (isLoading) {
 		return <LoadingCentered />;
 	}
@@ -56,21 +57,24 @@ export function TvEpisodeDetailsView({
 	};
 
 	const crewWithRoles =
-		credits?.crew.reduce<Map<number, { name: string; roles: Set<string> }>>(
-			(map, person) => {
-				const role = getRole(person);
-				if (!role) return map;
+		credits?.crew.reduce<
+			Map<number, { id: number; name: string; roles: Set<string> }>
+		>((map, person) => {
+			const role = getRole(person);
+			if (!role) return map;
 
-				const existing = map.get(person.id);
-				if (existing) {
-					existing.roles.add(role);
-				} else {
-					map.set(person.id, { name: person.name, roles: new Set([role]) });
-				}
-				return map;
-			},
-			new Map(),
-		) ?? new Map();
+			const existing = map.get(person.id);
+			if (existing) {
+				existing.roles.add(role);
+			} else {
+				map.set(person.id, {
+					id: person.id,
+					name: person.name,
+					roles: new Set([role]),
+				});
+			}
+			return map;
+		}, new Map()) ?? new Map();
 
 	const crewToShow = Array.from(crewWithRoles.values());
 
@@ -110,9 +114,9 @@ export function TvEpisodeDetailsView({
 				</div>
 
 				<Card
-					className={`relative overflow-hidden min-h-[300px] justify-center ${
+					className={`relative overflow-hidden justify-between ${
 						backgroundImage
-							? "text-dark-card-foreground border-none"
+							? "text-dark-card-foreground min-h-[300px] border-none p-8"
 							: "text-foreground border"
 					}`}
 					style={
@@ -125,28 +129,29 @@ export function TvEpisodeDetailsView({
 							: undefined
 					}
 				>
-					<CardHeader>
+					<CardHeader className="w-full">
 						<CardTitle>{m.episode_details_overview_title()}</CardTitle>
-					</CardHeader>
-					<CardContent className="flex flex-col gap-4">
 						<MediaOverview overview={episode.overview} bg={backgroundImage} />
-
+					</CardHeader>
+					<CardContent className="flex flex-col gap-2">
 						{crewToShow.length > 0 && (
-							<>
-								<Separator />
-								<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-									{crewToShow.slice(0, 3).map((person) => (
-										<div key={`${person.name}`}>
+							<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+								{crewToShow.slice(0, 3).map((person) => (
+									<div className="flex flex-col" key={person.id}>
+										<Link
+											to="/person/$personId"
+											params={{ personId: person.id.toString() }}
+										>
 											<h3 className="font-semibold text-lg whitespace-nowrap">
 												{person.name}
 											</h3>
-											<p className="text-muted-foreground text-sm">
-												{Array.from(person.roles).join(", ")}
-											</p>
-										</div>
-									))}
-								</div>
-							</>
+										</Link>
+										<p className="text-muted-foreground text-sm">
+											{Array.from(person.roles).join(", ")}
+										</p>
+									</div>
+								))}
+							</div>
 						)}
 					</CardContent>
 				</Card>

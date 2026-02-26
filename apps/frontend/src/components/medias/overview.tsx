@@ -41,7 +41,7 @@ export const MediaOverview = ({ overview, bg }: MediaOverviewProps) => {
 	const displayText = overview.slice(0, lastPeriod + 1);
 
 	return (
-		<>
+		<div>
 			<p className={`w-full xl:w-2/3 whitespace-pre-line ${textColor}`}>
 				{displayText}
 			</p>
@@ -56,11 +56,13 @@ export const MediaOverview = ({ overview, bg }: MediaOverviewProps) => {
 					></CollapsibleTrigger>
 				</div>
 				<CollapsibleContent>
-					<p className={`w-full xl:w-2/3 whitespace-pre-line ${textColor}`}>
+					<p
+						className={`w-full xl:w-2/3 whitespace-pre-line pt-2 ${textColor}`}
+					>
 						{hiddenText}
 					</p>
 				</CollapsibleContent>
 			</Collapsible>
-		</>
+		</div>
 	);
 };

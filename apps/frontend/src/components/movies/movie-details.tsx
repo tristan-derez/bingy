@@ -8,7 +8,6 @@ import {
 } from "@tabler/icons-react";
 import { Link, useRouteContext } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
-import { useId } from "react";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import { ProductionCountriesBadge } from "@/components/badges/production-countries-badge";
@@ -31,7 +30,7 @@ import { formatRuntime } from "@/utils/format-runtime";
 
 interface MovieDetailViewProps {
 	movie: Schemas.MovieDetails | undefined;
-	crew: Array<{ name: string; roles: Set<string> }>;
+	crew: Array<{ id: number; name: string; roles: Set<string> }>;
 	cast: Schemas.CastMember[];
 	socials: Partial<Record<"instagram" | "twitter", string>>;
 	watchProviders: Schemas.WatchProviders | undefined;
@@ -55,7 +54,6 @@ export function MovieDetailView({
 	isError,
 }: MovieDetailViewProps) {
 	const { session } = useRouteContext({ from: "__root__" });
-	const id = useId();
 	const localeRegion = useAtomValue(localeRegionAtom);
 	const region = useAtomValue(regionAtom);
 
@@ -105,8 +103,8 @@ export function MovieDetailView({
 				</div>
 
 				<div className="w-full flex flex-col gap-4 overflow-hidden">
-					<Card className="shadow-none bg-transparent border-none ring-0">
-						<CardContent className="lg:p-0">
+					<Card className="shadow-none bg-transparent border-none ring-0 lg:p-0">
+						<CardContent className="p-0 md:p-2">
 							<div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2">
 								<div className="flex flex-col gap-2">
 									<h1 className="text-4xl font-bold leading-relaxed line-clamp-1">
@@ -155,7 +153,9 @@ export function MovieDetailView({
 						}
 					>
 						<CardHeader className="flex flex-row items-center justify-between w-full">
-							<CardTitle>{m.movie_details_title()}</CardTitle>
+							<CardTitle className="font-bold">
+								{m.movie_details_title()}
+							</CardTitle>
 							{Object.keys(socials).length > 0 ? (
 								<div className="ml-auto">
 									<SocialLinks socials={socials} />
@@ -169,10 +169,15 @@ export function MovieDetailView({
 							{crew.length > 0 && (
 								<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 									{crew.slice(0, 3).map((person) => (
-										<div key={`${id}-${person.name}`}>
-											<h3 className="font-semibold text-lg whitespace-nowrap">
-												{person.name}
-											</h3>
+										<div className="flex flex-col" key={person.id}>
+											<Link
+												to="/person/$personId"
+												params={{ personId: person.id.toString() }}
+											>
+												<h3 className="font-semibold text-lg whitespace-nowrap">
+													{person.name}
+												</h3>
+											</Link>
 											<p className="text-muted-foreground text-sm">
 												{Array.from(person.roles).join(", ")}
 											</p>

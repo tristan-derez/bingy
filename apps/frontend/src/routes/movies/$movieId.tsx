@@ -46,17 +46,23 @@ function MovieDetailsPage() {
 
 	const crewWithRoles =
 		movie?.credits?.crew.reduce<
-			Map<number, { name: string; roles: Set<string> }>
+			Map<number, { id: number; name: string; roles: Set<string> }>
 		>((map, person) => {
 			const role = getRole(person);
 			if (!role) return map;
 
 			const existing = map.get(person.id);
+
 			if (existing) {
 				existing.roles.add(role);
 			} else {
-				map.set(person.id, { name: person.name, roles: new Set([role]) });
+				map.set(person.id, {
+					id: person.id,
+					name: person.name,
+					roles: new Set([role]),
+				});
 			}
+
 			return map;
 		}, new Map()) ?? new Map();
 

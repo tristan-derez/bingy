@@ -93,14 +93,14 @@ export function TvDetailsView({
 				</div>
 
 				<div className="w-full flex flex-col gap-4 overflow-hidden">
-					<Card className="shadow-none bg-transparent py-2 ring-0">
-						<CardContent className="lg:p-0">
+					<Card className="shadow-none bg-transparent py-2 ring-0 lg:p-0">
+						<CardContent className="p-0 md:p-2">
 							<div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2">
 								<div className="flex flex-col gap-2">
 									<h1 className="text-4xl font-bold leading-relaxed line-clamp-1">
 										{tv.name}
 									</h1>
-									<Separator />
+
 									{tv.tagline ? (
 										<p className="text-muted-foreground italic">{tv.tagline}</p>
 									) : null}
@@ -136,7 +136,9 @@ export function TvDetailsView({
 						}
 					>
 						<CardHeader className="flex flex-row items-center justify-between w-full">
-							<CardTitle className="">{m.tv_details_overview()}</CardTitle>
+							<CardTitle className="font-bold">
+								{m.tv_details_overview()}
+							</CardTitle>
 							{Object.keys(socials).length > 0 ? (
 								<div className="ml-auto">
 									<SocialLinks socials={socials} />
@@ -151,7 +153,7 @@ export function TvDetailsView({
 							{tv.created_by.length > 0 ? (
 								<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 									{tv.created_by.slice(0, 3).map((creator) => (
-										<div key={creator.id}>
+										<div className="flex flex-col" key={creator.id}>
 											<Link
 												to="/person/$personId"
 												params={{ personId: creator.id.toString() }}

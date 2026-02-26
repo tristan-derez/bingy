@@ -83,10 +83,11 @@ export const PersonDetailsView = ({
 						</div>
 					) : null}
 				</div>
+
 				<div className="w-full flex flex-col gap-4 overflow-hidden">
-					<Card className="shadow-none bg-transparent ring-0">
-						<CardContent className="lg:p-0">
-							<div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2">
+					<Card className="shadow-none rounded-none bg-transparent ring-0 lg:p-0">
+						<CardContent>
+							<div className="flex flex-row justify-between items-start gap-2">
 								<div className="flex flex-col gap-2">
 									<h1 className="text-4xl font-bold leading-relaxed">
 										{person.name}
@@ -141,18 +142,18 @@ export const PersonDetailsView = ({
 													: person.known_for_department}
 									</p>
 								</div>
-								{Object.keys(socialUrls).length > 0 && (
-									<div className="lg:self-start mt-3 lg:pr-2">
-										<SocialLinks socials={socialUrls} />
-									</div>
-								)}
 							</div>
 						</CardContent>
 					</Card>
 
-					<Card className="relative overflow-hidden border-none justify-center ring-0">
-						<CardHeader className="text-foreground">
+					<Card className="relative justify-center">
+						<CardHeader className="text-foreground flex flex-row items-center justify-between w-full">
 							<CardTitle>{m.person_biography()}</CardTitle>
+							{Object.keys(socialUrls).length > 0 ? (
+								<div className="ml-auto">
+									<SocialLinks socials={socialUrls} />
+								</div>
+							) : null}
 						</CardHeader>
 						<CardContent className="text-muted-foreground gap-4">
 							<PersonBiography biography={person.biography} />
