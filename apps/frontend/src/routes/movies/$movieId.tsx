@@ -44,7 +44,7 @@ function MovieDetailsPage() {
 		movie?.release_date,
 	);
 
-	const crewWithRoles =
+	const directors =
 		movie?.credits?.crew.reduce<
 			Map<number, { id: number; name: string; roles: Set<string> }>
 		>((map, person) => {
@@ -55,7 +55,7 @@ function MovieDetailsPage() {
 
 			if (existing) {
 				existing.roles.add(role);
-			} else {
+			} else if (role === "Director") {
 				map.set(person.id, {
 					id: person.id,
 					name: person.name,
@@ -66,7 +66,7 @@ function MovieDetailsPage() {
 			return map;
 		}, new Map()) ?? new Map();
 
-	const crew = Array.from(crewWithRoles.values());
+	const crew = Array.from(directors.values());
 	const cast = movie?.credits?.cast?.slice(0, 10) || [];
 	const socialUrls = movie?.external_ids
 		? getSocialUrls(movie.external_ids)

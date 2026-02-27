@@ -9,16 +9,12 @@ import { m } from "@/paraglide/messages";
 
 interface MediaOverviewProps {
 	overview: string;
-	bg?: string;
 }
 
-export const MediaOverview = ({ overview, bg }: MediaOverviewProps) => {
+export const MediaOverview = ({ overview }: MediaOverviewProps) => {
 	const [isExpanded, setIsExpanded] = useState(false);
-	const textColor = bg ? "text-dark-card-foreground" : "text-foreground";
 
-	if (!overview) {
-		return <p className={textColor}>{m.overview_none()}</p>;
-	}
+	if (!overview) return null;
 
 	const searchWindow = 350;
 	const textToSearch = overview.slice(
@@ -32,7 +28,7 @@ export const MediaOverview = ({ overview, bg }: MediaOverviewProps) => {
 		lastPeriod > 0 ? overview.slice(lastPeriod + 1).trim() : "";
 	if (overview.length <= 250 || lastPeriod <= 0 || !hiddenText) {
 		return (
-			<p className={`w-full xl:w-2/3 whitespace-pre-line ${textColor}`}>
+			<p className="w-full text-sm xl:w-7/8 whitespace-pre-line text-foreground">
 				{overview}
 			</p>
 		);
@@ -41,26 +37,22 @@ export const MediaOverview = ({ overview, bg }: MediaOverviewProps) => {
 	const displayText = overview.slice(0, lastPeriod + 1);
 
 	return (
-		<div>
-			<p className={`w-full xl:w-2/3 whitespace-pre-line ${textColor}`}>
+		<div className="text-foreground text-sm">
+			<p className="w-full whitespace-pre-line leading-relaxed line-clamp-3">
 				{displayText}
 			</p>
 			<Collapsible open={isExpanded} onOpenChange={setIsExpanded}>
 				<div className={isExpanded ? "hidden" : ""}>
 					<CollapsibleTrigger
 						render={
-							<Button variant="link" size="sm" className={`p-0 ${textColor}`}>
+							<Button variant="link" size="sm" className="p-0">
 								{m.btn_show_more()}
 							</Button>
 						}
 					></CollapsibleTrigger>
 				</div>
 				<CollapsibleContent>
-					<p
-						className={`w-full xl:w-2/3 whitespace-pre-line pt-2 ${textColor}`}
-					>
-						{hiddenText}
-					</p>
+					<p className="w-full whitespace-pre-line pt-2">{hiddenText}</p>
 				</CollapsibleContent>
 			</Collapsible>
 		</div>

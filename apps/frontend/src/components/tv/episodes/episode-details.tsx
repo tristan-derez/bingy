@@ -8,7 +8,7 @@ import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
 import { LoadingCentered } from "@/components/loading/loading-centered";
-import { MediaOverview } from "@/components/medias/overview";
+import { MediaOverview } from "@/components/medias/media-overview";
 import { CastCarousel } from "@/components/person/cast-carousel";
 import { BackButton } from "@/components/ui/back-button";
 import { Badge } from "@/components/ui/badge";
@@ -130,7 +130,7 @@ export function TvEpisodeDetailsView({
 				>
 					<CardHeader className="w-full">
 						<CardTitle>{m.episode_details_overview_title()}</CardTitle>
-						<MediaOverview overview={episode.overview} bg={backgroundImage} />
+						<MediaOverview overview={episode.overview} />
 					</CardHeader>
 					<CardContent className="flex flex-col gap-2">
 						{crewToShow.length > 0 && (

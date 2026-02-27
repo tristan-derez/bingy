@@ -2,7 +2,7 @@ import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
 import { LoadingCentered } from "@/components/loading/loading-centered";
-import { MediaOverview } from "@/components/medias/overview";
+import { MediaOverview } from "@/components/medias/media-overview";
 import { MovieCarousel } from "@/components/movies/movie-carousel";
 import { BackButton } from "@/components/ui/back-button";
 import { Badge } from "@/components/ui/badge";
@@ -152,10 +152,7 @@ export function CollectionDetailsView({
 								<h2 className="text-semi-bold text-md">
 									{m.collection_details_title()}
 								</h2>
-								<MediaOverview
-									overview={collectionData.overview}
-									bg={backgroundImage}
-								/>
+								<MediaOverview overview={collectionData.overview} />
 
 								{totalBudget > 0 ? (
 									<div className="flex gap-2">

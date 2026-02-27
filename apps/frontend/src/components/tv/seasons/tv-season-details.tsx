@@ -10,7 +10,7 @@ import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
 import { LoadingCentered } from "@/components/loading/loading-centered";
-import { MediaOverview } from "@/components/medias/overview";
+import { MediaOverview } from "@/components/medias/media-overview";
 import { CastCarousel } from "@/components/person/cast-carousel";
 import { BackButton } from "@/components/ui/back-button";
 import { Badge } from "@/components/ui/badge";
