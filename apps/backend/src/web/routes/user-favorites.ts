@@ -2,11 +2,19 @@ import { zValidator } from "@hono/zod-validator";
 import { and, eq, sql } from "drizzle-orm";
 import { Hono } from "hono";
 import { z } from "zod";
-import { favorites, media } from "#db/schemas/list";
+import {
+	favorites,
+	media,
+	movieWatchHistory,
+	tvShowProgress,
+	tvShowWatchHistory,
+	watchlist,
+} from "#db/schemas/list";
 import type { User } from "#db/schemas/user";
-import { users } from "#db/schemas/user";
+import { activity, users } from "#db/schemas/user";
 import { db } from "#lib/database";
 import { getMediaDetails } from "#lib/tmdb/get-media-details";
+import { tmdbClient } from "#lib/tmdb/tmdb.client";
 import { sessionMiddleware } from "#web/middlewares/session";
 import { getOrCreateMedia } from "#web/utils/create-update-media";
 
@@ -44,6 +52,95 @@ favoriteRoutes.post(
 				})
 				.onConflictDoNothing()
 				.returning();
+
+			// we consider a media favorited as seen
+			if (data.mediaType === "movie") {
+				const [watchEntry] = await tx
+					.insert(movieWatchHistory)
+					.values({
+						userId: user.id,
+						mediaId,
+					})
+					.onConflictDoNothing()
+					.returning();
+
+				// add to activity only if new entry was created
+				if (watchEntry) {
+					await tx
+						.insert(activity)
+						.values({
+							userId: user.id,
+							activityType: "watched_movie",
+							movieWatchHistoryId: watchEntry.id,
+						})
+						.onConflictDoNothing();
+				}
+			} else {
+				const tvDetails = await tmdbClient.get("/tv/{series_id}", {
+					query: {},
+					path: { series_id: data.tmdbId },
+				});
+
+				const now = new Date();
+
+				// filter out unreleased seasons and get the last available
+				const availableSeasons = tvDetails.seasons.filter((season) => {
+					if (!season.air_date) return false;
+					return new Date(season.air_date) <= now;
+				});
+
+				const lastSeason = availableSeasons[availableSeasons.length - 1];
+
+				const [watchEntry] = await tx
+					.insert(tvShowWatchHistory)
+					.values({
+						userId: user.id,
+						mediaId,
+					})
+					.onConflictDoNothing()
+					.returning();
+
+				// Add TV show progress - mark all episodes as watched
+				if (watchEntry && lastSeason) {
+					await tx
+						.insert(tvShowProgress)
+						.values({
+							userId: user.id,
+							mediaId,
+							lastWatchedSeason: lastSeason.season_number,
+							lastWatchedEpisode: lastSeason.episode_count ?? 0,
+							trackingMode: "season",
+						})
+						.onConflictDoUpdate({
+							target: [tvShowProgress.userId, tvShowProgress.mediaId],
+							set: {
+								lastWatchedSeason: lastSeason.season_number,
+								lastWatchedEpisode: lastSeason.episode_count ?? 0,
+								trackingMode: "season",
+								updatedAt: new Date(),
+							},
+						});
+				}
+
+				// add to activity only if new entry was created
+				if (watchEntry) {
+					await tx
+						.insert(activity)
+						.values({
+							userId: user.id,
+							activityType: "watched_show",
+							tvShowWatchHistoryId: watchEntry.id,
+						})
+						.onConflictDoNothing();
+				}
+			}
+
+			// remove from watchlist if exists
+			await tx
+				.delete(watchlist)
+				.where(
+					and(eq(watchlist.userId, user.id), eq(watchlist.mediaId, mediaId)),
+				);
 
 			return favorite;
 		});
