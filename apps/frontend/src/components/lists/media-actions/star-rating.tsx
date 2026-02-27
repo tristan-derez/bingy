@@ -1,6 +1,7 @@
 import { IconStar, IconX } from "@tabler/icons-react";
 import { useState } from "react";
 import { useMovieRating, useTvRating } from "@/hooks/useRating";
+import { m } from "@/paraglide/messages";
 
 interface StarRatingProps {
 	rating?: number;
@@ -14,6 +15,8 @@ interface StarRatingProps {
 	};
 	fetchRating?: boolean;
 	username: string;
+	gapSize?: number;
+	iconSize?: number;
 }
 
 export function StarRating({
@@ -24,6 +27,8 @@ export function StarRating({
 	tvShow,
 	fetchRating = false,
 	username,
+	gapSize = 1,
+	iconSize = 6,
 }: StarRatingProps) {
 	const [hoverRating, setHoverRating] = useState<number | null>(null);
 
@@ -46,8 +51,11 @@ export function StarRating({
 	const displayRating = hoverRating ?? rating;
 
 	return (
-		<div className="flex gap-2 items-center py-1">
-			<div className="flex gap-1" onMouseLeave={() => setHoverRating(null)}>
+		<div className="flex gap-2 items-center py-1 relative">
+			<div
+				className={`gap-${gapSize} flex`}
+				onMouseLeave={() => setHoverRating(null)}
+			>
 				{[0, 1, 2, 3, 4].map((starIndex) => {
 					const filled = displayRating >= starIndex + 1;
 					const halfFilled =
@@ -67,13 +75,13 @@ export function StarRating({
 							/>
 
 							<IconStar
-								className="w-6 h-6 absolute top-0 left-0"
+								className={`w-${iconSize} h-${iconSize} absolute top-0 left-0`}
 								fill="none"
 								stroke="currentColor"
 							/>
 
 							<IconStar
-								className="w-6 h-6 relative"
+								className={`w-${iconSize} h-${iconSize} relative`}
 								fill={filled || halfFilled ? "currentColor" : "none"}
 								stroke="none"
 								style={
@@ -89,16 +97,16 @@ export function StarRating({
 				})}
 			</div>
 
-			{rating > 0 && onRatingDelete && (
+			{rating > 0 && onRatingDelete ? (
 				<button
 					type="button"
 					onClick={onRatingDelete}
-					className="text-muted-foreground hover:text-foreground transition-colors"
-					aria-label="Delete rating"
+					className="absolute -right-6 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+					aria-label={m.btn_delete_rating_aria_label()}
 				>
 					<IconX className="w-5 h-5" />
 				</button>
-			)}
+			) : null}
 		</div>
 	);
 }
