@@ -38,7 +38,7 @@ export const MediaOverview = ({ overview }: MediaOverviewProps) => {
 
 	return (
 		<div className="text-foreground text-sm">
-			<p className="w-full whitespace-pre-line leading-relaxed line-clamp-3">
+			<p className="w-full whitespace-pre-line leading-relaxed">
 				{displayText}
 			</p>
 			<Collapsible open={isExpanded} onOpenChange={setIsExpanded}>
