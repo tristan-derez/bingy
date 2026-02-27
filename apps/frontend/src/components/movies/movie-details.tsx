@@ -6,7 +6,7 @@ import {
 	IconStarFilled,
 	IconStopwatch,
 } from "@tabler/icons-react";
-import { Link, useRouteContext } from "@tanstack/react-router";
+import { Link, useRouteContext, useRouterState } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
@@ -53,6 +53,8 @@ export function MovieDetailView({
 	isLoading,
 	isError,
 }: MovieDetailViewProps) {
+	const routerState = useRouterState();
+	const currentUrl = routerState.location.url;
 	const { session } = useRouteContext({ from: "__root__" });
 	const localeRegion = useAtomValue(localeRegionAtom);
 	const region = useAtomValue(regionAtom);
@@ -126,7 +128,7 @@ export function MovieDetailView({
 												{movie.title}
 											</h1>
 											{hasDifferentTitle ? (
-												<p className="text-muted-foreground text-lg font-bold">
+												<p className="text-foreground text-lg font-bold">
 													« {movie.original_title} »
 												</p>
 											) : null}
@@ -183,6 +185,7 @@ export function MovieDetailView({
 													mediaType: "movie",
 												}}
 												imageUrl={imageUrl}
+												currentUrl={currentUrl}
 											/>
 										</div>
 									) : null}
