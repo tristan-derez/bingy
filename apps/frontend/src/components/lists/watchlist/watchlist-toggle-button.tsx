@@ -105,8 +105,8 @@ export function WatchlistToggleButton({
 			<TooltipContent align="center">
 				<p>
 					{isInWatchlist
-						? m.remove_watchlist_media_tooltip({ media: `"${mediaTitle}"` })
-						: m.add_watchlist_media_tooltip({ media: `"${mediaTitle}"` })}
+						? m.remove_watchlist_media_tooltip()
+						: m.add_watchlist_media_tooltip()}
 				</p>
 			</TooltipContent>
 		</Tooltip>
