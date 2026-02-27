@@ -1,5 +1,6 @@
 import { IconEye, IconEyeFilled, IconEyeOff } from "@tabler/icons-react";
 import { useAtomValue } from "jotai";
+import { useState } from "react";
 import {
 	useAddMovieToHistory,
 	useAddTvToHistory,
@@ -12,6 +13,7 @@ import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { getLastAiredEpisodeInfo } from "@/utils/season-helper";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../../ui/tooltip";
+import { RemoveHistoryAlertDialog } from "./remove-history-alert-dialog";
 
 interface WatchToggleButtonProps {
 	movie?: {
@@ -34,6 +36,7 @@ export function WatchToggleButton({
 	username,
 	color = "foreground",
 }: WatchToggleButtonProps) {
+	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const localeRegion = useAtomValue(localeRegionAtom);
 	const addMovieToHistory = useAddMovieToHistory();
 	const addTvToHistory = useAddTvToHistory();
@@ -50,6 +53,9 @@ export function WatchToggleButton({
 	const tvRating = useTvRating(username, tvShow?.id ?? 0);
 
 	const currentData = movie ? movieRating.data : tvRating.data;
+	const hasRating = movie
+		? !!movieRating.data?.rating
+		: !!tvRating.data?.rating;
 	const isWatched = !!currentData;
 
 	if (!movie?.id && !tvShow?.id) return null;
@@ -58,7 +64,9 @@ export function WatchToggleButton({
 		e.stopPropagation();
 		e.preventDefault();
 
-		if (isWatched) {
+		if (isWatched && hasRating) {
+			setIsDialogOpen(true);
+		} else if (isWatched) {
 			if (movie) {
 				removeMovieHistory.mutate(movie.id);
 			} else if (tvShow) {
@@ -85,38 +93,58 @@ export function WatchToggleButton({
 		}
 	};
 
+	const handleConfirmRemove = () => {
+		if (movie) {
+			removeMovieHistory.mutate(movie.id);
+		} else if (tvShow) {
+			removeTvHistory.mutate(tvShow.id);
+		}
+		setIsDialogOpen(false);
+	};
+
 	const isPending =
 		addMovieToHistory.isPending ||
 		addTvToHistory.isPending ||
 		removeMovieHistory.isPending ||
 		removeTvHistory.isPending;
 
+	const title = movie?.title ?? tvShow?.name ?? "";
+
 	return (
-		<Tooltip>
-			<TooltipTrigger
-				render={
-					<button
-						type="button"
-						onClick={handleToggle}
-						disabled={isPending}
-						className={`group flex flex-col items-center gap-1 transition-colors hover:cursor-pointer ${
-							isWatched ? "text-green-500" : `text-${color}`
-						}`}
-					>
-						{isWatched ? (
-							<>
-								<IconEyeFilled className="size-8 group-hover:hidden" />
-								<IconEyeOff className="size-8 hidden group-hover:block" />
-							</>
-						) : (
-							<IconEye className="size-8" />
-						)}
-					</button>
-				}
-			></TooltipTrigger>
-			<TooltipContent>
-				{isWatched ? m.watch_toggle_remove() : m.watch_toggle_add()}
-			</TooltipContent>
-		</Tooltip>
+		<>
+			<Tooltip>
+				<TooltipTrigger
+					render={
+						<button
+							type="button"
+							onClick={handleToggle}
+							disabled={isPending}
+							className={`group flex flex-col items-center gap-1 transition-colors hover:cursor-pointer ${
+								isWatched ? "text-green-500" : `text-${color}`
+							}`}
+						>
+							{isWatched ? (
+								<>
+									<IconEyeFilled className="size-8 group-hover:hidden" />
+									<IconEyeOff className="size-8 hidden group-hover:block" />
+								</>
+							) : (
+								<IconEye className="size-8" />
+							)}
+						</button>
+					}
+				></TooltipTrigger>
+				<TooltipContent>
+					{isWatched ? m.watch_toggle_remove() : m.watch_toggle_add()}
+				</TooltipContent>
+			</Tooltip>
+
+			<RemoveHistoryAlertDialog
+				open={isDialogOpen}
+				onOpenChange={setIsDialogOpen}
+				mediaName={title}
+				onConfirm={handleConfirmRemove}
+			/>
+		</>
 	);
 }

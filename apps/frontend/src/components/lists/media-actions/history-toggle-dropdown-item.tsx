@@ -1,15 +1,5 @@
 import { useAtomValue } from "jotai";
 import { useState } from "react";
-import {
-	AlertDialog,
-	AlertDialogAction,
-	AlertDialogCancel,
-	AlertDialogContent,
-	AlertDialogDescription,
-	AlertDialogFooter,
-	AlertDialogHeader,
-	AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import {
 	useAddMovieToHistory,
@@ -22,6 +12,7 @@ import { useTv } from "@/hooks/useTv";
 import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { getLastAiredEpisodeInfo } from "@/utils/season-helper";
+import { RemoveHistoryAlertDialog } from "./remove-history-alert-dialog";
 
 interface HistoryToggleDropdownItemProps {
 	movie?: {
@@ -120,26 +111,12 @@ export function HistoryToggleDropdownItem({
 					: m.list_dropdown_item_mark_as_seen()}
 			</DropdownMenuItem>
 
-			<AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-				<AlertDialogContent>
-					<AlertDialogHeader>
-						<AlertDialogTitle>
-							{m.alert_dialog_remove_media_history_title()}
-						</AlertDialogTitle>
-						<AlertDialogDescription>
-							{m.alert_dialog_remove_media_history_desc({ media_name: title })}
-						</AlertDialogDescription>
-					</AlertDialogHeader>
-					<AlertDialogFooter>
-						<AlertDialogCancel>
-							{m.alert_dialog_remove_media_history_cancel_btn()}
-						</AlertDialogCancel>
-						<AlertDialogAction onClick={handleConfirmRemove}>
-							{m.alert_dialog_remove_media_history_confirm_btn()}
-						</AlertDialogAction>
-					</AlertDialogFooter>
-				</AlertDialogContent>
-			</AlertDialog>
+			<RemoveHistoryAlertDialog
+				open={isDialogOpen}
+				onOpenChange={setIsDialogOpen}
+				mediaName={title}
+				onConfirm={handleConfirmRemove}
+			/>
 		</>
 	);
 }
