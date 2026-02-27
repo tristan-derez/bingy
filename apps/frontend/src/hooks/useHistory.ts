@@ -15,9 +15,12 @@ export function useAddMovieToHistory() {
 
 	return useMutation({
 		mutationFn: (payload: TrackMoviePayload) => addMovieToHistory(payload),
-		onSuccess: (_res, _variables) => {
+		onSuccess: (_res, variables) => {
 			queryClient.invalidateQueries({
 				queryKey: ["ratings"],
+			});
+			queryClient.invalidateQueries({
+				queryKey: ["ratings", "movie", variables.tmdbId],
 			});
 			queryClient.invalidateQueries({
 				queryKey: ["lists", "watchlist"],
@@ -36,9 +39,12 @@ export function useAddTvToHistory() {
 
 	return useMutation({
 		mutationFn: (payload: TrackTvPayload) => addTvToHistory(payload),
-		onSuccess: (_res, _variables) => {
+		onSuccess: (_res, variables) => {
 			queryClient.invalidateQueries({
 				queryKey: ["ratings"],
+			});
+			queryClient.invalidateQueries({
+				queryKey: ["ratings", "tv", variables.tmdbId],
 			});
 			queryClient.invalidateQueries({
 				queryKey: ["lists", "watchlist"],
@@ -57,9 +63,12 @@ export function useRemoveMovieHistory() {
 
 	return useMutation({
 		mutationFn: (tmdbId: number) => removeMovieHistory(tmdbId),
-		onSuccess: () => {
+		onSuccess: (_res, tmdbId) => {
 			queryClient.invalidateQueries({
 				queryKey: ["ratings"],
+			});
+			queryClient.invalidateQueries({
+				queryKey: ["ratings", "movie", tmdbId],
 			});
 			queryClient.invalidateQueries({
 				queryKey: ["lists", "watchlist"],
@@ -77,9 +86,12 @@ export function useRemoveTvHistory() {
 
 	return useMutation({
 		mutationFn: (tmdbId: number) => removeTvHistory(tmdbId),
-		onSuccess: () => {
+		onSuccess: (_res, tmdbId) => {
 			queryClient.invalidateQueries({
 				queryKey: ["ratings"],
+			});
+			queryClient.invalidateQueries({
+				queryKey: ["ratings", "tv", tmdbId],
 			});
 			queryClient.invalidateQueries({
 				queryKey: ["lists", "watchlist"],

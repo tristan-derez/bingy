@@ -41,6 +41,13 @@ export function useAddToFavorites() {
 			queryClient.invalidateQueries({
 				queryKey: ["favorites"],
 			});
+			queryClient.invalidateQueries({
+				queryKey: ["ratings"],
+			});
+			queryClient.invalidateQueries({
+				queryKey: ["lists", "watchlist"],
+			});
+
 			toast.success(
 				m.toast_add_to_favorites_success({ name: variables.mediaName }),
 			);
