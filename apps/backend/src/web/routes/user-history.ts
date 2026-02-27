@@ -3,6 +3,7 @@ import { and, desc, eq, inArray, sql } from "drizzle-orm";
 import { Hono } from "hono";
 import { z } from "zod";
 import {
+	favorites,
 	media,
 	movieWatchHistory,
 	tvSeasons,
@@ -38,12 +39,9 @@ userHistoryRoutes.post(
 		"json",
 		z.object({
 			tmdbId: z.number(),
-			rating: z.preprocess(
-				(v) => (typeof v === "string" ? Number(v) : v),
-				z.number().min(0).max(5).optional(),
-			),
-			review: z.string().optional(),
-			watchedAt: z.iso.datetime().optional(),
+			rating: z.number().min(0.5).max(5).nullable(),
+			review: z.string().nullable(),
+			watchedAt: z.coerce.date().nullable(),
 		}),
 	),
 	async (c) => {
@@ -58,24 +56,22 @@ userHistoryRoutes.post(
 				.values({
 					userId: user.id,
 					mediaId,
-					rating: data.rating?.toString(),
-					review: data.review,
-					watchedAt: data.watchedAt ? new Date(data.watchedAt) : undefined,
+					rating: data.rating?.toString() ?? null,
+					review: data.review ?? null,
+					watchedAt: data.watchedAt ?? null,
 				})
 				.onConflictDoUpdate({
 					target: [movieWatchHistory.userId, movieWatchHistory.mediaId],
 					set: {
-						rating: data.rating?.toString(),
-						review: data.review,
-						watchedAt: data.watchedAt ? new Date(data.watchedAt) : undefined,
+						rating: data.rating?.toString() ?? null,
+						review: data.review ?? null,
+						watchedAt: data.watchedAt ?? null,
 						loggedAt: sql`now()`,
 					},
 				})
 				.returning();
 
-			if (data.rating) {
-				await updateMediaRating(tx, mediaId);
-			}
+			await updateMediaRating(tx, mediaId);
 
 			// Remove from watchlist if exists
 			await tx
@@ -106,16 +102,13 @@ userHistoryRoutes.post(
 		"json",
 		z.object({
 			tmdbId: z.number(),
-			rating: z.preprocess(
-				(v) => (typeof v === "string" ? Number(v) : v),
-				z.number().min(0).max(5).optional(),
-			),
-			review: z.string().optional(),
-			lastWatchedSeason: z.number().optional(),
-			lastWatchedEpisode: z.number().optional(),
-			absoluteEpisode: z.number().optional(),
-			trackingMode: z.enum(["absolute", "season"]).optional(),
-			watchedAt: z.iso.datetime().optional(),
+			rating: z.number().min(0.5).max(5).nullable(),
+			review: z.string().nullable(),
+			lastWatchedSeason: z.number().nullable(),
+			lastWatchedEpisode: z.number().nullable(),
+			absoluteEpisode: z.number().nullable(),
+			trackingMode: z.enum(["absolute", "season"]).nullable(),
+			watchedAt: z.coerce.date().nullable(),
 		}),
 	),
 	async (c) => {
@@ -149,16 +142,16 @@ userHistoryRoutes.post(
 				.values({
 					userId: user.id,
 					mediaId,
-					rating: data.rating?.toString(),
-					review: data.review,
-					watchedAt: data.watchedAt ? new Date(data.watchedAt) : undefined,
+					rating: data.rating?.toString() ?? null,
+					review: data.review ?? null,
+					watchedAt: data.watchedAt ?? null,
 				})
 				.onConflictDoUpdate({
 					target: [tvShowWatchHistory.userId, tvShowWatchHistory.mediaId],
 					set: {
-						rating: data.rating?.toString(),
-						review: data.review,
-						watchedAt: data.watchedAt ? new Date(data.watchedAt) : undefined,
+						rating: data.rating?.toString() ?? null,
+						review: data.review ?? null,
+						watchedAt: data.watchedAt ?? null,
 					},
 				})
 				.returning();
@@ -172,7 +165,7 @@ userHistoryRoutes.post(
 						mediaId,
 						lastWatchedSeason,
 						lastWatchedEpisode,
-						absoluteEpisode: data.absoluteEpisode,
+						absoluteEpisode: data.absoluteEpisode ?? null,
 						trackingMode: data.trackingMode ?? "season",
 					})
 					.onConflictDoUpdate({
@@ -180,16 +173,14 @@ userHistoryRoutes.post(
 						set: {
 							lastWatchedSeason: lastWatchedSeason,
 							lastWatchedEpisode: lastWatchedEpisode,
-							absoluteEpisode: data.absoluteEpisode,
+							absoluteEpisode: data.absoluteEpisode ?? null,
 							trackingMode: data.trackingMode ?? "season",
 							updatedAt: new Date(),
 						},
 					});
 			}
 
-			if (data.rating) {
-				await updateMediaRating(tx, mediaId);
-			}
+			await updateMediaRating(tx, mediaId);
 
 			// Remove from watchlist if exists
 			await tx
@@ -665,7 +656,7 @@ userHistoryRoutes.get("/:username/tv/progress", async (c) => {
 	return c.json({ data: hydratedData });
 });
 
-// delete movie from history and delete rating associated to it
+// delete movie from history and delete rating/favorites associated to it
 // user must be logged in
 userHistoryRoutes.delete("/movie/:tmdbId", async (c) => {
 	const user = c.get("user")!;
@@ -690,17 +681,28 @@ userHistoryRoutes.delete("/movie/:tmdbId", async (c) => {
 		return c.json({ error: "Watch history entry not found" }, 404);
 	}
 
+	// delete movie watch history/rating/favorites
 	await db.transaction(async (tx) => {
 		await tx
 			.delete(movieWatchHistory)
 			.where(eq(movieWatchHistory.id, watchEntry.id));
+
+		await tx
+			.delete(favorites)
+			.where(
+				and(
+					eq(favorites.userId, user.id),
+					eq(favorites.mediaId, mediaEntry.id),
+				),
+			);
+
 		await updateMediaRating(tx, mediaEntry.id);
 	});
 
 	return c.body(null, 204);
 });
 
-// delete tv show from history and the rating associated to it
+// delete tv show from history and the rating/favorites associated to it
 // user must be logged in
 userHistoryRoutes.delete("/tv/:tmdbId", async (c) => {
 	const user = c.get("user")!;
@@ -734,13 +736,22 @@ userHistoryRoutes.delete("/tv/:tmdbId", async (c) => {
 		return c.json({ error: "Entry not found" }, 404);
 	}
 
-	// delete tv show watch history & the show progress
+	// delete tv show watch history/show progress/rating/favorite
 	await db.transaction(async (tx) => {
 		await tx
 			.delete(tvShowWatchHistory)
 			.where(eq(tvShowWatchHistory.id, entry.id));
 
 		await tx.delete(tvShowProgress).where(eq(tvShowProgress.id, entry.id));
+
+		await tx
+			.delete(favorites)
+			.where(
+				and(
+					eq(favorites.userId, user.id),
+					eq(favorites.mediaId, mediaEntry.id),
+				),
+			);
 
 		await updateMediaRating(tx, mediaEntry.id);
 	});
@@ -761,9 +772,9 @@ userHistoryRoutes.patch(
 	zValidator(
 		"json",
 		z.object({
-			rating: z.number().min(0.5).max(5.0).nullable().optional(),
-			review: z.string().nullable().optional(),
-			watchedAt: z.iso.datetime().optional(),
+			rating: z.number().min(0.5).max(5.0).nullable(),
+			review: z.string().nullable(),
+			watchedAt: z.coerce.date().nullable(),
 		}),
 	),
 	async (c) => {
@@ -797,19 +808,14 @@ userHistoryRoutes.patch(
 			const [updatedEntry] = await tx
 				.update(movieWatchHistory)
 				.set({
-					rating:
-						data.rating === undefined
-							? undefined
-							: (data.rating?.toString() ?? null),
-					review: data.review === undefined ? undefined : (data.review ?? null),
-					watchedAt: data.watchedAt ? new Date(data.watchedAt) : undefined,
+					rating: data.rating?.toString() ?? null,
+					review: data.review ?? null,
+					watchedAt: data.watchedAt ?? null,
 				})
 				.where(eq(movieWatchHistory.id, entry.id))
 				.returning();
 
-			if (data.rating !== undefined) {
-				await updateMediaRating(tx, mediaEntry.id);
-			}
+			await updateMediaRating(tx, mediaEntry.id);
 
 			return updatedEntry;
 		});
@@ -831,9 +837,9 @@ userHistoryRoutes.patch(
 	zValidator(
 		"json",
 		z.object({
-			rating: z.number().min(0.5).max(5.0).nullable().optional(),
-			review: z.string().nullable().optional(),
-			watchedAt: z.iso.datetime().optional(),
+			rating: z.number().min(0.5).max(5.0).nullable(),
+			review: z.string().nullable(),
+			watchedAt: z.coerce.date().nullable(),
 		}),
 	),
 	async (c) => {
@@ -867,19 +873,14 @@ userHistoryRoutes.patch(
 			const [updatedEntry] = await tx
 				.update(tvShowWatchHistory)
 				.set({
-					rating:
-						data.rating === undefined
-							? undefined
-							: (data.rating?.toString() ?? null),
-					review: data.review === undefined ? undefined : (data.review ?? null),
-					watchedAt: data.watchedAt ? new Date(data.watchedAt) : undefined,
+					rating: data.rating?.toString() ?? null,
+					review: data.review ?? null,
+					watchedAt: data.watchedAt ?? null,
 				})
 				.where(eq(tvShowWatchHistory.id, entry.id))
 				.returning();
 
-			if (data.rating !== undefined) {
-				await updateMediaRating(tx, mediaEntry.id);
-			}
+			await updateMediaRating(tx, mediaEntry.id);
 
 			return updatedEntry;
 		});

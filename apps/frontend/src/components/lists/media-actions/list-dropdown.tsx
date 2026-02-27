@@ -39,7 +39,7 @@ interface ListDropdownProps {
 		posterPath: string | null;
 		releaseDate: string;
 	};
-	imageUrl?: string;
+	imageUrl?: string | null;
 }
 
 export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
@@ -77,6 +77,7 @@ export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 			return rateMovieMutation.mutate({
 				tmdbId,
 				rating: newRating,
+				review: null,
 				watchedAt: new Date(),
 			});
 		}
@@ -87,8 +88,10 @@ export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 		rateTvMutation.mutate({
 			tmdbId,
 			rating: newRating,
+			review: null,
 			lastWatchedSeason: episodeInfo.seasonNumber,
 			lastWatchedEpisode: episodeInfo.episodeNumber,
+			absoluteEpisode: null,
 			trackingMode: "season",
 			watchedAt: new Date(),
 		});
@@ -103,7 +106,7 @@ export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 				>
 					<IconDots className="w-5 h-5 text-white" />
 				</DropdownMenuTrigger>
-				<DropdownMenuContent align="center">
+				<DropdownMenuContent align="end">
 					<div className="px-2 flex justify-center">
 						<StarRating
 							movie={movie}
@@ -111,6 +114,7 @@ export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 							fetchRating={true}
 							onRatingChange={handleRatingChange}
 							username={username}
+							gapSize={3}
 						/>
 					</div>
 					<DropdownMenuSeparator />

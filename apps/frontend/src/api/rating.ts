@@ -49,7 +49,7 @@ export const removeMovieRating = async (tmdbId: number) => {
 		`/history/movie/${tmdbId}`,
 		{
 			method: "PATCH",
-			body: { rating: null, review: null },
+			body: { rating: null, review: null, watchedAt: null },
 		},
 	);
 	return res;
@@ -58,7 +58,7 @@ export const removeMovieRating = async (tmdbId: number) => {
 export const removeTvRating = async (tmdbId: number) => {
 	const res = await apiFetch<PostTvRatingResponse>(`/history/tv/${tmdbId}`, {
 		method: "PATCH",
-		body: { rating: null, review: null },
+		body: { rating: null, review: null, watchedAt: null },
 	});
 	return res;
 };
@@ -121,18 +121,18 @@ export type PostTvRatingResponse = {
 
 export type RateMoviePayload = {
 	tmdbId: number;
-	rating?: number | null;
-	review?: string | null;
-	watchedAt?: Date | null;
+	rating: number | null;
+	review: string | null;
+	watchedAt: Date | null;
 };
 
 export type RateTvPayload = {
 	tmdbId: number;
-	rating?: number | null;
-	review?: string | null;
-	lastWatchedSeason?: number;
-	lastWatchedEpisode?: number;
-	absoluteEpisode?: number;
-	trackingMode: string;
-	watchedAt?: Date | null;
+	rating: number | null;
+	review: string | null;
+	lastWatchedSeason: number | null;
+	lastWatchedEpisode: number | null;
+	absoluteEpisode: number | null;
+	trackingMode: "absolute" | "season" | null;
+	watchedAt: Date | null;
 };

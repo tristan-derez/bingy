@@ -13,7 +13,7 @@ import { Label } from "@/components/ui/label";
 import { useRateMovie, useRateTvShow } from "@/hooks/useRating";
 import { useTv } from "@/hooks/useTv";
 import { m } from "@/paraglide/messages";
-import { getNumberOrUndefined } from "@/utils/get-number-or-undefined";
+import { getNumberOrNull } from "@/utils/get-number-or-null";
 import {
 	getHasContinuousEpisodeNumbering,
 	getLastAiredEpisodeInfo,
@@ -38,7 +38,7 @@ interface LogReviewDialogProps {
 		id: number;
 		name: string;
 	};
-	imageUrl?: string;
+	imageUrl?: string | null;
 	username: string;
 	existingData?: {
 		rating: number | null;
@@ -172,9 +172,9 @@ export function LogReviewDialog({
 
 		const payload = {
 			tmdbId,
-			rating: reviewFormData.rating || undefined,
-			review: reviewFormData.review || undefined,
-			watchedAt: reviewFormData.watchedDate || undefined,
+			rating: reviewFormData.rating || null,
+			review: reviewFormData.review || null,
+			watchedAt: reviewFormData.watchedDate || null,
 		};
 
 		const options = { onSuccess: () => handleOpenChange(false) };
@@ -186,9 +186,9 @@ export function LogReviewDialog({
 		rateTvMutation.mutate(
 			{
 				...payload,
-				lastWatchedSeason: getNumberOrUndefined(reviewFormData.season),
-				lastWatchedEpisode: getNumberOrUndefined(reviewFormData.episode),
-				absoluteEpisode: getNumberOrUndefined(reviewFormData.absoluteEpisode),
+				lastWatchedSeason: getNumberOrNull(reviewFormData.season),
+				lastWatchedEpisode: getNumberOrNull(reviewFormData.episode),
+				absoluteEpisode: getNumberOrNull(reviewFormData.absoluteEpisode),
 				trackingMode: reviewFormData.shouldUseAbsoluteEpisode
 					? "absolute"
 					: "season",
