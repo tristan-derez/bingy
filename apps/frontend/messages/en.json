@@ -675,5 +675,6 @@
 	"btn_share_link_movie_text": "{movie_name} ({year}) on @bingy_app —",
 	"btn_share_link_tv_text": "{tv_name} ({year}) on @bingy_app —",
 	"btn_share_text": "Share",
-	"btn_copied_text": "Copied!"
+	"btn_copied_text": "Copied!",
+	"head_app_description": "Tired of losing track of what you're watching? Track your movies and shows with bingy, get notified about new releases, and discover what to watch next"
 }
