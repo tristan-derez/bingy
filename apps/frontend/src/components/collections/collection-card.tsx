@@ -40,7 +40,7 @@ export function CollectionCard({ collection }: CollectionCardProps) {
 		>
 			<CardHeader>
 				<CardTitle>{collection.name}</CardTitle>
-				<CardDescription>
+				<CardDescription className="text-foreground">
 					{m.collection_card_desc({
 						numberOfMovies: collectionData.parts.length,
 					})}
