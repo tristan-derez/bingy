@@ -22,6 +22,8 @@ interface CollectionDetailsViewProps {
 	isError: boolean;
 }
 
+// @todo: rework this page (move the background_path to the top etc etc)
+// probably get rid of the budget and earning as this is not very relevant / not always accurate data
 export function CollectionDetailsView({
 	collectionData,
 	moviesData,
@@ -149,9 +151,6 @@ export function CollectionDetailsView({
 								</CardDescription>
 							</CardHeader>
 							<CardContent className="p-0 flex flex-col gap-2">
-								<h2 className="text-semi-bold text-md">
-									{m.collection_details_title()}
-								</h2>
 								<MediaOverview overview={collectionData.overview} />
 
 								{totalBudget > 0 ? (
