@@ -119,8 +119,8 @@ export function TvDetailsView({
 											</h1>
 
 											{hasDifferentName ? (
-												<p className="text-foreground text-lg font-bold">
-													« {tv.original_name} »
+												<p className="text-foreground text-lg font-bold italic">
+													— {tv.original_name}
 												</p>
 											) : null}
 										</div>

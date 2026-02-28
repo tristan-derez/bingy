@@ -128,8 +128,8 @@ export function MovieDetailView({
 												{movie.title}
 											</h1>
 											{hasDifferentTitle ? (
-												<p className="text-foreground text-lg font-bold">
-													« {movie.original_title} »
+												<p className="text-foreground text-lg font-bold italic">
+													— {movie.original_title}
 												</p>
 											) : null}
 										</div>
