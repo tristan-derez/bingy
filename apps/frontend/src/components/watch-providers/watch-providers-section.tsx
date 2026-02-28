@@ -38,7 +38,7 @@ export function WatchProvidersSection({
 						href={providers.link}
 						target="_blank"
 						rel="noopener noreferrer"
-						className="flex items-center gap-2 hover:opacity-80 transition-opacity pb-3"
+						className="flex items-center gap-2 hover:opacity-80 transition-opacity pb-3 text-dark-card-foreground"
 					>
 						{provider.logo_path && (
 							<img

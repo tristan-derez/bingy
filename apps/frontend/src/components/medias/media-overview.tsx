@@ -28,7 +28,7 @@ export const MediaOverview = ({ overview }: MediaOverviewProps) => {
 		lastPeriod > 0 ? overview.slice(lastPeriod + 1).trim() : "";
 	if (overview.length <= 250 || lastPeriod <= 0 || !hiddenText) {
 		return (
-			<p className="w-full text-sm xl:w-7/8 whitespace-pre-line text-foreground">
+			<p className="w-full text-sm xl:w-6/7 whitespace-pre-line text-foreground text-pretty">
 				{overview}
 			</p>
 		);
@@ -37,8 +37,8 @@ export const MediaOverview = ({ overview }: MediaOverviewProps) => {
 	const displayText = overview.slice(0, lastPeriod + 1);
 
 	return (
-		<div className="text-foreground text-sm">
-			<p className="w-full whitespace-pre-line leading-relaxed">
+		<div className="text-foreground text-sm xl:w-6/7">
+			<p className="w-full whitespace-pre-line leading-relaxed text-pretty">
 				{displayText}
 			</p>
 			<Collapsible open={isExpanded} onOpenChange={setIsExpanded}>
@@ -52,7 +52,9 @@ export const MediaOverview = ({ overview }: MediaOverviewProps) => {
 					></CollapsibleTrigger>
 				</div>
 				<CollapsibleContent>
-					<p className="w-full whitespace-pre-line pt-2">{hiddenText}</p>
+					<p className="w-full whitespace-pre-line pt-2 text-pretty">
+						{hiddenText}
+					</p>
 				</CollapsibleContent>
 			</Collapsible>
 		</div>
