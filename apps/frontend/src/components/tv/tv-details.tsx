@@ -5,7 +5,7 @@ import {
 	IconStack2,
 	IconStarFilled,
 } from "@tabler/icons-react";
-import { Link, useRouteContext } from "@tanstack/react-router";
+import { Link, useRouteContext, useRouterState } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
@@ -43,6 +43,8 @@ export function TvDetailsView({
 	isLoading,
 	isError,
 }: TvDetailViewProps) {
+	const routerState = useRouterState();
+	const currentUrl = routerState.location.url;
 	const { session } = useRouteContext({ from: "__root__" });
 	const localeRegion = useAtomValue(localeRegionAtom);
 	const region = useAtomValue(regionAtom);
@@ -177,9 +179,12 @@ export function TvDetailsView({
 													mediaType: "tv",
 												}}
 												imageUrl={imageUrl}
+												currentUrl={currentUrl}
 											/>
 										</div>
-									) : null}
+									) : (
+										<div className="min-w-3xs"></div>
+									)}
 								</div>
 							</CardContent>
 						</Card>

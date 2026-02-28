@@ -188,7 +188,9 @@ export function MovieDetailView({
 												currentUrl={currentUrl}
 											/>
 										</div>
-									) : null}
+									) : (
+										<div className="min-w-3xs"></div>
+									)}
 								</div>
 							</CardContent>
 						</Card>
