@@ -34,8 +34,7 @@ export const MediaOverview = ({ overview }: { overview: string }) => {
 				<CollapsibleContent
 					render={
 						<span className={isExpanded ? "inline" : "hidden"}>
-							{" "}
-							{hiddenText}
+							{" " + hiddenText}
 						</span>
 					}
 				/>
