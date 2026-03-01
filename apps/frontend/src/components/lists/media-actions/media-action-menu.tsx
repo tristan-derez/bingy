@@ -20,7 +20,7 @@ import { LogReviewDialog } from "./log-review-dialog";
 import { StarRating } from "./star-rating";
 import { WatchToggleButton } from "./watch-toggle-button";
 
-interface MediaActionBarProps {
+interface MediaActionMenuProps {
 	movie?: {
 		mediaType?: string;
 		id: number;
@@ -40,13 +40,13 @@ interface MediaActionBarProps {
 	currentUrl: string;
 }
 
-export const MediaActionBar = ({
+export const MediaActionMenu = ({
 	movie,
 	tvShow,
 	username,
 	imageUrl,
 	currentUrl,
-}: MediaActionBarProps) => {
+}: MediaActionMenuProps) => {
 	const passProps = { movie, tvShow, username };
 
 	const isTvShow = !!tvShow;

@@ -10,7 +10,7 @@ import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
-import { MediaActionBar } from "@/components/lists/media-actions/media-action-bar";
+import { MediaActionMenu } from "@/components/lists/media-actions/media-action-menu";
 import { LoadingCentered } from "@/components/loading/loading-centered";
 import { MediaOverview } from "@/components/medias/media-overview";
 import { CastCarousel } from "@/components/person/cast-carousel";
@@ -166,7 +166,7 @@ export function TvDetailsView({
 
 									{session ? (
 										<div className="lg:self-start mt-3 lg:pr-2">
-											<MediaActionBar
+											<MediaActionMenu
 												username={session.user.name}
 												tvShow={{
 													id: tv.id,

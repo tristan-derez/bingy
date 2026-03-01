@@ -12,8 +12,9 @@ import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import { CollectionCard } from "@/components/collections/collection-card";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
-import { MediaActionBar } from "@/components/lists/media-actions/media-action-bar";
+import { MediaActionMenu } from "@/components/lists/media-actions/media-action-menu";
 import { LoadingCentered } from "@/components/loading/loading-centered";
+import { MediaBackgroundImage } from "@/components/medias/media-background-image";
 import { MediaOverview } from "@/components/medias/media-overview";
 import { CastCarousel } from "@/components/person/cast-carousel";
 import { SocialLinks } from "@/components/social-links";
@@ -25,7 +26,6 @@ import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { formatRuntime } from "@/utils/format-runtime";
-import { MediaBackgroundImage } from "../medias/media-background-image";
 
 interface MovieDetailViewProps {
 	movie: Schemas.MovieDetails | undefined;
@@ -172,7 +172,7 @@ export function MovieDetailView({
 									</div>
 									{session ? (
 										<div className="lg:self-start mt-3">
-											<MediaActionBar
+											<MediaActionMenu
 												username={session.user.name}
 												movie={{
 													id: movie.id,
