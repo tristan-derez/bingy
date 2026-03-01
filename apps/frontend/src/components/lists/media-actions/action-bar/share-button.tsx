@@ -1,4 +1,4 @@
-import { IconBrandX, IconCopy } from "@tabler/icons-react";
+import { IconBrandX, IconCopy, IconShare } from "@tabler/icons-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { m } from "@/paraglide/messages";
@@ -25,7 +25,8 @@ export function ShareButton({ url, text }: { url: string; text?: string }) {
 			onMouseLeave={() => setIsHovered(false)}
 		>
 			<Button variant="ghost" className="w-full" onClick={handleCopy}>
-				{copied ? m.btn_copied_text() : m.btn_share_text()}
+				<span>{copied ? m.btn_copied_text() : m.btn_share_text()}</span>
+				<IconShare className="ml-auto" />
 			</Button>
 
 			{isHovered && (
