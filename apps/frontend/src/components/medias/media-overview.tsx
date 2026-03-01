@@ -1,3 +1,4 @@
+import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -6,57 +7,58 @@ import {
 	CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { m } from "@/paraglide/messages";
+import { getTruncatedContent } from "@/utils/truncate-content";
 
-interface MediaOverviewProps {
-	overview: string;
-}
-
-export const MediaOverview = ({ overview }: MediaOverviewProps) => {
+export const MediaOverview = ({ overview }: { overview: string }) => {
 	const [isExpanded, setIsExpanded] = useState(false);
 
-	if (!overview) return null;
+	const { shouldTruncate, displayText, hiddenText } =
+		getTruncatedContent(overview);
 
-	const searchWindow = 350;
-	const textToSearch = overview.slice(
-		0,
-		Math.min(searchWindow, overview.length),
-	);
-	const lastPeriod = textToSearch.lastIndexOf(".");
-
-	// Show full text if it's short, no period found, or nothing meaningful after the period
-	const hiddenText =
-		lastPeriod > 0 ? overview.slice(lastPeriod + 1).trim() : "";
-	if (overview.length <= 250 || lastPeriod <= 0 || !hiddenText) {
+	if (!shouldTruncate) {
 		return (
-			<p className="w-full text-sm xl:w-6/7 whitespace-pre-line text-foreground text-pretty">
+			<p className="text-sm xl:w-6/7 whitespace-pre-line text-foreground text-pretty leading-relaxed">
 				{overview}
 			</p>
 		);
 	}
 
-	const displayText = overview.slice(0, lastPeriod + 1);
-
 	return (
-		<div className="text-foreground text-sm xl:w-6/7">
-			<p className="w-full whitespace-pre-line leading-relaxed text-pretty">
-				{displayText}
-			</p>
-			<Collapsible open={isExpanded} onOpenChange={setIsExpanded}>
-				<div className={isExpanded ? "hidden" : ""}>
-					<CollapsibleTrigger
-						render={
-							<Button variant="link" size="sm" className="p-0">
-								{m.btn_show_more()}
-							</Button>
-						}
-					></CollapsibleTrigger>
-				</div>
-				<CollapsibleContent>
-					<p className="w-full whitespace-pre-line pt-2 text-pretty">
-						{hiddenText}
-					</p>
-				</CollapsibleContent>
-			</Collapsible>
-		</div>
+		<Collapsible
+			open={isExpanded}
+			onOpenChange={setIsExpanded}
+			className="group flex gap-3 text-sm xl:w-6/7"
+		>
+			<div className="flex-1 whitespace-pre-line leading-relaxed text-pretty text-foreground">
+				<span>{displayText}</span>
+				<CollapsibleContent
+					render={
+						<span className={isExpanded ? "inline" : "hidden"}>
+							{" "}
+							{hiddenText}
+						</span>
+					}
+				/>
+			</div>
+
+			<div className="flex flex-none items-start">
+				<CollapsibleTrigger
+					render={
+						<Button
+							variant="secondary"
+							size="icon"
+							className="h-6 w-6 p-0 hover:bg-transparent text-muted-foreground hover:text-foreground"
+							title={isExpanded ? m.btn_show_less() : m.btn_show_more()}
+						>
+							{isExpanded ? (
+								<IconChevronUp size={18} />
+							) : (
+								<IconChevronDown size={18} />
+							)}
+						</Button>
+					}
+				/>
+			</div>
+		</Collapsible>
 	);
 };
