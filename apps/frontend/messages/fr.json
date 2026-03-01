@@ -117,6 +117,7 @@
 	"collection_card_desc": "Ce film fait partie d'une saga comprenant {numberOfMovies} films",
 	"btn_view_collection": "AFFICHER LA SAGA COMPLÈTE",
 	"collection_details_revenue": "Recettes:",
+	"btn_show_less": "Voir moins",
 	"btn_show_more": "Voir plus",
 	"overview_none": "Pas de résumé disponible.",
 	"error_page_not_found": "La page que tu recherches n'existe pas ou a été déplacée",

@@ -117,6 +117,7 @@
 	"collection_card_desc": "Part of a collection with {numberOfMovies} movies",
 	"btn_view_collection": "VIEW THE COLLECTION",
 	"collection_details_revenue": "Revenue:",
+	"btn_show_less": "Show less",
 	"btn_show_more": "Show more",
 	"overview_none": "No overview available",
 	"error_page_not_found": "The page you're looking for doesn't exist or has been moved",
