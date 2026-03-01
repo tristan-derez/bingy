@@ -26,7 +26,6 @@ import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { formatRuntime } from "@/utils/format-runtime";
 import { MediaBackgroundImage } from "../medias/media-background-image";
-import { Separator } from "../ui/separator";
 
 interface MovieDetailViewProps {
 	movie: Schemas.MovieDetails | undefined;
@@ -150,8 +149,6 @@ export function MovieDetailView({
 											) : null}
 											<MediaOverview overview={movie.overview} />
 										</div>
-
-										<Separator />
 
 										{crew.length > 0 && (
 											<div className="grid grid-cols-1 md:grid-cols-3 gap-4">

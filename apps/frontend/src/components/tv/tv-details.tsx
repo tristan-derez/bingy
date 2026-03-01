@@ -19,7 +19,6 @@ import { TVStatusCard } from "@/components/tv/tv-details/status-card";
 import { BackButton } from "@/components/ui/back-button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { WatchProvidersSection } from "@/components/watch-providers/watch-providers-section";
 import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
@@ -139,8 +138,6 @@ export function TvDetailsView({
 											) : null}
 											<MediaOverview overview={tv.overview} />
 										</div>
-
-										<Separator />
 
 										{tv.created_by.length > 0 ? (
 											<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
