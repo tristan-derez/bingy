@@ -1,7 +1,6 @@
 import {
 	IconCalendarWeekFilled,
 	IconDeviceTv,
-	IconExternalLink,
 	IconStack2,
 	IconStarFilled,
 } from "@tabler/icons-react";
@@ -24,6 +23,7 @@ import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { MediaBackgroundImage } from "../medias/media-background-image";
+import { MediaLearnMoreCard } from "../medias/media-learn-more";
 
 interface TvDetailViewProps {
 	tv: Schemas.TvDetails | undefined;
@@ -259,26 +259,7 @@ export function TvDetailsView({
 							</Card>
 
 							{tv.homepage ? (
-								<Card>
-									<CardContent className="flex items-center gap-4">
-										<IconExternalLink />
-										<div>
-											<p className="text-xl xl:text-2xl font-bold">
-												<a
-													href={tv.homepage}
-													target="_blank"
-													rel="noopener noreferrer"
-													className="hover:underline"
-												>
-													{m.tv_details_btn_visit()}
-												</a>
-											</p>
-											<p className="text-sm text-muted-foreground">
-												{m.tv_details_homepage()}
-											</p>
-										</div>
-									</CardContent>
-								</Card>
+								<MediaLearnMoreCard id={tv.id} mediaType="tv" />
 							) : null}
 						</div>
 

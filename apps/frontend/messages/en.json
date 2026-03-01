@@ -140,8 +140,8 @@
 	"movie_details_runtime": "Runtime",
 	"movie_details_budget": "Budget",
 	"movie_details_revenue": "Revenue",
-	"movie_details_homepage": "Homepage",
-	"btn_visit_movie_details_homepage": "Visit",
+	"media_details_learn_more": "On TMDB",
+	"btn_media_learn_more": "Learn more",
 	"movie_details_production_companies": [
 		{
 			"declarations": ["input count", "local countPlural = count: plural"],

@@ -1,8 +1,5 @@
 import {
 	IconCalendarWeekFilled,
-	IconExternalLink,
-	IconMoneybag,
-	IconReceiptDollar,
 	IconStarFilled,
 	IconStopwatch,
 } from "@tabler/icons-react";
@@ -26,6 +23,7 @@ import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { formatRuntime } from "@/utils/format-runtime";
+import { MediaLearnMoreCard } from "../medias/media-learn-more";
 
 interface MovieDetailViewProps {
 	movie: Schemas.MovieDetails | undefined;
@@ -249,59 +247,8 @@ export function MovieDetailView({
 								</CardContent>
 							</Card>
 
-							{movie.budget > 0 ? (
-								<Card>
-									<CardContent className="flex items-center gap-4">
-										<IconReceiptDollar />
-										<div>
-											<p className="text-xl xl:text-2xl font-bold">
-												${movie.budget.toLocaleString()}
-											</p>
-											<p className="text-sm text-muted-foreground">
-												{m.movie_details_budget()}
-											</p>
-										</div>
-									</CardContent>
-								</Card>
-							) : null}
-
-							{movie.revenue > 0 ? (
-								<Card>
-									<CardContent className="flex items-center gap-4">
-										<IconMoneybag />
-										<div>
-											<p className="text-xl xl:text-2xl font-bold">
-												${movie.revenue.toLocaleString()}
-											</p>
-											<p className="text-sm text-muted-foreground">
-												{m.movie_details_revenue()}
-											</p>
-										</div>
-									</CardContent>
-								</Card>
-							) : null}
-
-							{movie.homepage ? (
-								<Card>
-									<CardContent className=" flex items-center gap-4">
-										<IconExternalLink />
-										<div>
-											<p className="text-xl xl:text-2xl font-bold">
-												<a
-													href={movie.homepage}
-													target="_blank"
-													rel="noopener noreferrer"
-													className="hover:underline"
-												>
-													{m.btn_visit_movie_details_homepage()}
-												</a>
-											</p>
-											<p className="text-sm text-muted-foreground">
-												{m.movie_details_homepage()}
-											</p>
-										</div>
-									</CardContent>
-								</Card>
+							{movie.id ? (
+								<MediaLearnMoreCard id={movie.id} mediaType="movie" />
 							) : null}
 						</div>
 

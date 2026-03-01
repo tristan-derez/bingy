@@ -140,8 +140,8 @@
 	"movie_details_runtime": "Durée",
 	"movie_details_budget": "Budget",
 	"movie_details_revenue": "Recettes",
-	"movie_details_homepage": "Site officiel",
-	"btn_visit_movie_details_homepage": "En savoir plus",
+	"media_details_learn_more": "Sur TMDB",
+	"btn_media_learn_more": "En savoir plus",
 	"movie_details_production_companies": [
 		{
 			"declarations": ["input count", "local countPlural = count: plural"],
@@ -403,8 +403,6 @@
 			}
 		}
 	],
-	"tv_details_btn_visit": "En savoir plus",
-	"tv_details_homepage": "Site officiel",
 	"toast_error_email_doesnt_match_settings_page": "L'email ne correspond pas à l'email du compte",
 	"toast_error_already_linked_settings_page": "Ce compte est déjà utilisé par un autre utilisateur",
 	"toast_error_generic_error_settings_page": "Une erreur est survenue",
