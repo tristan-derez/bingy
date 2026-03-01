@@ -84,7 +84,7 @@ export const PersonDetailsView = ({
 					) : null}
 				</div>
 
-				<div className="w-full flex flex-col gap-4 overflow-hidden">
+				<div className="w-full flex flex-col gap-4 overflow-hidden px-1">
 					<Card className="shadow-none rounded-none bg-transparent ring-0 lg:p-0">
 						<CardContent>
 							<div className="flex flex-row justify-between items-start gap-2">
