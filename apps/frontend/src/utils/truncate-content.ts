@@ -1,5 +1,15 @@
-export const getTruncatedContent = (overview: string) => {
-	const searchWindow = 500;
+import type { Pretty } from "shared";
+
+type TruncatedContentResp = Pretty<{
+	shouldTruncate: boolean;
+	displayText: string;
+	hiddenText: string;
+}>;
+
+export const getTruncatedContent = (
+	overview: string,
+	searchWindow: number = 500,
+): TruncatedContentResp => {
 	const minHiddenLength = 50;
 	const sentenceEnders = /[.!?]/;
 	const otherPunct = /[;:—–-]/;
