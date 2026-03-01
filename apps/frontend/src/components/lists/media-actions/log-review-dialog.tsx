@@ -13,12 +13,12 @@ import { Label } from "@/components/ui/label";
 import { useRateMovie, useRateTvShow } from "@/hooks/useRating";
 import { useTv } from "@/hooks/useTv";
 import { m } from "@/paraglide/messages";
-import { getNumberOrNull } from "@/utils/get-number-or-null";
 import {
 	getHasContinuousEpisodeNumbering,
 	getLastAiredEpisodeInfo,
 	getValidSeasons,
 } from "@/utils/season-helper";
+import { getNumberOrNull } from "@/utils/utils";
 import { AbsoluteEpisodeCombobox } from "./absolute-episode-combobox";
 import { ReviewTextarea } from "./review-text-area";
 import { SeasonEpisodeCombobox } from "./season-episode-combobox";
