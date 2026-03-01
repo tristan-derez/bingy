@@ -59,7 +59,7 @@ export const CastCard = ({ person }: CastCardProps) => {
 							params={{ personId: person.id.toString() }}
 							className="hover:cursor-default"
 						>
-							{m.btn_see_more()}
+							{m.btn_show_more()}
 						</Link>
 					</Button>
 				</CardContent>
