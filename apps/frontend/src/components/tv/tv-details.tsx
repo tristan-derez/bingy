@@ -258,9 +258,7 @@ export function TvDetailsView({
 								</CardContent>
 							</Card>
 
-							{tv.homepage ? (
-								<MediaLearnMoreCard id={tv.id} mediaType="tv" />
-							) : null}
+							{tv.id ? <MediaLearnMoreCard id={tv.id} mediaType="tv" /> : null}
 						</div>
 
 						{cast.length > 0 ? (
