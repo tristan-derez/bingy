@@ -137,6 +137,13 @@ export function MovieDetailView({
 													{genre.name}
 												</Badge>
 											))}
+
+											<div className="flex gap-1 items-center font-bold">
+												<IconStopwatch width={16} height={16} />
+												<p className="text-sm">
+													{formatRuntime(movie.runtime)}
+												</p>
+											</div>
 										</div>
 
 										<div className="flex flex-col gap-1">
@@ -228,20 +235,6 @@ export function MovieDetailView({
 												/>
 											) : null}
 											{m.movie_details_release_date()}
-										</p>
-									</div>
-								</CardContent>
-							</Card>
-
-							<Card>
-								<CardContent className="flex items-center gap-4">
-									<IconStopwatch />
-									<div>
-										<p className="text-xl xl:text-2xl font-bold">
-											{formatRuntime(movie.runtime)}
-										</p>
-										<p className="text-sm text-muted-foreground">
-											{m.movie_details_runtime()}
 										</p>
 									</div>
 								</CardContent>

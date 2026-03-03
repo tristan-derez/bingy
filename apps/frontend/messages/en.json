@@ -137,7 +137,6 @@
 	"error_title_not_found_movie": "Movie not found",
 	"error_desc_not_found_movie": "The movie you're looking for could not be found",
 	"movie_details_release_date": "Release Date",
-	"movie_details_runtime": "Runtime",
 	"movie_details_budget": "Budget",
 	"movie_details_revenue": "Revenue",
 	"media_details_learn_more": "On TMDB",
