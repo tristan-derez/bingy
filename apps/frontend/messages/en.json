@@ -343,7 +343,7 @@
 	],
 	"tv_details_first_aired": "First Aired",
 	"tv_details_status": "Status",
-	"tv_details_votes": [
+	"media_details_votes": [
 		{
 			"declarations": [
 				"input count",
@@ -357,6 +357,7 @@
 			}
 		}
 	],
+	"media_details_no_votes": "Be the first to rate!",
 	"tv_details_seasons": [
 		{
 			"declarations": ["input count", "local countPlural = count: plural"],

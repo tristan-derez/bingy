@@ -1,8 +1,4 @@
-import {
-	IconCalendarWeekFilled,
-	IconStarFilled,
-	IconStopwatch,
-} from "@tabler/icons-react";
+import { IconCalendarWeekFilled, IconStopwatch } from "@tabler/icons-react";
 import { Link, useRouteContext, useRouterState } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
@@ -12,7 +8,9 @@ import { ResourceNotFound } from "@/components/errors/resource-not-found";
 import { MediaActionMenu } from "@/components/lists/media-actions/media-action-menu";
 import { LoadingCentered } from "@/components/loading/loading-centered";
 import { MediaBackgroundImage } from "@/components/medias/media-background-image";
+import { MediaLearnMoreCard } from "@/components/medias/media-learn-more";
 import { MediaOverview } from "@/components/medias/media-overview";
+import { MediaRatingDisplayCard } from "@/components/medias/media-rating-display-card";
 import { CastCarousel } from "@/components/person/cast-carousel";
 import { SocialLinks } from "@/components/social-links";
 import { BackButton } from "@/components/ui/back-button";
@@ -23,7 +21,6 @@ import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { formatRuntime } from "@/utils/format-runtime";
-import { MediaLearnMoreCard } from "../medias/media-learn-more";
 
 interface MovieDetailViewProps {
 	movie: Schemas.MovieDetails | undefined;
@@ -198,21 +195,10 @@ export function MovieDetailView({
 						</Card>
 
 						<div className="grid lg:grid-cols-3 gap-2 p-px">
-							{movie.vote_count ? (
-								<Card>
-									<CardContent className="flex items-center gap-4">
-										<IconStarFilled className="h-5 w-5 text-yellow-500" />
-										<div>
-											<p className="text-xl xl:text-2xl font-bold">
-												{movie.vote_average.toFixed(1)}
-											</p>
-											<p className="text-sm text-muted-foreground">
-												{movie.vote_count} votes
-											</p>
-										</div>
-									</CardContent>
-								</Card>
-							) : null}
+							<MediaRatingDisplayCard
+								voteCount={movie.vote_count}
+								voteAverage={movie.vote_average}
+							/>
 
 							<Card>
 								<CardContent className="flex items-center gap-4">
