@@ -11,6 +11,7 @@ import { ResourceNotFound } from "@/components/errors/resource-not-found";
 import { MediaActionMenu } from "@/components/lists/media-actions/media-action-menu";
 import { LoadingCentered } from "@/components/loading/loading-centered";
 import { MediaBackgroundImage } from "@/components/medias/media-background-image";
+import { MediaGenresBadge } from "@/components/medias/media-genres-badge";
 import { MediaLearnMoreCard } from "@/components/medias/media-learn-more";
 import { MediaOverview } from "@/components/medias/media-overview";
 import { MediaRatingDisplayCard } from "@/components/medias/media-rating-display-card";
@@ -124,13 +125,7 @@ export function TvDetailsView({
 											) : null}
 										</div>
 
-										<div className="flex flex-wrap gap-2">
-											{tv.genres.map((genre) => (
-												<Badge key={genre.id} variant="secondary">
-													{genre.name}
-												</Badge>
-											))}
-										</div>
+										<MediaGenresBadge genres={tv.genres} />
 
 										<div className="flex flex-col gap-1">
 											{tv.tagline ? (

@@ -8,6 +8,7 @@ import { ResourceNotFound } from "@/components/errors/resource-not-found";
 import { MediaActionMenu } from "@/components/lists/media-actions/media-action-menu";
 import { LoadingCentered } from "@/components/loading/loading-centered";
 import { MediaBackgroundImage } from "@/components/medias/media-background-image";
+import { MediaGenresBadge } from "@/components/medias/media-genres-badge";
 import { MediaLearnMoreCard } from "@/components/medias/media-learn-more";
 import { MediaOverview } from "@/components/medias/media-overview";
 import { MediaRatingDisplayCard } from "@/components/medias/media-rating-display-card";
@@ -129,13 +130,9 @@ export function MovieDetailView({
 										</div>
 
 										<div className="flex flex-wrap gap-2">
-											{movie.genres.map((genre: Schemas.Genre) => (
-												<Badge key={genre.id} variant="secondary">
-													{genre.name}
-												</Badge>
-											))}
+											<MediaGenresBadge genres={movie.genres} />
 
-											<div className="flex gap-1 items-center font-bold">
+											<div className="flex gap-0.5 items-center font-bold">
 												<IconStopwatch width={16} height={16} />
 												<p className="text-sm">
 													{formatRuntime(movie.runtime)}
