@@ -357,7 +357,7 @@
 			}
 		}
 	],
-	"media_details_no_votes": "Sois le premier à noter",
+	"media_details_no_votes": "Ajoute la première note",
 	"tv_details_seasons": [
 		{
 			"declarations": ["input count", "local countPlural = count: plural"],

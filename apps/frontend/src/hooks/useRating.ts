@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import {
+	getMediaAverageRating,
 	getMovieRating,
 	getRatings,
 	getTvRating,
@@ -59,6 +60,9 @@ export function useRateMovie() {
 			queryClient.invalidateQueries({
 				queryKey: ["lists", "watchlist"],
 			});
+			queryClient.invalidateQueries({
+				queryKey: ["average-rating", "movie", variables.tmdbId],
+			});
 
 			if (res.rating) {
 				toast.success(m.toast_rate_movie_success());
@@ -87,6 +91,9 @@ export function useRateTvShow() {
 			queryClient.invalidateQueries({
 				queryKey: ["lists", "watchlist"],
 			});
+			queryClient.invalidateQueries({
+				queryKey: ["average-rating", "tv", variables.tmdbId],
+			});
 
 			if (res.rating) {
 				toast.success(m.toast_rate_tv_success());
@@ -112,6 +119,9 @@ export function useRemoveMovieRating() {
 			queryClient.invalidateQueries({
 				queryKey: ["ratings", "movie", tmdbId],
 			});
+			queryClient.invalidateQueries({
+				queryKey: ["average-rating", "movie", tmdbId],
+			});
 
 			toast.success(m.toast_remove_movie_rating_success());
 		},
@@ -133,11 +143,26 @@ export function useRemoveTvRating() {
 			queryClient.invalidateQueries({
 				queryKey: ["ratings", "tv", tmdbId],
 			});
+			queryClient.invalidateQueries({
+				queryKey: ["average-rating", "tv", tmdbId],
+			});
 
 			toast.success(m.toast_remove_tv_rating_success());
 		},
 		onError: () => {
 			toast.error(m.toast_remove_tv_rating_error());
 		},
+	});
+}
+
+export function useMediaAverageRating(
+	mediaType: "movie" | "tv",
+	tmdbId: number,
+) {
+	return useQuery({
+		queryKey: ["average-rating", mediaType, tmdbId],
+		queryFn: () => getMediaAverageRating(mediaType, tmdbId),
+		staleTime: 1000 * 60 * 5,
+		enabled: !!tmdbId,
 	});
 }

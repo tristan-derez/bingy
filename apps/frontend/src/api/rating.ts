@@ -63,6 +63,16 @@ export const removeTvRating = async (tmdbId: number) => {
 	return res;
 };
 
+export const getMediaAverageRating = async (
+	mediaType: "movie" | "tv",
+	tmdbId: number,
+) => {
+	const res = await apiFetch<GetMediaAverageRatingResponse>(
+		`/rating/${mediaType}/${tmdbId}`,
+	);
+	return res;
+};
+
 type TMDBMedia = {
 	id: number;
 	title: string;
@@ -98,6 +108,13 @@ export type GetRatingResponse = Pretty<{
 	seasonNumber?: string | null;
 	episodeNumber?: string | null;
 }>;
+
+type GetMediaAverageRatingResponse =
+	| Pretty<{
+			averageRating: number | null;
+			ratingCount: number | null;
+	  }>
+	| undefined;
 
 export type PostMovieRatingResponse = Pretty<{
 	id: string;

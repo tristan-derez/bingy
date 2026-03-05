@@ -182,10 +182,7 @@ export function TvDetailsView({
 						</Card>
 
 						<div className="grid lg:grid-cols-3 gap-3 p-px">
-							<MediaRatingDisplayCard
-								voteCount={tv.vote_count}
-								voteAverage={tv.vote_average}
-							/>
+							<MediaRatingDisplayCard mediaType="tv" tmdbId={tv.id} />
 
 							<Card>
 								<CardContent className="flex items-center gap-4">

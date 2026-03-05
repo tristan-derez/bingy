@@ -1,18 +1,36 @@
 import { IconStarFilled } from "@tabler/icons-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useMediaAverageRating } from "@/hooks/useRating";
 import { m } from "@/paraglide/messages";
 
 interface MediaRatingDisplayCardProps {
-	voteCount: number;
-	voteAverage: number;
+	mediaType: "movie" | "tv";
+	tmdbId: number;
 }
 
-// @todo: use note from db instead of tmdb
 export function MediaRatingDisplayCard({
-	voteCount,
-	voteAverage,
+	mediaType,
+	tmdbId,
 }: MediaRatingDisplayCardProps) {
-	const hasVotes = voteCount > 0;
+	const { data, isLoading } = useMediaAverageRating(mediaType, tmdbId);
+
+	const voteCount = data?.ratingCount ?? 0;
+	const averageRating = data?.averageRating;
+
+	if (isLoading) {
+		return (
+			<Card>
+				<CardContent className="flex items-center gap-4">
+					<Skeleton className="h-5 w-5 rounded-full" />
+					<div className="space-y-2">
+						<Skeleton className="h-7 w-12" />
+						<Skeleton className="h-4 w-24" />
+					</div>
+				</CardContent>
+			</Card>
+		);
+	}
 
 	return (
 		<Card>
@@ -20,10 +38,12 @@ export function MediaRatingDisplayCard({
 				<IconStarFilled className="h-5 w-5 text-yellow-500" />
 				<div>
 					<p className="text-xl xl:text-2xl font-bold">
-						{hasVotes ? voteAverage.toFixed(1) : "—"}
+						{averageRating
+							? `${averageRating % 1 ? averageRating.toFixed(1) : averageRating}/5`
+							: "—"}
 					</p>
 					<p className="text-sm text-muted-foreground">
-						{hasVotes
+						{voteCount > 0
 							? m.media_details_votes({ count: voteCount, voteCount })
 							: m.media_details_no_votes()}
 					</p>

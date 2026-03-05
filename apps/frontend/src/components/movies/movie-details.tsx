@@ -192,10 +192,7 @@ export function MovieDetailView({
 						</Card>
 
 						<div className="grid lg:grid-cols-3 gap-2 p-px">
-							<MediaRatingDisplayCard
-								voteCount={movie.vote_count}
-								voteAverage={movie.vote_average}
-							/>
+							<MediaRatingDisplayCard mediaType="movie" tmdbId={movie.id} />
 
 							<Card>
 								<CardContent className="flex items-center gap-4">
