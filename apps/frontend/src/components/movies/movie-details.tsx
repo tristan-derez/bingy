@@ -130,14 +130,14 @@ export function MovieDetailView({
 										</div>
 
 										<div className="flex flex-wrap gap-2">
-											<MediaGenresBadge genres={movie.genres} />
-
 											<div className="flex gap-0.5 items-center font-bold">
 												<IconStopwatch width={16} height={16} />
 												<p className="text-sm">
 													{formatRuntime(movie.runtime)}
 												</p>
 											</div>
+
+											<MediaGenresBadge genres={movie.genres} />
 										</div>
 
 										<div className="flex flex-col gap-1">
