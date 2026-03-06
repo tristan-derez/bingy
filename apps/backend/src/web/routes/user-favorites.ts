@@ -23,12 +23,12 @@ type Variables = {
 	session: unknown;
 };
 
-const favoriteRoutes = new Hono<{ Variables: Variables }>();
+const userFavoriteRoutes = new Hono<{ Variables: Variables }>();
 
-favoriteRoutes.use("*", sessionMiddleware);
+userFavoriteRoutes.use("*", sessionMiddleware);
 
 // add to favorites
-favoriteRoutes.post(
+userFavoriteRoutes.post(
 	"/",
 	zValidator(
 		"json",
@@ -150,7 +150,7 @@ favoriteRoutes.post(
 );
 
 // remove from favorites
-favoriteRoutes.delete(
+userFavoriteRoutes.delete(
 	"/:tmdbId/:mediaType",
 	zValidator(
 		"param",
@@ -191,7 +191,7 @@ favoriteRoutes.delete(
 );
 
 // get single favorite
-favoriteRoutes.get(
+userFavoriteRoutes.get(
 	"/:tmdbId/:mediaType",
 	zValidator(
 		"param",
@@ -226,7 +226,7 @@ favoriteRoutes.get(
 );
 
 // get all favorites for user
-favoriteRoutes.get("/:username", async (c) => {
+userFavoriteRoutes.get("/:username", async (c) => {
 	const { username } = c.req.param();
 	const language = c.req.query("language") || "en-US";
 	const page = Math.max(1, Number(c.req.query("page") || 1));
@@ -326,4 +326,4 @@ favoriteRoutes.get("/:username", async (c) => {
 	});
 });
 
-export default favoriteRoutes;
+export default userFavoriteRoutes;
