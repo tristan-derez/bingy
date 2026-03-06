@@ -2,7 +2,6 @@ import { IconCalendarWeekFilled, IconStopwatch } from "@tabler/icons-react";
 import { Link, useRouteContext, useRouterState } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
-import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import { CollectionCard } from "@/components/collections/collection-card";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
 import { MediaActionMenu } from "@/components/lists/media-actions/media-action-menu";
@@ -17,11 +16,11 @@ import { SocialLinks } from "@/components/social-links";
 import { BackButton } from "@/components/ui/back-button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { WatchProvidersSection } from "@/components/watch-providers/watch-providers-section";
-import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
+import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { formatRuntime } from "@/utils/format-runtime";
+import { MediaPosterImage } from "../medias/media-poster-image";
 
 interface MovieDetailViewProps {
 	movie: Schemas.MovieDetails | undefined;
@@ -52,7 +51,6 @@ export function MovieDetailView({
 	const currentUrl = routerState.location.url;
 	const { session } = useRouteContext({ from: "__root__" });
 	const localeRegion = useAtomValue(localeRegionAtom);
-	const region = useAtomValue(regionAtom);
 
 	if (isLoading) {
 		return <LoadingCentered />;
@@ -70,10 +68,6 @@ export function MovieDetailView({
 	const hasDifferentTitle =
 		movie.original_title.toLowerCase() !== movie.title.toLowerCase();
 
-	const imageUrl = movie.poster_path
-		? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-		: fallbackPoster;
-
 	const backgroundImage = movie.backdrop_path
 		? `https://image.tmdb.org/t/p/original${movie.backdrop_path}`
 		: null;
@@ -86,25 +80,12 @@ export function MovieDetailView({
 
 				<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
 					<div className="flex flex-col gap-2 items-center lg:items-start max-w-[250px] md:max-w-[300px] lg:max-w-[400px]">
-						<div className="relative w-full">
-							<img
-								src={imageUrl}
-								alt={movie.title}
-								className="rounded-lg shadow-lg w-full aspect-2/3 max-h-90 xl:max-h-[600px]"
-								onError={(e) => {
-									const target = e.currentTarget;
-									if (target.src !== fallbackPoster) {
-										target.src = fallbackPoster;
-									}
-								}}
-							/>
-
-							<WatchProvidersSection
-								watchProviders={watchProviders}
-								region={region}
-								className="absolute bottom-0 bg-linear-to-t from-black via-black/60 to-transparent rounded-b-lg p-4 pt-50 w-full justify-center items-center bg-transparent border-none py-0"
-							/>
-						</div>
+						<MediaPosterImage
+							posterPath={movie.poster_path}
+							imageSize="w500"
+							mediaName={movie.title}
+							watchProviders={watchProviders}
+						/>
 
 						{Object.keys(socials).length > 0 ? (
 							<div className="flex flex-row items-center mx-auto">
@@ -180,7 +161,7 @@ export function MovieDetailView({
 													releaseDate: movie.release_date,
 													mediaType: "movie",
 												}}
-												imageUrl={imageUrl}
+												posterPath={movie.poster_path}
 												currentUrl={currentUrl}
 											/>
 										</div>
