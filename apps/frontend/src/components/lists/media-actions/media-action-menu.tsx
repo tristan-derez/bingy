@@ -36,7 +36,7 @@ interface MediaActionMenuProps {
 		releaseDate: string;
 	};
 	username: string;
-	imageUrl?: string | null;
+	posterPath: string | null;
 	currentUrl: string;
 }
 
@@ -44,7 +44,7 @@ export const MediaActionMenu = ({
 	movie,
 	tvShow,
 	username,
-	imageUrl,
+	posterPath,
 	currentUrl,
 }: MediaActionMenuProps) => {
 	const passProps = { movie, tvShow, username };
@@ -145,7 +145,7 @@ export const MediaActionMenu = ({
 				onOpenChange={setShowLogReviewDialog}
 				movie={movie}
 				tvShow={tvShow}
-				imageUrl={imageUrl}
+				posterPath={posterPath}
 				existingData={existingRating}
 			/>
 			<AddToListDialog
