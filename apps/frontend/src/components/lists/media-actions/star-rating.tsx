@@ -51,9 +51,9 @@ export function StarRating({
 	const displayRating = hoverRating ?? rating;
 
 	return (
-		<div className="flex gap-2 items-center py-1 relative">
+		<div className="flex gap-2 items-center py-1">
 			<div
-				className={`gap-${gapSize} flex`}
+				className={`gap-${gapSize} flex items-center`}
 				onMouseLeave={() => setHoverRating(null)}
 			>
 				{[0, 1, 2, 3, 4].map((starIndex) => {
@@ -95,18 +95,18 @@ export function StarRating({
 						</div>
 					);
 				})}
-			</div>
 
-			{rating > 0 && onRatingDelete ? (
-				<button
-					type="button"
-					onClick={onRatingDelete}
-					className="absolute -right-6 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-					aria-label={m.btn_delete_rating_aria_label()}
-				>
-					<IconX className="w-5 h-5" />
-				</button>
-			) : null}
+				{rating > 0 && onRatingDelete ? (
+					<button
+						type="button"
+						onClick={onRatingDelete}
+						className="text-muted-foreground hover:text-foreground transition-colors"
+						aria-label={m.btn_delete_rating_aria_label()}
+					>
+						<IconX className="w-5 h-5" />
+					</button>
+				) : null}
+			</div>
 		</div>
 	);
 }
