@@ -1,7 +1,8 @@
 import { Link } from "@tanstack/react-router";
-import fallbackPoster from "@/assets/movie-placeholder.jpg";
+import fallbackPoster from "@/assets/media-image-placeholder.jpg";
 import { MovieBadge } from "@/components/badges/movie-badge";
 import { TvShowBadge } from "@/components/badges/tv-badge";
+import { getTmdbImageUrl } from "@/utils/utils";
 import { ListDropdown } from "../media-actions/list-dropdown";
 import { WatchlistToggleButton } from "./watchlist-toggle-button";
 
@@ -22,9 +23,7 @@ export const WatchlistMediaCard = ({
 	item,
 	linkTo,
 }: WatchlistMediaCardProps) => {
-	const imageUrl = item.posterPath
-		? `https://image.tmdb.org/t/p/w500${item.posterPath}`
-		: fallbackPoster;
+	const imageUrl = getTmdbImageUrl(item.posterPath, "w500");
 
 	const mediaProps =
 		item.mediaType === "movie"
@@ -52,7 +51,7 @@ export const WatchlistMediaCard = ({
 			<Link to={linkTo}>
 				<div className="relative aspect-2/3 overflow-hidden rounded-lg">
 					<img
-						src={imageUrl}
+						src={imageUrl ?? fallbackPoster}
 						alt={item.title}
 						className="w-full h-full object-cover transition-transform"
 					/>

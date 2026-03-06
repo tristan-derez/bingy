@@ -1,8 +1,8 @@
 import type { Schemas } from "shared";
-import fallbackPoster from "@/assets/movie-placeholder.jpg";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
 import { LoadingCentered } from "@/components/loading/loading-centered";
 import { MediaOverview } from "@/components/medias/media-overview";
+import { MediaPosterImage } from "@/components/medias/media-poster-image";
 import { MovieCarousel } from "@/components/movies/movie-carousel";
 import { BackButton } from "@/components/ui/back-button";
 import { Badge } from "@/components/ui/badge";
@@ -14,6 +14,7 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { m } from "@/paraglide/messages";
+import { getTmdbImageUrl } from "@/utils/utils";
 
 interface CollectionDetailsViewProps {
 	collectionData: Schemas.CollectionDetails | undefined;
@@ -93,13 +94,10 @@ export function CollectionDetailsView({
 		return dateA - dateB;
 	});
 
-	const backgroundImage = collectionData.backdrop_path
-		? `https://image.tmdb.org/t/p/original${collectionData.backdrop_path}`
-		: undefined;
-
-	const posterImage = collectionData.poster_path
-		? `https://image.tmdb.org/t/p/w500${collectionData.poster_path}`
-		: fallbackPoster;
+	const backgroundImage = getTmdbImageUrl(
+		collectionData.backdrop_path,
+		"original",
+	);
 
 	return (
 		<div className="container">
@@ -120,16 +118,10 @@ export function CollectionDetailsView({
 				>
 					<div className="flex flex-col md:flex-row gap-6 p-6 items-center md:items-start">
 						<div className="flex justify-center md:justify-start">
-							<img
-								src={posterImage}
-								alt={`${collectionData.name} poster`}
-								className="rounded-lg shadow-lg w-48 h-auto"
-								onError={(e) => {
-									const target = e.currentTarget;
-									if (target.src !== fallbackPoster) {
-										target.src = fallbackPoster;
-									}
-								}}
+							<MediaPosterImage
+								posterPath={collectionData.poster_path}
+								imageSize="w500"
+								mediaName={collectionData.name}
 							/>
 						</div>
 

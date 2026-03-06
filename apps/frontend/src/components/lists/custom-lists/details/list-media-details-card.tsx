@@ -1,7 +1,8 @@
 import { Link } from "@tanstack/react-router";
-import fallbackPoster from "@/assets/movie-placeholder.jpg";
+import fallbackPoster from "@/assets/media-image-placeholder.jpg";
 import { MovieBadge } from "@/components/badges/movie-badge";
 import { TvShowBadge } from "@/components/badges/tv-badge";
+import { getTmdbImageUrl } from "@/utils/utils";
 
 interface ListMediaDetailsCardProps {
 	item: {
@@ -22,9 +23,7 @@ export const ListMediaDetailsCard = ({
 	item,
 	showPosition,
 }: ListMediaDetailsCardProps) => {
-	const imageUrl = item.posterPath
-		? `https://image.tmdb.org/t/p/w500${item.posterPath}`
-		: fallbackPoster;
+	const imageUrl = getTmdbImageUrl(item.posterPath, "w500");
 
 	const year = item.releaseDate
 		? new Date(item.releaseDate).getFullYear()
@@ -45,7 +44,7 @@ export const ListMediaDetailsCard = ({
 
 			<div className="relative w-24 h-36 shrink-0 overflow-hidden rounded-lg">
 				<img
-					src={imageUrl}
+					src={imageUrl ?? fallbackPoster}
 					alt={item.title}
 					className="w-full h-full object-cover"
 				/>

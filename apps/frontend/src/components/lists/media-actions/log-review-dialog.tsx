@@ -18,7 +18,7 @@ import {
 	getLastAiredEpisodeInfo,
 	getValidSeasons,
 } from "@/utils/season-helper";
-import { getNumberOrNull } from "@/utils/utils";
+import { getNumberOrNull, getTmdbImageUrl } from "@/utils/utils";
 import { AbsoluteEpisodeCombobox } from "./absolute-episode-combobox";
 import { ReviewTextarea } from "./review-text-area";
 import { SeasonEpisodeCombobox } from "./season-episode-combobox";
@@ -38,7 +38,7 @@ interface LogReviewDialogProps {
 		id: number;
 		name: string;
 	};
-	imageUrl?: string | null;
+	posterPath: string | null;
 	username: string;
 	existingData?: {
 		rating: number | null;
@@ -76,13 +76,14 @@ export function LogReviewDialog({
 	onOpenChange,
 	tvShow,
 	movie,
-	imageUrl,
+	posterPath,
 	username,
 	existingData,
 }: LogReviewDialogProps) {
 	const isTvShow = !!tvShow;
 	const tmdbId = isTvShow ? tvShow.id : (movie?.id ?? 0);
 	const rating = existingData?.rating ?? 0;
+	const imageUrl = getTmdbImageUrl(posterPath, "w500");
 
 	const { data: tvDetails } = useTv(tmdbId, {}, { enabled: isTvShow });
 
@@ -203,7 +204,7 @@ export function LogReviewDialog({
 		<Dialog open={open} onOpenChange={handleOpenChange}>
 			<DialogContent className="lg:max-w-4xl max-h-[90vh] flex flex-col p-0 overflow-hidden">
 				<div className="flex flex-col lg:flex-row flex-1 min-h-0 overflow-hidden gap-8 p-6">
-					{imageUrl && (
+					{imageUrl ? (
 						<div className="hidden lg:flex items-start justify-center shrink-0">
 							<div className="w-full max-w-2xs sticky top-0">
 								<img
@@ -213,7 +214,7 @@ export function LogReviewDialog({
 								/>
 							</div>
 						</div>
-					)}
+					) : null}
 
 					<div className="flex flex-col flex-1 min-h-0 overflow-hidden">
 						<DialogHeader className="shrink-0">

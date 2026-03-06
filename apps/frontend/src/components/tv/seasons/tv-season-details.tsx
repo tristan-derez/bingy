@@ -7,18 +7,19 @@ import {
 import { Link } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
-import fallbackPoster from "@/assets/movie-placeholder.jpg";
+import fallbackPoster from "@/assets/media-image-placeholder.jpg";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
 import { LoadingCentered } from "@/components/loading/loading-centered";
 import { MediaOverview } from "@/components/medias/media-overview";
 import { CastCarousel } from "@/components/person/cast-carousel";
+import { EpisodesContainer } from "@/components/tv/episodes/episodes-container";
 import { BackButton } from "@/components/ui/back-button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { WatchProvidersSection } from "@/components/watch-providers/watch-providers-section";
 import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
-import { EpisodesContainer } from "../episodes/episodes-container";
+import { getTmdbImageUrl } from "@/utils/utils";
 
 interface TvSeasonDetailsViewProps {
 	tvSeason: Schemas.TvSeasonDetails | undefined;
@@ -38,6 +39,7 @@ export function TvSeasonDetailsView({
 	isError,
 }: TvSeasonDetailsViewProps) {
 	const localeRegion = useAtomValue(localeRegionAtom);
+
 	if (isLoading) {
 		return <LoadingCentered />;
 	}
@@ -111,9 +113,7 @@ export function TvSeasonDetailsView({
 			.slice(0, 10);
 	}
 
-	const imageUrl = tvSeason.poster_path
-		? `https://image.tmdb.org/t/p/w500${tvSeason.poster_path}`
-		: fallbackPoster;
+	const imageUrl = getTmdbImageUrl(tvSeason.poster_path, "w500");
 
 	return (
 		<div className="container">
@@ -122,7 +122,7 @@ export function TvSeasonDetailsView({
 			<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
 				<div className="flex flex-col gap-2 items-center lg:items-start max-w-[250px] md:max-w-[300px] lg:max-w-[400px]">
 					<img
-						src={imageUrl}
+						src={imageUrl ?? fallbackPoster}
 						alt={tvSeason.name}
 						className="rounded-lg shadow-lg w-full aspect-2/3 max-h-90 xl:max-h-[600px]"
 						onError={(e) => {

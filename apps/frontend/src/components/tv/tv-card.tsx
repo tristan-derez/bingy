@@ -6,10 +6,11 @@ import {
 import { Link } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
-import fallbackPoster from "@/assets/movie-placeholder.jpg";
+import fallbackPoster from "@/assets/media-image-placeholder.jpg";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { localeRegionAtom } from "@/lib/atoms/region";
 import { formatDate } from "@/utils/format-date";
+import { getTmdbImageUrl } from "@/utils/utils";
 
 interface TvCardProps {
 	tvShow: Schemas.Tv;
@@ -18,16 +19,14 @@ interface TvCardProps {
 export const TvCard = ({ tvShow }: TvCardProps) => {
 	const localeRegion = useAtomValue(localeRegionAtom);
 
-	const imageUrl = tvShow.poster_path
-		? `https://image.tmdb.org/t/p/w500${tvShow.poster_path}`
-		: fallbackPoster;
+	const imageUrl = getTmdbImageUrl(tvShow.poster_path, "w500");
 
 	return (
 		<Link to="/tv/$tvId" params={{ tvId: tvShow.id.toString() }}>
 			<Card className="w-full h-full overflow-hidden pt-0 flex flex-col select-none gap-2 shadow-none pb-4">
 				<div className="relative aspect-3/4 md:aspect-2/3 w-full overflow-hidden">
 					<img
-						src={imageUrl}
+						src={imageUrl ?? fallbackPoster}
 						alt={tvShow.name}
 						loading="lazy"
 						onError={(e) => {

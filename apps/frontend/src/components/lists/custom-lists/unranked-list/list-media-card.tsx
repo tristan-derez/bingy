@@ -1,8 +1,9 @@
 import { Link } from "@tanstack/react-router";
-import fallbackPoster from "@/assets/movie-placeholder.jpg";
+import fallbackPoster from "@/assets/media-image-placeholder.jpg";
 import { MovieBadge } from "@/components/badges/movie-badge";
 import { TvShowBadge } from "@/components/badges/tv-badge";
-import { ListDropdown } from "../../media-actions/list-dropdown";
+import { ListDropdown } from "@/components/lists/media-actions/list-dropdown";
+import { getTmdbImageUrl } from "@/utils/utils";
 
 interface ListMediaCardProps {
 	item: {
@@ -20,9 +21,7 @@ interface ListMediaCardProps {
 }
 
 export const ListMediaCard = ({ item, showPosition }: ListMediaCardProps) => {
-	const imageUrl = item.posterPath
-		? `https://image.tmdb.org/t/p/w500${item.posterPath}`
-		: fallbackPoster;
+	const imageUrl = getTmdbImageUrl(item.posterPath, "w500");
 
 	const linkTo =
 		item.mediaType === "movie" ? `/movies/${item.id}` : `/tv/${item.id}`;
@@ -53,7 +52,7 @@ export const ListMediaCard = ({ item, showPosition }: ListMediaCardProps) => {
 			<Link to={linkTo}>
 				<div className="relative aspect-2/3 overflow-hidden rounded-lg">
 					<img
-						src={imageUrl}
+						src={imageUrl ?? fallbackPoster}
 						alt={item.title}
 						className="w-full h-full object-cover transition-transform"
 					/>
