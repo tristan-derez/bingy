@@ -3,15 +3,19 @@ import { apiFetch } from "./fetcher";
 
 export type TrackMoviePayload = {
 	tmdbId: number;
+	rating: number | null;
+	review: string | null;
 	watchedAt: Date | null;
 };
 
 export type TrackTvPayload = {
 	tmdbId: number;
-	lastWatchedSeason?: number;
-	lastWatchedEpisode?: number;
-	absoluteEpisode?: number;
-	trackingMode: string;
+	rating: number | null;
+	review: string | null;
+	lastWatchedSeason: number | null;
+	lastWatchedEpisode: number | null;
+	absoluteEpisode: number | null;
+	trackingMode: "absolute" | "season" | null;
 	watchedAt: Date | null;
 };
 

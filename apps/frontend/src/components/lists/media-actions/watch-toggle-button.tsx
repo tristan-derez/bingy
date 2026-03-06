@@ -78,14 +78,19 @@ export function WatchToggleButton({
 			if (movie) {
 				addMovieToHistory.mutate({
 					tmdbId: movie.id,
+					rating: null,
+					review: null,
 					watchedAt: date,
 				});
 			} else if (tvShow) {
 				const episodeInfo = getLastAiredEpisodeInfo(tvDetails);
 				addTvToHistory.mutate({
 					tmdbId: tvShow.id,
-					lastWatchedSeason: episodeInfo?.seasonNumber,
-					lastWatchedEpisode: episodeInfo?.episodeNumber,
+					rating: null,
+					review: null,
+					lastWatchedSeason: episodeInfo?.seasonNumber ?? null,
+					lastWatchedEpisode: episodeInfo?.episodeNumber ?? null,
+					absoluteEpisode: null,
 					trackingMode: "season",
 					watchedAt: date,
 				});
@@ -133,7 +138,7 @@ export function WatchToggleButton({
 							)}
 						</button>
 					}
-				></TooltipTrigger>
+				/>
 				<TooltipContent>
 					{isWatched ? m.watch_toggle_remove() : m.watch_toggle_add()}
 				</TooltipContent>
