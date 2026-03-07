@@ -1,9 +1,16 @@
-import { createFileRoute, useRouteContext } from "@tanstack/react-router";
+import {
+	createFileRoute,
+	useNavigate,
+	useRouteContext,
+} from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import { useState } from "react";
+import { toast } from "sonner";
 import { ListContainer } from "@/components/lists/custom-lists/list-container";
+import { LoadingCentered } from "@/components/loading/loading-centered";
 import { useListBySlug } from "@/hooks/useLists";
 import { localeRegionAtom } from "@/lib/atoms/region";
+import { m } from "@/paraglide/messages";
 
 export const Route = createFileRoute("/user/$username/lists_/$slug")({
 	component: ListPage,
@@ -11,6 +18,7 @@ export const Route = createFileRoute("/user/$username/lists_/$slug")({
 
 function ListPage() {
 	const { username, slug } = Route.useParams();
+	const navigate = useNavigate();
 	const localeRegion = useAtomValue(localeRegionAtom);
 	const { session } = useRouteContext({ from: "__root__" });
 	const userNameFromSession = session?.user?.name;
@@ -24,9 +32,12 @@ function ListPage() {
 		error,
 	} = useListBySlug(username, slug, localeRegion, page);
 
-	if (isLoading) return <div>Loading...</div>;
-	if (error) return <div>Error loading list</div>;
-	if (!list) return <div>List not found</div>;
+	if (isLoading) return <LoadingCentered />;
+	if (!list || error) {
+		toast.error(m.toast_list_not_found());
+		navigate({ to: "/user/$username/lists", params: { username } });
+		return;
+	}
 
 	return (
 		<ListContainer
