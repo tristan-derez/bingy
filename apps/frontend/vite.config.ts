@@ -21,6 +21,12 @@ export default defineConfig({
 		viteReact(),
 		tailwindcss(),
 	],
+	server: {
+		allowedHosts: ["dev.bingy.app", "localhost"],
+		host: true,
+		port: 5173,
+		strictPort: true,
+	},
 	resolve: {
 		alias: {
 			"@": resolve(__dirname, "./src"),
