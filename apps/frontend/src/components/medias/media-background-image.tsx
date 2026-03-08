@@ -1,5 +1,3 @@
-import { useTheme } from "../theme/use-theme";
-
 interface MediaBackgroundImageProps {
 	backgroundImage: string | null;
 }
@@ -7,9 +5,7 @@ interface MediaBackgroundImageProps {
 export function MediaBackgroundImage({
 	backgroundImage,
 }: MediaBackgroundImageProps) {
-	const { theme } = useTheme();
-	const bgColor =
-		theme === "dark" ? "oklch(0.141 0.005 285.823)" : "oklch(1 0 0)";
+	const bgColor = "var(--background)";
 
 	return (
 		<>
