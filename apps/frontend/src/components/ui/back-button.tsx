@@ -15,6 +15,8 @@ export const BackButton = ({
 }: BackButtonProps) => {
 	const router = useRouter();
 
+	if (!router.history.canGoBack()) return null;
+
 	return (
 		<Button
 			onClick={() => router.history.back()}
