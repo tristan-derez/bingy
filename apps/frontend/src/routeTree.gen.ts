@@ -32,6 +32,7 @@ import { Route as UserUsernameIndexRouteImport } from './routes/user/$username/i
 import { Route as UserUsernameWatchlistRouteImport } from './routes/user/$username/watchlist'
 import { Route as UserUsernameInProgressRouteImport } from './routes/user/$username/in-progress'
 import { Route as UserUsernameHistoryRouteImport } from './routes/user/$username/history'
+import { Route as UserUsernameFavoritesRouteImport } from './routes/user/$username/favorites'
 import { Route as TvTvIdSeasonsRouteImport } from './routes/tv/$tvId_/seasons'
 import { Route as TvTvIdEpisodesRouteImport } from './routes/tv/$tvId_/episodes'
 import { Route as TvTvIdCreditsRouteImport } from './routes/tv/$tvId_/credits'
@@ -160,6 +161,11 @@ const UserUsernameHistoryRoute = UserUsernameHistoryRouteImport.update({
   path: '/history',
   getParentRoute: () => UserUsernameRouteRoute,
 } as any)
+const UserUsernameFavoritesRoute = UserUsernameFavoritesRouteImport.update({
+  id: '/favorites',
+  path: '/favorites',
+  getParentRoute: () => UserUsernameRouteRoute,
+} as any)
 const TvTvIdSeasonsRoute = TvTvIdSeasonsRouteImport.update({
   id: '/tv/$tvId_/seasons',
   path: '/tv/$tvId/seasons',
@@ -256,6 +262,7 @@ export interface FileRoutesByFullPath {
   '/tv/$tvId/credits': typeof TvTvIdCreditsRoute
   '/tv/$tvId/episodes': typeof TvTvIdEpisodesRoute
   '/tv/$tvId/seasons': typeof TvTvIdSeasonsRoute
+  '/user/$username/favorites': typeof UserUsernameFavoritesRoute
   '/user/$username/history': typeof UserUsernameHistoryRoute
   '/user/$username/in-progress': typeof UserUsernameInProgressRoute
   '/user/$username/watchlist': typeof UserUsernameWatchlistRoute
@@ -292,6 +299,7 @@ export interface FileRoutesByTo {
   '/tv/$tvId/credits': typeof TvTvIdCreditsRoute
   '/tv/$tvId/episodes': typeof TvTvIdEpisodesRoute
   '/tv/$tvId/seasons': typeof TvTvIdSeasonsRoute
+  '/user/$username/favorites': typeof UserUsernameFavoritesRoute
   '/user/$username/history': typeof UserUsernameHistoryRoute
   '/user/$username/in-progress': typeof UserUsernameInProgressRoute
   '/user/$username/watchlist': typeof UserUsernameWatchlistRoute
@@ -331,6 +339,7 @@ export interface FileRoutesById {
   '/tv/$tvId_/credits': typeof TvTvIdCreditsRoute
   '/tv/$tvId_/episodes': typeof TvTvIdEpisodesRoute
   '/tv/$tvId_/seasons': typeof TvTvIdSeasonsRoute
+  '/user/$username/favorites': typeof UserUsernameFavoritesRoute
   '/user/$username/history': typeof UserUsernameHistoryRoute
   '/user/$username/in-progress': typeof UserUsernameInProgressRoute
   '/user/$username/watchlist': typeof UserUsernameWatchlistRoute
@@ -370,6 +379,7 @@ export interface FileRouteTypes {
     | '/tv/$tvId/credits'
     | '/tv/$tvId/episodes'
     | '/tv/$tvId/seasons'
+    | '/user/$username/favorites'
     | '/user/$username/history'
     | '/user/$username/in-progress'
     | '/user/$username/watchlist'
@@ -406,6 +416,7 @@ export interface FileRouteTypes {
     | '/tv/$tvId/credits'
     | '/tv/$tvId/episodes'
     | '/tv/$tvId/seasons'
+    | '/user/$username/favorites'
     | '/user/$username/history'
     | '/user/$username/in-progress'
     | '/user/$username/watchlist'
@@ -444,6 +455,7 @@ export interface FileRouteTypes {
     | '/tv/$tvId_/credits'
     | '/tv/$tvId_/episodes'
     | '/tv/$tvId_/seasons'
+    | '/user/$username/favorites'
     | '/user/$username/history'
     | '/user/$username/in-progress'
     | '/user/$username/watchlist'
@@ -647,6 +659,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UserUsernameHistoryRouteImport
       parentRoute: typeof UserUsernameRouteRoute
     }
+    '/user/$username/favorites': {
+      id: '/user/$username/favorites'
+      path: '/favorites'
+      fullPath: '/user/$username/favorites'
+      preLoaderRoute: typeof UserUsernameFavoritesRouteImport
+      parentRoute: typeof UserUsernameRouteRoute
+    }
     '/tv/$tvId_/seasons': {
       id: '/tv/$tvId_/seasons'
       path: '/tv/$tvId/seasons'
@@ -763,6 +782,7 @@ const AuthRouteChildren: AuthRouteChildren = {
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 interface UserUsernameRouteRouteChildren {
+  UserUsernameFavoritesRoute: typeof UserUsernameFavoritesRoute
   UserUsernameHistoryRoute: typeof UserUsernameHistoryRoute
   UserUsernameInProgressRoute: typeof UserUsernameInProgressRoute
   UserUsernameWatchlistRoute: typeof UserUsernameWatchlistRoute
@@ -773,6 +793,7 @@ interface UserUsernameRouteRouteChildren {
 }
 
 const UserUsernameRouteRouteChildren: UserUsernameRouteRouteChildren = {
+  UserUsernameFavoritesRoute: UserUsernameFavoritesRoute,
   UserUsernameHistoryRoute: UserUsernameHistoryRoute,
   UserUsernameInProgressRoute: UserUsernameInProgressRoute,
   UserUsernameWatchlistRoute: UserUsernameWatchlistRoute,

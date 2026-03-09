@@ -3,6 +3,7 @@ import {
 	IconBrandGithub,
 	IconClockBolt,
 	IconExternalLink,
+	IconHeart,
 	IconHistory,
 	IconLifebuoy,
 	IconList,
@@ -166,6 +167,16 @@ export const ProfileDropdown = ({
 							>
 								<IconList />
 								{m.dropdown_lists_text()}
+							</Link>
+						</DropdownMenuItem>
+						<DropdownMenuItem asChild>
+							<Link
+								to="/user/$username/favorites"
+								params={{ username: session.user.name }}
+								onClick={onLinkClick}
+							>
+								<IconHeart />
+								{m.dropdown_favorites_text()}
 							</Link>
 						</DropdownMenuItem>
 						<DropdownMenuItem asChild>

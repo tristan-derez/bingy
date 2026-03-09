@@ -54,6 +54,8 @@ type TMDBMedia = {
 export type FavoriteItem = TMDBMedia & {
 	mediaType: "movie" | "tv";
 	addedAt: Date;
+	rating: string;
+	watchedAt: Date;
 };
 
 export type GetFavoritesResponse = Pretty<{

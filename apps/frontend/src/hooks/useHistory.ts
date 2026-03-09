@@ -73,6 +73,10 @@ export function useRemoveMovieHistory() {
 			queryClient.invalidateQueries({
 				queryKey: ["lists", "watchlist"],
 			});
+			queryClient.invalidateQueries({
+				queryKey: ["favorites"],
+			});
+
 			toast.success(m.toast_remove_movie_history_success());
 		},
 		onError: () => {
@@ -96,6 +100,10 @@ export function useRemoveTvHistory() {
 			queryClient.invalidateQueries({
 				queryKey: ["lists", "watchlist"],
 			});
+			queryClient.invalidateQueries({
+				queryKey: ["favorites"],
+			});
+
 			toast.success(m.toast_remove_tv_history_success());
 		},
 		onError: () => {
