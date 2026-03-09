@@ -1,5 +1,5 @@
 import { zValidator } from "@hono/zod-validator";
-import { and, eq, sql } from "drizzle-orm";
+import { and, eq, inArray, sql } from "drizzle-orm";
 import { Hono } from "hono";
 import { z } from "zod";
 import {
@@ -244,19 +244,40 @@ userFavoriteRoutes.get("/:username", async (c) => {
 
 	if (!targetUser) return c.json("User not found", 404);
 
+	const baseSelect = {
+		mediaId: media.id,
+		tmdbId: media.tmdbId,
+		mediaType: media.mediaType,
+		addedAt: favorites.addedAt,
+		movieRating: movieWatchHistory.rating,
+		movieWatchedAt: movieWatchHistory.watchedAt,
+		tvRating: tvShowWatchHistory.rating,
+		tvWatchedAt: tvShowWatchHistory.watchedAt,
+	};
+
 	let entries;
 	let totalCount;
 
 	if (mediaTypeFilter) {
 		[entries, totalCount] = await Promise.all([
 			db
-				.select({
-					tmdbId: media.tmdbId,
-					mediaType: media.mediaType,
-					addedAt: favorites.addedAt,
-				})
+				.select(baseSelect)
 				.from(favorites)
 				.innerJoin(media, eq(favorites.mediaId, media.id))
+				.leftJoin(
+					movieWatchHistory,
+					and(
+						eq(movieWatchHistory.mediaId, media.id),
+						eq(movieWatchHistory.userId, targetUser.id),
+					),
+				)
+				.leftJoin(
+					tvShowWatchHistory,
+					and(
+						eq(tvShowWatchHistory.mediaId, media.id),
+						eq(tvShowWatchHistory.userId, targetUser.id),
+					),
+				)
 				.where(
 					and(
 						eq(favorites.userId, targetUser.id),
@@ -280,13 +301,23 @@ userFavoriteRoutes.get("/:username", async (c) => {
 	} else {
 		[entries, totalCount] = await Promise.all([
 			db
-				.select({
-					tmdbId: media.tmdbId,
-					mediaType: media.mediaType,
-					addedAt: favorites.addedAt,
-				})
+				.select(baseSelect)
 				.from(favorites)
 				.innerJoin(media, eq(favorites.mediaId, media.id))
+				.leftJoin(
+					movieWatchHistory,
+					and(
+						eq(movieWatchHistory.mediaId, media.id),
+						eq(movieWatchHistory.userId, targetUser.id),
+					),
+				)
+				.leftJoin(
+					tvShowWatchHistory,
+					and(
+						eq(tvShowWatchHistory.mediaId, media.id),
+						eq(tvShowWatchHistory.userId, targetUser.id),
+					),
+				)
 				.where(eq(favorites.userId, targetUser.id))
 				.orderBy(favorites.addedAt)
 				.limit(limit)
@@ -300,6 +331,25 @@ userFavoriteRoutes.get("/:username", async (c) => {
 
 	const totalResults = Number(totalCount[0].count);
 
+	// get TV show progress if needed
+	const tvMediaIds = entries
+		.filter((e) => e.mediaType === "tv")
+		.map((e) => e.mediaId);
+	const progressByMediaId = new Map();
+
+	if (tvMediaIds.length > 0) {
+		const progress = await db
+			.select()
+			.from(tvShowProgress)
+			.where(
+				and(
+					eq(tvShowProgress.userId, targetUser.id),
+					inArray(tvShowProgress.mediaId, tvMediaIds),
+				),
+			);
+		progress.forEach((p) => progressByMediaId.set(p.mediaId, p));
+	}
+
 	const hydratedData = (
 		await Promise.all(
 			entries.map(async (entry) => {
@@ -309,10 +359,25 @@ userFavoriteRoutes.get("/:username", async (c) => {
 					language,
 				);
 				if (!details) return null;
+
+				const rating =
+					entry.mediaType === "movie" ? entry.movieRating : entry.tvRating;
+
+				const watchedAt =
+					entry.mediaType === "movie"
+						? entry.movieWatchedAt
+						: entry.tvWatchedAt;
+
 				return {
 					...details,
 					mediaType: entry.mediaType,
 					addedAt: entry.addedAt,
+					rating,
+					watchedAt,
+					progress:
+						entry.mediaType === "tv"
+							? (progressByMediaId.get(entry.mediaId) ?? null)
+							: null,
 				};
 			}),
 		)
