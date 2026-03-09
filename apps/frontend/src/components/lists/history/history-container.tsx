@@ -59,27 +59,27 @@ export function HistoryContainer({
 			>
 				<ToggleGroupItem
 					value="all"
-					aria-label={m.history_toggle_aria_label_all()}
+					aria-label={m.toggle_aria_label_all()}
 					className="hover:cursor-pointer"
 				>
 					<IconLayoutGrid className="h-4 w-4" />
-					{m.history_toggle_group_item_all()}
+					{m.toggle_group_item_all()}
 				</ToggleGroupItem>
 				<ToggleGroupItem
 					value="movie"
-					aria-label={m.history_toggle_aria_label_movies()}
+					aria-label={m.toggle_aria_label_movies()}
 					className="hover:cursor-pointer"
 				>
 					<IconMovie className="h-4 w-4" />
-					{m.history_toggle_group_item_movies()}
+					{m.toggle_group_item_movies()}
 				</ToggleGroupItem>
 				<ToggleGroupItem
 					value="tv"
-					aria-label={m.history_toggle_aria_label_tv()}
+					aria-label={m.toggle_aria_label_tv()}
 					className="hover:cursor-pointer"
 				>
 					<IconDeviceTv className="h-4 w-4" />
-					{m.history_toggle_group_item_tv()}
+					{m.toggle_group_item_tv()}
 				</ToggleGroupItem>
 			</ToggleGroup>
 

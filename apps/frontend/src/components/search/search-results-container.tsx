@@ -48,35 +48,35 @@ export const SearchResultsContainer = ({
 			>
 				<ToggleGroupItem
 					value="all"
-					aria-label={m.search_toggle_aria_label_all()}
+					aria-label={m.toggle_aria_label_all()}
 					className="hover:cursor-pointer"
 				>
 					<IconLayoutGrid />
-					{m.search_toggle_group_item_all()}
+					{m.toggle_group_item_all()}
 				</ToggleGroupItem>
 				<ToggleGroupItem
 					value="movie"
-					aria-label={m.search_toggle_aria_label_movies()}
+					aria-label={m.toggle_aria_label_movies()}
 					className="hover:cursor-pointer"
 				>
 					<IconMovie />
-					{m.search_toggle_group_item_movies()}
+					{m.toggle_group_item_movies()}
 				</ToggleGroupItem>
 				<ToggleGroupItem
 					value="tv"
-					aria-label={m.search_toggle_aria_label_tv()}
+					aria-label={m.toggle_aria_label_tv()}
 					className="hover:cursor-pointer"
 				>
 					<IconDeviceTv />
-					{m.search_toggle_group_item_tv()}
+					{m.toggle_group_item_tv()}
 				</ToggleGroupItem>
 				<ToggleGroupItem
-					value={m.search_toggle_aria_label_people()}
+					value={m.toggle_aria_label_people()}
 					aria-label="People"
 					className="hover:cursor-pointer"
 				>
 					<IconUsers />
-					{m.search_toggle_group_item_person()}
+					{m.toggle_group_item_person()}
 				</ToggleGroupItem>
 			</ToggleGroup>
 
