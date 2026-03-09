@@ -1,9 +1,11 @@
 import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
-import fallbackPoster from "@/assets/user-placeholder.jpg";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
 import { LoadingCentered } from "@/components/loading/loading-centered";
+import { MediaPortraitImage } from "@/components/medias/media-portrait-image";
 import { MediasCarousel } from "@/components/medias/medias-carousel";
+import { PersonBiography } from "@/components/person/person-biography";
+import { PersonTimeline } from "@/components/person/person-timeline";
 import { SocialLinks } from "@/components/social-links";
 import { BackButton } from "@/components/ui/back-button";
 import { Badge } from "@/components/ui/badge";
@@ -14,8 +16,6 @@ import { calculateAge } from "@/utils/calculate-age";
 import { formatDate } from "@/utils/format-date";
 import { getSocialUrls } from "@/utils/social-urls";
 import { sortKnownForCredits } from "@/utils/sort-known-credits";
-import { PersonBiography } from "./person-biography";
-import { PersonTimeline } from "./person-timeline";
 
 interface PersonDetailsViewProps {
 	person: Schemas.PersonDetailsWithCombinedCreditsAndSocials | undefined;
@@ -49,27 +49,18 @@ export const PersonDetailsView = ({
 
 	const sortedCredits = sortKnownForCredits(person);
 
-	const imageUrl = person?.profile_path
-		? `https://image.tmdb.org/t/p/w500${person.profile_path}`
-		: fallbackPoster;
-
 	return (
 		<div className="container">
 			<BackButton />
 
 			<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
-				<div className="flex flex-col gap-2 items-center lg:items-start max-w-[250px] md:max-w-[300px] lg:max-w-[400px]">
-					<img
-						src={imageUrl}
+				<div className="flex flex-col gap-2 items-center lg:items-start max-w-[250px] md:max-w-[300px] lg:max-w-[500px]">
+					<MediaPortraitImage
+						imagePath={person.profile_path}
 						alt={person.name}
-						className="rounded-lg shadow-lg w-full aspect-2/3 max-h-90 xl:max-h-[600px]"
-						onError={(e) => {
-							const target = e.currentTarget;
-							if (target.src !== fallbackPoster) {
-								target.src = fallbackPoster;
-							}
-						}}
+						imageSize="w500"
 					/>
+
 					{person.also_known_as && person.also_known_as.length > 0 ? (
 						<div className="hidden xl:flex mt-2 text-muted-foreground">
 							<div className="flex flex-col">

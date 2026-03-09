@@ -13,6 +13,7 @@ import { MediaBackgroundImage } from "@/components/medias/media-background-image
 import { MediaGenresBadge } from "@/components/medias/media-genres-badge";
 import { MediaLearnMoreCard } from "@/components/medias/media-learn-more";
 import { MediaOverview } from "@/components/medias/media-overview";
+import { MediaPortraitImage } from "@/components/medias/media-portrait-image";
 import { MediaRatingDisplayCard } from "@/components/medias/media-rating-display-card";
 import { CastCarousel } from "@/components/person/cast-carousel";
 import { SocialLinks } from "@/components/social-links";
@@ -24,7 +25,6 @@ import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { getTmdbImageUrl } from "@/utils/utils";
-import { MediaPosterImage } from "../medias/media-poster-image";
 
 interface TvDetailViewProps {
 	tv: Schemas.TvDetails | undefined;
@@ -74,10 +74,10 @@ export function TvDetailsView({
 
 				<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
 					<div className="flex flex-col gap-2 items-center lg:items-start max-w-[250px] md:max-w-[300px] lg:max-w-[500px]">
-						<MediaPosterImage
-							posterPath={tv.poster_path}
+						<MediaPortraitImage
+							imagePath={tv.poster_path}
+							alt={tv.name}
 							imageSize="w500"
-							mediaName={tv.name}
 							watchProviders={watchProviders}
 						/>
 

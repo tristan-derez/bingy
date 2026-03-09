@@ -2,7 +2,7 @@ import type { Schemas } from "shared";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
 import { LoadingCentered } from "@/components/loading/loading-centered";
 import { MediaOverview } from "@/components/medias/media-overview";
-import { MediaPosterImage } from "@/components/medias/media-poster-image";
+import { MediaPortraitImage } from "@/components/medias/media-portrait-image";
 import { MovieCarousel } from "@/components/movies/movie-carousel";
 import { BackButton } from "@/components/ui/back-button";
 import { Badge } from "@/components/ui/badge";
@@ -118,10 +118,10 @@ export function CollectionDetailsView({
 				>
 					<div className="flex flex-col md:flex-row gap-6 p-6 items-center md:items-start">
 						<div className="flex justify-center md:justify-start">
-							<MediaPosterImage
-								posterPath={collectionData.poster_path}
+							<MediaPortraitImage
+								imagePath={collectionData.poster_path}
+								alt={collectionData.name}
 								imageSize="w500"
-								mediaName={collectionData.name}
 							/>
 						</div>
 

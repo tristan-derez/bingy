@@ -6,21 +6,21 @@ import { WatchProvidersSection } from "@/components/watch-providers/watch-provid
 import { regionAtom } from "@/lib/atoms/region";
 import { getTmdbImageUrl } from "@/utils/utils";
 
-interface MediaPosterImageProps {
-	posterPath: string | null;
-	mediaName: string;
+interface MediaPortraitImageProps {
+	imagePath: string | null;
+	alt: string;
 	imageSize?: "w500" | "original";
-	watchProviders?: Schemas.WatchProviders | undefined;
+	watchProviders?: Schemas.WatchProviders;
 }
 
-export function MediaPosterImage({
-	posterPath,
-	mediaName,
+export function MediaPortraitImage({
+	imagePath,
+	alt,
 	watchProviders,
 	imageSize = "original",
-}: MediaPosterImageProps) {
+}: MediaPortraitImageProps) {
 	const region = useAtomValue(regionAtom);
-	const imageUrl = getTmdbImageUrl(posterPath, imageSize);
+	const imageUrl = getTmdbImageUrl(imagePath, imageSize);
 
 	const handleImageError = (e: SyntheticEvent<HTMLImageElement>) => {
 		const target = e.currentTarget;
@@ -33,7 +33,7 @@ export function MediaPosterImage({
 		<div className="relative w-full">
 			<img
 				src={imageUrl ?? fallbackPoster}
-				alt={mediaName}
+				alt={alt}
 				className="aspect-2/3 w-full max-h-90 rounded-lg shadow-lg xl:max-h-[450px]"
 				onError={handleImageError}
 			/>
