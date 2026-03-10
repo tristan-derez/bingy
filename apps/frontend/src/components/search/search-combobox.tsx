@@ -1,29 +1,24 @@
 import { IconSearch } from "@tabler/icons-react";
 import { useNavigate } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
-import { VisuallyHidden } from "radix-ui";
 import { useEffect, useState } from "react";
 import type { Schemas } from "shared";
 import { Button } from "@/components/ui/button";
 import {
 	Command,
+	CommandDialog,
 	CommandEmpty,
 	CommandGroup,
 	CommandInput,
 	CommandItem,
 	CommandList,
-	CommandSeparator,
 } from "@/components/ui/command";
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-} from "@/components/ui/dialog";
 import { LoaderFive } from "@/components/ui/loader";
 import { useSearchQuery } from "@/hooks/useSearch";
 import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { getRelevanceScore } from "@/utils/search-relevance-score";
+import { Kbd } from "../ui/kbd";
 import { SearchItemCombobox } from "./search-item-combobox";
 
 interface SearchComboboxProps {
@@ -125,80 +120,82 @@ export function SearchCombobox({
 				</Button>
 			) : null}
 
-			<Dialog open={open} onOpenChange={setOpen}>
-				<DialogContent className="p-0 w-xs md:w-md lg:w-lg rounded-lg">
-					<VisuallyHidden.Root>
-						<DialogDescription>Search results</DialogDescription>
-					</VisuallyHidden.Root>
+			<CommandDialog
+				open={open}
+				onOpenChange={setOpen}
+				title={m.search_combobox_input_placeholder()}
+				description={m.search_combobox_description()}
+				className="w-xs md:w-md"
+			>
+				<Command shouldFilter={false} className="p-0">
+					<CommandInput
+						placeholder={m.search_combobox_input_placeholder()}
+						value={query}
+						onValueChange={setQuery}
+					/>
+					<CommandList>
+						{!query && <CommandEmpty>{m.search_combobox_empty()}</CommandEmpty>}
 
-					<Command shouldFilter={false}>
-						<CommandInput
-							placeholder={m.search_combobox_input_placeholder()}
-							value={query}
-							onValueChange={setQuery}
-						/>
+						{query && loading && (
+							<CommandEmpty>
+								<div className="flex w-full py-4 justify-center">
+									<LoaderFive text={m.loader_text_searching()} />
+								</div>
+							</CommandEmpty>
+						)}
 
-						<CommandList className="flex flex-col max-h-[400px]">
-							{!query && (
-								<CommandEmpty>{m.search_combobox_empty()}</CommandEmpty>
-							)}
+						{query && !loading && !hasResults && (
+							<CommandEmpty>{m.search_combobox_no_results()}</CommandEmpty>
+						)}
 
-							{query && loading && (
-								<CommandEmpty>
-									<div className="flex w-full py-4 justify-center">
-										<LoaderFive text={m.loader_text_searching()} />
-									</div>
-								</CommandEmpty>
-							)}
+						{query && !loading && hasResults && (
+							<CommandGroup className="space-y-1">
+								{filteredResults.map((item) => (
+									<SearchItemCombobox
+										key={`${item.id}-${item.media_type}`}
+										item={item}
+										onSelect={handleSelect}
+									/>
+								))}
 
-							{query && !loading && !hasResults && (
-								<CommandEmpty>{m.search_combobox_no_results()}</CommandEmpty>
-							)}
-
-							{query && !loading && hasResults && (
-								<>
-									<div className="p-1 flex-1">
-										{filteredResults.map((item) => (
-											<SearchItemCombobox
-												key={`${item.id}-${item.media_type}`}
-												item={item}
-												onSelect={handleSelect}
-											/>
-										))}
-									</div>
-
-									{showViewAll && (
-										<div className="sticky bottom-0 bg-background rounded-md m-1">
-											<CommandSeparator />
-											<CommandGroup>
-												<CommandItem
-													value="view-all"
-													onSelect={() => {
-														navigate({
-															to: "/search",
-															search: {
-																q: query,
-																language: localeRegion,
-																page: 1,
-															},
-														});
-														handleSelect();
-													}}
-													className="cursor-pointer"
-												>
-													<span className="w-full text-center font-medium">
-														{m.btn_view_all()} →
-													</span>
-												</CommandItem>
-											</CommandGroup>
-										</div>
-									)}
-								</>
-							)}
-						</CommandList>
-					</Command>
-				</DialogContent>
-			</Dialog>
+								{showViewAll && (
+									<CommandItem
+										value="view-all"
+										className="justify-center [&>svg:last-child]:hidden"
+										onSelect={() => {
+											navigate({
+												to: "/search",
+												search: { q: query, language: localeRegion, page: 1 },
+											});
+											handleSelect();
+										}}
+									>
+										<span className="font-medium">{m.btn_view_all()} →</span>
+									</CommandItem>
+								)}
+							</CommandGroup>
+						)}
+					</CommandList>
+					<div className="bg-accent px-3 py-2 text-xs text-muted-foreground">
+						<div className="flex items-center justify-between">
+							<div className="flex items-center gap-4">
+								<span className="flex items-center gap-1.5">
+									<Kbd>↲</Kbd>
+									<span>to go to page</span>
+								</span>
+								<span className="flex items-center gap-1.5">
+									<Kbd>↑↓</Kbd>
+									<span>to navigate</span>
+								</span>
+							</div>
+							<span className="flex items-center gap-1.5">
+								<Kbd>esc</Kbd>
+								<span>to close</span>
+							</span>
+						</div>
+					</div>
+				</Command>
+			</CommandDialog>
 		</>
 	);
 }

@@ -233,6 +233,7 @@
 	"search_person_badge": "Person",
 	"person_as": "as",
 	"search_combobox_input_placeholder": "Search movies, shows or people...",
+	"search_combobox_description": "Search movies, shows or people",
 	"loader_text_searching": "Searching...",
 	"search_combobox_no_results": "No results found.",
 	"btn_view_all": "View all results",

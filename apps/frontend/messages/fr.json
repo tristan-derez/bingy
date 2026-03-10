@@ -233,6 +233,7 @@
 	"error_failed_to_load": "{title} n'a pas pu être chargé",
 	"collection_carousel_title": "Films dans la saga ({number})",
 	"search_combobox_input_placeholder": "Rechercher...",
+	"search_combobox_description": "Recherche un film, une série ou un.e artiste",
 	"loader_text_searching": "Recherche...",
 	"search_combobox_no_results": "Pas de résultats",
 	"btn_view_all": "Voir tous les résultats",
@@ -670,6 +671,6 @@
 	"favorites_page_empty_cta_prefix": "Rends-toi sur la page des",
 	"favorites_page_link_movies": "films",
 	"favorites_page_empty_cta_separator": "ou des",
-	"favorites_page_link_tv": "séries TV",
+	"favorites_page_link_tv": "Séries TV",
 	"favorites_page_empty_cta_followup": "pour en ajouter"
 }
