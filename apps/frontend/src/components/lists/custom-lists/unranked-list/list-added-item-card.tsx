@@ -1,4 +1,5 @@
 import { IconX } from "@tabler/icons-react";
+import fallbackPoster from "@/assets/media-image-placeholder.jpg";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import type { ListDraftItem } from "@/lib/atoms/draft-list";
@@ -29,11 +30,7 @@ export function ListAddedItemMediaCard({
 						className="h-full w-full object-cover"
 					/>
 				) : (
-					<img
-						// @todo: add a real placeholder image here
-						src="https://images.unsplash.com/photo-1629208113515-4569380efcb7?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-						className="h-full w-full object-cover"
-					/>
+					<img src={fallbackPoster} className="h-full w-full object-cover" />
 				)}
 			</div>
 
