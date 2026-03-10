@@ -662,7 +662,7 @@
 	"btn_share_text": "Partager",
 	"btn_copied_text": "Copié!",
 	"head_app_description": "Vous en avez assez de perdre le fil de ce que vous regardez ? Suivez vos films et séries avec bingy, recevez des notifications sur les nouvelles sorties et découvrez quoi regarder ensuite.",
-	"favorites_error": "Error while loading favorites",
+	"favorites_error": "Erreur lors du chargement de la liste des favoris",
 	"favorites_toggle_no_result_all": "Tu n'as pas de favoris",
 	"favorites_toggle_no_result_movies": "Pas de films dans les favoris",
 	"favorites_toggle_no_result_tv": "Pas de séries TV dans les favoris",
