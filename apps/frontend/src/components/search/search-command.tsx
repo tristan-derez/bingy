@@ -3,6 +3,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
 import type { Schemas } from "shared";
+import { SearchCommandItem } from "@/components/search/search-command-item";
 import { Button } from "@/components/ui/button";
 import {
 	Command,
@@ -13,27 +14,26 @@ import {
 	CommandItem,
 	CommandList,
 } from "@/components/ui/command";
+import { Kbd } from "@/components/ui/kbd";
 import { LoaderFive } from "@/components/ui/loader";
 import { useSearchQuery } from "@/hooks/useSearch";
 import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { getRelevanceScore } from "@/utils/search-relevance-score";
-import { Kbd } from "../ui/kbd";
-import { SearchItemCombobox } from "./search-item-combobox";
 
-interface SearchComboboxProps {
+interface SearchCommandProps {
 	title?: string;
 	open?: boolean;
 	setOpen?: (v: boolean) => void;
 	showButton?: boolean;
 }
 
-export function SearchCombobox({
+export function SearchCommand({
 	title,
 	showButton = true,
 	open: openProp,
 	setOpen: setOpenProp,
-}: SearchComboboxProps) {
+}: SearchCommandProps) {
 	const [internalOpen, setInternalOpen] = useState(false);
 	const open = openProp ?? internalOpen;
 	const setOpen = setOpenProp ?? setInternalOpen;
@@ -151,7 +151,7 @@ export function SearchCombobox({
 						{query && !loading && hasResults && (
 							<CommandGroup className="space-y-1">
 								{filteredResults.map((item) => (
-									<SearchItemCombobox
+									<SearchCommandItem
 										key={`${item.id}-${item.media_type}`}
 										item={item}
 										onSelect={handleSelect}

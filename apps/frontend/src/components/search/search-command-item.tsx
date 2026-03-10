@@ -9,15 +9,15 @@ import { CommandItem } from "@/components/ui/command";
 import { localeRegionAtom } from "@/lib/atoms/region";
 import { formatDate } from "@/utils/format-date";
 
-interface SearchItemComboboxProps {
+interface SearchCommandItemProps {
 	item: Schemas.MediaMulti;
 	onSelect: () => void;
 }
 
-export const SearchItemCombobox = ({
+export const SearchCommandItem = ({
 	item,
 	onSelect,
-}: SearchItemComboboxProps) => {
+}: SearchCommandItemProps) => {
 	const navigate = useNavigate();
 	const localeRegion = useAtomValue(localeRegionAtom);
 

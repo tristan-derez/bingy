@@ -9,7 +9,7 @@ import { useRouteContext } from "@tanstack/react-router";
 import { useState } from "react";
 import { LocaleRegionDropdown } from "@/components/locale-region-dropdown";
 import { ProfileDropdown } from "@/components/profile-dropdown";
-import { SearchCombobox } from "@/components/search/search-combobox";
+import { SearchCommand } from "@/components/search/search-command";
 import { MobileBottomNav, MobileTopBar } from "@/components/ui/mobile-navbar";
 import {
 	MobileNavbarLogo,
@@ -141,7 +141,7 @@ export default function Header() {
 
 			{/* Mobile Bottom Navigation */}
 			<MobileBottomNav items={mobileBottomItems} />
-			<SearchCombobox
+			<SearchCommand
 				open={searchOpen}
 				setOpen={setSearchOpen}
 				showButton={false}
