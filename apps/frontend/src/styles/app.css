@@ -6,7 +6,7 @@
 @custom-variant data-vertical (&[data-orientation="vertical"]);
 
 @theme {
-  --breakpoint-xs: 34rem;
+	--breakpoint-xs: 34rem;
 }
 
 @theme inline {
@@ -148,8 +148,25 @@
 	}
 }
 
-::view-transition-old(root),
+::view-transition-group(root) {
+	animation-duration: 0.7s;
+	animation-timing-function: ease-in-out;
+}
+
 ::view-transition-new(root) {
+	animation-name: reveal-new;
+}
+
+::view-transition-old(root) {
 	animation: none;
-	mix-blend-mode: normal;
+	z-index: -1;
+}
+
+@keyframes reveal-new {
+	from {
+		clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%);
+	}
+	to {
+		clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+	}
 }

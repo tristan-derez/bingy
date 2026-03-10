@@ -1,60 +1,33 @@
 import { IconBrandWindowsFilled, IconMoon, IconSun } from "@tabler/icons-react";
 import { useRef } from "react";
-import { flushSync } from "react-dom";
 import { Button } from "@/components/ui/button";
 import { m } from "@/paraglide/messages";
 import { useTheme } from "./use-theme";
 
-interface ModeToggleProps {
-	duration?: number;
-}
-
-export function ModeToggle({ duration = 700 }: ModeToggleProps) {
+export function ModeToggle() {
 	const { theme, setTheme } = useTheme();
 	const containerRef = useRef<HTMLDivElement>(null);
 
-	const handleThemeChange = async (
-		newTheme: "light" | "dark" | "system",
-		event: React.MouseEvent<HTMLButtonElement>,
-	) => {
+	const handleThemeChange = (newTheme: "light" | "dark" | "system") => {
 		if (theme === newTheme) return;
 
-		const button = event.currentTarget;
+		if (typeof window === "undefined") return;
 
-		await document.startViewTransition(() => {
-			flushSync(() => {
-				setTheme(newTheme);
-			});
-		}).ready;
+		if (!document.startViewTransition) {
+			setTheme(newTheme);
+			return;
+		}
 
-		const { top, left, width, height } = button.getBoundingClientRect();
-		const x = left + width / 2;
-		const y = top + height / 2;
-		const maxRadius = Math.hypot(
-			Math.max(left, window.innerWidth - left),
-			Math.max(top, window.innerHeight - top),
-		);
-
-		document.documentElement.animate(
-			{
-				clipPath: [
-					`circle(0px at ${x}px ${y}px)`,
-					`circle(${maxRadius}px at ${x}px ${y}px)`,
-				],
-			},
-			{
-				duration,
-				easing: "ease-in-out",
-				pseudoElement: "::view-transition-new(root)",
-			},
-		);
+		document.startViewTransition(() => {
+			setTheme(newTheme);
+		});
 	};
 
 	return (
 		<div ref={containerRef} className="flex space-x-2 w-full">
 			<Button
 				variant={theme === "light" ? "default" : "outline"}
-				onClick={(e) => handleThemeChange("light", e)}
+				onClick={() => handleThemeChange("light")}
 				className={`flex items-center gap-2 w-28 ${theme === "light" ? "hover:cursor-not-allowed" : ""}`}
 			>
 				<IconSun />
@@ -63,7 +36,7 @@ export function ModeToggle({ duration = 700 }: ModeToggleProps) {
 
 			<Button
 				variant={theme === "dark" ? "default" : "outline"}
-				onClick={(e) => handleThemeChange("dark", e)}
+				onClick={() => handleThemeChange("dark")}
 				className={`flex items-center gap-2 w-28 ${theme === "dark" ? "hover:cursor-not-allowed" : ""}`}
 			>
 				<IconMoon />
@@ -72,7 +45,7 @@ export function ModeToggle({ duration = 700 }: ModeToggleProps) {
 
 			<Button
 				variant={theme === "system" ? "default" : "outline"}
-				onClick={(e) => handleThemeChange("system", e)}
+				onClick={() => handleThemeChange("system")}
 				className={`flex items-center gap-2 w-28 ${theme === "system" ? "hover:cursor-not-allowed" : ""}`}
 			>
 				<IconBrandWindowsFilled />
