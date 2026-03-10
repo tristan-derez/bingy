@@ -6,7 +6,7 @@
 	"btn_disabling_twofactor": "Disabling 2FA...",
 	"toast_success_disable_twofactor": "Two-factor authentication disabled successfully",
 	"toast_error_disable_twofactor": "Failed to disable two-factor authentication",
-	"toast_error_generic": "Something went wrong",
+	"toast_error_generic": "Something went wrong, try again later",
 	"toast_email_sent_account_delete": "An email has been sent. Check your inbox and click on the link to confirm account deletion",
 	"dialog_delete_account_title": "Are you absolutely sure?",
 	"dialog_cancel_action": "Cancel",
@@ -666,10 +666,11 @@
 	"btn_share_text": "Share",
 	"btn_copied_text": "Copied!",
 	"head_app_description": "Tired of losing track of what you're watching? Track your movies and shows with bingy, get notified about new releases, and discover what to watch next",
-	"toast_list_not_found": "Failed to retrieve list",
 	"favorites_error": "Error while loading favorites",
 	"favorites_toggle_no_result_all": "Your favorites is empty",
 	"favorites_toggle_no_result_movies": "No movies items in favorites",
 	"favorites_toggle_no_result_tv": "No TV show items in favorites",
-	"favorites_page_title_text": "Favorites"
+	"favorites_page_title_text": "Favorites",
+	"toast_error_list_not_found": "Oops! We couldn't find that list",
+	"toast_error_list_unauthorized_edit": "You can only edit your own lists"
 }

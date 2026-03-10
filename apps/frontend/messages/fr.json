@@ -662,7 +662,6 @@
 	"btn_share_text": "Partager",
 	"btn_copied_text": "Copié!",
 	"head_app_description": "Vous en avez assez de perdre le fil de ce que vous regardez ? Suivez vos films et séries avec bingy, recevez des notifications sur les nouvelles sorties et découvrez quoi regarder ensuite.",
-	"toast_list_not_found": "Erreur lors de la récupération de la liste",
 	"favorites_error": "Error while loading favorites",
 	"favorites_toggle_no_result_all": "Tu n'as pas de favoris",
 	"favorites_toggle_no_result_movies": "Pas de films dans les favoris",
@@ -672,5 +671,7 @@
 	"favorites_page_link_movies": "films",
 	"favorites_page_empty_cta_separator": "ou des",
 	"favorites_page_link_tv": "Séries TV",
-	"favorites_page_empty_cta_followup": "pour en ajouter"
+	"favorites_page_empty_cta_followup": "pour en ajouter",
+	"toast_error_list_not_found": "Oups ! Nous n'avons pas trouvé cette liste",
+	"toast_error_list_unauthorized_edit": "Tu n'as pas la possibilité de modifier cette liste"
 }

@@ -34,7 +34,7 @@ function ListPage() {
 
 	if (isLoading) return <LoadingCentered />;
 	if (!list || error) {
-		toast.error(m.toast_list_not_found());
+		toast.error(m.toast_error_list_not_found());
 		navigate({ to: "/user/$username/lists", params: { username } });
 		return;
 	}

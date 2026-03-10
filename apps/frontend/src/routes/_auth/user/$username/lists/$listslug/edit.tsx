@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { ListItemsPreview } from "@/components/lists/custom-lists/list-items-preview";
 import { ListSearchAddInput } from "@/components/lists/custom-lists/list-search-add";
+import { LoadingCentered } from "@/components/loading/loading-centered";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -172,17 +173,26 @@ function EditListPage() {
 		);
 	};
 
-	// @todo: rework special handling
 	if (!isOwnProfile) {
-		return <div>Not authorized</div>;
+		toast.error(m.toast_error_list_unauthorized_edit());
+		navigate({
+			to: "/user/$username/lists/$slug",
+			params: { username, slug: listslug },
+		});
+		return null;
 	}
 
 	if (isLoading) {
-		return <div>Loading...</div>;
+		return <LoadingCentered />;
 	}
 
 	if (error || !list) {
-		return <div>List not found</div>;
+		toast.error(m.toast_error_list_not_found());
+		navigate({
+			to: "/user/$username/lists/$slug",
+			params: { username, slug: listslug },
+		});
+		return null;
 	}
 
 	return (
