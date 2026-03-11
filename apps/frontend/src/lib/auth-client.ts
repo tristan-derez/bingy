@@ -1,5 +1,6 @@
 import {
 	customSessionClient,
+	inferAdditionalFields,
 	lastLoginMethodClient,
 	twoFactorClient,
 } from "better-auth/client/plugins";
@@ -12,6 +13,16 @@ export const authClient = createAuthClient({
 		twoFactorClient(),
 		lastLoginMethodClient({
 			cookieName: "bingy.last_used_login_method",
+		}),
+		inferAdditionalFields({
+			user: {
+				displayName: {
+					type: "string",
+				},
+				twoFactorEnabled: {
+					type: "boolean",
+				},
+			},
 		}),
 		customSessionClient(),
 	],

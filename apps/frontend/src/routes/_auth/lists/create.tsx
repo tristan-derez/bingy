@@ -44,7 +44,8 @@ type CreateListFormValues = z.infer<typeof createListSchema>;
 
 function CreateListPage() {
 	const { session } = useRouteContext({ from: "__root__" });
-	const username = session?.user?.name;
+	if (!session) return null
+	const username = session.user.name
 	const navigate = useNavigate();
 	const createList = useCreateList();
 

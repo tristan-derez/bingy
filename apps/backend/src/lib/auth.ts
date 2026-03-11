@@ -67,6 +67,12 @@ export const auth = betterAuth({
 				input: true,
 				returned: true,
 			},
+			twoFactorEnabled: {
+				type: "boolean",
+				required: false,
+				input: true,
+				returned: true,
+			}
 		},
 		changeEmail: {
 			enabled: true,
