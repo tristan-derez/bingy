@@ -37,12 +37,12 @@ export function TwoFactorDialog({
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent>
+			<DialogContent className="xs:w-full max-w-sm lg:max-w-xl">
 				<DialogHeader>
 					<DialogTitle>{m.dialog_title_two_factor()}</DialogTitle>
 					<DialogDescription>{m.dialog_desc_two_factor()}</DialogDescription>
 				</DialogHeader>
-				<div className="flex flex-col items-center mt-4 gap-8 w-full">
+				<div className="flex flex-col items-center mt-4 gap-8">
 					<div className="flex justify-center">
 						<InputOTP
 							maxLength={6}
@@ -50,7 +50,6 @@ export function TwoFactorDialog({
 							value={code}
 							onChange={setCode}
 							disabled={isVerifying}
-							className="w-full"
 						>
 							<InputOTPGroup>
 								<InputOTPSlot index={0} />
