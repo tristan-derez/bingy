@@ -69,6 +69,7 @@ export function SignInForm() {
 					queryKey: sessionQueryOptions.queryKey,
 				});
 
+				// @ts-expect-error - Runtime type differs from inferred type
 				if (data.twoFactorRedirect) {
 					setShowDialog(true);
 					return;
@@ -266,6 +267,7 @@ export function SignInForm() {
 					</CardContent>
 				</MagicCard>
 			</Card>
+
 			<TwoFactorDialog
 				open={showDialog}
 				onOpenChange={setShowDialog}
