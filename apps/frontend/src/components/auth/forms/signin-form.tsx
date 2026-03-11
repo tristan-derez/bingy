@@ -69,8 +69,7 @@ export function SignInForm() {
 					queryKey: sessionQueryOptions.queryKey,
 				});
 
-				// @ts-expect-error - Runtime type differs from inferred type
-				if (data.twoFactorRedirect) {
+				if (data.user.twoFactorEnabled) {
 					setShowDialog(true);
 					return;
 				}
