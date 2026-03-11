@@ -39,7 +39,7 @@ interface ListDropdownProps {
 		posterPath: string | null;
 		releaseDate: string;
 	};
-	imageUrl?: string | null;
+	imageUrl: string | null;
 }
 
 export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
@@ -137,7 +137,7 @@ export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 						tvShow={tvShow}
 						username={username}
 					/>
-					{/* will only be shown if media is is history */}
+					{/* will only be shown if media is in history */}
 					<HistoryToggleDropdownItem
 						movie={movie}
 						tvShow={tvShow}

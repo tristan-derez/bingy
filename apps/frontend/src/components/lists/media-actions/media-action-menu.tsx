@@ -10,6 +10,7 @@ import {
 import { useTv } from "@/hooks/useTv";
 import { m } from "@/paraglide/messages";
 import { getLastAiredEpisodeInfo } from "@/utils/season-helper";
+import { getTmdbImageUrl } from "@/utils/utils";
 import { WatchlistToggleButton } from "../watchlist/watchlist-toggle-button";
 import { AddToListButton } from "./action-bar/add-to-list-button";
 import { LogReviewButton } from "./action-bar/log-review-button";
@@ -48,6 +49,7 @@ export const MediaActionMenu = ({
 	currentUrl,
 }: MediaActionMenuProps) => {
 	const passProps = { movie, tvShow, username };
+	const imageUrl = getTmdbImageUrl(posterPath, "w500");
 
 	const isTvShow = !!tvShow;
 	const tmdbId = isTvShow ? tvShow.id : (movie?.id ?? 0);
@@ -145,7 +147,7 @@ export const MediaActionMenu = ({
 				onOpenChange={setShowLogReviewDialog}
 				movie={movie}
 				tvShow={tvShow}
-				posterPath={posterPath}
+				imageUrl={imageUrl}
 				existingData={existingRating}
 			/>
 			<AddToListDialog

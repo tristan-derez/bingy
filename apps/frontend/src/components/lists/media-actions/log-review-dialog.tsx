@@ -18,7 +18,7 @@ import {
 	getLastAiredEpisodeInfo,
 	getValidSeasons,
 } from "@/utils/season-helper";
-import { getNumberOrNull, getTmdbImageUrl } from "@/utils/utils";
+import { getNumberOrNull } from "@/utils/utils";
 import { AbsoluteEpisodeCombobox } from "./absolute-episode-combobox";
 import { ReviewTextarea } from "./review-text-area";
 import { SeasonEpisodeCombobox } from "./season-episode-combobox";
@@ -38,7 +38,7 @@ interface LogReviewDialogProps {
 		id: number;
 		name: string;
 	};
-	posterPath: string | null;
+	imageUrl: string | null;
 	username: string;
 	existingData?: {
 		rating: number | null;
@@ -76,14 +76,13 @@ export function LogReviewDialog({
 	onOpenChange,
 	tvShow,
 	movie,
-	posterPath,
+	imageUrl,
 	username,
 	existingData,
 }: LogReviewDialogProps) {
 	const isTvShow = !!tvShow;
 	const tmdbId = isTvShow ? tvShow.id : (movie?.id ?? 0);
 	const rating = existingData?.rating ?? 0;
-	const imageUrl = getTmdbImageUrl(posterPath, "w500");
 
 	const { data: tvDetails } = useTv(tmdbId, {}, { enabled: isTvShow });
 
