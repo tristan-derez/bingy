@@ -64,13 +64,13 @@ export const auth = betterAuth({
 			displayName: {
 				type: "string",
 				required: false,
-				input: true,
+				input: false,
 				returned: true,
 			},
 			twoFactorEnabled: {
 				type: "boolean",
 				required: false,
-				input: true,
+				input: false,
 				returned: true,
 			}
 		},
