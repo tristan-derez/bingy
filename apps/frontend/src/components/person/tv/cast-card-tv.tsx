@@ -11,21 +11,20 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { m } from "@/paraglide/messages";
+import { getTmdbImageUrl } from "@/utils/utils";
 
 interface CastCardTvProps {
 	person: Pretty<Omit<Schemas.CastMember, "cast_id">>;
 }
 
 export const CastCardTv = ({ person }: CastCardTvProps) => {
-	const imageUrl = person.profile_path
-		? `https://image.tmdb.org/t/p/w200${person.profile_path}`
-		: fallbackPoster;
+	const imageUrl = getTmdbImageUrl(person.profile_path, "w200");
 
 	return (
 		<div className="relative pt-8">
 			<Avatar className="absolute -top-1 left-1/2 -translate-x-1/2 w-16 h-16 z-10">
 				<AvatarImage
-					src={imageUrl}
+					src={imageUrl ?? fallbackPoster}
 					alt={person.name}
 					className="object-cover object-top"
 					onError={(e) => {

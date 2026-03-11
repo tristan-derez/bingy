@@ -11,15 +11,14 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { m } from "@/paraglide/messages";
+import { getTmdbImageUrl } from "@/utils/utils";
 
 interface CastCardAggregatedProps {
 	person: Schemas.CastPersonInAggregatedTvCredits;
 }
 
 export const CastCardAggregated = ({ person }: CastCardAggregatedProps) => {
-	const imageUrl = person.profile_path
-		? `https://image.tmdb.org/t/p/w200${person.profile_path}`
-		: fallbackPoster;
+	const imageUrl = getTmdbImageUrl(person.profile_path, "w200");
 
 	const primaryRole = person.roles.reduce((prev, current) =>
 		current.episode_count > prev.episode_count ? current : prev,
@@ -37,7 +36,7 @@ export const CastCardAggregated = ({ person }: CastCardAggregatedProps) => {
 		<div className="relative pt-8">
 			<Avatar className="absolute -top-1 left-1/2 -translate-x-1/2 w-16 h-16 z-10">
 				<AvatarImage
-					src={imageUrl}
+					src={imageUrl ?? fallbackPoster}
 					alt={person.name}
 					className="object-cover object-top"
 					onError={(e) => {
