@@ -72,14 +72,21 @@ export function HistoryToggleDropdownItem({
 				addMovieToHistory.mutate({
 					tmdbId: movie.id,
 					watchedAt: date,
+					rating: null,
+					review: null,
 				});
 			} else if (tvShow) {
 				const episodeInfo = getLastAiredEpisodeInfo(tvDetails);
+				if (!episodeInfo) return;
+
 				addTvToHistory.mutate({
 					tmdbId: tvShow.id,
-					lastWatchedSeason: episodeInfo?.seasonNumber,
-					lastWatchedEpisode: episodeInfo?.episodeNumber,
+					lastWatchedSeason: episodeInfo.seasonNumber ?? null,
+					lastWatchedEpisode: episodeInfo.episodeNumber ?? null,
+					absoluteEpisode: null,
 					trackingMode: "season",
+					rating: null,
+					review: null,
 					watchedAt: date,
 				});
 			}
