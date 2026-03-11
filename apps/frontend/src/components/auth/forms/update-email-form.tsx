@@ -47,7 +47,7 @@ export function UpdateEmailForm() {
 		setIsSubmitting(true);
 		try {
 			const { data, error } = await authClient.changeEmail({
-				email: formData.email,
+				newEmail: formData.email,
 				callbackURL: `${config.appUrl}/account`,
 			});
 

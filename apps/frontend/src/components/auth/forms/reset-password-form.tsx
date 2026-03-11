@@ -48,7 +48,7 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
 		setIsSubmitting(true);
 		try {
 			const { data, error } = await authClient.resetPassword({
-				password: formData.password,
+				newPassword: formData.password,
 				token,
 			});
 
