@@ -1,10 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate, useRouteContext } from "@tanstack/react-router";
-import { Loader2 } from "lucide-react";
+import { IconExclamationCircleFilled, IconLoader } from "@tabler/icons-react";
+import { useRouteContext, useRouter } from "@tanstack/react-router";
 import { useId, useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
 	Form,
@@ -15,19 +16,23 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { queryClient } from "@/integrations/tanstack-query/root-provider";
 import { authClient } from "@/lib/auth-client";
+import { sessionQueryOptions } from "@/lib/queries/session";
 import { m } from "@/paraglide/messages";
 import { twoFactorSchema } from "@/schemas/two-factor-schema";
 import { SetupTwoFactorDialog } from "../setup-two-factor-dialog";
 
 export function EnableTwoFactorForm() {
 	const { session } = useRouteContext({ from: "__root__" });
-	const navigate = useNavigate();
+	const router = useRouter();
 
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [showDialog, setShowDialog] = useState(false);
 	const [totpUri, setTotpUri] = useState("");
 	const id = useId();
+
+	const isEmailVerified = session?.user?.emailVerified ?? false;
 
 	const form = useForm<z.infer<typeof twoFactorSchema>>({
 		resolver: zodResolver(twoFactorSchema),
@@ -90,10 +95,15 @@ export function EnableTwoFactorForm() {
 			}
 
 			if (data) {
+				const { data: freshSession } = await authClient.getSession({
+					query: { disableCookieCache: true },
+				});
+				queryClient.setQueryData(sessionQueryOptions.queryKey, freshSession);
+
 				toast.success(m.toast_success_enable_twofactor());
 				setShowDialog(false);
 				form.reset();
-				navigate({ to: "/settings" });
+				router.navigate({ to: "/settings" });
 			}
 		} catch (err) {
 			toast.error(m.toast_error_generic());
@@ -102,27 +112,35 @@ export function EnableTwoFactorForm() {
 
 	return (
 		<>
-			<div className="grid gap-2">
-				<div>
-					<p className="text-md font-semibold leading-none tracking-tight">
-						{m.two_factor_title()}
-					</p>
-					<p className="text-sm text-muted-foreground mt-1.5">
-						{m.two_factor_enable_short_desc()}
-					</p>
-				</div>
+			<div className="flex flex-col gap-2">
+				<p className="text-md font-semibold leading-none tracking-tight">
+					{m.two_factor_title()}
+				</p>
+				<p className="text-sm text-muted-foreground mt-1.5">
+					{m.two_factor_enable_short_desc()}
+				</p>
+				{!isEmailVerified && (
+					<Alert className="border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-50">
+						<IconExclamationCircleFilled />
+						<AlertTitle>{m.two_factor_enable_alert_mail()}</AlertTitle>
+						<AlertDescription>{m.email_not_verified()}</AlertDescription>
+					</Alert>
+				)}
 
 				<Form {...form}>
 					<form
 						onSubmit={form.handleSubmit(onFormSubmit)}
-						className="grid gap-4"
+						className="flex flex-col gap-2"
 					>
-						<fieldset disabled={isSubmitting}>
+						<fieldset
+							disabled={isSubmitting || !isEmailVerified}
+							className="flex flex-col gap-2"
+						>
 							<FormField
 								control={form.control}
 								name="password"
 								render={({ field }) => (
-									<FormItem className="grid gap-2">
+									<FormItem className="flex flex-col gap-2">
 										<FormLabel htmlFor={`${id}-password`}>
 											{m.form_password_label()}
 										</FormLabel>
@@ -141,23 +159,18 @@ export function EnableTwoFactorForm() {
 							/>
 							<Button
 								type="submit"
-								disabled={!session?.user?.emailVerified}
-								className="w-full mt-4 disabled:bg-gray-300 disabled:text-gray-500"
+								disabled={!isEmailVerified}
+								className="w-full disabled:bg-gray-300 disabled:text-gray-500"
 							>
 								{isSubmitting ? (
 									<span className="flex items-center justify-center gap-2">
-										<Loader2 className="animate-spin h-4 w-4" />
+										<IconLoader className="animate-spin h-4 w-4" />
 										{m.btn_enabling_two_factor()}
 									</span>
 								) : (
 									m.btn_enable_two_factor()
 								)}
 							</Button>
-							{!session?.user?.emailVerified && (
-								<p className="text-sm text-gray-500 mt-2">
-									{m.email_not_verified()}
-								</p>
-							)}
 						</fieldset>
 					</form>
 				</Form>

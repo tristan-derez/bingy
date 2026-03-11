@@ -5,8 +5,22 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1760967713235,
-      "tag": "0000_lively_jack_murdock",
+      "when": 1769620596359,
+      "tag": "0000_curious_leo",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1769880190048,
+      "tag": "0001_friendly_killraven",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1769962341602,
+      "tag": "0002_plain_warlock",
       "breakpoints": true
     }
   ]

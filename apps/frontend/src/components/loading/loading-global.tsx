@@ -1,6 +1,6 @@
 import { useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { LoaderTwo } from "../ui/loader";
+import { LoaderTwo } from "@/components/ui/loader";
 
 export function GlobalLoadingIndicator() {
 	const isLoading = useRouterState({ select: (s) => s.isLoading });

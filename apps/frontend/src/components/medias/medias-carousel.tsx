@@ -1,6 +1,7 @@
 import useEmblaCarousel from "embla-carousel-react";
 import { useId } from "react";
 import type { Schemas } from "shared";
+import { MediaCard } from "@/components/medias/media-card";
 import {
 	NextButton,
 	PrevButton,
@@ -10,7 +11,6 @@ import {
 	CarouselGradient,
 	useCarouselGradient,
 } from "@/components/ui/embla/embla-carousel-gradient";
-import { MediaCard } from "./media-card";
 
 interface MediaCarouselProps {
 	medias:
@@ -47,7 +47,7 @@ export const MediasCarousel = ({ medias, title }: MediaCarouselProps) => {
 			<h2 className="text-xl font-semibold">{title}</h2>
 			<div className="relative">
 				<div className="overflow-hidden hover:cursor-grab" ref={emblaRef}>
-					<div className="flex gap-4">
+					<div className="flex gap-4 p-px">
 						{medias.map((media) => (
 							<div
 								key={`${carouselId}-${media.id}`}

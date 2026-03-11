@@ -1,3 +1,4 @@
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, useSearch } from "@tanstack/react-router";
 import { toast } from "sonner";
 import z from "zod";
@@ -11,46 +12,37 @@ const settingsPageSchema = z.object({
 
 export const Route = createFileRoute("/_auth/settings")({
 	head: () => ({
-		meta: [
-			{
-				title: "Bingy - Settings",
-			},
-		],
+		meta: [{ title: "Bingy - Settings" }],
 	}),
 	validateSearch: settingsPageSchema,
 	component: SettingsPage,
-	beforeLoad: async () => {
-		const connections = await authClient.listAccounts();
-		return { connections };
-	},
 });
 
 function SettingsPage() {
+	const { data } = useSuspenseQuery({
+		queryKey: ["accounts"],
+		queryFn: async () => {
+			const result = await authClient.listAccounts();
+			return result.data;
+		},
+	});
+
 	const error = useSearch({
 		from: "/_auth/settings",
 		select: (search) => search.error,
 	});
 
-	// should not happen as allowDifferentEmail is activated in auth config
-	if (error === "email_doesn't_match") {
-		toast.error(m.toast_error_email_doesnt_match_settings_page(), {
-			id: "email-doesnt-match-toast",
-			duration: Infinity,
-			closeButton: true,
-		});
-	}
-
-	if (error === "account_already_linked_to_different_user") {
-		toast.error(m.toast_error_already_linked_settings_page(), {
-			id: "account_already_linked_toast",
-			duration: Infinity,
-			closeButton: true,
-		});
-	}
+	const errorMessages: Record<string, string> = {
+		email_doesn_match: m.toast_error_email_doesnt_match_settings_page(),
+		account_already_linked_to_different_user:
+			m.toast_error_already_linked_settings_page(),
+	};
 
 	if (error) {
-		toast.error(m.toast_error_generic_error_settings_page(), {
-			id: "oauth_generic_error_settings",
+		const message =
+			errorMessages[error] ?? m.toast_error_generic_error_settings_page();
+		toast.error(message, {
+			id: `error-${error}`,
 			duration: Infinity,
 			closeButton: true,
 		});
@@ -58,7 +50,7 @@ function SettingsPage() {
 
 	return (
 		<div className="flex w-full max-w-md flex-col gap-6">
-			<SettingsComponent />
+			<SettingsComponent accounts={data} />
 		</div>
 	);
 }

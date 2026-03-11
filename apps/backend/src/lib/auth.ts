@@ -1,6 +1,6 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { lastLoginMethod, twoFactor } from "better-auth/plugins";
+import { customSession, lastLoginMethod, twoFactor } from "better-auth/plugins";
 import { redis } from "bun";
 import * as schema from "#db/schemas/user";
 import { sendEmail } from "#emails/index";
@@ -8,6 +8,7 @@ import { db } from "#lib/database";
 import env from "./env";
 import { logger } from "./logger";
 import { hash, verify } from "./password-processing";
+import { generateUniqueUsername } from "./username";
 
 export const auth = betterAuth({
 	appName: "Bingy",
@@ -58,6 +59,14 @@ export const auth = betterAuth({
 	user: {
 		fields: {
 			image: "avatarUrl",
+		},
+		additionalFields: {
+			displayName: {
+				type: "string",
+				required: false,
+				input: true,
+				returned: true,
+			},
 		},
 		changeEmail: {
 			enabled: true,
@@ -161,11 +170,16 @@ export const auth = betterAuth({
 	session: {
 		expiresIn: 604800, // 7 days
 		updateAge: 86400, // 1 day
+		cookieCache: {
+			enabled: true,
+			maxAge: 5 * 60, // 5 min
+		},
 	},
 	socialProviders: {
 		google: {
 			clientId: env.GOOGLE_CLIENT_ID,
 			clientSecret: env.GOOGLE_CLIENT_SECRET,
+			prompt: "select_account",
 		},
 		discord: {
 			clientId: env.DISCORD_CLIENT_ID,
@@ -178,5 +192,73 @@ export const auth = betterAuth({
 			storeInDatabase: true,
 			cookieName: "bingy.last_used_login_method",
 		}),
+		customSession(async ({ user, session }) => {
+			const userWithCustomFields = user as typeof user & {
+				displayName: string;
+				twoFactorEnabled: boolean;
+			};
+			return {
+				user: {
+					...user,
+					displayName: userWithCustomFields.displayName,
+					twoFactorEnabled: userWithCustomFields.twoFactorEnabled,
+				},
+				session,
+			};
+		}),
 	],
+	databaseHooks: {
+		user: {
+			create: {
+				before: async (user, ctx) => {
+					const isOAuth = !ctx?.body?.password;
+
+					if (isOAuth) {
+						const uniqueName = await generateUniqueUsername(user.name);
+
+						if (uniqueName.startsWith("user")) {
+							return {
+								data: {
+									...user,
+									name: uniqueName,
+									displayName: uniqueName,
+								},
+							};
+						}
+
+						const match = uniqueName.match(/(\d+)$/);
+						const suffix = match ? match[1] : "";
+						const displayName = `${user.name}${suffix}`.slice(0, 30);
+
+						return {
+							data: {
+								...user,
+								name: uniqueName,
+								displayName,
+							},
+						};
+					}
+
+					// Normal auth: ensure lowercase and only allowed chars
+					const normalizedName = user.name
+						.toLowerCase()
+						.replace(/[^a-z0-9._]/g, "");
+
+					const displayName = user.name
+						.replace(/[^a-z0-9._-]/gi, "")
+						.slice(0, 30);
+
+					return {
+						data: {
+							...user,
+							name: normalizedName,
+							displayName,
+						},
+					};
+				},
+			},
+		},
+	},
 });
+
+export type Auth = typeof auth;

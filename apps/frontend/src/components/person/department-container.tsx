@@ -1,8 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { useId } from "react";
 import { Card, CardContent } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import { m } from "@/paraglide/messages";
-import { Separator } from "../ui/separator";
 
 export type TimelineItem = {
 	id: number;
@@ -61,7 +61,7 @@ export const DepartmentContainer = ({
 								{year}
 							</div>
 
-							<Card className="shadow-none rounded-md py-4">
+							<Card className="shadow-none rounded-md border ring-0 py-4">
 								<CardContent className="flex flex-col">
 									{sortedItems.map((item, idx) => (
 										<div

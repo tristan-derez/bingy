@@ -10,12 +10,10 @@ import { CreditEpisodesList } from "./credit-episodes-list";
 
 interface CreditEpisodesContainerProps {
 	creditDetails: Schemas.CreditDetails;
-	onBack: () => void;
 }
 
 export const CreditEpisodesContainer = ({
 	creditDetails,
-	onBack,
 }: CreditEpisodesContainerProps) => {
 	const localeRegion = useAtomValue(localeRegionAtom);
 
@@ -25,7 +23,6 @@ export const CreditEpisodesContainer = ({
 			<ResourceNotFound
 				title={m.credit_episodes_container_wrong_type_title()}
 				description={m.credit_episodes_container_wrong_type_desc()}
-				onBack={onBack}
 			/>
 		);
 	}
@@ -88,7 +85,6 @@ export const CreditEpisodesContainer = ({
 			<ResourceNotFound
 				title={m.credit_episodes_container_episodes_not_found_title()}
 				description={m.credit_episodes_container_episodes_not_found_title()}
-				onBack={onBack}
 			/>
 		);
 	}
@@ -103,7 +99,6 @@ export const CreditEpisodesContainer = ({
 			job={job}
 			showName={name}
 			posterPath={poster_path}
-			onBack={onBack}
 			episodes={allEpisodes}
 			guestEpisodeIds={guestEpisodeIds}
 		/>

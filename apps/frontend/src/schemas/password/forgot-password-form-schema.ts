@@ -1,5 +1,5 @@
-import * as z from "zod";
+import { signUpFormSchema } from "../signup-form-schema";
 
-export const forgotPasswordFormSchema = z.object({
-	email: z.email().min(3),
+export const forgotPasswordFormSchema = signUpFormSchema.pick({
+	email: true,
 });

@@ -1,4 +1,4 @@
-import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
 import { TvSeasonDetailsView } from "@/components/tv/seasons/tv-season-details";
@@ -10,7 +10,6 @@ export const Route = createFileRoute("/tv/$tvId_/season_/$seasonNumber")({
 });
 
 function TvSeasonDetailsPage() {
-	const router = useRouter();
 	const { tvId, seasonNumber } = Route.useParams();
 	const localeRegion = useAtomValue(localeRegionAtom);
 	const region = useAtomValue(regionAtom);
@@ -48,7 +47,6 @@ function TvSeasonDetailsPage() {
 			tvId={Number(tvId)}
 			isLoading={isLoading}
 			isError={isError}
-			onBack={() => router.history.back()}
 		/>
 	);
 }

@@ -1,10 +1,10 @@
 import { Link } from "@tanstack/react-router";
 import type { Schemas } from "shared";
-import fallbackPoster from "@/assets/movie-placeholder.jpg";
+import fallbackPoster from "@/assets/media-image-placeholder.jpg";
 import { BackButton } from "@/components/ui/back-button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { m } from "@/paraglide/messages";
+import { getTmdbImageUrl } from "@/utils/utils";
 import { CreditEpisodeCard } from "./credit-episode-card";
 
 interface CreditEpisodesListProps {
@@ -14,7 +14,6 @@ interface CreditEpisodesListProps {
 	job?: string;
 	showName: string;
 	posterPath: string | null;
-	onBack: () => void;
 	guestEpisodeIds: Set<number>;
 	episodes: Omit<Schemas.Episode, "media_type">[];
 }
@@ -26,23 +25,20 @@ export const CreditEpisodesList = ({
 	job,
 	showName,
 	posterPath,
-	onBack,
 	guestEpisodeIds,
 	episodes,
 }: CreditEpisodesListProps) => {
 	const role = character || job || m.credit_episodes_list_unknown_role();
+	const imageUrl = getTmdbImageUrl(posterPath, "w500");
+
 	return (
 		<div className="container">
-			<BackButton onBack={onBack} />
+			<BackButton />
 
 			<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
 				<div className="flex flex-col gap-2 items-center lg:items-start max-w-[250px] md:max-w-[300px] lg:max-w-[400px]">
 					<img
-						src={
-							posterPath
-								? `https://image.tmdb.org/t/p/original${posterPath}`
-								: fallbackPoster
-						}
+						src={imageUrl ?? fallbackPoster}
 						alt={showName}
 						className="rounded-md shadow-lg w-full aspect-2/3 max-h-90 xl:max-h-[600px]"
 						onError={(e) => {
@@ -54,9 +50,9 @@ export const CreditEpisodesList = ({
 					/>
 				</div>
 
-				<div className="w-full flex flex-col gap-4 overflow-hidden">
-					<Card className="shadow-none bg-transparent pt-0 lg:p-0 border-none">
-						<CardContent className="lg:p-0">
+				<div className="w-full flex flex-col gap-4 overflow-hidden px-0.5">
+					<Card className="shadow-none bg-transparent pt-0 lg:p-0 border-none ring-0 rounded-none">
+						<CardContent>
 							<div className="flex flex-col gap-2">
 								<Link to="/tv/$tvId" params={{ tvId: tvId.toString() }}>
 									<h1 className="text-4xl font-bold leading-relaxed">
@@ -71,7 +67,7 @@ export const CreditEpisodesList = ({
 							</div>
 						</CardContent>
 					</Card>
-					<Separator />
+
 					{episodes.map((episode) => (
 						<CreditEpisodeCard
 							key={episode.id}

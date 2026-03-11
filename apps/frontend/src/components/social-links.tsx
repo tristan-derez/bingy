@@ -1,9 +1,8 @@
-import { FaInstagram, FaSquareFacebook, FaXTwitter } from "react-icons/fa6";
+import { IconBrandInstagram, IconBrandX } from "@tabler/icons-react";
 
 const SOCIAL_ICONS = {
-	facebook: FaSquareFacebook,
-	instagram: FaInstagram,
-	twitter: FaXTwitter,
+	instagram: IconBrandInstagram,
+	twitter: IconBrandX,
 } as const;
 
 type SocialKey = keyof typeof SOCIAL_ICONS;
@@ -25,7 +24,7 @@ export function SocialLinks({ socials }: SocialsProps) {
 						rel="noopener noreferrer"
 						className="text-2xl hover:text-chart-3 transition-colors"
 					>
-						<Icon />
+						<Icon className="h-8 w-8" />
 					</a>
 				);
 			})}

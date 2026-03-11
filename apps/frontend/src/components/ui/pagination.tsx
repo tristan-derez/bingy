@@ -1,7 +1,12 @@
-import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
+import {
+	IconChevronLeft,
+	IconChevronRight,
+	IconDots,
+} from "@tabler/icons-react";
 import * as React from "react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { m } from "@/paraglide/messages";
 
 const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
 	<nav
@@ -60,12 +65,12 @@ const PaginationPrevious = ({
 	...props
 }: React.ComponentProps<typeof PaginationLink>) => (
 	<PaginationLink
-		aria-label="Go to previous page"
+		aria-label={m.pagination_previous_aria_label()}
 		className={cn("gap-1 pl-2.5", className)}
 		{...props}
 	>
-		<ChevronLeft className="h-4 w-4" />
-		<span>Previous</span>
+		<IconChevronLeft className="h-4 w-4" />
+		<span>{m.pagination_previous()}</span>
 	</PaginationLink>
 );
 PaginationPrevious.displayName = "PaginationPrevious";
@@ -75,12 +80,12 @@ const PaginationNext = ({
 	...props
 }: React.ComponentProps<typeof PaginationLink>) => (
 	<PaginationLink
-		aria-label="Go to next page"
+		aria-label={m.pagination_next_aria_label()}
 		className={cn("gap-1 pr-2.5", className)}
 		{...props}
 	>
-		<span>Next</span>
-		<ChevronRight className="h-4 w-4" />
+		<span>{m.pagination_next()}</span>
+		<IconChevronRight className="h-4 w-4" />
 	</PaginationLink>
 );
 PaginationNext.displayName = "PaginationNext";
@@ -94,7 +99,7 @@ const PaginationEllipsis = ({
 		className={cn("flex h-9 w-9 items-center justify-center", className)}
 		{...props}
 	>
-		<MoreHorizontal className="h-4 w-4" />
+		<IconDots className="h-4 w-4" />
 		<span className="sr-only">More pages</span>
 	</span>
 );

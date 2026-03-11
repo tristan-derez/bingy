@@ -1,4 +1,9 @@
-import { FilmIcon, LayoutGridIcon, TvIcon, UserIcon } from "lucide-react";
+import {
+	IconDeviceTv,
+	IconLayoutGrid,
+	IconMovie,
+	IconUsers,
+} from "@tabler/icons-react";
 import { useState } from "react";
 import type { Schemas } from "shared";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
@@ -43,35 +48,35 @@ export const SearchResultsContainer = ({
 			>
 				<ToggleGroupItem
 					value="all"
-					aria-label={m.search_toggle_aria_label_all()}
+					aria-label={m.toggle_aria_label_all()}
 					className="hover:cursor-pointer"
 				>
-					<LayoutGridIcon className="h-4 w-4" />
-					{m.search_toggle_group_item_all()}
+					<IconLayoutGrid />
+					{m.toggle_group_item_all()}
 				</ToggleGroupItem>
 				<ToggleGroupItem
 					value="movie"
-					aria-label={m.search_toggle_aria_label_movies()}
+					aria-label={m.toggle_aria_label_movies()}
 					className="hover:cursor-pointer"
 				>
-					<FilmIcon className="h-4 w-4" />
-					{m.search_toggle_group_item_movies()}
+					<IconMovie />
+					{m.toggle_group_item_movies()}
 				</ToggleGroupItem>
 				<ToggleGroupItem
 					value="tv"
-					aria-label={m.search_toggle_aria_label_people()}
+					aria-label={m.toggle_aria_label_tv()}
 					className="hover:cursor-pointer"
 				>
-					<TvIcon className="h-4 w-4" />
-					{m.search_toggle_group_item_tv()}
+					<IconDeviceTv />
+					{m.toggle_group_item_tv()}
 				</ToggleGroupItem>
 				<ToggleGroupItem
-					value={m.search_toggle_aria_label_people()}
+					value={m.toggle_aria_label_people()}
 					aria-label="People"
 					className="hover:cursor-pointer"
 				>
-					<UserIcon className="h-4 w-4" />
-					{m.search_toggle_group_item_person()}
+					<IconUsers />
+					{m.toggle_group_item_person()}
 				</ToggleGroupItem>
 			</ToggleGroup>
 

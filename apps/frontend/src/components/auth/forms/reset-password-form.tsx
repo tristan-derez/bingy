@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { IconLoader } from "@tabler/icons-react";
 import { useNavigate } from "@tanstack/react-router";
-import { Loader2 } from "lucide-react";
 import React, { useId } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -38,7 +38,7 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
 	const form = useForm<z.infer<typeof resetPasswordFormSchema>>({
 		resolver: zodResolver(resetPasswordFormSchema),
 		defaultValues: {
-			newPassword: "",
+			password: "",
 		},
 	});
 
@@ -48,7 +48,7 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
 		setIsSubmitting(true);
 		try {
 			const { data, error } = await authClient.resetPassword({
-				newPassword: formData.newPassword,
+				password: formData.password,
 				token,
 			});
 
@@ -82,15 +82,15 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
 						<fieldset disabled={isSubmitting}>
 							<FormField
 								control={form.control}
-								name="newPassword"
+								name="password"
 								render={({ field }) => (
 									<FormItem className="grid gap-2">
-										<FormLabel htmlFor="newPassword">
+										<FormLabel htmlFor="password">
 											{m.form_new_password_label()}
 										</FormLabel>
 										<FormControl>
 											<Input
-												id={`${id}-newPassword`}
+												id={`${id}-password`}
 												type="password"
 												autoComplete="new-password"
 												required
@@ -107,7 +107,7 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
 							>
 								{isSubmitting ? (
 									<span className="flex items-center justify-center gap-2">
-										<Loader2 className="animate-spin h-4 w-4" />
+										<IconLoader className="animate-spin h-4 w-4" />
 										{m.btn_resetting_password()}
 									</span>
 								) : (

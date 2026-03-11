@@ -1,9 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, useNavigate } from "@tanstack/react-router";
-import { Loader2 } from "lucide-react";
+import { IconBrandGoogleFilled, IconLoader } from "@tabler/icons-react";
+import { Link, useRouter } from "@tanstack/react-router";
 import { useId, useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
-import { FcGoogle } from "react-icons/fc";
 import { toast } from "sonner";
 import type { z } from "zod";
 import { Badge } from "@/components/ui/badge";
@@ -27,8 +26,10 @@ import { Input } from "@/components/ui/input";
 import { MagicCard } from "@/components/ui/magic-card";
 import { OAuthButton } from "@/components/ui/oauth-button";
 import { SeparatorWithText } from "@/components/ui/separator-text";
+import { queryClient } from "@/integrations/tanstack-query/root-provider";
 import { authClient } from "@/lib/auth-client";
 import { config } from "@/lib/env";
+import { sessionQueryOptions } from "@/lib/queries/session";
 import { m } from "@/paraglide/messages";
 import { signinFormSchema } from "@/schemas/signin-form-schema";
 import { TwoFactorDialog } from "../two-factor.dialog";
@@ -37,7 +38,7 @@ export function SignInForm() {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [showDialog, setShowDialog] = useState(false);
 	const id = useId();
-	const navigate = useNavigate();
+	const router = useRouter();
 	const lastMethod = authClient.getLastUsedLoginMethod();
 
 	const form = useForm<z.infer<typeof signinFormSchema>>({
@@ -55,27 +56,39 @@ export function SignInForm() {
 	) => {
 		setIsSubmitting(true);
 		try {
-			await authClient.signIn.email(
-				{
-					email: formData.email,
-					password: formData.password,
-				},
-				{
-					async onSuccess(context) {
-						if (context.data.twoFactorRedirect) {
-							setShowDialog(true);
-						} else if (context.data.user.emailVerified === "false") {
-							toast.success(m.toast_email_not_verified_new_user());
-							navigate({ to: "/welcome" });
-						} else if (context.data.user.emailVerified) {
-							navigate({ to: "/dashboard" });
-						}
-					},
-					async onError() {
-						toast.error(m.toast_error_generic());
-					},
-				},
-			);
+			const { data, error } = await authClient.signIn.email({
+				email: formData.email,
+				password: formData.password,
+			});
+
+			if (data) {
+				await queryClient.invalidateQueries({
+					queryKey: sessionQueryOptions.queryKey,
+				});
+				await queryClient.refetchQueries({
+					queryKey: sessionQueryOptions.queryKey,
+				});
+
+				if (data.twoFactorRedirect) {
+					setShowDialog(true);
+					return;
+				}
+
+				if (!data.user.emailVerified) {
+					await router.navigate({ to: "/verify-email" });
+					return;
+				}
+
+				await router.navigate({ to: "/dashboard" });
+			}
+
+			if (error) {
+				if (error.code === "INVALID_EMAIL_OR_PASSWORD") {
+					toast.error("invalid email or password");
+				} else {
+					toast.error(m.toast_error_generic());
+				}
+			}
 		} catch (err) {
 			toast.error(m.toast_error_generic());
 		} finally {
@@ -114,10 +127,17 @@ export function SignInForm() {
 			}
 
 			if (data) {
+				await queryClient.invalidateQueries({
+					queryKey: sessionQueryOptions.queryKey,
+				});
+				await queryClient.refetchQueries({
+					queryKey: sessionQueryOptions.queryKey,
+				});
+
 				toast.success(m.welcome_back_message({ username: data.user.name }));
 				setShowDialog(false);
 				form.reset();
-				navigate({ to: "/dashboard" });
+				await router.navigate({ to: "/dashboard" });
 			}
 		} catch (err) {
 			toast.error(m.toast_error_signin_invalid_code());
@@ -207,7 +227,7 @@ export function SignInForm() {
 										>
 											{isSubmitting ? (
 												<span className="flex items-center justify-center gap-2">
-													<Loader2 className="animate-spin h-4 w-4" />
+													<IconLoader className="animate-spin h-4 w-4" />
 													{m.btn_signing_in()}
 												</span>
 											) : (
@@ -230,7 +250,7 @@ export function SignInForm() {
 						<SeparatorWithText text={m.signin_separator_text()} />
 						<div className="flex gap-2">
 							<OAuthButton
-								icon={FcGoogle}
+								icon={IconBrandGoogleFilled}
 								label={m.signin_with_provider({ provider: "Google" })}
 								text="Google"
 								lastMethod={lastMethod === "google"}

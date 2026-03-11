@@ -1,19 +1,25 @@
+import {
+	IconCalendarWeekFilled,
+	IconStack2,
+	IconStarFilled,
+	IconStopwatch,
+} from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
-import { Calendar, Layers, Star, Timer } from "lucide-react";
 import type { Schemas } from "shared";
-import fallbackPoster from "@/assets/movie-placeholder.jpg";
+import fallbackPoster from "@/assets/media-image-placeholder.jpg";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
 import { LoadingCentered } from "@/components/loading/loading-centered";
-import { MediaOverview } from "@/components/medias/overview";
+import { MediaOverview } from "@/components/medias/media-overview";
 import { CastCarousel } from "@/components/person/cast-carousel";
+import { EpisodesContainer } from "@/components/tv/episodes/episodes-container";
 import { BackButton } from "@/components/ui/back-button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { WatchProvidersSection } from "@/components/watch-providers/watch-providers-section";
 import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
-import { EpisodesContainer } from "../episodes/episodes-container";
+import { getTmdbImageUrl } from "@/utils/utils";
 
 interface TvSeasonDetailsViewProps {
 	tvSeason: Schemas.TvSeasonDetails | undefined;
@@ -22,7 +28,6 @@ interface TvSeasonDetailsViewProps {
 	tvId: number;
 	isLoading: boolean;
 	isError: boolean;
-	onBack: () => void;
 }
 
 export function TvSeasonDetailsView({
@@ -32,9 +37,9 @@ export function TvSeasonDetailsView({
 	tvId,
 	isLoading,
 	isError,
-	onBack,
 }: TvSeasonDetailsViewProps) {
 	const localeRegion = useAtomValue(localeRegionAtom);
+
 	if (isLoading) {
 		return <LoadingCentered />;
 	}
@@ -44,7 +49,6 @@ export function TvSeasonDetailsView({
 			<ResourceNotFound
 				title={m.season_details_not_found_title()}
 				description={m.season_details_not_found_desc()}
-				onBack={onBack}
 			/>
 		);
 	}
@@ -109,18 +113,16 @@ export function TvSeasonDetailsView({
 			.slice(0, 10);
 	}
 
-	const imageUrl = tvSeason.poster_path
-		? `https://image.tmdb.org/t/p/w500${tvSeason.poster_path}`
-		: fallbackPoster;
+	const imageUrl = getTmdbImageUrl(tvSeason.poster_path, "w500");
 
 	return (
 		<div className="container">
-			<BackButton onBack={onBack} />
+			<BackButton />
 
 			<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
 				<div className="flex flex-col gap-2 items-center lg:items-start max-w-[250px] md:max-w-[300px] lg:max-w-[400px]">
 					<img
-						src={imageUrl}
+						src={imageUrl ?? fallbackPoster}
 						alt={tvSeason.name}
 						className="rounded-lg shadow-lg w-full aspect-2/3 max-h-90 xl:max-h-[600px]"
 						onError={(e) => {
@@ -138,8 +140,8 @@ export function TvSeasonDetailsView({
 				</div>
 
 				<div className="w-full flex flex-col gap-4 overflow-hidden">
-					<Card className="shadow-none bg-transparent xl:p-0 border-none">
-						<CardContent className="xl:p-0">
+					<Card className="shadow-none bg-transparent ring-0">
+						<CardContent className="lg:p-0">
 							<div className="flex flex-col gap-2">
 								<div className="flex justify-between gap-3">
 									<h1 className="text-4xl font-bold leading-relaxed">
@@ -150,7 +152,7 @@ export function TvSeasonDetailsView({
 											variant="default"
 											className="w-fit gap-1 self-center"
 										>
-											<Timer className="h-4 w-4" />
+											<IconStopwatch className="h-4 w-4" />
 											<span>
 												{(
 													tvSeason.episodes.reduce(
@@ -189,7 +191,7 @@ export function TvSeasonDetailsView({
 					<div className="grid lg:grid-cols-3 gap-3">
 						<Card>
 							<CardContent className="flex items-center gap-4">
-								<Star className="h-5 w-5 text-yellow-500" />
+								<IconStarFilled className="h-5 w-5 text-yellow-500" />
 								<div>
 									<p className="text-xl xl:text-2xl font-bold">
 										{tvSeason.vote_average > 0
@@ -205,7 +207,7 @@ export function TvSeasonDetailsView({
 
 						<Card>
 							<CardContent className="flex items-center gap-4">
-								<Calendar className="h-5 w-5" />
+								<IconCalendarWeekFilled className="h-5 w-5" />
 								<div>
 									<p className="text-xl xl:text-2xl font-bold">
 										{tvSeason.air_date
@@ -228,7 +230,7 @@ export function TvSeasonDetailsView({
 
 						<Card>
 							<CardContent className="flex items-center gap-4">
-								<Layers className="h-5 w-5" />
+								<IconStack2 className="h-5 w-5" />
 								<div>
 									<p className="text-xl xl:text-2xl font-bold">
 										{tvSeason.episodes.length}

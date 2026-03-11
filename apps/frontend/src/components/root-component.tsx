@@ -1,13 +1,18 @@
 import { TanstackDevtools } from "@tanstack/react-devtools";
 import { HeadContent, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import { useEffect } from "react";
 import { config } from "@/lib/env";
+import { getLocale } from "@/paraglide/runtime";
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
 import Header from "./header";
 import { GlobalLoadingIndicator } from "./loading/loading-global";
 
 export function RootComponent() {
 	const isProd = config.appEnv === "production";
+	useEffect(() => {
+		document.documentElement.lang = getLocale();
+	}, []);
 
 	return (
 		<div>

@@ -1,6 +1,11 @@
+import {
+	IconStarFilled,
+	IconStopwatch,
+	IconUserStar,
+	IconUsers,
+} from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
-import { Star, Timer, User, Users } from "lucide-react";
 import type { Schemas } from "shared";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -53,7 +58,7 @@ export function EpisodesContainer({ episodes }: EpisodesContainerProps) {
 								<div className="flex flex-row gap-2">
 									{episode.runtime && episode.runtime > 0 ? (
 										<Badge className="flex items-center gap-1 border-none self-center">
-											<Timer className="w-3 h-3" />
+											<IconStopwatch className="w-4 h-4" />
 											{formatRuntime(episode.runtime)}
 										</Badge>
 									) : null}
@@ -62,7 +67,7 @@ export function EpisodesContainer({ episodes }: EpisodesContainerProps) {
 											variant="secondary"
 											className="flex items-center gap-1 self-center"
 										>
-											<Star className="h-3 w-3 text-yellow-500" />
+											<IconStarFilled className="h-4 w-4 text-yellow-500" />
 											{episode.vote_average.toFixed(1)}
 										</Badge>
 									) : null}
@@ -74,13 +79,13 @@ export function EpisodesContainer({ episodes }: EpisodesContainerProps) {
 							<div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
 								{episode.crew?.length > 0 ? (
 									<span className="flex items-center gap-1">
-										<Users className="h-3 w-3" />
+										<IconUsers className="h-4 w-4" />
 										{episode.crew.length} {m.episodes_container_crew_text()}
 									</span>
 								) : null}
 								{episode.guest_stars?.length > 0 ? (
 									<span className="flex items-center gap-1">
-										<User className="h-3 w-3" />
+										<IconUserStar className="h-4 w-4" />
 										{episode.guest_stars.length}{" "}
 										{m.episodes_container_guest_stars()}
 									</span>

@@ -1,40 +1,32 @@
 import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
-import fallbackPoster from "@/assets/user-placeholder.jpg";
+import { ResourceNotFound } from "@/components/errors/resource-not-found";
+import { LoadingCentered } from "@/components/loading/loading-centered";
+import { MediasCarousel } from "@/components/medias/medias-carousel";
+import { PersonBiography } from "@/components/person/person-biography";
+import { PersonProfilePortraitImage } from "@/components/person/person-profile-portrait-image";
+import { PersonTimeline } from "@/components/person/person-timeline";
+import { SocialLinks } from "@/components/social-links";
+import { BackButton } from "@/components/ui/back-button";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { calculateAge } from "@/utils/calculate-age";
 import { formatDate } from "@/utils/format-date";
 import { getSocialUrls } from "@/utils/social-urls";
 import { sortKnownForCredits } from "@/utils/sort-known-credits";
-import { ResourceNotFound } from "../errors/resource-not-found";
-import { LoadingCentered } from "../loading/loading-centered";
-import { MediasCarousel } from "../medias/medias-carousel";
-import { SocialLinks } from "../social-links";
-import { BackButton } from "../ui/back-button";
-import { Badge } from "../ui/badge";
-import {
-	Card,
-	CardContent,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "../ui/card";
-import { PersonBiography } from "./person-biography";
-import { PersonTimeline } from "./person-timeline";
 
 interface PersonDetailsViewProps {
 	person: Schemas.PersonDetailsWithCombinedCreditsAndSocials | undefined;
 	isLoading: boolean;
 	isError: boolean;
-	onBack: () => void;
 }
 
 export const PersonDetailsView = ({
 	person,
 	isLoading,
 	isError,
-	onBack,
 }: PersonDetailsViewProps) => {
 	const localeRegion = useAtomValue(localeRegionAtom);
 
@@ -47,7 +39,6 @@ export const PersonDetailsView = ({
 			<ResourceNotFound
 				title={m.error_title_not_found_person()}
 				description={m.error_desc_not_found_person()}
-				onBack={onBack}
 			/>
 		);
 	}
@@ -58,27 +49,18 @@ export const PersonDetailsView = ({
 
 	const sortedCredits = sortKnownForCredits(person);
 
-	const imageUrl = person?.profile_path
-		? `https://image.tmdb.org/t/p/w500${person.profile_path}`
-		: fallbackPoster;
-
 	return (
 		<div className="container">
-			<BackButton onBack={onBack} />
+			<BackButton />
 
 			<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
-				<div className="flex flex-col gap-2 items-center lg:items-start max-w-[250px] md:max-w-[300px] lg:max-w-[400px]">
-					<img
-						src={imageUrl}
+				<div className="flex flex-col gap-2 items-center lg:items-start max-w-[250px] md:max-w-[300px] lg:max-w-[500px]">
+					<PersonProfilePortraitImage
+						imagePath={person.profile_path}
 						alt={person.name}
-						className="rounded-lg shadow-lg w-full aspect-2/3 max-h-90 xl:max-h-[600px]"
-						onError={(e) => {
-							const target = e.currentTarget;
-							if (target.src !== fallbackPoster) {
-								target.src = fallbackPoster;
-							}
-						}}
+						imageSize="w500"
 					/>
+
 					{person.also_known_as && person.also_known_as.length > 0 ? (
 						<div className="hidden xl:flex mt-2 text-muted-foreground">
 							<div className="flex flex-col">
@@ -92,10 +74,11 @@ export const PersonDetailsView = ({
 						</div>
 					) : null}
 				</div>
-				<div className="w-full flex flex-col gap-4 overflow-hidden">
-					<Card className="shadow-none bg-transparent py-2 xl:p-0 border-none">
-						<CardContent className="xl:p-0">
-							<div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2">
+
+				<div className="w-full flex flex-col gap-4 overflow-hidden px-1">
+					<Card className="shadow-none rounded-none bg-transparent ring-0 lg:p-0">
+						<CardContent>
+							<div className="flex flex-row justify-between items-start gap-2">
 								<div className="flex flex-col gap-2">
 									<h1 className="text-4xl font-bold leading-relaxed">
 										{person.name}
@@ -150,25 +133,23 @@ export const PersonDetailsView = ({
 													: person.known_for_department}
 									</p>
 								</div>
-								{Object.keys(socialUrls).length > 0 && (
-									<div className="lg:self-start mt-3 lg:pr-2">
-										<SocialLinks socials={socialUrls} />
-									</div>
-								)}
 							</div>
 						</CardContent>
 					</Card>
 
-					<Card className="relative overflow-hidden border-none justify-center">
-						<CardHeader className="text-foreground">
+					<Card className="relative justify-center">
+						<CardHeader className="text-foreground flex flex-row items-center justify-between w-full">
 							<CardTitle>{m.person_biography()}</CardTitle>
+							{Object.keys(socialUrls).length > 0 ? (
+								<div className="ml-auto">
+									<SocialLinks socials={socialUrls} />
+								</div>
+							) : null}
 						</CardHeader>
 						<CardContent className="text-muted-foreground gap-4">
 							<PersonBiography biography={person.biography} />
-						</CardContent>
-						{person.place_of_birth ? (
-							<CardFooter>
-								<div className="flex flex-wrap gap-2">
+							{person.place_of_birth ? (
+								<div className="flex flex-wrap gap-2 pt-4">
 									<Badge
 										variant="secondary"
 										className="flex items-center gap-2"
@@ -183,8 +164,8 @@ export const PersonDetailsView = ({
 												})}
 									</Badge>
 								</div>
-							</CardFooter>
-						) : null}
+							) : null}
+						</CardContent>
 					</Card>
 					{person.combined_credits ? (
 						<div className="flex flex-col gap-4">

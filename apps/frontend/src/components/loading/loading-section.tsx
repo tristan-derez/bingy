@@ -1,4 +1,4 @@
-import { LoaderTwo } from "../ui/loader";
+import { LoaderTwo } from "@/components/ui/loader";
 
 type LoadingSectionProps = {
 	title: string;

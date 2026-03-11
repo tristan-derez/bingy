@@ -1,27 +1,35 @@
-import { Link, useNavigate, useRouter } from "@tanstack/react-router";
-import type { Session as BaseSession, User } from "better-auth";
-import { ExternalLink } from "lucide-react";
+import {
+	IconAdjustmentsHorizontal,
+	IconBrandGithub,
+	IconClockBolt,
+	IconExternalLink,
+	IconHeart,
+	IconHistory,
+	IconLifebuoy,
+	IconList,
+	IconLogout,
+	IconUser,
+} from "@tabler/icons-react";
+import { Link, useRouter } from "@tanstack/react-router";
 import { useState } from "react";
-import { FaGithub } from "react-icons/fa";
-import { IoLogOutSharp, IoSettingsSharp } from "react-icons/io5";
-import { MdSupport } from "react-icons/md";
-import { PiUserFill } from "react-icons/pi";
 import { toast } from "sonner";
-import { authClient } from "@/lib/auth-client";
-import { cn } from "@/lib/utils";
-import { m } from "@/paraglide/messages";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu";
+import { queryClient } from "@/integrations/tanstack-query/root-provider";
+import { authClient } from "@/lib/auth-client";
+import { sessionQueryOptions } from "@/lib/queries/session";
+import { cn } from "@/lib/utils";
+import { m } from "@/paraglide/messages";
 
-export type Session = BaseSession & {
-	user: User;
-};
+type SessionData = ReturnType<typeof authClient.useSession>["data"];
+
+export type Session = NonNullable<SessionData>;
 
 interface ProfileDropdownProps extends React.HTMLAttributes<HTMLDivElement> {
 	session: Session;
@@ -35,16 +43,19 @@ export const ProfileDropdown = ({
 	...props
 }: ProfileDropdownProps) => {
 	const router = useRouter();
-	const navigate = useNavigate();
 	const [isOpen, setIsOpen] = useState(false);
 
 	const logout = async () => {
 		onLinkClick?.();
-		toast.success(m.toast_success_logout());
+
 		await authClient.signOut();
-		router.invalidate().finally(() => {
-			navigate({ to: "/" });
-		});
+
+		queryClient.setQueryData(sessionQueryOptions.queryKey, null);
+		queryClient.removeQueries({ queryKey: ["accounts"] });
+
+		toast.success(m.toast_success_logout());
+
+		await router.navigate({ to: "/" });
 	};
 
 	return (
@@ -61,7 +72,7 @@ export const ProfileDropdown = ({
 						>
 							<div className="text-left flex-1">
 								<div className="text-sm font-medium tracking-tight leading-tight text-foreground">
-									{session.user.name}
+									{session.user.displayName}
 								</div>
 							</div>
 							<div className="relative">
@@ -73,7 +84,9 @@ export const ProfileDropdown = ({
 												alt={session.user.name}
 											/>
 											<AvatarFallback className="rounded-lg">
-												{session.user.name ? session.user.name[0] : "U"}
+												{session.user.name
+													? session.user.name[0].toUpperCase()
+													: "U"}
 											</AvatarFallback>
 										</Avatar>
 									</div>
@@ -127,14 +140,58 @@ export const ProfileDropdown = ({
 						)}
 					>
 						<DropdownMenuItem asChild>
-							<Link to="/profile" onClick={onLinkClick}>
-								<PiUserFill />
+							<Link
+								to="/user/$username"
+								params={{ username: session.user.name }}
+								onClick={onLinkClick}
+							>
+								<IconUser />
 								{m.dropdown_profile_text()}
 							</Link>
 						</DropdownMenuItem>
 						<DropdownMenuItem asChild>
+							<Link
+								to="/user/$username/watchlist"
+								params={{ username: session.user.name }}
+								onClick={onLinkClick}
+							>
+								<IconClockBolt />
+								{m.dropdown_watchlist_text()}
+							</Link>
+						</DropdownMenuItem>
+						<DropdownMenuItem asChild>
+							<Link
+								to="/user/$username/lists"
+								params={{ username: session.user.name }}
+								onClick={onLinkClick}
+							>
+								<IconList />
+								{m.dropdown_lists_text()}
+							</Link>
+						</DropdownMenuItem>
+						<DropdownMenuItem asChild>
+							<Link
+								to="/user/$username/favorites"
+								params={{ username: session.user.name }}
+								onClick={onLinkClick}
+							>
+								<IconHeart />
+								{m.dropdown_favorites_text()}
+							</Link>
+						</DropdownMenuItem>
+						<DropdownMenuItem asChild>
+							<Link
+								to="/user/$username/history"
+								params={{ username: session.user.name }}
+								onClick={onLinkClick}
+							>
+								<IconHistory />
+								{m.dropdown_history_text()}
+							</Link>
+						</DropdownMenuItem>
+						<DropdownMenuItem asChild>
 							<Link to="/settings" onClick={onLinkClick}>
-								<IoSettingsSharp />
+								<IconAdjustmentsHorizontal />
 								{m.dropdown_settings_text()}
 							</Link>
 						</DropdownMenuItem>
@@ -147,19 +204,19 @@ export const ProfileDropdown = ({
 								className="flex items-center justify-between"
 							>
 								<div className="flex items-center gap-2">
-									<FaGithub />
+									<IconBrandGithub className="w-4 h-4" />
 									<span>GitHub</span>
 								</div>
-								<ExternalLink className="text-muted-foreground" />
+								<IconExternalLink className="text-muted-foreground" />
 							</a>
 						</DropdownMenuItem>
 						<DropdownMenuItem>
-							<MdSupport />
+							<IconLifebuoy className="w-4 h-4" />
 							<span>{m.dropdown_support_text()}</span>
 						</DropdownMenuItem>
 						<DropdownMenuSeparator className="bg-border" />
 						<DropdownMenuItem onSelect={logout}>
-							<IoLogOutSharp />
+							<IconLogout className="w-4 h-4" />
 							<span>{m.dropdown_logout_text()}</span>
 						</DropdownMenuItem>
 					</DropdownMenuContent>

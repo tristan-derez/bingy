@@ -1,7 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import type { Schemas } from "shared";
-import fallbackPoster from "@/assets/movie-placeholder.jpg";
-import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
+import fallbackPoster from "@/assets/media-image-placeholder.jpg";
+import {
+	Card,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
+import { getTmdbImageUrl } from "@/utils/utils";
 
 interface MediaCardProps {
 	media: Schemas.MediaWithCastCredits | Schemas.MediaWithCrewCredits;
@@ -14,9 +20,7 @@ const isCastCredit = (
 };
 
 export const MediaCard = ({ media }: MediaCardProps) => {
-	const imageUrl = media.poster_path
-		? `https://image.tmdb.org/t/p/w500${media.poster_path}`
-		: fallbackPoster;
+	const imageUrl = getTmdbImageUrl(media.poster_path, "w500");
 
 	const title = media.media_type === "movie" ? media.title : media.name;
 	const linkTo =
@@ -33,7 +37,7 @@ export const MediaCard = ({ media }: MediaCardProps) => {
 			<Card className="w-full h-full border-none bg-accent overflow-hidden pt-0 select-none gap-4 pb-4">
 				<div className="relative aspect-3/4 md:aspect-2/3 w-full overflow-hidden">
 					<img
-						src={imageUrl}
+						src={imageUrl ?? fallbackPoster}
 						alt={title}
 						loading="lazy"
 						className="h-full w-full object-cover"

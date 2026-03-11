@@ -1,4 +1,4 @@
-import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
 import { TvCreditsView } from "@/components/tv/tv-credits";
@@ -11,7 +11,6 @@ export const Route = createFileRoute("/tv/$tvId_/credits")({
 
 function TvCreditsPage() {
 	const { tvId } = Route.useParams();
-	const router = useRouter();
 	const localeRegion = useAtomValue(localeRegionAtom);
 	const region = useAtomValue(regionAtom);
 
@@ -26,11 +25,6 @@ function TvCreditsPage() {
 	);
 
 	return (
-		<TvCreditsView
-			credits={credits}
-			isLoading={isLoading}
-			isError={isError}
-			onBack={() => router.history.back()}
-		/>
+		<TvCreditsView credits={credits} isLoading={isLoading} isError={isError} />
 	);
 }

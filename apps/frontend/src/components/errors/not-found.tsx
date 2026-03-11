@@ -1,8 +1,8 @@
 import { useNavigate } from "@tanstack/react-router";
 import cuteAnimal404 from "@/assets/not-found/404-cute-animal.png";
+import { CenteredLayout } from "@/components/layout/centered-layout";
 import { Button } from "@/components/ui/button";
 import { m } from "@/paraglide/messages";
-import { CenteredLayout } from "../layout/centered-layout";
 
 export function NotFoundComponent() {
 	const navigate = useNavigate();

@@ -24,9 +24,13 @@ import healthRoutes from "#web/routes/health";
 import movieRoutes from "#web/routes/movie";
 import networkRoutes from "#web/routes/network";
 import personRoutes from "#web/routes/person";
+import ratingRoutes from "#web/routes/rating";
 import searchRoutes from "#web/routes/search";
 import trendingRoutes from "#web/routes/trending";
 import tvRoutes from "#web/routes/tv";
+import userFavoriteRoutes from "#web/routes/user-favorites";
+import userHistoryRoutes from "#web/routes/user-history";
+import userListRoutes from "#web/routes/user-list";
 import watchProvidersRoutes from "#web/routes/watch-providers";
 
 declare global {
@@ -43,9 +47,9 @@ const app = new Hono<{
 app.use(
 	"*",
 	cors({
-		origin: [env.FRONT_URL],
+		origin: [env.FRONT_URL, "http://localhost:5173"],
 		allowHeaders: ["Content-Type", "Authorization"],
-		allowMethods: ["POST", "GET", "OPTIONS"],
+		allowMethods: ["POST", "GET", "DELETE", "PUT", "OPTIONS", "PATCH"],
 		exposeHeaders: ["Content-Length"],
 		maxAge: 600,
 		credentials: true,
@@ -71,6 +75,10 @@ app.use("*", sessionMiddleware);
 const api = new Hono();
 api.route("/auth", authRoutes);
 api.route("/health", healthRoutes);
+api.route("/lists", userListRoutes);
+api.route("/history", userHistoryRoutes);
+api.route("/favorites", userFavoriteRoutes);
+api.route("/rating", ratingRoutes);
 api.use("*", cacheMiddleware);
 api.route("/movies", movieRoutes);
 api.route("/tv", tvRoutes);

@@ -1,10 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, useNavigate } from "@tanstack/react-router";
-import { Loader2 } from "lucide-react";
+import {
+	IconBrandGoogleFilled,
+	IconInfoCircle,
+	IconLoader,
+} from "@tabler/icons-react";
+import { Link, useRouter } from "@tanstack/react-router";
 import React, { useId } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
-import { FaCircleInfo } from "react-icons/fa6";
-import { FcGoogle } from "react-icons/fc";
 import { toast } from "sonner";
 import type { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -33,19 +35,30 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { queryClient } from "@/integrations/tanstack-query/root-provider";
 import { authClient } from "@/lib/auth-client";
 import { config } from "@/lib/env";
+import { sessionQueryOptions } from "@/lib/queries/session";
 import { m } from "@/paraglide/messages";
 import { signUpFormSchema } from "@/schemas/signup-form-schema";
 import { getRandomAvatarUrl } from "@/utils/avatar-generator";
 
+type ErrorWithDetails = {
+	details?: {
+		cause?: {
+			constraint_name?: string;
+		};
+	};
+};
+
 export function SignUpForm() {
 	const [isSubmitting, setIsSubmitting] = React.useState(false);
-	const navigate = useNavigate();
+	const router = useRouter();
 	const id = useId();
 
 	const form = useForm<z.infer<typeof signUpFormSchema>>({
 		resolver: zodResolver(signUpFormSchema),
+		mode: "onTouched",
 		defaultValues: {
 			name: "",
 			email: "",
@@ -63,16 +76,40 @@ export function SignUpForm() {
 				email: formData.email,
 				password: formData.password,
 				name: formData.name,
-				image: getRandomAvatarUrl(),
-				callbackURL: `${config.appUrl}/welcome`,
+				image: getRandomAvatarUrl(formData.name),
+				callbackURL: `${config.appUrl}/verify-email`,
 			});
 
-			if (data && data.user) {
-				toast.success(`Please verify your email at ${data.user.email}`);
-				navigate({ to: "/welcome" });
+			if (error) {
+				if (
+					"details" in error &&
+					(error as ErrorWithDetails).details?.cause?.constraint_name ===
+						"users_name_unique"
+				) {
+					toast.error("This username is already taken");
+					return;
+				}
+
+				if (error.code === "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL") {
+					toast.error("This email is already used. Use another one.");
+					return;
+				}
+
+				toast.error(m.toast_error_generic());
+				return;
 			}
 
-			error && toast.error(m.toast_error_generic());
+			if (data?.user) {
+				await queryClient.invalidateQueries({
+					queryKey: sessionQueryOptions.queryKey,
+				});
+				await queryClient.refetchQueries({
+					queryKey: sessionQueryOptions.queryKey,
+				});
+
+				toast.success(`Please verify your email at ${data.user.email}`);
+				await router.navigate({ to: "/verify-email" });
+			}
 		} catch (err) {
 			toast.error(m.toast_error_generic());
 		} finally {
@@ -132,7 +169,7 @@ export function SignUpForm() {
 													<TooltipProvider>
 														<Tooltip>
 															<TooltipTrigger className="ml-2">
-																<FaCircleInfo className="w-4 h-4" />
+																<IconInfoCircle className="h-4 w-4" />
 															</TooltipTrigger>
 															<TooltipContent>
 																<p>{m.signup_username_tooltip()}</p>
@@ -188,7 +225,7 @@ export function SignUpForm() {
 													<TooltipProvider>
 														<Tooltip>
 															<TooltipTrigger className="ml-2">
-																<FaCircleInfo className="w-4 h-4" />
+																<IconInfoCircle className="h-4 w-4" />
 															</TooltipTrigger>
 															<TooltipContent>
 																{m.signup_password_tooltip()}
@@ -215,7 +252,7 @@ export function SignUpForm() {
 									>
 										{isRegistering ? (
 											<span className="flex items-center justify-center gap-2">
-												<Loader2 className="animate-spin h-4 w-4" />
+												<IconLoader className="animate-spin h-4 w-4" />
 												{m.btn_registering_signup()}
 											</span>
 										) : (
@@ -230,7 +267,7 @@ export function SignUpForm() {
 						<SeparatorWithText text={m.signup_separator_text()} />
 						<div className="flex gap-2">
 							<OAuthButton
-								icon={FcGoogle}
+								icon={IconBrandGoogleFilled}
 								label={m.signup_with_provider({ provider: "Google" })}
 								text="Google"
 								onClick={() => handleOAuthRegister("google")}

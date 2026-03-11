@@ -1,20 +1,22 @@
-import { useNavigate, useRouteContext } from "@tanstack/react-router";
+import { IconBrandGoogle } from "@tabler/icons-react";
+import { useNavigate } from "@tanstack/react-router";
+import type { Account } from "better-auth";
 import { useState } from "react";
-import { FcGoogle } from "react-icons/fc";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { config } from "@/lib/env";
 import { m } from "@/paraglide/messages";
 import { OAuthButton } from "../ui/oauth-button";
 
-export function LinkAccountComponent() {
-	const { connections } = useRouteContext({ from: "/_auth/settings" });
+type LinkAccountComponentProps = {
+	accounts: Account[];
+};
+
+export function LinkAccountComponent({ accounts }: LinkAccountComponentProps) {
 	const navigate = useNavigate();
 	const [isLoading, setIsLoading] = useState(false);
 
-	const googleConnected = connections?.data?.some(
-		(c) => c.providerId === "google",
-	);
+	const googleConnected = accounts.some((c) => c.providerId === "google");
 
 	const getButtonText = () => {
 		if (isLoading) {
@@ -33,8 +35,8 @@ export function LinkAccountComponent() {
 			setIsLoading(true);
 
 			if (googleConnected) {
-				if ((connections?.data?.length ?? 0) <= 1) {
-					toast.error(m.toast_error_unlink_account());
+				if (accounts.length <= 1) {
+					toast.error(m.toast_error_unlink_account({ provider: "Google" }));
 					return;
 				}
 
@@ -47,7 +49,6 @@ export function LinkAccountComponent() {
 					callbackURL: `${config.appUrl}/settings`,
 					errorCallbackURL: `${config.appUrl}/settings`,
 				});
-				// errors comes from the url in the settings route, thats where we call a toast
 			}
 		} catch (err) {
 			toast.error(m.toast_error_generic());
@@ -81,7 +82,7 @@ export function LinkAccountComponent() {
 			</div>
 
 			<OAuthButton
-				icon={FcGoogle}
+				icon={IconBrandGoogle}
 				label="Google"
 				text={getButtonText()}
 				onClick={() => handleLinkAccount("google")}

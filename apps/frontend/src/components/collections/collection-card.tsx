@@ -40,7 +40,7 @@ export function CollectionCard({ collection }: CollectionCardProps) {
 		>
 			<CardHeader>
 				<CardTitle>{collection.name}</CardTitle>
-				<CardDescription>
+				<CardDescription className="text-foreground">
 					{m.collection_card_desc({
 						numberOfMovies: collectionData.parts.length,
 					})}
@@ -48,7 +48,6 @@ export function CollectionCard({ collection }: CollectionCardProps) {
 			</CardHeader>
 			<CardContent>
 				<Button
-					asChild
 					variant="outline"
 					className="w-full lg:w-1/2 xl:w-1/3 text-foreground"
 				>

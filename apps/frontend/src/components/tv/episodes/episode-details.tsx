@@ -1,15 +1,18 @@
+import {
+	IconCalendarWeekFilled,
+	IconClock,
+	IconStarFilled,
+} from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
-import { Calendar, Clock, Star } from "lucide-react";
 import type { Schemas } from "shared";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
 import { LoadingCentered } from "@/components/loading/loading-centered";
-import { MediaOverview } from "@/components/medias/overview";
+import { MediaOverview } from "@/components/medias/media-overview";
 import { CastCarousel } from "@/components/person/cast-carousel";
 import { BackButton } from "@/components/ui/back-button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
@@ -21,7 +24,6 @@ interface TvEpisodeDetailViewProps {
 	tvId: number;
 	isLoading: boolean;
 	isError: boolean;
-	onBack: () => void;
 }
 
 export function TvEpisodeDetailsView({
@@ -30,9 +32,9 @@ export function TvEpisodeDetailsView({
 	tvId,
 	isLoading,
 	isError,
-	onBack,
 }: TvEpisodeDetailViewProps) {
 	const localeRegion = useAtomValue(localeRegionAtom);
+
 	if (isLoading) {
 		return <LoadingCentered />;
 	}
@@ -42,7 +44,6 @@ export function TvEpisodeDetailsView({
 			<ResourceNotFound
 				title={m.episode_details_not_found_title()}
 				description={m.episode_details_not_found_desc()}
-				onBack={onBack}
 			/>
 		);
 	}
@@ -55,21 +56,24 @@ export function TvEpisodeDetailsView({
 	};
 
 	const crewWithRoles =
-		credits?.crew.reduce<Map<number, { name: string; roles: Set<string> }>>(
-			(map, person) => {
-				const role = getRole(person);
-				if (!role) return map;
+		credits?.crew.reduce<
+			Map<number, { id: number; name: string; roles: Set<string> }>
+		>((map, person) => {
+			const role = getRole(person);
+			if (!role) return map;
 
-				const existing = map.get(person.id);
-				if (existing) {
-					existing.roles.add(role);
-				} else {
-					map.set(person.id, { name: person.name, roles: new Set([role]) });
-				}
-				return map;
-			},
-			new Map(),
-		) ?? new Map();
+			const existing = map.get(person.id);
+			if (existing) {
+				existing.roles.add(role);
+			} else {
+				map.set(person.id, {
+					id: person.id,
+					name: person.name,
+					roles: new Set([role]),
+				});
+			}
+			return map;
+		}, new Map()) ?? new Map();
 
 	const crewToShow = Array.from(crewWithRoles.values());
 
@@ -94,7 +98,7 @@ export function TvEpisodeDetailsView({
 
 	return (
 		<div className="container">
-			<BackButton onBack={onBack} />
+			<BackButton />
 
 			<div className="flex flex-col gap-4 pt-4">
 				<div className="flex flex-col gap-2">
@@ -109,9 +113,9 @@ export function TvEpisodeDetailsView({
 				</div>
 
 				<Card
-					className={`relative overflow-hidden min-h-[300px] justify-center ${
+					className={`relative overflow-hidden justify-between ${
 						backgroundImage
-							? "text-dark-card-foreground border-none"
+							? "text-dark-card-foreground min-h-[300px] border-none p-8"
 							: "text-foreground border"
 					}`}
 					style={
@@ -124,28 +128,29 @@ export function TvEpisodeDetailsView({
 							: undefined
 					}
 				>
-					<CardHeader>
+					<CardHeader className="w-full">
 						<CardTitle>{m.episode_details_overview_title()}</CardTitle>
+						<MediaOverview overview={episode.overview} />
 					</CardHeader>
-					<CardContent className="flex flex-col gap-4">
-						<MediaOverview overview={episode.overview} bg={backgroundImage} />
-
+					<CardContent className="flex flex-col gap-2">
 						{crewToShow.length > 0 && (
-							<>
-								<Separator />
-								<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-									{crewToShow.slice(0, 3).map((person) => (
-										<div key={`${person.name}`}>
+							<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+								{crewToShow.slice(0, 3).map((person) => (
+									<div className="flex flex-col" key={person.id}>
+										<Link
+											to="/person/$personId"
+											params={{ personId: person.id.toString() }}
+										>
 											<h3 className="font-semibold text-lg whitespace-nowrap">
 												{person.name}
 											</h3>
-											<p className="text-muted-foreground text-sm">
-												{Array.from(person.roles).join(", ")}
-											</p>
-										</div>
-									))}
-								</div>
-							</>
+										</Link>
+										<p className="text-muted-foreground text-sm">
+											{Array.from(person.roles).join(", ")}
+										</p>
+									</div>
+								))}
+							</div>
 						)}
 					</CardContent>
 				</Card>
@@ -154,7 +159,7 @@ export function TvEpisodeDetailsView({
 					{episode.vote_count > 0 ? (
 						<Card>
 							<CardContent className="flex items-center gap-4">
-								<Star className="h-5 w-5 text-yellow-500" />
+								<IconStarFilled className="h-5 w-5 text-yellow-500" />
 								<div>
 									<p className="text-xl xl:text-2xl font-bold">
 										{episode.vote_average.toFixed(1)}
@@ -169,7 +174,7 @@ export function TvEpisodeDetailsView({
 
 					<Card>
 						<CardContent className="flex items-center gap-4">
-							<Clock className="h-5 w-5" />
+							<IconClock className="h-5 w-5" />
 							<div>
 								<p className="text-xl xl:text-2xl font-bold">
 									{formatRuntime(episode.runtime)}
@@ -183,7 +188,7 @@ export function TvEpisodeDetailsView({
 
 					<Card>
 						<CardContent className="flex items-center gap-4">
-							<Calendar className="h-5 w-5" />
+							<IconCalendarWeekFilled className="h-5 w-5" />
 							<div>
 								<p className="text-xl xl:text-2xl font-bold">
 									{episode.air_date

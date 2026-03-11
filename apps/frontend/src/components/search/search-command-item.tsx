@@ -1,27 +1,25 @@
+import { IconDeviceTv, IconMovie, IconUser } from "@tabler/icons-react";
 import { useNavigate } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
-import { FilmIcon, TvIcon, UserIcon } from "lucide-react";
 import type { Schemas } from "shared";
-import { Badge } from "@/components/ui/badge";
+import { MovieBadge } from "@/components/badges/movie-badge";
+import { PersonBadge } from "@/components/badges/person-badge";
+import { TvShowBadge } from "@/components/badges/tv-badge";
 import { CommandItem } from "@/components/ui/command";
 import { localeRegionAtom } from "@/lib/atoms/region";
-import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
-interface SearchItemComboboxProps {
+interface SearchCommandItemProps {
 	item: Schemas.MediaMulti;
 	onSelect: () => void;
 }
 
-export const SearchItemCombobox = ({
+export const SearchCommandItem = ({
 	item,
 	onSelect,
-}: SearchItemComboboxProps) => {
+}: SearchCommandItemProps) => {
 	const navigate = useNavigate();
 	const localeRegion = useAtomValue(localeRegionAtom);
-
-	const commonClasses = "flex items-center gap-2 hover:cursor-pointer";
 
 	if (item.media_type === "movie") {
 		const movie = item as Schemas.MovieMedia;
@@ -37,9 +35,9 @@ export const SearchItemCombobox = ({
 					});
 					onSelect();
 				}}
-				className={commonClasses}
+				className="[&>svg:last-child]:hidden"
 			>
-				<FilmIcon className="h-4 w-4 flex-shrink-0" />
+				<IconMovie className="shrink-0" />
 				<span className="flex-1 line-clamp-1 leading-relaxed">
 					{movie.title}
 				</span>
@@ -51,12 +49,7 @@ export const SearchItemCombobox = ({
 							})}
 						</span>
 					)}
-					<Badge
-						variant="secondary"
-						className="bg-blue-500/10 text-blue-500 hover:bg-blue-500/20 min-w-18 justify-center"
-					>
-						{m.search_movie_badge()}
-					</Badge>
+					<MovieBadge />
 				</div>
 			</CommandItem>
 		);
@@ -76,9 +69,9 @@ export const SearchItemCombobox = ({
 					});
 					onSelect();
 				}}
-				className={commonClasses}
+				className="[&>svg:last-child]:hidden"
 			>
-				<TvIcon className="h-4 w-4 flex-shrink-0" />
+				<IconDeviceTv className="shrink-0" />
 				<span className="flex-1 line-clamp-1 leading-relaxed">{tv.name}</span>
 
 				<div className="flex items-center gap-2">
@@ -89,12 +82,7 @@ export const SearchItemCombobox = ({
 							})}
 						</span>
 					)}
-					<Badge
-						variant="secondary"
-						className="bg-purple-500/10 text-purple-500 hover:bg-purple-500/20 min-w-18 justify-center"
-					>
-						{m.search_tv_badge()}
-					</Badge>
+					<TvShowBadge />
 				</div>
 			</CommandItem>
 		);
@@ -112,28 +100,10 @@ export const SearchItemCombobox = ({
 					});
 					onSelect();
 				}}
-				className={commonClasses}
+				className="[&>svg:last-child]:hidden"
 			>
-				{item.profile_path ? (
-					<Avatar className="h-4 w-4 flex-shrink-0 rounded-xs overflow-hidden p-0">
-						<AvatarImage
-							src={
-								item.profile_path
-									? `https://image.tmdb.org/t/p/w500${item.profile_path}`
-									: undefined
-							}
-							alt={item.name}
-							className="h-full w-full object-cover"
-						/>
-						<AvatarFallback>
-							<UserIcon className="h-4 w-4" />
-						</AvatarFallback>
-					</Avatar>
-				) : (
-					<UserIcon className="h-4 w-4" />
-				)}
-
-				<span className="flex-1">{item.name}</span>
+				<IconUser className="shrink-0" />
+				<span className="flex-1 line-clamp-1">{item.name}</span>
 
 				<div className="flex items-center gap-2">
 					{item.known_for_department && (
@@ -141,12 +111,8 @@ export const SearchItemCombobox = ({
 							{item.known_for_department}
 						</span>
 					)}
-					<Badge
-						variant="secondary"
-						className="bg-green-500/10 text-green-500 hover:bg-green-500/20 min-w-18 justify-center"
-					>
-						{m.search_person_badge()}
-					</Badge>
+
+					<PersonBadge />
 				</div>
 			</CommandItem>
 		);

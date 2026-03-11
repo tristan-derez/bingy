@@ -1,5 +1,11 @@
 import type { Schemas } from "shared";
-import fallbackPoster from "@/assets/movie-placeholder.jpg";
+import { ResourceNotFound } from "@/components/errors/resource-not-found";
+import { LoadingCentered } from "@/components/loading/loading-centered";
+import { MediaOverview } from "@/components/medias/media-overview";
+import { MediaPortraitImage } from "@/components/medias/media-portrait-image";
+import { MovieCarousel } from "@/components/movies/movie-carousel";
+import { BackButton } from "@/components/ui/back-button";
+import { Badge } from "@/components/ui/badge";
 import {
 	Card,
 	CardContent,
@@ -8,27 +14,22 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { m } from "@/paraglide/messages";
-import { ResourceNotFound } from "../errors/resource-not-found";
-import { LoadingCentered } from "../loading/loading-centered";
-import { MediaOverview } from "../medias/overview";
-import { MovieCarousel } from "../movies/movie-carousel";
-import { BackButton } from "../ui/back-button";
-import { Badge } from "../ui/badge";
+import { getTmdbImageUrl } from "@/utils/utils";
 
 interface CollectionDetailsViewProps {
 	collectionData: Schemas.CollectionDetails | undefined;
 	moviesData: Schemas.MovieDetails[] | [];
 	isLoading: boolean;
 	isError: boolean;
-	onBack: () => void;
 }
 
+// @todo: rework this page (move the background_path to the top etc etc)
+// probably get rid of the budget and earning as this is not very relevant / not always accurate data
 export function CollectionDetailsView({
 	collectionData,
 	moviesData,
 	isLoading,
 	isError,
-	onBack,
 }: CollectionDetailsViewProps) {
 	if (isLoading) {
 		return <LoadingCentered />;
@@ -39,7 +40,6 @@ export function CollectionDetailsView({
 			<ResourceNotFound
 				title={m.error_title_not_found_collection()}
 				description={m.error_desc_not_found_collection()}
-				onBack={onBack}
 			/>
 		);
 	}
@@ -84,17 +84,24 @@ export function CollectionDetailsView({
 		maximumFractionDigits: 0,
 	}).format(totalBudget);
 
-	const backgroundImage = collectionData.backdrop_path
-		? `https://image.tmdb.org/t/p/original${collectionData.backdrop_path}`
-		: undefined;
+	const sortedParts = [...collectionData.parts].sort((a, b) => {
+		const dateA = a.release_date
+			? new Date(a.release_date).getTime()
+			: Infinity;
+		const dateB = b.release_date
+			? new Date(b.release_date).getTime()
+			: Infinity;
+		return dateA - dateB;
+	});
 
-	const posterImage = collectionData.poster_path
-		? `https://image.tmdb.org/t/p/w500${collectionData.poster_path}`
-		: fallbackPoster;
+	const backgroundImage = getTmdbImageUrl(
+		collectionData.backdrop_path,
+		"original",
+	);
 
 	return (
 		<div className="container">
-			<BackButton onBack={onBack} />
+			<BackButton />
 
 			<div className="flex flex-col gap-4 pt-2">
 				<Card
@@ -111,16 +118,10 @@ export function CollectionDetailsView({
 				>
 					<div className="flex flex-col md:flex-row gap-6 p-6 items-center md:items-start">
 						<div className="flex justify-center md:justify-start">
-							<img
-								src={posterImage}
-								alt={`${collectionData.name} poster`}
-								className="rounded-lg shadow-lg w-48 h-auto"
-								onError={(e) => {
-									const target = e.currentTarget;
-									if (target.src !== fallbackPoster) {
-										target.src = fallbackPoster;
-									}
-								}}
+							<MediaPortraitImage
+								imagePath={collectionData.poster_path}
+								alt={collectionData.name}
+								imageSize="w500"
 							/>
 						</div>
 
@@ -142,13 +143,7 @@ export function CollectionDetailsView({
 								</CardDescription>
 							</CardHeader>
 							<CardContent className="p-0 flex flex-col gap-2">
-								<h2 className="text-semi-bold text-md">
-									{m.collection_details_title()}
-								</h2>
-								<MediaOverview
-									overview={collectionData.overview}
-									bg={backgroundImage}
-								/>
+								<MediaOverview overview={collectionData.overview} />
 
 								{totalBudget > 0 ? (
 									<div className="flex gap-2">
@@ -176,7 +171,7 @@ export function CollectionDetailsView({
 					title={m.collection_carousel_title({
 						number: collectionData.parts.length,
 					})}
-					movies={collectionData.parts}
+					movies={sortedParts}
 				/>
 			</div>
 		</div>

@@ -1,5 +1,5 @@
+import { IconLanguage } from "@tabler/icons-react";
 import { useAtomValue, useSetAtom } from "jotai";
-import { Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -30,8 +30,8 @@ export const LocaleRegionDropdown = () => {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
-				<Button variant="ghost" size="icon">
-					<Globe className="h-4 w-4" />
+				<Button variant="ghost" size="icon" aria-label="language">
+					<IconLanguage />
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end">

@@ -1,12 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
-import fallbackPoster from "@/assets/movie-placeholder.jpg";
+import fallbackPoster from "@/assets/media-image-placeholder.jpg";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
+import { getTmdbImageUrl } from "@/utils/utils";
 
 export function SeasonCard({
 	season,
@@ -16,9 +17,7 @@ export function SeasonCard({
 	tvId: number;
 }) {
 	const localeRegion = useAtomValue(localeRegionAtom);
-	const imageUrl = season.poster_path
-		? `https://image.tmdb.org/t/p/w500${season.poster_path}`
-		: fallbackPoster;
+	const imageUrl = getTmdbImageUrl(season.poster_path, "w500");
 
 	return (
 		<Link
@@ -58,7 +57,7 @@ export function SeasonCard({
 				<CardContent>
 					<div className="flex gap-4 flex-col sm:flex-row sm:items-start">
 						<img
-							src={imageUrl}
+							src={imageUrl ?? fallbackPoster}
 							alt={season.name}
 							className="rounded-lg w-50 h-80 lg:w-42 lg:h-62 object-cover mx-auto sm:mx-0"
 							onError={(e) => {

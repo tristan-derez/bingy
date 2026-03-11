@@ -2,6 +2,12 @@
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
+@custom-variant data-horizontal (&[data-orientation="horizontal"]);
+@custom-variant data-vertical (&[data-orientation="vertical"]);
+
+@theme {
+	--breakpoint-xs: 34rem;
+}
 
 @theme inline {
 	--radius-sm: calc(var(--radius) - 4px);
@@ -125,6 +131,14 @@
 	--brand: oklch(0.7104 0.1908 42.84);
 }
 
+@utility no-scrollbar {
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
 @layer base {
 	* {
 		@apply border-border outline-ring/50;
@@ -134,8 +148,25 @@
 	}
 }
 
-::view-transition-old(root),
+::view-transition-group(root) {
+	animation-duration: 0.7s;
+	animation-timing-function: ease-in-out;
+}
+
 ::view-transition-new(root) {
+	animation-name: reveal-new;
+}
+
+::view-transition-old(root) {
 	animation: none;
-	mix-blend-mode: normal;
+	z-index: -1;
+}
+
+@keyframes reveal-new {
+	from {
+		clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%);
+	}
+	to {
+		clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+	}
 }

@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { IconLoader } from "@tabler/icons-react";
 import { useNavigate } from "@tanstack/react-router";
-import { Loader2 } from "lucide-react";
 import React, { useId } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -115,7 +115,7 @@ export function ForgotPasswordForm({ email }: ForgotPasswordFormProps) {
 								>
 									{isSubmitting ? (
 										<span className="flex items-center justify-center gap-2">
-											<Loader2 className="animate-spin h-4 w-4" />
+											<IconLoader className="animate-spin h-4 w-4" />
 											{m.btn_sending_email()}
 										</span>
 									) : (

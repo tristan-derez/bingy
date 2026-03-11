@@ -18,11 +18,11 @@ const router = createRouter({
 	context: {
 		queryClient,
 	},
-	defaultPreload: false,
+	defaultPreload: "intent",
 	scrollRestoration: true,
 	defaultStructuralSharing: true,
-	defaultPreloadStaleTime: 0,
-	defaultPendingMinMs: 0,
+	defaultPreloadStaleTime: 30_000,
+	defaultPendingMinMs: 30_000,
 });
 
 // Register the router instance for type safety

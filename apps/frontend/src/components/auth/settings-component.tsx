@@ -1,4 +1,5 @@
 import { useRouteContext } from "@tanstack/react-router";
+import type { Account } from "better-auth";
 import { UpdatePasswordForm } from "@/components/auth/forms/update-password-form";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -11,15 +12,19 @@ import { EnableTwoFactorForm } from "./forms/enable-two-factor-form";
 import { UpdateEmailForm } from "./forms/update-email-form";
 import { LinkAccountComponent } from "./link-account";
 
-export function SettingsComponent() {
-	const { connections } = useRouteContext({ from: "/_auth/settings" });
+type SettingsComponentProps = {
+	accounts: Account[];
+};
+
+export function SettingsComponent({ accounts }: SettingsComponentProps) {
 	const { session } = useRouteContext({ from: "__root__" });
 
-	const hasPassword = connections?.data?.some(
-		(c) => c.providerId === "credential",
-	);
+	if (!session) {
+		return null;
+	}
 
-	const twoFactorEnabled = session?.user?.twoFactorEnabled;
+	const hasPassword = accounts.some((c) => c.providerId === "credential");
+	const twoFactorEnabled = session.user.twoFactorEnabled;
 
 	return (
 		<Tabs defaultValue="account">
@@ -36,7 +41,7 @@ export function SettingsComponent() {
 					<CardTitle>{m.settings_card_title_account()}</CardTitle>
 					<CardDescription>{m.settings_card_desc_account()}</CardDescription>
 					<Separator />
-					<LinkAccountComponent />
+					<LinkAccountComponent accounts={accounts} />
 					<Separator />
 					{hasPassword && !twoFactorEnabled && (
 						<>
@@ -52,7 +57,7 @@ export function SettingsComponent() {
 					)}
 					<UpdateEmailForm />
 					<Separator />
-					<UpdatePasswordForm />
+					<UpdatePasswordForm hasPassword={hasPassword} />
 					<Separator />
 					<DeleteAccountForm />
 				</Card>

@@ -9,14 +9,12 @@ interface TvSeasonsDetailsViewProps {
 	tv: Schemas.TvDetails | undefined;
 	isLoading: boolean;
 	isError: boolean;
-	onBack: () => void;
 }
 
 export function TvSeasonsDetailsView({
 	tv,
 	isLoading,
 	isError,
-	onBack,
 }: TvSeasonsDetailsViewProps) {
 	if (isLoading) {
 		return <LoadingCentered />;
@@ -27,7 +25,6 @@ export function TvSeasonsDetailsView({
 			<ResourceNotFound
 				title={m.seasons_details_not_found_title()}
 				description={m.seasons_details_not_found_desc()}
-				onBack={onBack}
 			/>
 		);
 	}
@@ -35,11 +32,12 @@ export function TvSeasonsDetailsView({
 	const regularSeasons = tv.seasons.filter(
 		(season) => season.season_number > 0,
 	);
+
 	const specialSeason = tv.seasons.find((season) => season.season_number === 0);
 
 	return (
 		<div className="container">
-			<BackButton onBack={onBack} />
+			<BackButton />
 
 			<div className="grid gris-cols-1 gap-4 pt-2">
 				<div>

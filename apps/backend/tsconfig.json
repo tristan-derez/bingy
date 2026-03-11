@@ -8,18 +8,17 @@
 		"jsxImportSource": "react",
 		"esModuleInterop": true,
 		"allowSyntheticDefaultImports": true,
-		"baseUrl": "./",
 		"outDir": "./dist",
 		"paths": {
-			"#lib/*": ["src/lib/*"],
-			"#emails/*": ["src/emails/*"],
-			"#db/schemas/*": ["src/db/schemas/*"],
-			"#middlewares/*": ["src/middlewares/*"],
-			"#tasks/*": ["src/tasks/*"],
-			"#utils/*": ["src/utils/*"],
-			"#web/*": ["src/web/*"],
-			"#types/*": ["src/types/*"],
-			"#validators/*": ["src/web/validators/*"]
+			"#lib/*": ["./src/lib/*"],
+			"#emails/*": ["./src/emails/*"],
+			"#db/schemas/*": ["./src/db/schemas/*"],
+			"#middlewares/*": ["./src/middlewares/*"],
+			"#tasks/*": ["./src/tasks/*"],
+			"#utils/*": ["./src/utils/*"],
+			"#web/*": ["./src/web/*"],
+			"#types/*": ["./src/types/*"],
+			"#validators/*": ["./src/web/validators/*"]
 		}
 	}
 }

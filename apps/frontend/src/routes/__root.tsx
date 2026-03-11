@@ -4,6 +4,8 @@ import { GlobalError } from "@/components/errors/global-error";
 import { NotFoundComponent } from "@/components/errors/not-found";
 import { RootComponent } from "@/components/root-component";
 import { authClient } from "@/lib/auth-client";
+import { sessionQueryOptions } from "@/lib/queries/session";
+import { m } from "@/paraglide/messages";
 import appCss from "@/styles/app.css?url";
 
 interface MyRouterContext {
@@ -12,10 +14,11 @@ interface MyRouterContext {
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
-	beforeLoad: async ({ context: _ }) => {
-		const session = await authClient.getSession();
+	beforeLoad: async ({ context }) => {
+		const session =
+			await context.queryClient.ensureQueryData(sessionQueryOptions);
 
-		return { session: session.data };
+		return { session };
 	},
 	head: () => ({
 		meta: [
@@ -31,8 +34,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 			},
 			{
 				name: "description",
-				content:
-					"Tired of losing track of what you're watching? Track your movies and shows with bingy, get notified about new releases, and discover what to watch next",
+				content: m.head_app_description(),
 			},
 		],
 		links: [

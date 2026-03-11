@@ -1,5 +1,5 @@
+import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import {
 	Pagination,
@@ -23,84 +23,90 @@ export const SearchPagination = ({
 	query,
 	language,
 }: SearchPaginationProps) => {
-	const maxPages = Math.min(totalPages, 5);
-
-	const getPageNumbers = (): (number | "ellipsis")[] => {
-		if (maxPages <= 5) {
-			return Array.from({ length: maxPages }, (_, i) => i + 1);
-		}
-
-		if (currentPage <= 3) {
-			return [1, 2, 3, 4, "ellipsis", maxPages];
-		}
-
-		if (currentPage >= maxPages - 2) {
-			return [
-				1,
-				"ellipsis",
-				maxPages - 3,
-				maxPages - 2,
-				maxPages - 1,
-				maxPages,
-			];
-		}
-
-		return [
-			1,
-			"ellipsis",
-			currentPage - 1,
-			currentPage,
-			currentPage + 1,
-			"ellipsis",
-			maxPages,
-		];
-	};
-
 	if (totalPages <= 1) return null;
 
-	const canGoPrev = currentPage > 1;
-	const canGoNext = currentPage < maxPages;
+	const getPageNumbers = () => {
+		const pages: (number | "ellipsis")[] = [];
+		const showMax = 7;
+
+		if (totalPages <= showMax) {
+			return Array.from({ length: totalPages }, (_, i) => i + 1);
+		}
+
+		pages.push(1);
+		if (currentPage > 3) pages.push("ellipsis");
+
+		const start = Math.max(2, currentPage - 1);
+		const end = Math.min(totalPages - 1, currentPage + 1);
+
+		for (let i = start; i <= end; i++) {
+			pages.push(i);
+		}
+
+		if (currentPage < totalPages - 2) pages.push("ellipsis");
+		pages.push(totalPages);
+
+		return pages;
+	};
+
+	const PaginationLink = ({
+		page,
+		children,
+		disabled,
+		className,
+	}: {
+		page: number;
+		children: React.ReactNode;
+		disabled?: boolean;
+		className?: string;
+	}) => {
+		const styles = cn(
+			buttonVariants({ variant: "ghost", size: "default" }),
+			disabled && "opacity-50 cursor-not-allowed",
+			className,
+		);
+
+		if (disabled) return <span className={styles}>{children}</span>;
+
+		return (
+			<Link
+				to="/search"
+				search={{ q: query, language, page }}
+				className={styles}
+			>
+				{children}
+			</Link>
+		);
+	};
 
 	return (
-		<Pagination className="max-w-[320px] md:max-w-full">
+		<Pagination>
 			<PaginationContent>
+				{/* Previous Button */}
 				<PaginationItem>
-					{canGoPrev ? (
-						<Link
-							to="/search"
-							search={{ q: query, language, page: currentPage - 1 }}
-							className={cn(
-								buttonVariants({ variant: "ghost", size: "default" }),
-								"gap-1 pl-2.5",
-							)}
-						>
-							<ChevronLeft className="h-4 w-4" />
-							<span className="text-xs md:text-lg">
-								{m.search_pagination_previous()}
-							</span>
-						</Link>
-					) : (
-						<span
-							className={cn(
-								buttonVariants({ variant: "ghost", size: "default" }),
-								"gap-1 pl-2.5 opacity-50 cursor-not-allowed",
-							)}
-						>
-							<ChevronLeft className="h-4 w-4" />
-							<span className="text-xs md:text-lg">
-								{m.search_pagination_previous()}
-							</span>
-						</span>
-					)}
+					<PaginationLink
+						page={currentPage - 1}
+						disabled={currentPage <= 1}
+						className="gap-1 pl-2.5"
+					>
+						<IconChevronLeft className="h-4 w-4" />
+						<span className="sm:inline">{m.search_pagination_previous()}</span>
+					</PaginationLink>
 				</PaginationItem>
 
-				{getPageNumbers().map((pageNum, idx) =>
-					pageNum === "ellipsis" ? (
-						<PaginationItem key={`ellipsis-${idx}`}>
+				{/* Current page indicator on mobile */}
+				<PaginationItem className="sm:hidden">
+					<span className="px-2 text-sm">
+						{currentPage} / {totalPages}
+					</span>
+				</PaginationItem>
+
+				{/* Numbers - hidden on mobile */}
+				{getPageNumbers().map((pageNum, idx) => (
+					<PaginationItem key={idx} className="hidden sm:inline-flex">
+						{pageNum === "ellipsis" ? (
 							<PaginationEllipsis />
-						</PaginationItem>
-					) : (
-						<PaginationItem key={pageNum}>
+						) : (
 							<Link
 								to="/search"
 								search={{ q: query, language, page: pageNum }}
@@ -109,43 +115,24 @@ export const SearchPagination = ({
 										variant: currentPage === pageNum ? "outline" : "ghost",
 										size: "icon",
 									}),
-									"text-xs md:text-lg",
 								)}
 							>
 								{pageNum}
 							</Link>
-						</PaginationItem>
-					),
-				)}
+						)}
+					</PaginationItem>
+				))}
 
+				{/* Next Button */}
 				<PaginationItem>
-					{canGoNext ? (
-						<Link
-							to="/search"
-							search={{ q: query, language, page: currentPage + 1 }}
-							className={cn(
-								buttonVariants({ variant: "ghost", size: "default" }),
-								"gap-1 pr-2.5",
-							)}
-						>
-							<span className="text-xs md:text-lg">
-								{m.search_pagination_next()}
-							</span>
-							<ChevronRight className="h-4 w-4" />
-						</Link>
-					) : (
-						<span
-							className={cn(
-								buttonVariants({ variant: "ghost", size: "default" }),
-								"gap-1 pr-2.5 opacity-50 cursor-not-allowed",
-							)}
-						>
-							<span className="text-xs md:text-lg">
-								{m.search_pagination_next()}
-							</span>
-							<ChevronRight className="h-4 w-4" />
-						</span>
-					)}
+					<PaginationLink
+						page={currentPage + 1}
+						disabled={currentPage >= totalPages}
+						className="gap-1 pr-2.5"
+					>
+						<span className="sm:inline">{m.search_pagination_next()}</span>
+						<IconChevronRight className="h-4 w-4" />
+					</PaginationLink>
 				</PaginationItem>
 			</PaginationContent>
 		</Pagination>

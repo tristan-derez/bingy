@@ -1,12 +1,16 @@
+import {
+	IconDeviceTv,
+	IconMovie,
+	IconSearch,
+	IconSmartHome,
+	IconUser,
+} from "@tabler/icons-react";
 import { useRouteContext } from "@tanstack/react-router";
-import { User } from "lucide-react";
 import { useState } from "react";
-import { BiHomeAlt, BiMovie, BiSearch, BiTv } from "react-icons/bi";
-import { m } from "@/paraglide/messages";
-import { LocaleRegionDropdown } from "./locale-region-dropdown";
-import { ProfileDropdown } from "./profile-dropdown";
-import { SearchCombobox } from "./search/search-combobox";
-import { MobileBottomNav, MobileTopBar } from "./ui/mobile-navbar";
+import { LocaleRegionDropdown } from "@/components/locale-region-dropdown";
+import { ProfileDropdown } from "@/components/profile-dropdown";
+import { SearchCommand } from "@/components/search/search-command";
+import { MobileBottomNav, MobileTopBar } from "@/components/ui/mobile-navbar";
 import {
 	MobileNavbarLogo,
 	NavBody,
@@ -14,7 +18,8 @@ import {
 	NavbarButton,
 	NavbarLogo,
 	NavItems,
-} from "./ui/resizable-navbar";
+} from "@/components/ui/resizable-navbar";
+import { m } from "@/paraglide/messages";
 
 export default function Header() {
 	const { session } = useRouteContext({ from: "__root__" });
@@ -47,7 +52,7 @@ export default function Header() {
 		},
 		{
 			name: m.header_link_search(),
-			icon: <BiSearch />,
+			icon: <IconSearch className="h-4 w-4" />,
 			onClick: () => setSearchOpen(true),
 		},
 	] as const;
@@ -62,27 +67,27 @@ export default function Header() {
 		{
 			name: m.header_link_home(),
 			link: session ? "/dashboard" : "/",
-			icon: <BiHomeAlt />,
+			icon: <IconSmartHome className="h-6 w-6" />,
 		},
 		{
 			name: m.header_link_movies(),
 			link: "/movies",
-			icon: <BiMovie />,
+			icon: <IconMovie className="h-6 w-6" />,
 		},
 		{
 			name: m.header_link_tv_shows(),
 			link: "/tv",
-			icon: <BiTv />,
+			icon: <IconDeviceTv className="h-6 w-6" />,
 		},
 		{
 			name: m.header_link_search(),
-			icon: <BiSearch />,
+			icon: <IconSearch className="h-6 w-6" />,
 			onClick: () => setSearchOpen(true),
 		},
 		{
 			name: m.header_link_profile(),
-			link: "/profile",
-			icon: <User />,
+			link: session ? `/user/${session?.user.name}` : `/signin`,
+			icon: <IconUser className="h-6 w-6" />,
 		},
 	];
 
@@ -99,9 +104,7 @@ export default function Header() {
 						<LocaleRegionDropdown />
 
 						{session ? (
-							<ProfileDropdown
-								session={{ ...session.session, user: session.user }}
-							/>
+							<ProfileDropdown session={session} />
 						) : (
 							<>
 								<NavbarButton variant="secondary" to="/signin">
@@ -138,7 +141,7 @@ export default function Header() {
 
 			{/* Mobile Bottom Navigation */}
 			<MobileBottomNav items={mobileBottomItems} />
-			<SearchCombobox
+			<SearchCommand
 				open={searchOpen}
 				setOpen={setSearchOpen}
 				showButton={false}

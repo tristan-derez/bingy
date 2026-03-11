@@ -1,47 +1,42 @@
 import z from "zod";
+import { m } from "@/paraglide/messages";
 
 export const signUpFormSchema = z.object({
 	name: z
 		.string({
 			error: (iss) =>
 				iss.input === undefined
-					? "Hey there, mysterious stranger! We'd love to know what to call you"
-					: "Hmm, that doesn't look quite right for a name",
+					? m.schema_name_required()
+					: m.schema_name_invalid_type(),
 		})
 		.trim()
-		.min(2, {
-			message: "Your name's a bit shy! Can you give us at least 2 characters?",
+		.min(2, { message: m.schema_name_min_length() })
+		.max(30, { message: m.schema_name_max_length() })
+		.regex(/^[a-zA-Z0-9._]+$/, {
+			message: m.schema_name_invalid_characters(),
 		})
-		.max(256, {
-			message: "Whoa there, try to keep your name under 256 characters",
+		.regex(/^[a-zA-Z0-9].*[a-zA-Z0-9]$/, {
+			message: m.schema_name_invalid_boundaries(),
+		})
+		.refine((val) => !val.includes(".."), {
+			message: m.schema_name_consecutive_dots(),
 		}),
 	email: z
 		.email({
 			error: (iss) =>
 				iss.input === undefined
-					? "We need your email address to keep in touch"
-					: "That email address looks a bit wonky. Mind double-checking it?",
+					? m.schema_email_required()
+					: m.schema_email_invalid(),
 		})
-		.min(3, {
-			message:
-				"Your email's playing hide and seek. Make it at least 3 characters long!",
-		})
-		.max(256, {
-			message: "Wow, that's an epic email! Let's keep it under 256 characters",
-		}),
+		.min(3, { message: m.schema_email_min_length() })
+		.max(256, { message: m.schema_email_max_length() }),
 	password: z
 		.string({
 			error: (iss) =>
 				iss.input === undefined
-					? "Don't forget your secret password!"
-					: "Something's not quite right with that password format",
+					? m.schema_password_required()
+					: m.schema_password_invalid_type(),
 		})
-		.min(8, {
-			message:
-				"Your password needs at least 8 characters to keep things secure",
-		})
-		.max(256, {
-			message:
-				"That's quite the fortress of a password! Let's keep it under 256 characters",
-		}),
+		.min(8, { message: m.schema_password_min_length() })
+		.max(256, { message: m.schema_password_max_length() }),
 });

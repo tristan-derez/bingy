@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { m } from "@/paraglide/messages";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import {
 	Collapsible,
 	CollapsibleContent,
 	CollapsibleTrigger,
-} from "../ui/collapsible";
+} from "@/components/ui/collapsible";
+import { m } from "@/paraglide/messages";
+import { getTruncatedContent } from "@/utils/truncate-content";
 
 interface PersonBiographyProps {
 	biography: string;
@@ -18,55 +19,41 @@ export const PersonBiography = ({ biography }: PersonBiographyProps) => {
 		return <p>{m.person_biography_missing()}</p>;
 	}
 
-	const maxInitialLength = 400;
-	const lines = biography.split("\n");
-	const [firstLine, ...rest] = lines;
-	const remainingText = rest.join("\n");
+	const { shouldTruncate, displayText, hiddenText } =
+		getTruncatedContent(biography);
 
-	const needsCollapse = remainingText || firstLine.length > maxInitialLength;
-
-	if (!needsCollapse) {
-		return <p>{firstLine}</p>;
-	}
-
-	let displayText: string;
-	let hiddenText: string;
-
-	if (remainingText) {
-		displayText = firstLine;
-		hiddenText = remainingText;
-	} else {
-		const textUpToLimit = firstLine.slice(0, maxInitialLength);
-		const lastSentenceEnd = Math.max(
-			textUpToLimit.lastIndexOf(". "),
-			textUpToLimit.lastIndexOf("! "),
-			textUpToLimit.lastIndexOf("? "),
+	if (!shouldTruncate) {
+		return (
+			<p className="whitespace-pre-line text-pretty w-6/7">{displayText}</p>
 		);
-
-		if (lastSentenceEnd > 0) {
-			displayText = firstLine.slice(0, lastSentenceEnd + 1);
-			hiddenText = firstLine.slice(lastSentenceEnd + 1).trim();
-		} else {
-			displayText = firstLine.slice(0, maxInitialLength);
-			hiddenText = firstLine.slice(maxInitialLength);
-		}
 	}
 
 	return (
-		<>
-			<p className="whitespace-pre-line">{displayText}</p>
-			<Collapsible open={isExpanded} onOpenChange={setIsExpanded}>
-				<div className={isExpanded ? "hidden" : ""}>
-					<CollapsibleTrigger asChild>
+		<Collapsible
+			open={isExpanded}
+			onOpenChange={setIsExpanded}
+			className="flex flex-col"
+		>
+			<div className="whitespace-pre-line text-pretty w-6/7">
+				<span>{displayText}</span>
+				<CollapsibleContent
+					render={
+						<span className={isExpanded ? "inline" : "hidden"}>
+							{" " + hiddenText}
+						</span>
+					}
+				/>
+			</div>
+
+			<div>
+				<CollapsibleTrigger
+					render={
 						<Button variant="link" size="sm" className="p-0">
-							{m.btn_see_more()}
+							{isExpanded ? m.btn_show_less() : m.btn_show_more()}
 						</Button>
-					</CollapsibleTrigger>
-				</div>
-				<CollapsibleContent>
-					<p className="whitespace-pre-line">{hiddenText}</p>
-				</CollapsibleContent>
-			</Collapsible>
-		</>
+					}
+				/>
+			</div>
+		</Collapsible>
 	);
 };

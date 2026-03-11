@@ -98,7 +98,7 @@ export function SetupTwoFactorDialog({
 							disabled={code.length !== 6}
 							className="w-full"
 						>
-							Verify
+							{m.dialog_btn_verify()}
 						</Button>
 					</div>
 				</div>

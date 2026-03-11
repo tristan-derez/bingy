@@ -1,6 +1,6 @@
+import { IconArrowLeft } from "@tabler/icons-react";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
-import { ArrowLeft } from "lucide-react";
 import { z } from "zod";
 import { fetchSearchMulti } from "@/api/search";
 import { SearchForm } from "@/components/forms/search-form";
@@ -74,7 +74,7 @@ function SearchRoute() {
 				className="mb-4 max-w-20"
 				variant="outline"
 			>
-				<ArrowLeft className="h-4 w-4" /> Back
+				<IconArrowLeft className="h-4 w-4" /> Back
 			</Button>
 
 			<SearchForm initialQuery={q} currentPage={page} />
