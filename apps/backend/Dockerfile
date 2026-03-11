@@ -14,8 +14,4 @@ RUN bun install --production --frozen-lockfile
 WORKDIR /app/apps/backend
 RUN bun build src/index.ts --outdir dist --target bun
 
-# Copy runtime assets
-COPY src/emails ./src/emails
-COPY src/assets ./src/assets
-
 CMD ["bun", "dist/index.js"]
