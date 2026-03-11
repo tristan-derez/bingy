@@ -1,39 +1,21 @@
-# Stage 1 — Build
-FROM oven/bun:latest AS builder
-
-WORKDIR /app
-
-# Copy entire monorepo
-COPY . .
-
-# Install all dependencies (workspaces included)
-RUN bun install --frozen-lockfile
-
-# Build backend
-WORKDIR /app/apps/backend
-RUN bun build src/index.ts --outdir dist --target bun
-
-# Stage 2 — Runtime
 FROM oven/bun:latest
 
 RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# Copy monorepo dependency tree
+# Copy monorepo
 COPY . .
 
-# Install only production deps
+# Install production dependencies
 RUN bun install --production --frozen-lockfile
 
-# Copy compiled output
-COPY --from=builder /app/apps/backend/dist ./apps/backend/dist
-
-# Ensure runtime assets/migrations are available
-COPY --from=builder /app/apps/backend/src/emails ./apps/backend/src/emails
-COPY --from=builder /app/apps/backend/src/assets ./apps/backend/src/assets
-COPY --from=builder /app/apps/backend/drizzle ./apps/backend/drizzle
-
+# Build backend
 WORKDIR /app/apps/backend
+RUN bun build src/index.ts --outdir dist --target bun
 
-CMD ["bun", "db", "migrate", "&&", "bun", "dist/index.js"]
+# Copy runtime assets
+COPY src/emails ./src/emails
+COPY src/assets ./src/assets
+
+CMD ["bun", "dist/index.js"]
