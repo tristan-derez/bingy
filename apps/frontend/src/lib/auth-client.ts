@@ -18,9 +18,13 @@ export const authClient = createAuthClient({
 			user: {
 				displayName: {
 					type: "string",
+					required: false,
+					input: false,
 				},
 				twoFactorEnabled: {
 					type: "boolean",
+					required: false,
+					input: false,
 				},
 			},
 		}),
