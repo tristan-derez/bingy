@@ -27,7 +27,7 @@ import { sessionQueryOptions } from "@/lib/queries/session";
 import { cn } from "@/lib/utils";
 import { m } from "@/paraglide/messages";
 
-type SessionData = ReturnType<typeof authClient.useSession>["data"];
+type SessionData = ReturnType<typeof authClient.getSession>["data"];
 
 export type Session = NonNullable<SessionData>;
 
