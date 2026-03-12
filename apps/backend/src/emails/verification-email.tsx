@@ -85,14 +85,17 @@ const VerificationEmail: React.FC<VerificationEmailProps> = ({
 					films, TV shows, video games, books, and manga
 				</Preview>
 				<Container style={container}>
-					<Img src={logoUrl || "/static/bingy-icon_text.png"} alt="Bingy" />
+					<Img
+						src={logoUrl || "/static/bingy-icon_text.png"}
+						alt="Bingy logo"
+					/>
 					<br />
 					<Hr style={hr} />
 					<Text style={paragraph}>{userName ? `Hi ${userName},` : `Hi,`}</Text>
 					<Text style={paragraph}>
 						Welcome to Bingy, the entertainment platform that helps you keep
-						track of your favorite movies, shows, games, books, and manga. Click
-						the button below to verify your email.
+						track of your favorite movies and TV shows. Click the button below
+						to verify your email.
 					</Text>
 					<Section style={btnContainer}>
 						<Button style={button} href={url}>
