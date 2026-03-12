@@ -10,8 +10,8 @@ COPY . .
 # Install production dependencies
 RUN bun install --production --frozen-lockfile
 
-# Build backend
+# Set working directory to backend
 WORKDIR /app/apps/backend
-RUN bun build src/index.ts --outdir dist --target bun
 
-CMD ["bun", "dist/index.js"]
+# Run source directly instead of building
+CMD ["bun", "src/index.ts"]
