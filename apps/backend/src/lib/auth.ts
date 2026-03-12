@@ -1,10 +1,10 @@
-import { betterAuth, BetterAuthOptions } from "better-auth";
+import { betterAuth, type BetterAuthOptions } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { customSession, lastLoginMethod, twoFactor } from "better-auth/plugins";
 import { redis } from "bun";
-import * as schema from "#db/schemas/user";
-import { sendEmail } from "#emails/index";
-import { db } from "#lib/database";
+import * as schema from "../db/schemas/user";
+import { sendEmail } from "../emails/index";
+import { db } from "../lib/database";
 import env from "./env";
 import { logger } from "./logger";
 import { hash, verify } from "./password-processing";
