@@ -48,17 +48,17 @@ export const Route = createFileRoute("/_auth/verify-email")({
 });
 
 export function VerifyEmailPage() {
-	const { session } = useRouteContext({ from: "__root__" });
+	const { authData} = useRouteContext({ from: "__root__" });
 	const { verified } = Route.useSearch();
 	const [isResending, setIsResending] = useState(false);
 
 	const handleResendEmail = async () => {
-		if (!session?.user?.email) return;
+		if (!authData?.user?.email) return;
 
 		setIsResending(true);
 		try {
 			await authClient.sendVerificationEmail({
-				email: session.user.email,
+				email: authData.user.email,
 				callbackURL: `${config.appUrl}/verify-email?verified=true`,
 			});
 			toast.success(m.toast_success_email_sent_title_welcome_page(), {
@@ -71,7 +71,7 @@ export function VerifyEmailPage() {
 		}
 	};
 
-	if (!session?.user) {
+	if (!authData) {
 		return null;
 	}
 
@@ -102,7 +102,7 @@ export function VerifyEmailPage() {
 						<AlertDescription>
 							<p>{m.welcome_page_verification_required_desc()}</p>
 							<p className="mt-2 text-sm text-muted-foreground">
-								Email: {session.user.email}
+								Email: {authData.user.email}
 							</p>
 							<Button
 								variant="outline"

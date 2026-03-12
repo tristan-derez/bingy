@@ -10,15 +10,16 @@ import appCss from "@/styles/app.css?url";
 
 interface MyRouterContext {
 	queryClient: QueryClient;
-	session?: Awaited<ReturnType<typeof authClient.getSession>>["data"];
+	authData?: ReturnType<typeof authClient.useSession>["data"];
 }
+
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
 	beforeLoad: async ({ context }) => {
-		const session =
+		const authData =
 			await context.queryClient.ensureQueryData(sessionQueryOptions);
 
-		return { session };
+		return { authData };
 	},
 	head: () => ({
 		meta: [

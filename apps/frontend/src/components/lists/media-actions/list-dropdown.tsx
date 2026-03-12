@@ -43,13 +43,7 @@ interface ListDropdownProps {
 }
 
 export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
-	const { session } = useRouteContext({ from: "__root__" });
-
-	if (!session) {
-		return null;
-	}
-
-	const username = session.user.name;
+		const { authData } = useRouteContext({ from: "__root__" });
 	const isTvShow = !!tvShow;
 	const tmdbId = isTvShow ? tvShow.id : (movie?.id ?? 0);
 
@@ -61,8 +55,11 @@ export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 		},
 	);
 
-	const { data: movieRating } = useMovieRating(username, tmdbId);
-	const { data: tvRating } = useTvRating(username, tmdbId);
+	const { data: movieRating } = useMovieRating(
+		authData?.user.name ?? "",
+		tmdbId
+	);
+	const { data: tvRating } = useTvRating(authData?.user.name ?? "", tmdbId);
 
 	const rateMovieMutation = useRateMovie();
 	const rateTvMutation = useRateTvShow();
@@ -70,6 +67,9 @@ export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 	const [showLogReviewDialog, setShowLogReviewDialog] = useState(false);
 	const [showAddToListDialog, setShowAddToListDialog] = useState(false);
 
+	if (!authData) return null;
+
+	const username = authData.user.name;
 	const existingRating = isTvShow ? tvRating : movieRating;
 
 	const handleRatingChange = (newRating: number) => {

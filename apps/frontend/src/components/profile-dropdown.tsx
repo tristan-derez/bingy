@@ -10,7 +10,7 @@ import {
 	IconLogout,
 	IconUser,
 } from "@tabler/icons-react";
-import { Link, useRouter } from "@tanstack/react-router";
+import { Link, useRouteContext, useRouter } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -27,23 +27,22 @@ import { sessionQueryOptions } from "@/lib/queries/session";
 import { cn } from "@/lib/utils";
 import { m } from "@/paraglide/messages";
 
-type SessionData = ReturnType<typeof authClient.getSession>["data"];
 
-export type Session = NonNullable<SessionData>;
 
 interface ProfileDropdownProps extends React.HTMLAttributes<HTMLDivElement> {
-	session: Session;
 	onLinkClick?: () => void;
 }
 
 export const ProfileDropdown = ({
-	session,
 	className,
 	onLinkClick,
 	...props
 }: ProfileDropdownProps) => {
+	const { authData } = useRouteContext({ from: "__root__" });
 	const router = useRouter();
 	const [isOpen, setIsOpen] = useState(false);
+
+	if (!authData) return null;
 
 	const logout = async () => {
 		onLinkClick?.();
@@ -72,7 +71,7 @@ export const ProfileDropdown = ({
 						>
 							<div className="text-left flex-1">
 								<div className="text-sm font-medium tracking-tight leading-tight text-foreground">
-									{session.user.displayName}
+									{authData.user.displayName}
 								</div>
 							</div>
 							<div className="relative">
@@ -80,12 +79,12 @@ export const ProfileDropdown = ({
 									<div className="w-full h-full rounded-full overflow-hidden bg-card">
 										<Avatar className="w-full h-full object-cover rounded-full">
 											<AvatarImage
-												src={session.user?.image || ""}
-												alt={session.user.name}
+												src={authData.user?.image || ""}
+												alt={authData.user.name}
 											/>
 											<AvatarFallback className="rounded-lg">
-												{session.user.name
-													? session.user.name[0].toUpperCase()
+												{authData.user.name
+													? authData.user.name[0].toUpperCase()
 													: "U"}
 											</AvatarFallback>
 										</Avatar>
@@ -142,7 +141,7 @@ export const ProfileDropdown = ({
 						<DropdownMenuItem asChild>
 							<Link
 								to="/user/$username"
-								params={{ username: session.user.name }}
+								params={{ username: authData.user.name }}
 								onClick={onLinkClick}
 							>
 								<IconUser />
@@ -152,7 +151,7 @@ export const ProfileDropdown = ({
 						<DropdownMenuItem asChild>
 							<Link
 								to="/user/$username/watchlist"
-								params={{ username: session.user.name }}
+								params={{ username: authData.user.name }}
 								onClick={onLinkClick}
 							>
 								<IconClockBolt />
@@ -162,7 +161,7 @@ export const ProfileDropdown = ({
 						<DropdownMenuItem asChild>
 							<Link
 								to="/user/$username/lists"
-								params={{ username: session.user.name }}
+								params={{ username: authData.user.name }}
 								onClick={onLinkClick}
 							>
 								<IconList />
@@ -172,7 +171,7 @@ export const ProfileDropdown = ({
 						<DropdownMenuItem asChild>
 							<Link
 								to="/user/$username/favorites"
-								params={{ username: session.user.name }}
+								params={{ username: authData.user.name }}
 								onClick={onLinkClick}
 							>
 								<IconHeart />
@@ -182,7 +181,7 @@ export const ProfileDropdown = ({
 						<DropdownMenuItem asChild>
 							<Link
 								to="/user/$username/history"
-								params={{ username: session.user.name }}
+								params={{ username: authData.user.name }}
 								onClick={onLinkClick}
 							>
 								<IconHistory />

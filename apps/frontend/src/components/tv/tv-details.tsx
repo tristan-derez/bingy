@@ -45,7 +45,7 @@ export function TvDetailsView({
 }: TvDetailViewProps) {
 	const routerState = useRouterState();
 	const currentUrl = routerState.location.url;
-	const { session } = useRouteContext({ from: "__root__" });
+	const { authData } = useRouteContext({ from: "__root__" });
 	const localeRegion = useAtomValue(localeRegionAtom);
 
 	if (isLoading) {
@@ -139,10 +139,10 @@ export function TvDetailsView({
 										) : null}
 									</div>
 
-									{session ? (
+									{authData ? (
 										<div className="lg:self-start mt-3 lg:pr-0.5">
 											<MediaActionMenu
-												username={session.user.name}
+												username={authData.user.name}
 												tvShow={{
 													id: tv.id,
 													name: tv.name,
