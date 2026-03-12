@@ -1,5 +1,5 @@
 import { type Context, Hono } from "hono";
-import { auth } from "#lib/auth";
+import { auth } from "../../lib/auth";
 
 const authRoutes = new Hono();
 

@@ -1,10 +1,10 @@
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
-import { logger } from "#lib/logger";
-import { serveInternalServerError, serveNotFound } from "#lib/responses/error";
-import { serveData } from "#lib/responses/resp";
-import { TmdbError, tmdbClient } from "#lib/tmdb/tmdb.client";
-import { idParamSchema } from "#web/validators/query-param";
+import { logger } from "../../lib/logger";
+import { serveInternalServerError, serveNotFound } from "../../lib/responses/error";
+import { serveData } from "../../lib/responses/resp";
+import { TmdbError, tmdbClient } from "../../lib/tmdb/tmdb.client";
+import { idParamSchema } from "../../web/validators/query-param";
 
 const networkRoutes = new Hono();
 

@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import type { PgTransaction } from "drizzle-orm/pg-core";
-import { media, movieWatchHistory, tvShowWatchHistory } from "#db/schemas/list";
+import { media, movieWatchHistory, tvShowWatchHistory } from "../../db/schemas/list";
 
 export async function updateMediaRating(
 	tx: PgTransaction<any, any, any>,

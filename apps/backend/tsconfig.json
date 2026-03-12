@@ -1,6 +1,7 @@
 {
 	"compilerOptions": {
 		"strict": true,
+		"verbatimModuleSyntax": false,
 		"module": "esnext",
 		"moduleResolution": "bundler",
 		"target": "esnext",

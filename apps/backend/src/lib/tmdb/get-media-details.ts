@@ -1,4 +1,4 @@
-import { logger } from "#lib/logger";
+import { logger } from "../../lib/logger";
 import { cacheClient } from "../cache-client";
 import { tmdbClient } from "./tmdb.client";
 

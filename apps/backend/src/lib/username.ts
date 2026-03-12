@@ -1,5 +1,5 @@
 import { eq } from "drizzle-orm";
-import { users } from "#db/schemas/user";
+import { users } from "../db/schemas/user";
 import { db } from "./database";
 
 export async function generateUniqueUsername(
