@@ -144,6 +144,20 @@ export const sendEmail = async (
 	const subject = params.subject ?? getDefaultSubject(type);
 
 	try {
+		logger.info(
+			{
+				type,
+				hasUrl: !!url,
+				hasUserName: !!userName,
+				to,
+				from: `${fromName} <${fromEmail}>`,
+				subject,
+			},
+			"About to send email",
+		);
+
+		logger.info("Email component created successfully");
+
 		const { data, error } = await resend.emails.send({
 			from: `${fromName} <${fromEmail}>`,
 			to: [to],
