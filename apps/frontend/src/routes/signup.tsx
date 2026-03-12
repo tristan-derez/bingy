@@ -4,7 +4,7 @@ import { CenteredLayout } from "@/components/layout/centered-layout";
 
 export const Route = createFileRoute("/signup")({
 	beforeLoad: async ({ context }) => {
-		if (context.session?.user) {
+		if (context.authData?.user) {
 			throw redirect({ to: "/dashboard" });
 		}
 	},

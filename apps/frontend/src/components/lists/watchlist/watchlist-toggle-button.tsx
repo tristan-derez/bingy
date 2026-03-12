@@ -33,11 +33,7 @@ export function WatchlistToggleButton({
 	color = "foreground",
 	size = 8,
 }: WatchlistToggleButtonProps) {
-	const { session } = useRouteContext({ from: "__root__" });
-
-	if (!session) {
-		return <span className="invisible" aria-hidden="true" />;
-	}
+	const { authData } = useRouteContext({ from: "__root__" });
 
 	const addToWatchlist = useAddMediaToWatchlist();
 	const removeFromWatchlist = useRemoveFromWatchlist();
@@ -73,6 +69,10 @@ export function WatchlistToggleButton({
 			});
 		}
 	};
+
+	if (!authData) {
+		return <span className="invisible" aria-hidden="true" />;
+	}
 
 	const isPending =
 		addToWatchlist.isPending || removeFromWatchlist.isPending || isLoading;

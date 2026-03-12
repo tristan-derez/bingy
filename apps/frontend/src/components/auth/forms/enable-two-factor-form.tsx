@@ -24,7 +24,7 @@ import { twoFactorSchema } from "@/schemas/two-factor-schema";
 import { SetupTwoFactorDialog } from "../setup-two-factor-dialog";
 
 export function EnableTwoFactorForm() {
-	const { session } = useRouteContext({ from: "__root__" });
+	const { authData } = useRouteContext({ from: "__root__" });
 	const router = useRouter();
 
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -32,7 +32,7 @@ export function EnableTwoFactorForm() {
 	const [totpUri, setTotpUri] = useState("");
 	const id = useId();
 
-	const isEmailVerified = session?.user?.emailVerified ?? false;
+	const isEmailVerified = authData?.user?.emailVerified ?? false;
 
 	const form = useForm<z.infer<typeof twoFactorSchema>>({
 		resolver: zodResolver(twoFactorSchema),
