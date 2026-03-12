@@ -1,17 +1,8 @@
 FROM oven/bun:latest
-
 RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
-
 WORKDIR /app
-
-# Copy monorepo
 COPY . .
-
-# Install production dependencies
-RUN bun install --production --frozen-lockfile
-
-# Set working directory to backend
+RUN bun install --frozen-lockfile
 WORKDIR /app/apps/backend
-
-# Run source directly instead of building
-CMD ["bun", "src/index.ts"]
+RUN bun build src/index.ts --outdir dist --target bun
+CMD ["bun", "dist/index.js"]
