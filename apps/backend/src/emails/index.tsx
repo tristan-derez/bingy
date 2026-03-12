@@ -178,7 +178,23 @@ export const sendEmail = async (
 			id: data?.id,
 		};
 	} catch (error) {
-		logger.error({ error }, "Failed to send email");
+		const errorDetails = {
+			message: error instanceof Error ? error.message : String(error),
+			stack: error instanceof Error ? error.stack : undefined,
+			name: error instanceof Error ? error.name : undefined,
+			cause: error instanceof Error ? error.cause : undefined,
+			stringified: JSON.stringify(error, Object.getOwnPropertyNames(error)),
+			typeof: typeof error,
+		};
+		console.error("RAW ERROR:", error);
+		console.error("ERROR KEYS:", Object.getOwnPropertyNames(error));
+		console.error(
+			"ERROR STRINGIFIED:",
+			JSON.stringify(error, Object.getOwnPropertyNames(error)),
+		);
+
+		logger.error({ errorDetails }, "Failed to send email");
+
 		return {
 			success: false,
 			error: error instanceof Error ? error.message : "Unknown error occurred",
