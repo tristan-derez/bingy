@@ -1,17 +1,12 @@
 FROM oven/bun:latest
-
 RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
-
 WORKDIR /app
-
-# Copy monorepo
 COPY . .
-
-# Install production dependencies
-RUN bun install --production --frozen-lockfile
-
-# Set working directory to backend
+# Need all deps for build (devDependencies include React types)
+RUN bun install --frozen-lockfile
 WORKDIR /app/apps/backend
-
-# Run source directly instead of building
-CMD ["bun", "src/index.ts"]
+# External React deps to prevent bundling JSX runtime
+RUN bun build src/index.ts --outdir dist --target bun --external react --external react-dom --external @react-email/components
+# Clean install of production deps only
+RUN rm -rf node_modules && bun install --production --frozen-lockfile
+CMD ["bun", "dist/index.js"]
