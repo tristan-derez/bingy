@@ -1,11 +1,11 @@
 import { type Context, Hono } from "hono";
-import { logger } from "#lib/logger";
+import { logger } from "../../lib/logger";
 import {
 	serveBadRequest,
 	serveInternalServerError,
-} from "#lib/responses/error";
-import { serveData } from "#lib/responses/resp";
-import { tmdbClient } from "#lib/tmdb/tmdb.client";
+} from "../../lib/responses/error";
+import { serveData } from "../../lib/responses/resp";
+import { tmdbClient } from "../../lib/tmdb/tmdb.client";
 
 const searchRoutes = new Hono();
 

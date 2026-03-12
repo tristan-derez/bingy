@@ -1,5 +1,5 @@
 import { Fetcher, GetEndpoints, MaybeOptionalArg } from "shared";
-import env from "#lib/env";
+import env from "../../lib/env";
 
 export class ApiClient {
 	readonly baseUrl: string;

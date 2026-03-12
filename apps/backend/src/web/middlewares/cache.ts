@@ -1,5 +1,5 @@
 import type { Context, Next } from "hono";
-import { logger } from "#lib/logger";
+import { logger } from "../../lib/logger";
 import { cacheClient } from "../../lib/cache-client";
 
 const MAX_CACHE_SIZE = 5 * 1024 * 1024;

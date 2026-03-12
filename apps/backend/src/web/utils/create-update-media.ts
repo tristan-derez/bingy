@@ -1,6 +1,6 @@
 import { and, eq } from "drizzle-orm";
 import type { PgTransaction } from "drizzle-orm/pg-core";
-import { media } from "#db/schemas/list";
+import { media } from "../../db/schemas/list";
 
 export async function getOrCreateMedia(
 	tx: PgTransaction<any, any, any>,

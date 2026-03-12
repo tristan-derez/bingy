@@ -3,15 +3,15 @@ import { and, desc, eq, sql } from "drizzle-orm";
 import { Hono } from "hono";
 import { nanoid } from "nanoid";
 import { z } from "zod";
-import { customLists, listItems, media, watchlist } from "#db/schemas/list";
-import type { User } from "#db/schemas/user";
-import { activity, users } from "#db/schemas/user";
-import { db } from "#lib/database";
-import { serveNotFound } from "#lib/responses/error";
-import { serveCreated, serveData, serveNoContent } from "#lib/responses/resp";
-import { createSlug } from "#lib/slug";
-import { getMediaDetails, NormalizedMedia } from "#lib/tmdb/get-media-details";
-import { sessionMiddleware } from "#web/middlewares/session";
+import { customLists, listItems, media, watchlist } from "../../db/schemas/list";
+import type { User } from "../../db/schemas/user";
+import { activity, users } from "../../db/schemas/user";
+import { db } from "../../lib/database";
+import { serveNotFound } from "../../lib/responses/error";
+import { serveCreated, serveData, serveNoContent } from "../../lib/responses/resp";
+import { createSlug } from "../../lib/slug";
+import { getMediaDetails, NormalizedMedia } from "../../lib/tmdb/get-media-details";
+import { sessionMiddleware } from "../../web/middlewares/session";
 
 type Variables = {
 	user: User | null;

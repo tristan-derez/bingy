@@ -2,8 +2,8 @@ import { zValidator } from "@hono/zod-validator";
 import { and, eq } from "drizzle-orm";
 import { Hono } from "hono";
 import z from "zod";
-import { media } from "#db/schemas/list";
-import { db } from "#lib/database";
+import { media } from "../../db/schemas/list";
+import { db } from "../../lib/database";
 
 const ratingRoutes = new Hono();
 
