@@ -20,8 +20,8 @@ function ListPage() {
 	const { username, slug } = Route.useParams();
 	const navigate = useNavigate();
 	const localeRegion = useAtomValue(localeRegionAtom);
-	const { session } = useRouteContext({ from: "__root__" });
-	const userNameFromSession = session?.user?.name;
+	const { authData } = useRouteContext({ from: "__root__" });
+	const userNameFromSession = authData?.user?.name;
 	const isOwnProfile =
 		userNameFromSession?.toLowerCase() === username.toLowerCase();
 

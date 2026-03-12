@@ -10,7 +10,7 @@ import { m } from "@/paraglide/messages";
 export const Route = createFileRoute("/")({
 	component: App,
 	beforeLoad: async ({ context }) => {
-		if (context.session?.user) {
+		if (context.authData?.user) {
 			throw redirect({ to: "/dashboard" });
 		}
 	},

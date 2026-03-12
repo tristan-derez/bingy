@@ -16,8 +16,8 @@ function ListsPage() {
 	const { username } = Route.useParams();
 	const [filter, setFilter] = useState<VisibilityFilter>("all");
 	const [page, setPage] = useState(1);
-	const { session } = useRouteContext({ from: "__root__" });
-	const userNameFromSession = session?.user?.name;
+	const { authData } = useRouteContext({ from: "__root__" });
+	const userNameFromSession = authData?.user?.name;
 
 	const { data, isLoading, isError } = useLists(username, page, filter);
 

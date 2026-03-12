@@ -10,7 +10,7 @@ export const Route = createFileRoute("/signin")({
 		error: z.string().optional(),
 	}),
 	beforeLoad: async ({ context }) => {
-		if (context.session?.user) {
+		if (context.authData?.user) {
 			throw redirect({ to: "/dashboard" });
 		}
 	},

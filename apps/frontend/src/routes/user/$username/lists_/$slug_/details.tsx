@@ -12,8 +12,8 @@ export const Route = createFileRoute("/user/$username/lists_/$slug_/details")({
 function ListDetailsPage() {
 	const { username, slug } = Route.useParams();
 	const localeRegion = useAtomValue(localeRegionAtom);
-	const { session } = useRouteContext({ from: "__root__" });
-	const userNameFromSession = session?.user?.name;
+	const { authData } = useRouteContext({ from: "__root__" });
+	const userNameFromSession = authData?.user?.name;
 	const isOwnProfile =
 		userNameFromSession?.toLowerCase() === username.toLowerCase();
 

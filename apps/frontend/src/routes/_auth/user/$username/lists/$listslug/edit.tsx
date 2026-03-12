@@ -50,7 +50,7 @@ type EditListFormValues = z.infer<typeof createListSchema>;
 
 function EditListPage() {
 	const { username, listslug } = Route.useParams();
-	const { session } = useRouteContext({ from: "__root__" });
+	const { authData } = useRouteContext({ from: "__root__" });
 	const localeRegion = useAtomValue(localeRegionAtom);
 	const navigate = useNavigate();
 	const router = useRouter();
@@ -66,7 +66,7 @@ function EditListPage() {
 	const [selectedItems, setSelectedItems] = useAtom(editListDraftItemsAtom);
 	const hasInitialized = useRef(false);
 
-	const userNameFromSession = session?.user?.name;
+	const userNameFromSession = authData?.user?.name;
 	const isOwnProfile =
 		userNameFromSession?.toLowerCase() === username.toLowerCase();
 
