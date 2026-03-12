@@ -5,6 +5,7 @@ import {
 	twoFactorClient,
 } from "better-auth/client/plugins";
 import { createAuthClient } from "better-auth/react";
+import type { auth } from "../../../backend/src/lib/auth"; 
 import { config } from "./env";
 
 export const authClient = createAuthClient({
@@ -28,6 +29,6 @@ export const authClient = createAuthClient({
 				},
 			},
 		}),
-		customSessionClient(),
+		customSessionClient<typeof auth>(),
 	],
 });
