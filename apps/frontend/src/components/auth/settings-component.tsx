@@ -17,14 +17,14 @@ type SettingsComponentProps = {
 };
 
 export function SettingsComponent({ accounts }: SettingsComponentProps) {
-	const { session } = useRouteContext({ from: "__root__" });
+	const { authData } = useRouteContext({ from: "__root__" });
 
-	if (!session) {
+	if (!authData) {
 		return null;
 	}
 
 	const hasPassword = accounts.some((c) => c.providerId === "credential");
-	const twoFactorEnabled = session.user.twoFactorEnabled;
+	const twoFactorEnabled = authData.user.twoFactorEnabled;
 
 	return (
 		<Tabs defaultValue="account">

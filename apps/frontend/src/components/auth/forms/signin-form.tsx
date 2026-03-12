@@ -62,11 +62,6 @@ export function SignInForm() {
 			});
 
 			if (data) {
-				const user = data.user as typeof data.user & {
-					twoFactorEnabled: boolean;
-					displayName: string;
-				};
-
 				await queryClient.invalidateQueries({
 					queryKey: sessionQueryOptions.queryKey,
 				});
@@ -74,7 +69,7 @@ export function SignInForm() {
 					queryKey: sessionQueryOptions.queryKey,
 				});
 
-				if (user.twoFactorEnabled) {
+				if (data.user.twoFactorEnabled) {
 					setShowDialog(true);
 					return;
 				}

@@ -1,4 +1,4 @@
-import { betterAuth } from "better-auth";
+import { betterAuth, BetterAuthOptions } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { customSession, lastLoginMethod, twoFactor } from "better-auth/plugins";
 import { redis } from "bun";
@@ -10,8 +10,8 @@ import { logger } from "./logger";
 import { hash, verify } from "./password-processing";
 import { generateUniqueUsername } from "./username";
 
-export const auth = betterAuth({
-	appName: "Bingy",
+const options = {
+  	appName: "Bingy",
 	database: drizzleAdapter(db, {
 		provider: "pg",
 		schema: {
@@ -76,14 +76,10 @@ export const auth = betterAuth({
 		},
 		changeEmail: {
 			enabled: true,
-			sendChangeEmailVerification: async ({
+			sendChangeEmailConfirmation: async ({
 				user,
 				newEmail,
 				url,
-			}: {
-				user: { email: string; name: string };
-				newEmail: string;
-				url: string;
 			}) => {
 				await sendEmail({
 					type: "update-email",
@@ -200,27 +196,6 @@ export const auth = betterAuth({
 			clientSecret: env.DISCORD_CLIENT_SECRET,
 		},
 	},
-	plugins: [
-		twoFactor(),
-		lastLoginMethod({
-			storeInDatabase: true,
-			cookieName: "bingy.last_used_login_method",
-		}),
-		customSession(async ({ user, session }) => {
-			const userWithCustomFields = user as typeof user & {
-				displayName: string;
-				twoFactorEnabled: boolean;
-			};
-			return {
-				user: {
-					...user,
-					displayName: userWithCustomFields.displayName,
-					twoFactorEnabled: userWithCustomFields.twoFactorEnabled,
-				},
-				session,
-			};
-		}),
-	],
 	databaseHooks: {
 		user: {
 			create: {
@@ -273,6 +248,34 @@ export const auth = betterAuth({
 			},
 		},
 	},
+  	plugins: [
+		twoFactor(),
+		lastLoginMethod({
+			storeInDatabase: true,
+			cookieName: "bingy.last_used_login_method",
+		}),
+  	]
+} satisfies BetterAuthOptions;
+
+export const auth = betterAuth({
+	...options,
+	plugins: [
+		...(options.plugins ?? []),
+		customSession(async ({ user, session }) => {
+			const userWithCustomFields = user as typeof user & {
+				displayName: string;
+				twoFactorEnabled: boolean;
+			};
+			return {
+				user: {
+					...user,
+					displayName: userWithCustomFields.displayName,
+					twoFactorEnabled: userWithCustomFields.twoFactorEnabled,
+				},
+				session,
+			};
+		}, options),
+	],
 });
 
 export type Auth = typeof auth;

@@ -22,7 +22,7 @@ import {
 import { m } from "@/paraglide/messages";
 
 export default function Header() {
-	const { session } = useRouteContext({ from: "__root__" });
+	const { authData } = useRouteContext({ from: "__root__" });
 	const [searchOpen, setSearchOpen] = useState(false);
 
 	const allNavItems = [
@@ -58,15 +58,15 @@ export default function Header() {
 	] as const;
 
 	const navItems = allNavItems.filter((item) => {
-		if ("requiresAuth" in item && item.requiresAuth && !session) return false;
-		if ("hideWhenAuth" in item && item.hideWhenAuth && session) return false;
+		if ("requiresAuth" in item && item.requiresAuth && !authData) return false;
+		if ("hideWhenAuth" in item && item.hideWhenAuth && authData) return false;
 		return true;
 	});
 
 	const mobileBottomItems = [
 		{
 			name: m.header_link_home(),
-			link: session ? "/dashboard" : "/",
+			link: authData ? "/dashboard" : "/",
 			icon: <IconSmartHome className="h-6 w-6" />,
 		},
 		{
@@ -86,7 +86,7 @@ export default function Header() {
 		},
 		{
 			name: m.header_link_profile(),
-			link: session ? `/user/${session?.user.name}` : `/signin`,
+			link: authData ? `/user/${authData?.user.name}` : `/signin`,
 			icon: <IconUser className="h-6 w-6" />,
 		},
 	];
@@ -103,8 +103,8 @@ export default function Header() {
 					<div className="flex items-center gap-4">
 						<LocaleRegionDropdown />
 
-						{session ? (
-							<ProfileDropdown session={session} />
+						{authData ? (
+							<ProfileDropdown />
 						) : (
 							<>
 								<NavbarButton variant="secondary" to="/signin">
@@ -126,7 +126,7 @@ export default function Header() {
 					<div className="flex items-center gap-3">
 						<LocaleRegionDropdown />
 
-						{session ? null : (
+						{authData ? null : (
 							<NavbarButton
 								variant="primary"
 								to="/signin"

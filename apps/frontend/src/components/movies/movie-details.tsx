@@ -21,6 +21,7 @@ import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { formatRuntime } from "@/utils/format-runtime";
+import { getTmdbImageUrl } from "@/utils/utils";
 
 interface MovieDetailViewProps {
 	movie: Schemas.MovieDetails | undefined;
@@ -49,7 +50,7 @@ export function MovieDetailView({
 }: MovieDetailViewProps) {
 	const routerState = useRouterState();
 	const currentUrl = routerState.location.url;
-	const { session } = useRouteContext({ from: "__root__" });
+	const { authData } = useRouteContext({ from: "__root__" });
 	const localeRegion = useAtomValue(localeRegionAtom);
 
 	if (isLoading) {
@@ -68,9 +69,7 @@ export function MovieDetailView({
 	const hasDifferentTitle =
 		movie.original_title.toLowerCase() !== movie.title.toLowerCase();
 
-	const backgroundImage = movie.backdrop_path
-		? `https://image.tmdb.org/t/p/original${movie.backdrop_path}`
-		: null;
+	const backgroundImage = getTmdbImageUrl(movie.backdrop_path, "original")
 
 	return (
 		<>
@@ -150,10 +149,10 @@ export function MovieDetailView({
 											</div>
 										)}
 									</div>
-									{session ? (
+									{authData ? (
 										<div className="lg:self-start mt-3">
 											<MediaActionMenu
-												username={session.user.name}
+												username={authData.user.name}
 												movie={{
 													id: movie.id,
 													title: movie.title,

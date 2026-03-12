@@ -43,12 +43,9 @@ export const Route = createFileRoute("/_auth/lists/create")({
 type CreateListFormValues = z.infer<typeof createListSchema>;
 
 function CreateListPage() {
-	const { session } = useRouteContext({ from: "__root__" });
-	if (!session) return null
-	const username = session.user.name
+	const { authData } = useRouteContext({ from: "__root__" });
 	const navigate = useNavigate();
 	const createList = useCreateList();
-
 	const [selectedItems, setSelectedItems] = useAtom(createListDraftItemsAtom);
 
 	const form = useForm<CreateListFormValues>({
@@ -63,6 +60,10 @@ function CreateListPage() {
 	});
 
 	const listType = form.watch("type");
+
+	if (!authData) return null;
+	const username = authData.user.name;
+
 
 	const handleRemoveItem = (tmdbId: number, mediaType: string) => {
 		setSelectedItems(
