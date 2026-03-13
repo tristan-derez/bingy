@@ -102,9 +102,12 @@ export function SignUpForm() {
 					default:
 						toast.error(m.toast_error_generic());
 				}
+				return;
 			}
 
-			if (data?.user) {
+			if (!data) return;
+
+			if (data.user) {
 				await queryClient.invalidateQueries({
 					queryKey: sessionQueryOptions.queryKey,
 				});
