@@ -144,6 +144,20 @@ export const sendEmail = async (
 	const subject = params.subject ?? getDefaultSubject(type);
 
 	try {
+		logger.info(
+			{
+				type,
+				hasUrl: !!url,
+				hasUserName: !!userName,
+				to,
+				from: `${fromName} <${fromEmail}>`,
+				subject,
+			},
+			"About to send email",
+		);
+
+		logger.info("Email component created successfully");
+
 		const { data, error } = await resend.emails.send({
 			from: `${fromName} <${fromEmail}>`,
 			to: [to],
@@ -164,7 +178,23 @@ export const sendEmail = async (
 			id: data?.id,
 		};
 	} catch (error) {
-		logger.error({ error }, "Failed to send email");
+		const errorDetails = {
+			message: error instanceof Error ? error.message : String(error),
+			stack: error instanceof Error ? error.stack : undefined,
+			name: error instanceof Error ? error.name : undefined,
+			cause: error instanceof Error ? error.cause : undefined,
+			stringified: JSON.stringify(error, Object.getOwnPropertyNames(error)),
+			typeof: typeof error,
+		};
+		console.error("RAW ERROR:", error);
+		console.error("ERROR KEYS:", Object.getOwnPropertyNames(error));
+		console.error(
+			"ERROR STRINGIFIED:",
+			JSON.stringify(error, Object.getOwnPropertyNames(error)),
+		);
+
+		logger.error({ errorDetails }, "Failed to send email");
+
 		return {
 			success: false,
 			error: error instanceof Error ? error.message : "Unknown error occurred",

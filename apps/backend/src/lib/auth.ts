@@ -1,4 +1,4 @@
-import { betterAuth, type BetterAuthOptions } from "better-auth";
+import { type BetterAuthOptions, betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { customSession, lastLoginMethod, twoFactor } from "better-auth/plugins";
 import { redis } from "bun";
@@ -11,7 +11,7 @@ import { hash, verify } from "./password-processing";
 import { generateUniqueUsername } from "./username";
 
 const options = {
-  	appName: "Bingy",
+	appName: "Bingy",
 	database: drizzleAdapter(db, {
 		provider: "pg",
 		schema: {
@@ -72,15 +72,11 @@ const options = {
 				required: false,
 				input: false,
 				returned: true,
-			}
+			},
 		},
 		changeEmail: {
 			enabled: true,
-			sendChangeEmailConfirmation: async ({
-				user,
-				newEmail,
-				url,
-			}) => {
+			sendChangeEmailConfirmation: async ({ user, newEmail, url }) => {
 				await sendEmail({
 					type: "update-email",
 					to: user.email,
@@ -163,7 +159,7 @@ const options = {
 	},
 	emailVerification: {
 		sendVerificationEmail: async ({ user, url }) => {
-			await sendEmail({
+			void sendEmail({
 				type: "verification-email",
 				to: user.email,
 				url: url,
@@ -174,6 +170,7 @@ const options = {
 				userName: user.name,
 			});
 		},
+		autoSignInAfterVerification: true,
 		sendOnSignUp: true,
 		expiresIn: 900, // 15 min
 	},
@@ -248,13 +245,13 @@ const options = {
 			},
 		},
 	},
-  	plugins: [
+	plugins: [
 		twoFactor(),
 		lastLoginMethod({
 			storeInDatabase: true,
 			cookieName: "bingy.last_used_login_method",
 		}),
-  	]
+	],
 } satisfies BetterAuthOptions;
 
 export const auth = betterAuth({
