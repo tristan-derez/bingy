@@ -61,18 +61,21 @@ export function SignInForm() {
 				password: formData.password,
 			});
 
-			if (data) {
+			// check for 2FA redirect (better-auth returns this instead of session data)
+			if (data && "twoFactorRedirect" in data && data.twoFactorRedirect) {
+				setShowDialog(true);
+				setIsSubmitting(false);
+				return;
+			}
+
+			if (data && !("twoFactorRedirect" in data)) {
+				// normal sign-in flow (no 2FA)
 				await queryClient.invalidateQueries({
 					queryKey: sessionQueryOptions.queryKey,
 				});
 				await queryClient.refetchQueries({
 					queryKey: sessionQueryOptions.queryKey,
 				});
-
-				if (data.user.twoFactorEnabled) {
-					setShowDialog(true);
-					return;
-				}
 
 				if (!data.user.emailVerified) {
 					await router.navigate({ to: "/verify-email" });
@@ -83,8 +86,11 @@ export function SignInForm() {
 			}
 
 			if (error) {
-				if (error.code === "INVALID_EMAIL_OR_PASSWORD") {
-					toast.error("invalid email or password");
+				if (
+					error.code === "INVALID_EMAIL_OR_PASSWORD" ||
+					error.code === "INVALID_PASSWORD"
+				) {
+					toast.error(m.toast_error_invalid_email_password());
 				} else {
 					toast.error(m.toast_error_generic());
 				}
@@ -117,6 +123,8 @@ export function SignInForm() {
 				code,
 				trustDevice: true,
 			});
+
+			authClient.$ERROR_CODES;
 
 			if (error?.message === "Invalid two factor cookie") {
 				toast.error(m.toast_error_invalid_code());
