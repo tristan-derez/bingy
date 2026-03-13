@@ -3,11 +3,21 @@ FROM oven/bun:latest AS builder
 
 WORKDIR /app
 
-COPY . .
+# copy workspace config
+COPY package.json bun.lock ./
+
+# copy package.json files for needed workspaces
+COPY apps/frontend/package.json ./apps/frontend/
+COPY apps/shared/package.json ./apps/shared/
+
+# install from root
+RUN bun install --frozen-lockfile --filter=./apps/frontend
+
+# copy source code for frontend and shared
+COPY apps/frontend ./apps/frontend
+COPY apps/shared ./apps/shared
 
 WORKDIR /app/apps/frontend
-
-RUN bun install --frozen-lockfile
 
 ARG VITE_API_URL
 ARG VITE_APP_URL
@@ -19,7 +29,5 @@ RUN bun run build
 # Stage 2 — Runtime
 FROM caddy:alpine
 
-# Copy built assets
 COPY --from=builder /app/apps/frontend/dist /usr/share/caddy
-
 COPY apps/frontend/Caddyfile /etc/caddy/Caddyfile
