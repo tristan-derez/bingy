@@ -1,21 +1,19 @@
-# Stage 1 — Build
 FROM oven/bun:latest AS builder
 
 WORKDIR /app
 
-# copy workspace config
 COPY package.json bun.lock ./
 
-# copy package.json files for needed workspaces
 COPY apps/frontend/package.json ./apps/frontend/
 COPY apps/shared/package.json ./apps/shared/
+COPY apps/backend/package.json ./apps/backend/
 
-# install from root
 RUN bun install --frozen-lockfile --filter=./apps/frontend
 
-# copy source code for frontend and shared
+# frontend needs shared for runtime code and backend for TypeScript type resolution
 COPY apps/frontend ./apps/frontend
 COPY apps/shared ./apps/shared
+COPY apps/backend ./apps/backend
 
 WORKDIR /app/apps/frontend
 
@@ -26,7 +24,6 @@ ENV VITE_APP_URL=${VITE_APP_URL}
 
 RUN bun run build
 
-# Stage 2 — Runtime
 FROM caddy:alpine
 
 COPY --from=builder /app/apps/frontend/dist /usr/share/caddy
