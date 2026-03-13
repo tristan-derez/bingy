@@ -42,6 +42,7 @@ import { sessionQueryOptions } from "@/lib/queries/session";
 import { m } from "@/paraglide/messages";
 import { signUpFormSchema } from "@/schemas/signup-form-schema";
 import { getRandomAvatarUrl } from "@/utils/avatar-generator";
+import { capitalize } from "@/utils/utils";
 
 type ErrorWithDetails = {
 	details?: {
@@ -81,22 +82,26 @@ export function SignUpForm() {
 			});
 
 			if (error) {
-				if (
-					"details" in error &&
-					(error as ErrorWithDetails).details?.cause?.constraint_name ===
-						"users_name_unique"
-				) {
-					toast.error("This username is already taken");
-					return;
+				switch (error.code) {
+					case "USER_ALREADY_EXISTS":
+					case "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL":
+						toast.error(m.toast_error_duplicate_email());
+						break;
+					case "FAILED_TO_CREATE_USER":
+						// username must be unique, from db
+						if (
+							"details" in error &&
+							(error as ErrorWithDetails).details?.cause?.constraint_name ===
+								"users_name_unique"
+						) {
+							toast.error(m.toast_error_duplicate_username());
+						} else {
+							toast.error(m.toast_error_generic());
+						}
+						break;
+					default:
+						toast.error(m.toast_error_generic());
 				}
-
-				if (error.code === "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL") {
-					toast.error("This email is already used. Use another one.");
-					return;
-				}
-
-				toast.error(m.toast_error_generic());
-				return;
 			}
 
 			if (data?.user) {
@@ -107,7 +112,9 @@ export function SignUpForm() {
 					queryKey: sessionQueryOptions.queryKey,
 				});
 
-				toast.success(`Please verify your email at ${data.user.email}`);
+				toast.success(
+					m.toast_success_signup_verify_email({ email: data.user.email }),
+				);
 				await router.navigate({ to: "/verify-email" });
 			}
 		} catch (err) {
@@ -118,8 +125,13 @@ export function SignUpForm() {
 	};
 
 	const handleOAuthRegister = async (provider: "google") => {
+		const providerCapitalized = capitalize(provider);
 		try {
-			toast.loading("Redirecting to Google...", { id: "oauth" });
+			toast.loading(
+				m.toast_loading_redirect_to_provider({ provider: providerCapitalized }),
+				{ id: "oauth" },
+			);
+
 			await authClient.signIn.social({
 				provider,
 				callbackURL: `${config.appUrl}/dashboard`,
@@ -127,11 +139,12 @@ export function SignUpForm() {
 				newUserCallbackURL: `${config.appUrl}/welcome`,
 			});
 		} catch (err: unknown) {
-			const message =
-				err instanceof Error
-					? err.message
-					: "Something went wrong with Google sign-in. Please try again!";
-			toast.error(message, { id: "oauth" });
+			toast.error(
+				m.toast_error_oauth_provider_generic({
+					provider: providerCapitalized,
+				}),
+				{ id: "oauth" },
+			);
 		}
 	};
 
@@ -182,7 +195,7 @@ export function SignUpForm() {
 														id={`${id}-username`}
 														type="text"
 														autoComplete="username"
-														placeholder="Jack Doe"
+														placeholder="Teemo"
 														required
 														{...field}
 													/>

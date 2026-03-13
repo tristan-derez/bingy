@@ -677,5 +677,11 @@
 	"favorites_page_link_tv": "TV shows",
 	"favorites_page_empty_cta_followup": "page to add some",
 	"toast_error_list_not_found": "Oops! We couldn't find that list",
-	"toast_error_list_unauthorized_edit": "You can only edit your own lists"
+	"toast_error_list_unauthorized_edit": "You can only edit your own lists",
+	"toast_error_invalid_email_password": "Invalid email or password",
+	"toast_error_duplicate_username": "This username is already taken. Try another one.",
+	"toast_error_duplicate_email": "This email is already used. Use another one.",
+	"toast_error_oauth_provider_generic": "Something went wrong with {provider} sign-in. Please try again!",
+	"toast_success_signup_verify_email": "Verification email sent to {email}. Check your inbox to confirm your account.",
+	"toast_loading_redirect_to_provider": "Redirecting to {provider}..."
 }
