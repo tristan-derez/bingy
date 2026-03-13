@@ -8,7 +8,7 @@ COPY apps/frontend/package.json ./apps/frontend/
 COPY apps/shared/package.json ./apps/shared/
 COPY apps/backend/package.json ./apps/backend/
 
-RUN bun install --frozen-lockfile --filter=./apps/frontend
+RUN bun install --frozen-lockfile --filter=./apps/frontend --filter=./apps/backend
 
 # frontend needs shared for runtime code and backend for TypeScript type resolution
 COPY apps/frontend ./apps/frontend
