@@ -673,5 +673,11 @@
 	"favorites_page_link_tv": "Séries TV",
 	"favorites_page_empty_cta_followup": "pour en ajouter",
 	"toast_error_list_not_found": "Oups ! Nous n'avons pas trouvé cette liste",
-	"toast_error_list_unauthorized_edit": "Tu n'as pas la possibilité de modifier cette liste"
+	"toast_error_list_unauthorized_edit": "Tu n'as pas la possibilité de modifier cette liste",
+	"toast_error_invalid_email_password": "Adresse e-mail ou mot de passe incorrect",
+	"toast_error_duplicate_username": "Ce nom d'utilisateur est déjà pris",
+	"toast_error_duplicate_email": "Cette adresse e-mail est déjà utilisée",
+	"toast_error_oauth_provider_generic": "Une erreur s'est produite lors de la connexion via {provider}",
+	"toast_success_signup_verify_email": "Email de vérification envoyé à {email}. Consulte ta boîte de réception pour confirmer ton compte.",
+	"toast_loading_redirect_to_provider": "Redirection vers {provider}..."
 }

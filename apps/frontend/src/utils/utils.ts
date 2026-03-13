@@ -10,3 +10,6 @@ export const getTmdbImageUrl = (
 	if (!path) return null;
 	return `https://image.tmdb.org/t/p/${size}${path}`;
 };
+
+export const capitalize = (str: string) =>
+	str.charAt(0).toUpperCase() + str.slice(1);
