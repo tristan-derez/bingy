@@ -322,7 +322,7 @@
 	"toggle_aria_label_people": "People only",
 	"btn_back": "Back",
 	"collection_details_budget": "Budget:",
-	"toast_error_not_found_generic": "Failed to load ${title}",
+	"toast_error_not_found_generic": "Failed to load {title}",
 	"person_born_country": "Born in {country}",
 	"movie_credits_not_found_title": "Oops!",
 	"movie_credits_not_found_desc": "Movie credits are not available at the moment.",

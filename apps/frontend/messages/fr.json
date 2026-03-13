@@ -322,7 +322,7 @@
 	"toggle_group_item_person": "Personnes",
 	"btn_back": "Retour",
 	"collection_details_budget": "Budget:",
-	"toast_error_not_found_generic": "Erreur lors du chargement de ${title}",
+	"toast_error_not_found_generic": "Erreur lors du chargement de {title}",
 	"person_born_country": "{country}",
 	"movie_credits_not_found_title": "Oops!",
 	"movie_credits_not_found_desc": "Les crédits de ce film ne sont pas disponibles pour le moment",
