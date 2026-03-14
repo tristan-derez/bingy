@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { m } from "@/paraglide/messages";
 
-export function ShareButton({ url, text }: { url: string; text?: string }) {
+export function ShareButton({ url, text }: { url: string; text: string }) {
 	const [isHovered, setIsHovered] = useState(false);
 	const [copied, setCopied] = useState(false);
 
@@ -14,7 +14,7 @@ export function ShareButton({ url, text }: { url: string; text?: string }) {
 	};
 
 	const handleXShare = () => {
-		const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text || "")}&url=${encodeURIComponent(url)}`;
+		const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
 		window.open(shareUrl, "_blank");
 	};
 
