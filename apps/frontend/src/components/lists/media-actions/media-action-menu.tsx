@@ -98,10 +98,12 @@ export const MediaActionMenu = ({
 
 	const existingRating = isTvShow ? tvRating : movieRating;
 
-	const title = movie?.title ?? "";
+	const title = movie?.title ?? tvShow?.name ?? "";
 	const year = movie?.releaseDate
 		? new Date(movie.releaseDate).getFullYear()
-		: "";
+		: tvShow?.releaseDate
+			? new Date(tvShow.releaseDate).getFullYear()
+			: "N/A";
 
 	return (
 		<>
@@ -133,8 +135,8 @@ export const MediaActionMenu = ({
 					<AddToListButton onClick={() => setShowAddToListDialog(true)} />
 					<ShareButton
 						url={currentUrl}
-						text={m.btn_share_link_movie_text({
-							movie_name: title,
+						text={m.btn_share_link_media_text({
+							media_name: title,
 							year: year,
 						})}
 					/>
