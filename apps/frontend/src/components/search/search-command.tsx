@@ -123,18 +123,19 @@ export function SearchCommand({
 			<CommandDialog
 				open={open}
 				onOpenChange={setOpen}
-				title={m.search_combobox_input_placeholder()}
-				description={m.search_combobox_description()}
+				title={m.search_command_input_placeholder()}
+				description={m.search_command_description()}
 				className="w-xs md:w-md"
 			>
 				<Command shouldFilter={false} className="p-0">
 					<CommandInput
-						placeholder={m.search_combobox_input_placeholder()}
+						placeholder={m.search_command_input_placeholder()}
 						value={query}
 						onValueChange={setQuery}
+						className="text-base lg:text-sm"
 					/>
 					<CommandList>
-						{!query && <CommandEmpty>{m.search_combobox_empty()}</CommandEmpty>}
+						{!query && <CommandEmpty>{m.search_command_empty()}</CommandEmpty>}
 
 						{query && loading && (
 							<CommandEmpty>
@@ -145,7 +146,7 @@ export function SearchCommand({
 						)}
 
 						{query && !loading && !hasResults && (
-							<CommandEmpty>{m.search_combobox_no_results()}</CommandEmpty>
+							<CommandEmpty>{m.search_command_no_results()}</CommandEmpty>
 						)}
 
 						{query && !loading && hasResults && (
@@ -176,21 +177,23 @@ export function SearchCommand({
 							</CommandGroup>
 						)}
 					</CommandList>
-					<div className="bg-accent px-3 py-2 text-xs text-muted-foreground">
-						<div className="flex items-center justify-between">
+					<div className="hidden lg:flex bg-accent px-3 py-2 text-xs text-muted-foreground">
+						<div className="flex items-center justify-between w-full">
 							<div className="flex items-center gap-4">
 								<span className="flex items-center gap-1.5">
-									<Kbd>↲</Kbd>
-									<span>to go to page</span>
+									<Kbd className="bg-card">↲</Kbd>
+									<span>{m.search_command_helper_go_to_page()}</span>
 								</span>
 								<span className="flex items-center gap-1.5">
-									<Kbd>↑↓</Kbd>
-									<span>to navigate</span>
+									<Kbd className="bg-card">↑↓</Kbd>
+									<span>{m.search_command_helper_navigate()}</span>
 								</span>
 							</div>
 							<span className="flex items-center gap-1.5">
-								<Kbd>esc</Kbd>
-								<span>to close</span>
+								<Kbd className="bg-card">
+									{m.search_command_helper_kbd_esc()}
+								</Kbd>
+								<span>{m.search_command_helper_close()}</span>
 							</span>
 						</div>
 					</div>
