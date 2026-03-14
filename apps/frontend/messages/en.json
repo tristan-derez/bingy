@@ -232,12 +232,12 @@
 	"search_tv_badge": "TV",
 	"search_person_badge": "Person",
 	"person_as": "as",
-	"search_combobox_input_placeholder": "Search movies, shows or people...",
-	"search_combobox_description": "Search movies, shows or people",
+	"search_command_input_placeholder": "Search movies, shows or people...",
+	"search_command_description": "Search movies, shows or people",
 	"loader_text_searching": "Searching...",
-	"search_combobox_no_results": "No results found.",
+	"search_command_no_results": "No results found.",
 	"btn_view_all": "View all results",
-	"search_combobox_empty": "Start typing to search...",
+	"search_command_empty": "Start typing to search...",
 	"search_pagination_previous": "Previous",
 	"search_pagination_next": "Next",
 	"search_container_results_for": "Search results for:",
@@ -682,5 +682,9 @@
 	"toast_error_duplicate_email": "This email is already used. Use another one.",
 	"toast_error_oauth_provider_generic": "Something went wrong with {provider} sign-in. Please try again!",
 	"toast_success_signup_verify_email": "Verification email sent to {email}. Check your inbox to confirm your account.",
-	"toast_loading_redirect_to_provider": "Redirecting to {provider}..."
+	"toast_loading_redirect_to_provider": "Redirecting to {provider}...",
+	"search_command_helper_go_to_page": "to go to page",
+	"search_command_helper_navigate": "to navigate",
+	"search_command_helper_kbd_esc": "esc",
+	"search_command_helper_close": "to close"
 }

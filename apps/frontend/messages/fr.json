@@ -232,12 +232,12 @@
 	"movies_toprated_title": "Films les mieux notés",
 	"error_failed_to_load": "{title} n'a pas pu être chargé",
 	"collection_carousel_title": "Films dans la saga ({number})",
-	"search_combobox_input_placeholder": "Rechercher...",
-	"search_combobox_description": "Recherche un film, une série ou un.e artiste",
+	"search_command_input_placeholder": "Rechercher...",
+	"search_command_description": "Recherche un film, une série ou un.e artiste",
 	"loader_text_searching": "Recherche...",
-	"search_combobox_no_results": "Pas de résultats",
+	"search_command_no_results": "Pas de résultats",
 	"btn_view_all": "Voir tous les résultats",
-	"search_combobox_empty": "Cherche un film, une série, une personne...",
+	"search_command_empty": "Cherche un film, une série, une personne...",
 	"search_pagination_previous": "Précédent",
 	"search_pagination_next": "Suivant",
 	"search_container_results_for": "Résultats pour:",
@@ -678,5 +678,9 @@
 	"toast_error_duplicate_email": "Cette adresse e-mail est déjà utilisée",
 	"toast_error_oauth_provider_generic": "Une erreur s'est produite lors de la connexion via {provider}",
 	"toast_success_signup_verify_email": "Email de vérification envoyé à {email}. Consulte ta boîte de réception pour confirmer ton compte.",
-	"toast_loading_redirect_to_provider": "Redirection vers {provider}..."
+	"toast_loading_redirect_to_provider": "Redirection vers {provider}...",
+	"search_command_helper_go_to_page": "ouvrir",
+	"search_command_helper_navigate": "naviguer",
+	"search_command_helper_kbd_esc": "Échap",
+	"search_command_helper_close": "fermer"
 }
