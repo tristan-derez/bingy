@@ -10,7 +10,11 @@ import {
 	IconLogout,
 	IconUser,
 } from "@tabler/icons-react";
-import { Link, useRouteContext, useRouter } from "@tanstack/react-router";
+import {
+	useNavigate,
+	useRouteContext,
+	useRouter,
+} from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -19,6 +23,7 @@ import {
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuSeparator,
+	DropdownMenuShortcut,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { queryClient } from "@/integrations/tanstack-query/root-provider";
@@ -27,26 +32,21 @@ import { sessionQueryOptions } from "@/lib/queries/session";
 import { cn } from "@/lib/utils";
 import { m } from "@/paraglide/messages";
 
-
-
-interface ProfileDropdownProps extends React.HTMLAttributes<HTMLDivElement> {
-	onLinkClick?: () => void;
-}
+interface ProfileDropdownProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export const ProfileDropdown = ({
 	className,
-	onLinkClick,
 	...props
 }: ProfileDropdownProps) => {
 	const { authData } = useRouteContext({ from: "__root__" });
+	const navigate = useNavigate();
 	const router = useRouter();
 	const [isOpen, setIsOpen] = useState(false);
 
 	if (!authData) return null;
+	const username = authData.user.name;
 
 	const logout = async () => {
-		onLinkClick?.();
-
 		await authClient.signOut();
 
 		queryClient.setQueryData(sessionQueryOptions.queryKey, null);
@@ -61,38 +61,37 @@ export const ProfileDropdown = ({
 		<div className={cn("relative", className)} {...props}>
 			<DropdownMenu onOpenChange={setIsOpen} modal={false}>
 				<div className="group relative">
-					<DropdownMenuTrigger asChild>
-						<button
-							type="button"
-							className={cn(
-								"flex items-center h-10 gap-2 p-3 rounded-md border transition-all duration-200 focus:outline-none",
-								"bg-transparent border-border hover:bg-card-foreground/10 hover:border-ring",
-							)}
-						>
-							<div className="text-left flex-1">
-								<div className="text-sm font-medium tracking-tight leading-tight text-foreground">
-									{authData.user.displayName}
-								</div>
-							</div>
-							<div className="relative">
-								<div className="w-8 h-8 rounded-full p-0.5">
-									<div className="w-full h-full rounded-full overflow-hidden bg-card">
-										<Avatar className="w-full h-full object-cover rounded-full">
-											<AvatarImage
-												src={authData.user?.image || ""}
-												alt={authData.user.name}
-											/>
-											<AvatarFallback className="rounded-lg">
-												{authData.user.name
-													? authData.user.name[0].toUpperCase()
-													: "U"}
-											</AvatarFallback>
-										</Avatar>
+					<DropdownMenuTrigger
+						render={
+							<button
+								className={cn(
+									"flex items-center h-10 gap-2 p-3 rounded-md border transition-all duration-200 focus:outline-none",
+									"bg-transparent border-border hover:bg-card-foreground/10 hover:border-ring",
+								)}
+							>
+								<div className="text-left flex-1">
+									<div className="text-sm font-medium tracking-tight leading-tight text-foreground">
+										{authData.user.displayName}
 									</div>
 								</div>
-							</div>
-						</button>
-					</DropdownMenuTrigger>
+								<div className="relative">
+									<div className="w-8 h-8 rounded-full p-0.5">
+										<div className="w-full h-full rounded-full overflow-hidden bg-card">
+											<Avatar className="w-full h-full object-cover rounded-full">
+												<AvatarImage
+													src={authData.user?.image || ""}
+													alt={username}
+												/>
+												<AvatarFallback className="rounded-lg">
+													{username ? username[0].toUpperCase() : "U"}
+												</AvatarFallback>
+											</Avatar>
+										</div>
+									</div>
+								</div>
+							</button>
+						}
+					/>
 
 					<div
 						className={cn(
@@ -127,7 +126,7 @@ export const ProfileDropdown = ({
 						align="end"
 						sideOffset={4}
 						className={cn(
-							"z-99 w-[300px] md:w-[250px] p-2 rounded-2xl shadow-xl shadow-ring/10",
+							"z-99 w-45 p-2 rounded-2xl shadow-xl shadow-ring/10",
 							"bg-card/70 backdrop-blur-sm",
 							"data-[state=open]:animate-in data-[state=closed]:animate-out",
 							"data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
@@ -138,64 +137,73 @@ export const ProfileDropdown = ({
 							className,
 						)}
 					>
-						<DropdownMenuItem asChild>
-							<Link
-								to="/user/$username"
-								params={{ username: authData.user.name }}
-								onClick={onLinkClick}
-							>
-								<IconUser />
-								{m.dropdown_profile_text()}
-							</Link>
+						<DropdownMenuItem
+							onClick={() =>
+								navigate({
+									to: "/user/$username",
+									params: { username },
+								})
+							}
+						>
+							<IconUser />
+							{m.dropdown_profile_text()}
 						</DropdownMenuItem>
-						<DropdownMenuItem asChild>
-							<Link
-								to="/user/$username/watchlist"
-								params={{ username: authData.user.name }}
-								onClick={onLinkClick}
-							>
-								<IconClockBolt />
-								{m.dropdown_watchlist_text()}
-							</Link>
+						<DropdownMenuItem
+							onClick={() =>
+								navigate({
+									to: "/user/$username/watchlist",
+									params: { username },
+								})
+							}
+						>
+							<IconClockBolt />
+							{m.dropdown_watchlist_text()}
 						</DropdownMenuItem>
-						<DropdownMenuItem asChild>
-							<Link
-								to="/user/$username/lists"
-								params={{ username: authData.user.name }}
-								onClick={onLinkClick}
-							>
-								<IconList />
-								{m.dropdown_lists_text()}
-							</Link>
+						<DropdownMenuItem
+							onClick={() =>
+								navigate({
+									to: "/user/$username/lists",
+									params: { username },
+								})
+							}
+						>
+							<IconList />
+							{m.dropdown_lists_text()}
 						</DropdownMenuItem>
-						<DropdownMenuItem asChild>
-							<Link
-								to="/user/$username/favorites"
-								params={{ username: authData.user.name }}
-								onClick={onLinkClick}
-							>
-								<IconHeart />
-								{m.dropdown_favorites_text()}
-							</Link>
+						<DropdownMenuItem
+							onClick={() =>
+								navigate({
+									to: "/user/$username/favorites",
+									params: { username },
+								})
+							}
+						>
+							<IconHeart />
+							{m.dropdown_favorites_text()}
 						</DropdownMenuItem>
-						<DropdownMenuItem asChild>
-							<Link
-								to="/user/$username/history"
-								params={{ username: authData.user.name }}
-								onClick={onLinkClick}
-							>
-								<IconHistory />
-								{m.dropdown_history_text()}
-							</Link>
+						<DropdownMenuItem
+							onClick={() =>
+								navigate({
+									to: "/user/$username/history",
+									params: { username },
+								})
+							}
+						>
+							<IconHistory />
+							{m.dropdown_history_text()}
 						</DropdownMenuItem>
-						<DropdownMenuItem asChild>
-							<Link to="/settings" onClick={onLinkClick}>
-								<IconAdjustmentsHorizontal />
-								{m.dropdown_settings_text()}
-							</Link>
+						<DropdownMenuItem
+							onClick={() =>
+								navigate({
+									to: "/settings",
+								})
+							}
+						>
+							<IconAdjustmentsHorizontal />
+							{m.dropdown_settings_text()}
 						</DropdownMenuItem>
 						<DropdownMenuSeparator className="bg-border" />
-						<DropdownMenuItem asChild>
+						<DropdownMenuItem>
 							<a
 								href="https://github.com/tristan-derez/bingy"
 								target="_blank"
@@ -206,15 +214,17 @@ export const ProfileDropdown = ({
 									<IconBrandGithub className="w-4 h-4" />
 									<span>GitHub</span>
 								</div>
-								<IconExternalLink className="text-muted-foreground" />
 							</a>
+							<DropdownMenuShortcut>
+								<IconExternalLink className="text-muted-foreground" />
+							</DropdownMenuShortcut>
 						</DropdownMenuItem>
-						<DropdownMenuItem>
+						<DropdownMenuItem disabled>
 							<IconLifebuoy className="w-4 h-4" />
 							<span>{m.dropdown_support_text()}</span>
 						</DropdownMenuItem>
 						<DropdownMenuSeparator className="bg-border" />
-						<DropdownMenuItem onSelect={logout}>
+						<DropdownMenuItem onClick={logout} variant="destructive">
 							<IconLogout className="w-4 h-4" />
 							<span>{m.dropdown_logout_text()}</span>
 						</DropdownMenuItem>

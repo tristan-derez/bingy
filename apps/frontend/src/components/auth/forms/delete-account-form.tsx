@@ -72,11 +72,13 @@ export function DeleteAccountForm() {
 			</p>
 
 			<AlertDialog open={open} onOpenChange={setOpen}>
-				<AlertDialogTrigger>
-					<Button variant="destructive" className="mt-2 w-full">
-						{m.delete_account_title()}
-					</Button>
-				</AlertDialogTrigger>
+				<AlertDialogTrigger
+					render={
+						<Button variant="destructive" className="mt-2 w-full">
+							{m.delete_account_title()}
+						</Button>
+					}
+				></AlertDialogTrigger>
 
 				<AlertDialogContent>
 					<AlertDialogHeader>
