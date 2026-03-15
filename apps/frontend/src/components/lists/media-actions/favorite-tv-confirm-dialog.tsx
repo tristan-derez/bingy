@@ -5,7 +5,6 @@ import {
 	AlertDialogContent,
 	AlertDialogDescription,
 	AlertDialogFooter,
-	AlertDialogHeader,
 	AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { m } from "@/paraglide/messages";
@@ -24,14 +23,12 @@ export function FavoriteTvConfirmDialog({
 	return (
 		<AlertDialog open={open} onOpenChange={onOpenChange}>
 			<AlertDialogContent>
-				<AlertDialogHeader>
-					<AlertDialogTitle>
-						{m.alert_dialog_favorite_tv_confirm_title()}
-					</AlertDialogTitle>
-					<AlertDialogDescription>
-						{m.alert_dialog_favorite_tv_confirm_desc()}
-					</AlertDialogDescription>
-				</AlertDialogHeader>
+				<AlertDialogTitle>
+					{m.alert_dialog_favorite_tv_confirm_title()}
+				</AlertDialogTitle>
+				<AlertDialogDescription>
+					{m.alert_dialog_favorite_tv_confirm_desc()}
+				</AlertDialogDescription>
 				<AlertDialogFooter>
 					<AlertDialogCancel>
 						{m.alert_dialog_favorite_tv_confirm_cancel_btn()}
