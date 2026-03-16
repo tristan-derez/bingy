@@ -152,10 +152,10 @@ export function SignInForm() {
 
 	return (
 		<>
-			<Card className="border-none shadow-transparent p-0">
+			<Card className="border-none shadow-transparent p-0 w-full max-w-lg">
 				<MagicCard
 					gradientColor="var(--shadow-pointer)"
-					className="py-4 md:px-2 min-w-2xs md:min-w-md lg:min-w-lg"
+					className="py-4 md:px-2 w-full max-w-lg"
 				>
 					<CardHeader>
 						<CardTitle className="text-2xl">{m.signin_title()}</CardTitle>
@@ -209,7 +209,7 @@ export function SignInForm() {
 														search={
 															watchedEmail ? { email: watchedEmail } : undefined
 														}
-														className="ml-auto inline-block text-xs underline"
+														className="ml-auto mr-1 inline-block text-xs underline"
 													>
 														{m.signin_forgot_password()}
 													</Link>
