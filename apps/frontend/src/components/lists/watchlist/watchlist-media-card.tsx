@@ -4,7 +4,6 @@ import { MovieBadge } from "@/components/badges/movie-badge";
 import { TvShowBadge } from "@/components/badges/tv-badge";
 import { getTmdbImageUrl } from "@/utils/utils";
 import { ListDropdown } from "../media-actions/list-dropdown";
-import { WatchlistToggleButton } from "./watchlist-toggle-button";
 
 interface WatchlistMediaCardProps {
 	item: {
@@ -57,8 +56,7 @@ export const WatchlistMediaCard = ({
 					/>
 					<div className="absolute inset-x-0 top-0 h-24 bg-linear-to-b from-black/90 to-transparent" />
 					<div className="absolute inset-x-0 bottom-0 h-12 bg-linear-to-b from-transparent to-black/90" />
-					<div className="w-full absolute top-2 px-2 flex items-center justify-between z-10">
-						<WatchlistToggleButton size={5} {...mediaProps} />
+					<div className="w-full absolute top-2 flex items-center justify-end z-10 pr-2">
 						{item.mediaType === "movie" ? (
 							<MovieBadge minWidth={8} />
 						) : (

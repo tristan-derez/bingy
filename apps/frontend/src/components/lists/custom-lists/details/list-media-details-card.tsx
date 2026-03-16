@@ -52,15 +52,15 @@ export const ListMediaDetailsCard = ({
 
 			<div className="flex-1 flex flex-col gap-2">
 				<div className="flex justify-between w-full">
-					<div className="flex items-baseline gap-2">
-						<Link to={linkTo} className="text-lg font-semibold">
+					<div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2">
+						<Link to={linkTo} className="text-base md:text-lg font-semibold">
 							{item.title}
 						</Link>
 						{year ? (
 							<span className="text-sm text-muted-foreground">{year}</span>
 						) : null}
 					</div>
-					<div>
+					<div className="hidden sm:block">
 						{item.mediaType === "movie" ? <MovieBadge /> : <TvShowBadge />}
 					</div>
 				</div>
