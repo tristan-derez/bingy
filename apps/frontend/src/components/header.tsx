@@ -3,11 +3,11 @@ import {
 	IconMovie,
 	IconSearch,
 	IconSmartHome,
-	IconUser,
 } from "@tabler/icons-react";
 import { useRouteContext } from "@tanstack/react-router";
 import { useState } from "react";
 import { LocaleRegionDropdown } from "@/components/locale-region-dropdown";
+import { ProfileDrawer } from "@/components/profile-drawer";
 import { ProfileDropdown } from "@/components/profile-dropdown";
 import { SearchCommand } from "@/components/search/search-command";
 import { MobileBottomNav, MobileTopBar } from "@/components/ui/mobile-navbar";
@@ -84,11 +84,11 @@ export default function Header() {
 			icon: <IconSearch className="h-6 w-6" />,
 			onClick: () => setSearchOpen(true),
 		},
-		{
-			name: m.header_link_profile(),
-			link: authData ? `/user/${authData?.user.name}` : `/signin`,
-			icon: <IconUser className="h-6 w-6" />,
-		},
+		// {
+		// 	name: m.header_link_profile(),
+		// 	link: authData ? `/user/${authData?.user.name}` : `/signin`,
+		// 	icon: <IconUser className="h-6 w-6" />,
+		// },
 	];
 
 	return (
@@ -121,22 +121,21 @@ export default function Header() {
 
 			{/* Mobile Top Bar */}
 			<MobileTopBar
-				logo={<MobileNavbarLogo />}
-				dropdown={
-					<div className="flex items-center gap-3">
-						<LocaleRegionDropdown />
-
-						{authData ? null : (
-							<NavbarButton
-								variant="primary"
-								to="/signin"
-								className="text-xs py-2.5 px-2"
-							>
-								{m.header_btn_sign_in()}
-							</NavbarButton>
-						)}
-					</div>
+				left={
+					authData ? (
+						<ProfileDrawer />
+					) : (
+						<NavbarButton
+							variant="primary"
+							to="/signin"
+							className="text-xs py-2.5 px-2"
+						>
+							{m.header_btn_sign_in()}
+						</NavbarButton>
+					)
 				}
+				center={<MobileNavbarLogo />}
+				right={<LocaleRegionDropdown />}
 			/>
 
 			{/* Mobile Bottom Navigation */}

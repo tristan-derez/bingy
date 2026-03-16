@@ -136,7 +136,9 @@ function SearchResultContent({ item }: SearchResultContentProps) {
 							})}
 						</span>
 					)}
-					<MovieBadge />
+					<div className="hidden md:flex">
+						<MovieBadge />
+					</div>
 				</div>
 			</div>
 		);
@@ -158,7 +160,9 @@ function SearchResultContent({ item }: SearchResultContentProps) {
 							{formatDate(tv.first_air_date, localeRegion, { year: "numeric" })}
 						</span>
 					)}
-					<TvShowBadge />
+					<div className="hidden md:flex">
+						<TvShowBadge />
+					</div>
 				</div>
 			</div>
 		);

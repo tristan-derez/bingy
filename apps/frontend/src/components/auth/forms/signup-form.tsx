@@ -246,14 +246,16 @@ export function SignUpForm() {
 													</Tooltip>
 												</TooltipProvider>
 											</div>
-											<Input
-												id={`${id}-password`}
-												type="password"
-												autoComplete="new-password"
-												minLength={8}
-												required
-												{...field}
-											/>
+											<FieldContent>
+												<Input
+													id={`${id}-password`}
+													type="password"
+													autoComplete="new-password"
+													minLength={8}
+													required
+													{...field}
+												/>
+											</FieldContent>
 											<FieldError />
 										</Field>
 									)}

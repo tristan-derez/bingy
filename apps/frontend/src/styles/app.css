@@ -143,8 +143,16 @@
 	* {
 		@apply border-border outline-ring/50;
 	}
+	html {
+		overscroll-behavior-x: none;
+		-webkit-overflow-scrolling: touch;
+		touch-action: pan-x pan-y;
+		height: 100%;
+	}
 	body {
 		@apply bg-background text-foreground;
+		overscroll-behavior-x: none;
+		overscroll-behavior-y: auto;
 	}
 }
 

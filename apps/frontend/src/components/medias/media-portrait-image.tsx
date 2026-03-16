@@ -4,12 +4,12 @@ import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/media-image-placeholder.jpg";
 import { WatchProvidersSection } from "@/components/watch-providers/watch-providers-section";
 import { regionAtom } from "@/lib/atoms/region";
-import { getTmdbImageUrl } from "@/utils/utils";
+import { getTmdbImageUrl, type ImageSize } from "@/utils/utils";
 
 interface MediaPortraitImageProps {
 	imagePath: string | null;
 	alt: string;
-	imageSize?: "w500" | "original";
+	imageSize?: ImageSize;
 	watchProviders?: Schemas.WatchProviders;
 }
 
@@ -34,7 +34,7 @@ export function MediaPortraitImage({
 			<img
 				src={imageUrl ?? fallbackPoster}
 				alt={alt}
-				className="aspect-2/3 w-full max-h-90 rounded-lg shadow-lg xl:max-h-[450px]"
+				className="aspect-2/3 w-full max-h-72 lg:max-h-90 rounded-lg shadow-lg xl:max-h-[450px]"
 				onError={handleImageError}
 			/>
 

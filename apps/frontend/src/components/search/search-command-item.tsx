@@ -49,7 +49,9 @@ export const SearchCommandItem = ({
 							})}
 						</span>
 					)}
-					<MovieBadge />
+					<div className="hidden md:flex">
+						<MovieBadge />
+					</div>
 				</div>
 			</CommandItem>
 		);
@@ -82,7 +84,9 @@ export const SearchCommandItem = ({
 							})}
 						</span>
 					)}
-					<TvShowBadge />
+					<div className="hidden md:flex">
+						<TvShowBadge />
+					</div>
 				</div>
 			</CommandItem>
 		);
@@ -111,8 +115,9 @@ export const SearchCommandItem = ({
 							{item.known_for_department}
 						</span>
 					)}
-
-					<PersonBadge />
+					<div className="hidden md:flex">
+						<PersonBadge />
+					</div>
 				</div>
 			</CommandItem>
 		);
