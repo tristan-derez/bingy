@@ -122,7 +122,7 @@ export const LocaleRegionDropdown = () => {
 					</Button>
 				}
 			/>
-			<DropdownMenuContent align="end">
+			<DropdownMenuContent align="end" className="w-40">
 				<DropdownMenuGroup>
 					<DropdownMenuLabel>{m.locale_dropdown_label()}</DropdownMenuLabel>
 					<DropdownMenuRadioGroup value={locale} onValueChange={changeLocale}>
