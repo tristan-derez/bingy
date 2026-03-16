@@ -17,7 +17,6 @@ import {
 } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -31,6 +30,7 @@ import { authClient } from "@/lib/auth-client";
 import { sessionQueryOptions } from "@/lib/queries/session";
 import { cn } from "@/lib/utils";
 import { m } from "@/paraglide/messages";
+import { ProfileTriggerButton } from "./profile-trigger-button";
 
 interface ProfileDropdownProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -45,6 +45,8 @@ export const ProfileDropdown = ({
 
 	if (!authData) return null;
 	const username = authData.user.name;
+	const displayName = authData.user.displayName;
+	const image = authData.user.image;
 
 	const logout = async () => {
 		await authClient.signOut();
@@ -63,33 +65,11 @@ export const ProfileDropdown = ({
 				<div className="group relative">
 					<DropdownMenuTrigger
 						render={
-							<button
-								className={cn(
-									"flex items-center h-10 gap-2 p-3 rounded-md border transition-all duration-200 focus:outline-none",
-									"bg-transparent border-border hover:bg-card-foreground/10 hover:border-ring",
-								)}
-							>
-								<div className="text-left flex-1">
-									<div className="text-sm font-medium tracking-tight leading-tight text-foreground">
-										{authData.user.displayName}
-									</div>
-								</div>
-								<div className="relative">
-									<div className="w-8 h-8 rounded-full p-0.5">
-										<div className="w-full h-full rounded-full overflow-hidden bg-card">
-											<Avatar className="w-full h-full object-cover rounded-full">
-												<AvatarImage
-													src={authData.user?.image || ""}
-													alt={username}
-												/>
-												<AvatarFallback className="rounded-lg">
-													{username ? username[0].toUpperCase() : "U"}
-												</AvatarFallback>
-											</Avatar>
-										</div>
-									</div>
-								</div>
-							</button>
+							<ProfileTriggerButton
+								username={username}
+								displayName={displayName}
+								image={image}
+							/>
 						}
 					/>
 
