@@ -58,7 +58,7 @@ function MoviesPage() {
 	});
 
 	return (
-		<div className="flex flex-col w-full p-4 gap-4">
+		<div className="flex flex-col w-full gap-4">
 			<NowPlayingMovies
 				title={m.movies_now_playing_title()}
 				movies={nowPlayingMovies}
