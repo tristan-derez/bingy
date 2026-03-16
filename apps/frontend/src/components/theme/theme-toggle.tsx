@@ -24,11 +24,12 @@ export function ModeToggle() {
 	};
 
 	return (
-		<div ref={containerRef} className="flex space-x-2 w-full">
+		<div ref={containerRef} className="flex flex-col md:flex-row gap-2 w-full">
 			<Button
 				variant={theme === "light" ? "default" : "outline"}
 				onClick={() => handleThemeChange("light")}
-				className={`flex items-center gap-2 w-28 ${theme === "light" ? "hover:cursor-not-allowed" : ""}`}
+				disabled={theme === "light"}
+				className="flex items-center justify-start md:justify-center gap-2 w-full md:flex-1"
 			>
 				<IconSun />
 				{m.btn_light_mode()}
@@ -37,7 +38,8 @@ export function ModeToggle() {
 			<Button
 				variant={theme === "dark" ? "default" : "outline"}
 				onClick={() => handleThemeChange("dark")}
-				className={`flex items-center gap-2 w-28 ${theme === "dark" ? "hover:cursor-not-allowed" : ""}`}
+				disabled={theme === "dark"}
+				className="flex items-center justify-start md:justify-center gap-2 w-full md:flex-1"
 			>
 				<IconMoon />
 				{m.btn_dark_mode()}
@@ -46,7 +48,8 @@ export function ModeToggle() {
 			<Button
 				variant={theme === "system" ? "default" : "outline"}
 				onClick={() => handleThemeChange("system")}
-				className={`flex items-center gap-2 w-28 ${theme === "system" ? "hover:cursor-not-allowed" : ""}`}
+				disabled={theme === "system"}
+				className="flex items-center justify-start md:justify-center gap-2 w-full md:flex-1"
 			>
 				<IconBrandWindowsFilled />
 				{m.btn_system_mode()}
