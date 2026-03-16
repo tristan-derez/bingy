@@ -73,7 +73,16 @@ export function ProfileDrawer() {
 			/>
 			<DrawerContent className="focus:outline-none focus-visible:outline-none *:focus:outline-none">
 				<DrawerHeader className="px-6">
-					<Avatar className="w-16 h-16 object-cover rounded-full">
+					<Avatar
+						className="w-16 h-16 object-cover rounded-full cursor-pointer"
+						onClick={() => {
+							setIsOpen(false);
+							navigate({
+								to: "/user/$username",
+								params: { username },
+							});
+						}}
+					>
 						<AvatarImage src={image || ""} alt={displayName} />
 						<AvatarFallback className="rounded-full">
 							{username ? username[0].toUpperCase() : "U"}
