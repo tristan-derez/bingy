@@ -69,12 +69,12 @@ export function MovieDetailView({
 	const hasDifferentTitle =
 		movie.original_title.toLowerCase() !== movie.title.toLowerCase();
 
-	const backgroundImage = getTmdbImageUrl(movie.backdrop_path, "original")
+	const backgroundImage = getTmdbImageUrl(movie.backdrop_path, "original");
 
 	return (
 		<>
 			<MediaBackgroundImage backgroundImage={backgroundImage} />
-			<div className="container pt-10 lg:pt-30">
+			<div className="container pt-3 md:pt-10 lg:pt-30">
 				<BackButton />
 
 				<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
@@ -99,11 +99,11 @@ export function MovieDetailView({
 								<div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2 px-0.5 py-0.5">
 									<div className="flex flex-col gap-2">
 										<div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-											<h1 className="text-4xl font-bold leading-relaxed">
+											<h1 className="text-2xl lg:text-4xl font-bold leading-relaxed">
 												{movie.title}
 											</h1>
 											{hasDifferentTitle ? (
-												<p className="text-foreground text-lg font-bold italic">
+												<p className="text-foreground text-base lg:text-xl font-bold italic">
 													— {movie.original_title}
 												</p>
 											) : null}
@@ -122,7 +122,7 @@ export function MovieDetailView({
 
 										<div className="flex flex-col gap-1">
 											{movie.tagline ? (
-												<p className="font-bold italic text-lg">
+												<p className="font-bold italic text-base lg:text-lg">
 													{movie.tagline}
 												</p>
 											) : null}
@@ -137,7 +137,7 @@ export function MovieDetailView({
 															to="/person/$personId"
 															params={{ personId: person.id.toString() }}
 														>
-															<h3 className="font-semibold text-lg whitespace-nowrap">
+															<h3 className="font-semibold text-base lg:text-lg whitespace-nowrap">
 																{person.name}
 															</h3>
 														</Link>
@@ -211,6 +211,7 @@ export function MovieDetailView({
 								<Link
 									to="/movies/$movieId/credits"
 									params={{ movieId: movie.id.toString() }}
+									className="text-sm md:text-lg"
 								>
 									{m.link_text_full_credits()}
 								</Link>

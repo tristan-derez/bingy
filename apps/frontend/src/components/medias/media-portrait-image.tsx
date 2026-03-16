@@ -34,7 +34,7 @@ export function MediaPortraitImage({
 			<img
 				src={imageUrl ?? fallbackPoster}
 				alt={alt}
-				className="aspect-2/3 w-full max-h-90 rounded-lg shadow-lg xl:max-h-[450px]"
+				className="aspect-2/3 w-full max-h-72 lg:max-h-90 rounded-lg shadow-lg xl:max-h-[450px]"
 				onError={handleImageError}
 			/>
 
