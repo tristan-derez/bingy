@@ -48,7 +48,7 @@ export function HistoryContainer({
 	};
 
 	return (
-		<div className="container px-4 flex flex-col gap-4">
+		<div className="container flex flex-col gap-4">
 			<h1 className="text-3xl font-bold">{title}</h1>
 
 			<ToggleGroup
