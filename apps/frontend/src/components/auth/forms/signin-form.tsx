@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { IconBrandGoogleFilled, IconLoader } from "@tabler/icons-react";
 import { Link, useRouter } from "@tanstack/react-router";
 import { useId, useState } from "react";
-import { type SubmitHandler, useForm } from "react-hook-form";
+import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
 import { Badge } from "@/components/ui/badge";
@@ -15,13 +15,11 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from "@/components/ui/form";
+	Field,
+	FieldContent,
+	FieldError,
+	FieldLabel,
+} from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { MagicCard } from "@/components/ui/magic-card";
 import { OAuthButton } from "@/components/ui/oauth-button";
@@ -169,91 +167,87 @@ export function SignInForm() {
 						</CardDescription>
 					</CardHeader>
 					<CardContent className="grid gap-4 pt-2">
-						<Form {...form}>
-							<form
-								onSubmit={form.handleSubmit(onFormSubmit)}
-								className="grid gap-4"
-							>
-								<fieldset disabled={isSubmitting}>
-									<div className="grid gap-4">
-										<FormField
-											control={form.control}
-											name="email"
-											render={({ field }) => (
-												<FormItem className="grid gap-2">
-													<FormLabel htmlFor={`${id}-email`}>
-														{m.form_email_label()}
-													</FormLabel>
-													<FormControl>
-														<Input
-															id={`${id}-email`}
-															type="email"
-															autoComplete="email"
-															placeholder="m@example.com"
-															required
-															{...field}
-														/>
-													</FormControl>
-													<FormMessage />
-												</FormItem>
-											)}
-										/>
-										<FormField
-											control={form.control}
-											name="password"
-											render={({ field }) => (
-												<FormItem className="grid gap-2">
-													<div className="flex items-center">
-														<FormLabel htmlFor={`${id}-password`}>
-															{m.form_password_label()}
-														</FormLabel>
-														<Link
-															to={"/forgot-password"}
-															search={
-																watchedEmail
-																	? { email: watchedEmail }
-																	: undefined
-															}
-															className="ml-auto inline-block text-xs underline"
-														>
-															{m.signin_forgot_password()}
-														</Link>
-													</div>
+						<form
+							onSubmit={form.handleSubmit(onFormSubmit)}
+							className="grid gap-4"
+						>
+							<fieldset disabled={isSubmitting}>
+								<div className="grid gap-4">
+									<Controller
+										control={form.control}
+										name="email"
+										render={({ field }) => (
+											<Field className="grid gap-2">
+												<FieldLabel htmlFor={`${id}-email`}>
+													{m.form_email_label()}
+												</FieldLabel>
+												<FieldContent>
 													<Input
-														id={`${id}-password`}
-														type="password"
-														autoComplete="current-password"
+														id={`${id}-email`}
+														type="email"
+														autoComplete="email"
+														placeholder="m@example.com"
+														required
 														{...field}
 													/>
-													<FormMessage />
-												</FormItem>
-											)}
-										/>
-										<Button
-											type="submit"
-											className="w-full mt-2 font-bold flex justify-center relative disabled:bg-gray-300 disabled:text-gray-500"
-										>
-											{isSubmitting ? (
-												<span className="flex items-center justify-center gap-2">
-													<IconLoader className="animate-spin h-4 w-4" />
-													{m.btn_signing_in()}
-												</span>
-											) : (
-												m.btn_signin()
-											)}
-											{lastMethod === "email" ? (
-												<Badge
-													variant="secondary"
-													className="hidden absolute right-2 rounded-md md:block text-xs overflow-hidden"
-												>
-													{m.signin_last_method_badge()}
-												</Badge>
-											) : null}
-										</Button>
-									</div>
-								</fieldset>
-							</form>
-						</Form>
+												</FieldContent>
+												<FieldError />
+											</Field>
+										)}
+									/>
+									<Controller
+										control={form.control}
+										name="password"
+										render={({ field }) => (
+											<Field className="grid gap-2">
+												<div className="flex items-center">
+													<FieldLabel htmlFor={`${id}-password`}>
+														{m.form_password_label()}
+													</FieldLabel>
+													<Link
+														to={"/forgot-password"}
+														search={
+															watchedEmail ? { email: watchedEmail } : undefined
+														}
+														className="ml-auto inline-block text-xs underline"
+													>
+														{m.signin_forgot_password()}
+													</Link>
+												</div>
+												<Input
+													id={`${id}-password`}
+													type="password"
+													autoComplete="current-password"
+													{...field}
+												/>
+												<FieldError />
+											</Field>
+										)}
+									/>
+									<Button
+										type="submit"
+										className="w-full mt-2 font-bold flex justify-center relative disabled:bg-gray-300 disabled:text-gray-500"
+									>
+										{isSubmitting ? (
+											<span className="flex items-center justify-center gap-2">
+												<IconLoader className="animate-spin h-4 w-4" />
+												{m.btn_signing_in()}
+											</span>
+										) : (
+											m.btn_signin()
+										)}
+										{lastMethod === "email" ? (
+											<Badge
+												variant="secondary"
+												className="hidden absolute right-2 rounded-md md:block text-xs overflow-hidden"
+											>
+												{m.signin_last_method_badge()}
+											</Badge>
+										) : null}
+									</Button>
+								</div>
+							</fieldset>
+						</form>
 
 						<SeparatorWithText text={m.signin_separator_text()} />
 						<div className="flex gap-2">

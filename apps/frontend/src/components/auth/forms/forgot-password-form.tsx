@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { IconLoader } from "@tabler/icons-react";
 import { useNavigate } from "@tanstack/react-router";
 import React, { useId } from "react";
-import { type SubmitHandler, useForm } from "react-hook-form";
+import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -14,13 +14,11 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from "@/components/ui/form";
+	Field,
+	FieldContent,
+	FieldError,
+	FieldLabel,
+} from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { MagicCard } from "@/components/ui/magic-card";
 import { authClient } from "@/lib/auth-client";
@@ -42,6 +40,7 @@ export function ForgotPasswordForm({ email }: ForgotPasswordFormProps) {
 		defaultValues: {
 			email: email || "",
 		},
+		mode: "onChange",
 	});
 
 	const onFormSubmit: SubmitHandler<
@@ -82,49 +81,49 @@ export function ForgotPasswordForm({ email }: ForgotPasswordFormProps) {
 					</CardDescription>
 				</CardHeader>
 				<CardContent className="pt-2">
-					<Form {...form}>
-						<form
-							onSubmit={form.handleSubmit(onFormSubmit)}
-							className="grid gap-4"
-						>
-							<fieldset disabled={isSubmitting}>
-								<FormField
-									control={form.control}
-									name="email"
-									render={({ field }) => (
-										<FormItem className="grid gap-2">
-											<FormLabel htmlFor="email">
-												{m.form_email_label()}
-											</FormLabel>
-											<FormControl>
-												<Input
-													id={`${id}-email`}
-													type="email"
-													autoComplete="email"
-													required
-													{...field}
-												/>
-											</FormControl>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
-								<Button
-									type="submit"
-									className="w-full mt-4 disabled:bg-gray-300 disabled:text-gray-500"
-								>
-									{isSubmitting ? (
-										<span className="flex items-center justify-center gap-2">
-											<IconLoader className="animate-spin h-4 w-4" />
-											{m.btn_sending_email()}
-										</span>
-									) : (
-										m.forgot_password_title()
-									)}
-								</Button>
-							</fieldset>
-						</form>
-					</Form>
+					<form
+						onSubmit={form.handleSubmit(onFormSubmit)}
+						className="grid gap-4"
+						noValidate
+					>
+						<fieldset disabled={isSubmitting}>
+							<Controller
+								control={form.control}
+								name="email"
+								render={({ field, fieldState }) => (
+									<Field className="grid gap-2">
+										<FieldLabel htmlFor="email">
+											{m.form_email_label()}
+										</FieldLabel>
+										<FieldContent>
+											<Input
+												id={`${id}-email`}
+												type="email"
+												autoComplete="email"
+												{...field}
+											/>
+										</FieldContent>
+										<FieldError
+											errors={fieldState.error ? [fieldState.error] : undefined}
+										/>
+									</Field>
+								)}
+							/>
+							<Button
+								type="submit"
+								className="w-full mt-4 disabled:bg-gray-300 disabled:text-gray-500"
+							>
+								{isSubmitting ? (
+									<span className="flex items-center justify-center gap-2">
+										<IconLoader className="animate-spin h-4 w-4" />
+										{m.btn_sending_email()}
+									</span>
+								) : (
+									m.forgot_password_title()
+								)}
+							</Button>
+						</fieldset>
+					</form>
 				</CardContent>
 			</MagicCard>
 		</Card>

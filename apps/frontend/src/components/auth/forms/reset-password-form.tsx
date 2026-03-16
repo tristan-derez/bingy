@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { IconLoader } from "@tabler/icons-react";
 import { useNavigate } from "@tanstack/react-router";
 import React, { useId } from "react";
-import { type SubmitHandler, useForm } from "react-hook-form";
+import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -14,13 +14,11 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from "@/components/ui/form";
+	Field,
+	FieldContent,
+	FieldError,
+	FieldLabel,
+} from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 import { m } from "@/paraglide/messages";
@@ -74,49 +72,46 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
 				</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<Form {...form}>
-					<form
-						onSubmit={form.handleSubmit(onFormSubmit)}
-						className="grid gap-4"
-					>
-						<fieldset disabled={isSubmitting}>
-							<FormField
-								control={form.control}
-								name="password"
-								render={({ field }) => (
-									<FormItem className="grid gap-2">
-										<FormLabel htmlFor="password">
-											{m.form_new_password_label()}
-										</FormLabel>
-										<FormControl>
-											<Input
-												id={`${id}-password`}
-												type="password"
-												autoComplete="new-password"
-												required
-												{...field}
-											/>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							<Button
-								type="submit"
-								className="w-full mt-4 disabled:bg-gray-300 disabled:text-gray-500"
-							>
-								{isSubmitting ? (
-									<span className="flex items-center justify-center gap-2">
-										<IconLoader className="animate-spin h-4 w-4" />
-										{m.btn_resetting_password()}
-									</span>
-								) : (
-									m.btn_reset_password()
-								)}
-							</Button>
-						</fieldset>
-					</form>
-				</Form>
+				<form onSubmit={form.handleSubmit(onFormSubmit)} className="grid gap-4">
+					<fieldset disabled={isSubmitting}>
+						<Controller
+							control={form.control}
+							name="password"
+							render={({ field, fieldState }) => (
+								<Field className="grid gap-2">
+									<FieldLabel htmlFor="password">
+										{m.form_new_password_label()}
+									</FieldLabel>
+									<FieldContent>
+										<Input
+											id={`${id}-password`}
+											type="password"
+											autoComplete="new-password"
+											required
+											{...field}
+										/>
+									</FieldContent>
+									<FieldError
+										errors={fieldState.error ? [fieldState.error] : undefined}
+									/>
+								</Field>
+							)}
+						/>
+						<Button
+							type="submit"
+							className="w-full mt-4 disabled:bg-gray-300 disabled:text-gray-500"
+						>
+							{isSubmitting ? (
+								<span className="flex items-center justify-center gap-2">
+									<IconLoader className="animate-spin h-4 w-4" />
+									{m.btn_resetting_password()}
+								</span>
+							) : (
+								m.btn_reset_password()
+							)}
+						</Button>
+					</fieldset>
+				</form>
 			</CardContent>
 		</Card>
 	);
