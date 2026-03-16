@@ -152,10 +152,10 @@ export function SignUpForm() {
 	const isRegistering = isSubmitting;
 
 	return (
-		<Card className="border-none p-0">
+		<Card className="border-none p-0 w-full max-w-lg">
 			<MagicCard
 				gradientColor="var(--shadow-pointer)"
-				className="py-4 md:px-2 min-w-2xs md:min-w-md lg:min-w-lg"
+				className="py-4 md:px-2 w-full max-w-lg"
 			>
 				<CardHeader>
 					<CardTitle className="text-2xl">{m.signup_title()}</CardTitle>
