@@ -3,7 +3,6 @@ import {
 	IconMovie,
 	IconSearch,
 	IconSmartHome,
-	IconUser,
 } from "@tabler/icons-react";
 import { useRouteContext } from "@tanstack/react-router";
 import { useState } from "react";
@@ -85,11 +84,11 @@ export default function Header() {
 			icon: <IconSearch className="h-6 w-6" />,
 			onClick: () => setSearchOpen(true),
 		},
-		{
-			name: m.header_link_profile(),
-			link: authData ? `/user/${authData?.user.name}` : `/signin`,
-			icon: <IconUser className="h-6 w-6" />,
-		},
+		// {
+		// 	name: m.header_link_profile(),
+		// 	link: authData ? `/user/${authData?.user.name}` : `/signin`,
+		// 	icon: <IconUser className="h-6 w-6" />,
+		// },
 	];
 
 	return (
