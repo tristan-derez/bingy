@@ -41,10 +41,10 @@ export const SearchResultsContainer = ({
 				<span className="font-bold text-muted-foreground">"{query}"</span>
 			</h1>
 			<ToggleGroup
-				type="single"
-				value={filter}
-				onValueChange={handleFilterChange}
+				value={filter ? [filter] : []}
+				onValueChange={(values) => handleFilterChange(values[0] || "")}
 				className="justify-start"
+				spacing={2}
 			>
 				<ToggleGroupItem
 					value="all"

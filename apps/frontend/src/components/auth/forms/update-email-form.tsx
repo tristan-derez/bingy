@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { IconLoader } from "@tabler/icons-react";
 import { useRouteContext } from "@tanstack/react-router";
 import React, { useId } from "react";
-import { type SubmitHandler, useForm } from "react-hook-form";
+import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -15,13 +15,11 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from "@/components/ui/form";
+	Field,
+	FieldContent,
+	FieldError,
+	FieldLabel,
+} from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 import { config } from "@/lib/env";
@@ -112,60 +110,60 @@ export function UpdateEmailForm() {
 								: m.dialog_desc_update_email()}
 						</DialogDescription>
 					</DialogHeader>
-					<Form {...form}>
-						<form onSubmit={form.handleSubmit(onFormSubmit)}>
-							<fieldset disabled={isSubmitting} className="grid gap-2">
-								<FormItem className="grid gap-2">
-									<FormLabel htmlFor={`${id}-currentEmail`}>
-										{m.form_current_email_label()}
-									</FormLabel>
-									<FormControl>
-										<Input
-											id={`${id}-currentEmail`}
-											type="email"
-											value={user.email}
-											disabled
-											className="bg-muted"
+					<form onSubmit={form.handleSubmit(onFormSubmit)}>
+						<fieldset disabled={isSubmitting} className="grid gap-2">
+							<Field className="grid gap-2">
+								<FieldLabel htmlFor={`${id}-currentEmail`}>
+									{m.form_current_email_label()}
+								</FieldLabel>
+								<FieldContent>
+									<Input
+										id={`${id}-currentEmail`}
+										type="email"
+										value={user.email}
+										disabled
+										className="bg-muted"
+									/>
+								</FieldContent>
+							</Field>
+							<Controller
+								control={form.control}
+								name="email"
+								render={({ field, fieldState }) => (
+									<Field className="grid gap-2">
+										<FieldLabel htmlFor="email">
+											{m.form_new_email_label()}
+										</FieldLabel>
+										<FieldContent>
+											<Input
+												id={`${id}-email`}
+												type="email"
+												autoComplete="email"
+												required
+												{...field}
+											/>
+										</FieldContent>
+										<FieldError
+											errors={fieldState.error ? [fieldState.error] : undefined}
 										/>
-									</FormControl>
-								</FormItem>
-								<FormField
-									control={form.control}
-									name="email"
-									render={({ field }) => (
-										<FormItem className="grid gap-2">
-											<FormLabel htmlFor="email">
-												{m.form_new_email_label()}
-											</FormLabel>
-											<FormControl>
-												<Input
-													id={`${id}-email`}
-													type="email"
-													autoComplete="email"
-													required
-													{...field}
-												/>
-											</FormControl>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
-								<Button
-									type="submit"
-									className="w-full mt-4 disabled:bg-gray-300 disabled:text-gray-500"
-								>
-									{isSubmitting ? (
-										<span className="flex items-center justify-center gap-2">
-											<IconLoader className="animate-spin h-4 w-4" />
-											{m.btn_updating_email()}
-										</span>
-									) : (
-										m.btn_update_email()
-									)}
-								</Button>
-							</fieldset>
-						</form>
-					</Form>
+									</Field>
+								)}
+							/>
+							<Button
+								type="submit"
+								className="w-full mt-4 disabled:bg-gray-300 disabled:text-gray-500"
+							>
+								{isSubmitting ? (
+									<span className="flex items-center justify-center gap-2">
+										<IconLoader className="animate-spin h-4 w-4" />
+										{m.btn_updating_email()}
+									</span>
+								) : (
+									m.btn_update_email()
+								)}
+							</Button>
+						</fieldset>
+					</form>
 				</DialogContent>
 			</Dialog>
 		</div>

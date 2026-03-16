@@ -4,21 +4,33 @@ import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
-	DropdownMenuItem,
+	DropdownMenuGroup,
 	DropdownMenuLabel,
+	DropdownMenuRadioGroup,
+	DropdownMenuRadioItem,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { localeAtom, setLocaleAtom } from "@/lib/atoms/locale";
 import { regionAtom, SUPPORTED_REGIONS } from "@/lib/atoms/region";
+import { m } from "@/paraglide/messages";
 import { locales } from "@/paraglide/runtime";
 
-const REGION_NAMES: Record<string, string> = {
-	FR: "France",
-	CA: "Canada",
-	US: "United States",
-	GB: "United Kingdom",
-	AU: "Australia",
+const getRegionName = (region: string): string => {
+	switch (region) {
+		case "FR":
+			return m.region_france();
+		case "CA":
+			return m.region_canada();
+		case "US":
+			return m.region_united_states();
+		case "GB":
+			return m.region_united_kingdom();
+		case "AU":
+			return m.region_australia();
+		default:
+			return region;
+	}
 };
 
 export const LocaleRegionDropdown = () => {
@@ -29,33 +41,35 @@ export const LocaleRegionDropdown = () => {
 
 	return (
 		<DropdownMenu>
-			<DropdownMenuTrigger asChild>
-				<Button variant="ghost" size="icon" aria-label="language">
-					<IconLanguage />
-				</Button>
-			</DropdownMenuTrigger>
+			<DropdownMenuTrigger
+				render={
+					<Button variant="ghost" size="icon" aria-label="language">
+						<IconLanguage />
+					</Button>
+				}
+			/>
 			<DropdownMenuContent align="end">
-				<DropdownMenuLabel>Display Language</DropdownMenuLabel>
-				{locales.map((tag) => (
-					<DropdownMenuItem
-						key={tag}
-						onClick={() => changeLocale(tag)}
-						className={locale === tag ? "bg-accent" : ""}
-					>
-						{tag.toUpperCase()}
-					</DropdownMenuItem>
-				))}
+				<DropdownMenuGroup>
+					<DropdownMenuLabel>{m.locale_dropdown_label()}</DropdownMenuLabel>
+					<DropdownMenuRadioGroup value={locale} onValueChange={changeLocale}>
+						{locales.map((tag) => (
+							<DropdownMenuRadioItem key={tag} value={tag}>
+								{tag.toUpperCase()}
+							</DropdownMenuRadioItem>
+						))}
+					</DropdownMenuRadioGroup>
+				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
-				<DropdownMenuLabel>Content Region</DropdownMenuLabel>
-				{SUPPORTED_REGIONS.map((reg) => (
-					<DropdownMenuItem
-						key={reg}
-						onClick={() => changeRegion(reg)}
-						className={region === reg ? "bg-accent" : ""}
-					>
-						{REGION_NAMES[reg]}
-					</DropdownMenuItem>
-				))}
+				<DropdownMenuGroup>
+					<DropdownMenuLabel>{m.region_dropdown_label()}</DropdownMenuLabel>
+					<DropdownMenuRadioGroup value={region} onValueChange={changeRegion}>
+						{SUPPORTED_REGIONS.map((reg) => (
+							<DropdownMenuRadioItem key={reg} value={reg}>
+								{getRegionName(reg)}
+							</DropdownMenuRadioItem>
+						))}
+					</DropdownMenuRadioGroup>
+				</DropdownMenuGroup>
 			</DropdownMenuContent>
 		</DropdownMenu>
 	);

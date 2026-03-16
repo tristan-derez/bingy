@@ -57,7 +57,11 @@ export function RemoveRatingDropdownItem({
 		removeMovieRating.isPending || removeTvRating.isPending || isLoading;
 
 	return (
-		<DropdownMenuItem onSelect={handleRemoveRating} disabled={isPending}>
+		<DropdownMenuItem
+			onClick={handleRemoveRating}
+			disabled={isPending}
+			variant="destructive"
+		>
 			{m.list_dropdown_item_remove_rating()}
 		</DropdownMenuItem>
 	);

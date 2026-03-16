@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IconLoader } from "@tabler/icons-react";
 import React, { useId } from "react";
-import { type SubmitHandler, useForm } from "react-hook-form";
+import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -14,13 +14,11 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from "@/components/ui/form";
+	Field,
+	FieldContent,
+	FieldError,
+	FieldLabel,
+} from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 import { m } from "@/paraglide/messages";
@@ -96,67 +94,73 @@ export function UpdatePasswordForm({ hasPassword }: UpdatePasswordFormProps) {
 								{m.dialog_desc_update_password()}
 							</DialogDescription>
 						</DialogHeader>
-						<Form {...form}>
-							<form onSubmit={form.handleSubmit(onFormSubmit)}>
-								<fieldset disabled={isSubmitting} className="grid gap-2">
-									<FormField
-										control={form.control}
-										name="currentPassword"
-										render={({ field }) => (
-											<FormItem className="grid gap-2">
-												<FormLabel htmlFor="currentPassword">
-													{m.form_current_password_label()}
-												</FormLabel>
-												<FormControl>
-													<Input
-														id={`${id}-currentPassword`}
-														type="password"
-														autoComplete="current-password"
-														required
-														{...field}
-													/>
-												</FormControl>
-												<FormMessage />
-											</FormItem>
-										)}
-									/>
-									<FormField
-										control={form.control}
-										name="newPassword"
-										render={({ field }) => (
-											<FormItem className="grid gap-2">
-												<FormLabel htmlFor="newPassword">
-													{m.form_new_password_label()}
-												</FormLabel>
-												<FormControl>
-													<Input
-														id={`${id}-newPassword`}
-														type="password"
-														autoComplete="new-password"
-														required
-														{...field}
-													/>
-												</FormControl>
-												<FormMessage />
-											</FormItem>
-										)}
-									/>
-									<Button
-										type="submit"
-										className="w-full mt-4 disabled:bg-gray-300 disabled:text-gray-500"
-									>
-										{isSubmitting ? (
-											<span className="flex items-center justify-center gap-2">
-												<IconLoader className="animate-spin h-4 w-4" />
-												{m.btn_updating_password()}
-											</span>
-										) : (
-											m.btn_update_password()
-										)}
-									</Button>
-								</fieldset>
-							</form>
-						</Form>
+						<form onSubmit={form.handleSubmit(onFormSubmit)}>
+							<fieldset disabled={isSubmitting} className="grid gap-2">
+								<Controller
+									control={form.control}
+									name="currentPassword"
+									render={({ field, fieldState }) => (
+										<Field className="grid gap-2">
+											<FieldLabel htmlFor="currentPassword">
+												{m.form_current_password_label()}
+											</FieldLabel>
+											<FieldContent>
+												<Input
+													id={`${id}-currentPassword`}
+													type="password"
+													autoComplete="current-password"
+													required
+													{...field}
+												/>
+											</FieldContent>
+											<FieldError
+												errors={
+													fieldState.error ? [fieldState.error] : undefined
+												}
+											/>
+										</Field>
+									)}
+								/>
+								<Controller
+									control={form.control}
+									name="newPassword"
+									render={({ field, fieldState }) => (
+										<Field className="grid gap-2">
+											<FieldLabel htmlFor="newPassword">
+												{m.form_new_password_label()}
+											</FieldLabel>
+											<FieldContent>
+												<Input
+													id={`${id}-newPassword`}
+													type="password"
+													autoComplete="new-password"
+													required
+													{...field}
+												/>
+											</FieldContent>
+											<FieldError
+												errors={
+													fieldState.error ? [fieldState.error] : undefined
+												}
+											/>
+										</Field>
+									)}
+								/>
+								<Button
+									type="submit"
+									className="w-full mt-4 disabled:bg-gray-300 disabled:text-gray-500"
+								>
+									{isSubmitting ? (
+										<span className="flex items-center justify-center gap-2">
+											<IconLoader className="animate-spin h-4 w-4" />
+											{m.btn_updating_password()}
+										</span>
+									) : (
+										m.btn_update_password()
+									)}
+								</Button>
+							</fieldset>
+						</form>
 					</DialogContent>
 				</Dialog>
 			) : null}

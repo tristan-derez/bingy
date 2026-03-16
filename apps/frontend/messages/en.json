@@ -686,5 +686,12 @@
 	"search_command_helper_go_to_page": "to go to page",
 	"search_command_helper_navigate": "to navigate",
 	"search_command_helper_kbd_esc": "esc",
-	"search_command_helper_close": "to close"
+	"search_command_helper_close": "to close",
+	"locale_dropdown_label": "Display Language",
+	"region_dropdown_label": "Content Region",
+	"region_france": "France",
+	"region_canada": "Canada",
+	"region_united_states": "United States",
+	"region_united_kingdom": "United Kingdom",
+	"region_australia": "Australia"
 }

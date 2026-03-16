@@ -1,3 +1,4 @@
+import { IconBrush, IconUserCog } from "@tabler/icons-react";
 import { useRouteContext } from "@tanstack/react-router";
 import type { Account } from "better-auth";
 import { UpdatePasswordForm } from "@/components/auth/forms/update-password-form";
@@ -19,9 +20,7 @@ type SettingsComponentProps = {
 export function SettingsComponent({ accounts }: SettingsComponentProps) {
 	const { authData } = useRouteContext({ from: "__root__" });
 
-	if (!authData) {
-		return null;
-	}
+	if (!authData) return null;
 
 	const hasPassword = accounts.some((c) => c.providerId === "credential");
 	const twoFactorEnabled = authData.user.twoFactorEnabled;
@@ -30,9 +29,11 @@ export function SettingsComponent({ accounts }: SettingsComponentProps) {
 		<Tabs defaultValue="account">
 			<TabsList>
 				<TabsTrigger value="account">
+					<IconUserCog />
 					{m.settings_tabs_trigger_account()}
 				</TabsTrigger>
 				<TabsTrigger value="display">
+					<IconBrush />
 					{m.settings_tab_trigger_display()}
 				</TabsTrigger>
 			</TabsList>

@@ -5,7 +5,6 @@ import {
 	AlertDialogContent,
 	AlertDialogDescription,
 	AlertDialogFooter,
-	AlertDialogHeader,
 	AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { m } from "@/paraglide/messages";
@@ -26,16 +25,14 @@ export function RemoveHistoryAlertDialog({
 	return (
 		<AlertDialog open={open} onOpenChange={onOpenChange}>
 			<AlertDialogContent>
-				<AlertDialogHeader>
-					<AlertDialogTitle>
-						{m.alert_dialog_remove_media_history_title()}
-					</AlertDialogTitle>
-					<AlertDialogDescription>
-						{m.alert_dialog_remove_media_history_desc({
-							media_name: mediaName,
-						})}
-					</AlertDialogDescription>
-				</AlertDialogHeader>
+				<AlertDialogTitle>
+					{m.alert_dialog_remove_media_history_title()}
+				</AlertDialogTitle>
+				<AlertDialogDescription>
+					{m.alert_dialog_remove_media_history_desc({
+						media_name: mediaName,
+					})}
+				</AlertDialogDescription>
 				<AlertDialogFooter>
 					<AlertDialogCancel>
 						{m.alert_dialog_remove_media_history_cancel_btn()}

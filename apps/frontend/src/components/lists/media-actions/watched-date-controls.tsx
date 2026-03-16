@@ -39,27 +39,29 @@ export function WatchedDateControl({
 					{m.log_review_dialog_seen_specific_date()}
 				</Label>
 				<Popover>
-					<PopoverTrigger asChild>
-						<Button
-							variant="outline"
-							size="sm"
-							className="text-sm"
-							disabled={!hasSpecificDate}
-						>
-							<IconCalendarWeekFilled />
-							{watchedDate.toLocaleDateString(localeRegion, {
-								year: "numeric",
-								month: "short",
-								day: "numeric",
-							})}
-						</Button>
-					</PopoverTrigger>
-					<PopoverContent>
+					<PopoverTrigger
+						render={
+							<Button
+								variant="outline"
+								size="sm"
+								className="text-sm"
+								disabled={!hasSpecificDate}
+							>
+								<IconCalendarWeekFilled />
+								{watchedDate.toLocaleDateString(localeRegion, {
+									year: "numeric",
+									month: "short",
+									day: "numeric",
+								})}
+							</Button>
+						}
+					></PopoverTrigger>
+					<PopoverContent className="w-60">
 						<Calendar
 							mode="single"
 							selected={watchedDate}
 							onSelect={(date) => date && setWatchedDate(date)}
-							className="rounded-xl border w-full"
+							className="w-full"
 						/>
 					</PopoverContent>
 				</Popover>

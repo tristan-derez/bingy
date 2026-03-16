@@ -8,6 +8,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useRemoveMovieHistory, useRemoveTvHistory } from "@/hooks/useHistory";
 import {
 	useMovieRating,
 	useRateMovie,
@@ -17,10 +18,13 @@ import {
 import { useTv } from "@/hooks/useTv";
 import { m } from "@/paraglide/messages";
 import { getLastAiredEpisodeInfo } from "@/utils/season-helper";
-import { WatchlistDropdownItem } from "../watchlist/watchlist-dropdown-item";
+import { AddToHistoryItem } from "../history/add-to-history-item";
+import { RemoveFromHistoryItem } from "../history/remove-from-history-item";
+import { AddToWatchlistItem } from "../watchlist/add-to-watchlist-item";
+import { RemoveFromWatchlistItem } from "../watchlist/remove-from-watchlist-item";
 import { AddToListDialog } from "./add-to-list-dialog";
-import { HistoryToggleDropdownItem } from "./history-toggle-dropdown-item";
 import { LogReviewDialog } from "./log-review-dialog";
+import { RemoveHistoryAlertDialog } from "./remove-history-alert-dialog";
 import { RemoveRatingDropdownItem } from "./remove-rating-dropdown-item";
 import { StarRating } from "./star-rating";
 
@@ -43,7 +47,7 @@ interface ListDropdownProps {
 }
 
 export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
-		const { authData } = useRouteContext({ from: "__root__" });
+	const { authData } = useRouteContext({ from: "__root__" });
 	const isTvShow = !!tvShow;
 	const tmdbId = isTvShow ? tvShow.id : (movie?.id ?? 0);
 
@@ -57,15 +61,18 @@ export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 
 	const { data: movieRating } = useMovieRating(
 		authData?.user.name ?? "",
-		tmdbId
+		tmdbId,
 	);
 	const { data: tvRating } = useTvRating(authData?.user.name ?? "", tmdbId);
 
 	const rateMovieMutation = useRateMovie();
 	const rateTvMutation = useRateTvShow();
+	const removeMovieHistory = useRemoveMovieHistory();
+	const removeTvHistory = useRemoveTvHistory();
 
 	const [showLogReviewDialog, setShowLogReviewDialog] = useState(false);
 	const [showAddToListDialog, setShowAddToListDialog] = useState(false);
+	const [showRemoveHistoryDialog, setShowRemoveHistoryDialog] = useState(false);
 
 	if (!authData) return null;
 
@@ -97,16 +104,27 @@ export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 		});
 	};
 
+	const handleConfirmRemoveHistory = () => {
+		if (movie) {
+			removeMovieHistory.mutate(movie.id);
+		} else if (tvShow) {
+			removeTvHistory.mutate(tvShow.id);
+		}
+		setShowRemoveHistoryDialog(false);
+	};
+
+	const title = movie?.title ?? tvShow?.name ?? "";
+
 	return (
 		<>
-			<DropdownMenu modal={false}>
+			<DropdownMenu>
 				<DropdownMenuTrigger
 					className="p-1 hover:bg-white/10 rounded"
 					onClick={(e) => e.preventDefault()}
 				>
 					<IconDots className="w-5 h-5 text-white" />
 				</DropdownMenuTrigger>
-				<DropdownMenuContent align="end">
+				<DropdownMenuContent align="end" className="w-50">
 					<div className="px-2 flex justify-center">
 						<StarRating
 							movie={movie}
@@ -118,30 +136,36 @@ export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 						/>
 					</div>
 					<DropdownMenuSeparator />
-					<DropdownMenuItem onSelect={() => setShowLogReviewDialog(true)}>
+					<DropdownMenuItem onClick={() => setShowLogReviewDialog(true)}>
 						{existingRating
 							? m.list_dropdown_editreview()
 							: m.list_dropdown_logreview()}
 					</DropdownMenuItem>
-					<WatchlistDropdownItem movie={movie} tvShow={tvShow} />
 					<DropdownMenuItem
-						onSelect={(e) => {
-							e.preventDefault();
+						onClick={() => {
 							setShowAddToListDialog(true);
 						}}
 					>
 						{m.list_dropdown_item_add_to_list()}
 					</DropdownMenuItem>
+					<AddToWatchlistItem movie={movie} tvShow={tvShow} />
+					<AddToHistoryItem movie={movie} tvShow={tvShow} username={username} />
+
+					{/* items below will only be shown if item is in their category
+						eg: if a tv show is in watchlist, remove from watchlist will be shown
+					*/}
+					<DropdownMenuSeparator />
+					<RemoveFromWatchlistItem movie={movie} tvShow={tvShow} />
 					<RemoveRatingDropdownItem
 						movie={movie}
 						tvShow={tvShow}
 						username={username}
 					/>
-					{/* will only be shown if media is in history */}
-					<HistoryToggleDropdownItem
+					<RemoveFromHistoryItem
 						movie={movie}
 						tvShow={tvShow}
 						username={username}
+						onRequestRemove={() => setShowRemoveHistoryDialog(true)}
 					/>
 				</DropdownMenuContent>
 			</DropdownMenu>
@@ -161,6 +185,12 @@ export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 				movie={movie}
 				tvShow={tvShow}
 				username={username}
+			/>
+			<RemoveHistoryAlertDialog
+				open={showRemoveHistoryDialog}
+				onOpenChange={setShowRemoveHistoryDialog}
+				mediaName={title}
+				onConfirm={handleConfirmRemoveHistory}
 			/>
 		</>
 	);

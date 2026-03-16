@@ -6,7 +6,7 @@ import {
 } from "@tabler/icons-react";
 import { Link, useRouter } from "@tanstack/react-router";
 import React, { useId } from "react";
-import { type SubmitHandler, useForm } from "react-hook-form";
+import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -18,13 +18,11 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from "@/components/ui/form";
+	Field,
+	FieldContent,
+	FieldError,
+	FieldLabel,
+} from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { MagicCard } from "@/components/ui/magic-card";
 import { OAuthButton } from "@/components/ui/oauth-button";
@@ -166,119 +164,117 @@ export function SignUpForm() {
 					</CardDescription>
 				</CardHeader>
 				<CardContent className="grid gap-4 pt-2">
-					<Form {...form}>
-						<form
-							onSubmit={form.handleSubmit(onFormSubmit)}
-							className="grid gap-4"
-						>
-							<fieldset disabled={isRegistering}>
-								<div className="grid gap-4">
-									<FormField
-										control={form.control}
-										name="name"
-										render={({ field }) => (
-											<FormItem className="grid gap-2">
-												<div className="flex items-center">
-													<FormLabel htmlFor={`${id}-username`}>
-														{m.signup_username_label()}
-													</FormLabel>
-													<TooltipProvider>
-														<Tooltip>
-															<TooltipTrigger className="ml-2">
-																<IconInfoCircle className="h-4 w-4" />
-															</TooltipTrigger>
-															<TooltipContent>
-																<p>{m.signup_username_tooltip()}</p>
-															</TooltipContent>
-														</Tooltip>
-													</TooltipProvider>
-												</div>
-												<FormControl>
-													<Input
-														id={`${id}-username`}
-														type="text"
-														autoComplete="username"
-														placeholder="Teemo"
-														required
-														{...field}
-													/>
-												</FormControl>
-												<FormMessage />
-											</FormItem>
-										)}
-									/>
-									<FormField
-										control={form.control}
-										name="email"
-										render={({ field }) => (
-											<FormItem className="grid gap-2">
-												<FormLabel htmlFor={`${id}-email`}>
-													{m.form_email_label()}
-												</FormLabel>
-												<FormControl>
-													<Input
-														id={`${id}-email`}
-														type="email"
-														autoComplete="email"
-														placeholder="m@example.com"
-														required
-														{...field}
-													/>
-												</FormControl>
-												<FormMessage />
-											</FormItem>
-										)}
-									/>
-									<FormField
-										control={form.control}
-										name="password"
-										render={({ field }) => (
-											<FormItem className="grid gap-2">
-												<div className="flex items-center">
-													<FormLabel htmlFor={`${id}-password`}>
-														{m.form_password_label()}
-													</FormLabel>
-													<TooltipProvider>
-														<Tooltip>
-															<TooltipTrigger className="ml-2">
-																<IconInfoCircle className="h-4 w-4" />
-															</TooltipTrigger>
-															<TooltipContent>
-																{m.signup_password_tooltip()}
-															</TooltipContent>
-														</Tooltip>
-													</TooltipProvider>
-												</div>
+					<form
+						onSubmit={form.handleSubmit(onFormSubmit)}
+						className="grid gap-4"
+					>
+						<fieldset disabled={isRegistering}>
+							<div className="grid gap-4">
+								<Controller
+									control={form.control}
+									name="name"
+									render={({ field }) => (
+										<Field className="grid gap-2">
+											<div className="flex items-center">
+												<FieldLabel htmlFor={`${id}-username`}>
+													{m.signup_username_label()}
+												</FieldLabel>
+												<TooltipProvider>
+													<Tooltip>
+														<TooltipTrigger className="ml-2">
+															<IconInfoCircle className="h-4 w-4" />
+														</TooltipTrigger>
+														<TooltipContent>
+															<p>{m.signup_username_tooltip()}</p>
+														</TooltipContent>
+													</Tooltip>
+												</TooltipProvider>
+											</div>
+											<FieldContent>
 												<Input
-													id={`${id}-password`}
-													type="password"
-													autoComplete="new-password"
-													minLength={8}
+													id={`${id}-username`}
+													type="text"
+													autoComplete="username"
+													placeholder="Teemo"
 													required
 													{...field}
 												/>
-												<FormMessage />
-											</FormItem>
-										)}
-									/>
+											</FieldContent>
+											<FieldError />
+										</Field>
+									)}
+								/>
+								<Controller
+									control={form.control}
+									name="email"
+									render={({ field }) => (
+										<Field className="grid gap-2">
+											<FieldLabel htmlFor={`${id}-email`}>
+												{m.form_email_label()}
+											</FieldLabel>
+											<FieldContent>
+												<Input
+													id={`${id}-email`}
+													type="email"
+													autoComplete="email"
+													placeholder="m@example.com"
+													required
+													{...field}
+												/>
+											</FieldContent>
+											<FieldError />
+										</Field>
+									)}
+								/>
+								<Controller
+									control={form.control}
+									name="password"
+									render={({ field }) => (
+										<Field className="grid gap-2">
+											<div className="flex items-center">
+												<FieldLabel htmlFor={`${id}-password`}>
+													{m.form_password_label()}
+												</FieldLabel>
+												<TooltipProvider>
+													<Tooltip>
+														<TooltipTrigger className="ml-2">
+															<IconInfoCircle className="h-4 w-4" />
+														</TooltipTrigger>
+														<TooltipContent>
+															{m.signup_password_tooltip()}
+														</TooltipContent>
+													</Tooltip>
+												</TooltipProvider>
+											</div>
+											<Input
+												id={`${id}-password`}
+												type="password"
+												autoComplete="new-password"
+												minLength={8}
+												required
+												{...field}
+											/>
+											<FieldError />
+										</Field>
+									)}
+								/>
 
-									<Button
-										type="submit"
-										className="w-full mt-2 disabled:bg-gray-300 disabled:text-gray-500"
-									>
-										{isRegistering ? (
-											<span className="flex items-center justify-center gap-2">
-												<IconLoader className="animate-spin h-4 w-4" />
-												{m.btn_registering_signup()}
-											</span>
-										) : (
-											m.btn_signup()
-										)}
-									</Button>
-								</div>
-							</fieldset>
-						</form>
-					</Form>
+								<Button
+									type="submit"
+									className="w-full mt-2 disabled:bg-gray-300 disabled:text-gray-500"
+								>
+									{isRegistering ? (
+										<span className="flex items-center justify-center gap-2">
+											<IconLoader className="animate-spin h-4 w-4" />
+											{m.btn_registering_signup()}
+										</span>
+									) : (
+										m.btn_signup()
+									)}
+								</Button>
+							</div>
+						</fieldset>
+					</form>
 					<div className="grid gap-4">
 						<SeparatorWithText text={m.signup_separator_text()} />
 						<div className="flex gap-2">

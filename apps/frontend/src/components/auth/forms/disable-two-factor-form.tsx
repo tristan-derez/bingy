@@ -2,18 +2,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { IconLoader } from "@tabler/icons-react";
 import { useNavigate } from "@tanstack/react-router";
 import { useId, useState } from "react";
-import { type SubmitHandler, useForm } from "react-hook-form";
+import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type * as z from "zod";
 import { Button } from "@/components/ui/button";
 import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from "@/components/ui/form";
+	Field,
+	FieldContent,
+	FieldError,
+	FieldLabel,
+} from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { queryClient } from "@/integrations/tanstack-query/root-provider";
 import { authClient } from "@/lib/auth-client";
@@ -71,46 +69,45 @@ export function DisableTwoFactorForm() {
 				</p>
 			</div>
 
-			<Form {...form}>
-				<form onSubmit={form.handleSubmit(onFormSubmit)} className="grid gap-4">
-					<fieldset disabled={isSubmitting}>
-						<FormField
-							control={form.control}
-							name="password"
-							render={({ field }) => (
-								<FormItem className="grid gap-2">
-									<FormLabel htmlFor={`${id}-password`}>
-										{m.form_password_label()}
-									</FormLabel>
-									<FormControl>
-										<Input
-											id={`${id}-password`}
-											type="password"
-											autoComplete="current-password"
-											required
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<Button
-							type="submit"
-							className="w-full mt-4 disabled:bg-gray-300 disabled:text-gray-500"
-						>
-							{isSubmitting ? (
-								<span className="flex items-center justify-center gap-2">
-									<IconLoader className="animate-spin h-4 w-4" />
-									{m.btn_disabling_twofactor()}
-								</span>
-							) : (
-								m.btn_disable_twofactor()
-							)}
-						</Button>
-					</fieldset>
-				</form>
-			</Form>
+			<form onSubmit={form.handleSubmit(onFormSubmit)} className="grid gap-4">
+				<fieldset disabled={isSubmitting}>
+					<Controller
+						control={form.control}
+						name="password"
+						render={({ field }) => (
+							<Field className="grid gap-2">
+								<FieldLabel htmlFor={`${id}-password`}>
+									{m.form_password_label()}
+								</FieldLabel>
+								<FieldContent>
+									<Input
+										id={`${id}-password`}
+										type="password"
+										autoComplete="current-password"
+										required
+										{...field}
+									/>
+								</FieldContent>
+								<FieldError />
+							</Field>
+						)}
+					/>
+					<Button
+						type="submit"
+						disabled={isSubmitting}
+						className="w-full mt-4 disabled:bg-gray-300 disabled:text-gray-500"
+					>
+						{isSubmitting ? (
+							<span className="flex items-center justify-center gap-2">
+								<IconLoader className="animate-spin h-4 w-4" />
+								{m.btn_disabling_twofactor()}
+							</span>
+						) : (
+							m.btn_disable_twofactor()
+						)}
+					</Button>
+				</fieldset>
+			</form>
 		</div>
 	);
 }
