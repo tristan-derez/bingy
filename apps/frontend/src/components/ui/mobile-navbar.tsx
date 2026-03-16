@@ -70,14 +70,16 @@ export const MobileBottomNav = ({ items, className }: BottomNavProps) => {
 };
 
 interface MobileTopBarProps {
-	logo: React.ReactNode;
-	dropdown: React.ReactNode;
+	left: React.ReactNode;
+	center: React.ReactNode;
+	right: React.ReactNode;
 	className?: string;
 }
 
 export const MobileTopBar = ({
-	logo,
-	dropdown,
+	left,
+	center,
+	right,
 	className,
 }: MobileTopBarProps) => {
 	return (
@@ -89,8 +91,9 @@ export const MobileTopBar = ({
 			)}
 		>
 			<div className="flex items-center justify-between rounded-md border border-border bg-card/50 backdrop-blur-lg px-4 py-2 shadow-sm">
-				{logo}
-				{dropdown}
+				<div className="flex-1">{left}</div>
+				<div className="flex-shrink-0">{center}</div>
+				<div className="flex-1 flex justify-end">{right}</div>
 			</div>
 		</div>
 	);
