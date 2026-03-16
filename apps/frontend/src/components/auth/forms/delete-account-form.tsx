@@ -75,7 +75,7 @@ export function DeleteAccountForm() {
 					}
 				/>
 
-				<AlertDialogContent>
+				<AlertDialogContent className="max-w-lg!">
 					<AlertDialogHeader>
 						<AlertDialogTitle>
 							{m.dialog_delete_account_title()}
