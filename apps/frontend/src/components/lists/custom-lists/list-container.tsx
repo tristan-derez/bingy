@@ -46,6 +46,8 @@ export function ListContainer({
 			? [...list.items].sort((a, b) => (a.position ?? 0) - (b.position ?? 0))
 			: list.items;
 
+	const hasItem = list.items.length > 0;
+
 	return (
 		<div className="container flex flex-col gap-6">
 			<div className="flex flex-col gap-2 justify-center">
@@ -88,7 +90,7 @@ export function ListContainer({
 						<span></span>
 					)}
 
-					{list.items.length > 0 ? (
+					{hasItem ? (
 						<Link
 							to="/user/$username/lists/$slug/details"
 							params={{ username: username, slug: list.slug }}
@@ -100,7 +102,7 @@ export function ListContainer({
 				</div>
 			</div>
 
-			{list.items.length === 0 ? (
+			{!hasItem ? (
 				<p className="text-center py-12 text-muted-foreground">
 					{isOwnList ? (
 						<>
