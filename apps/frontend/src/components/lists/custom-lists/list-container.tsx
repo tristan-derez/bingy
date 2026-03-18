@@ -4,6 +4,7 @@ import { ListPagination } from "@/components/lists/list-pagination";
 import { m } from "@/paraglide/messages";
 import { DeleteListButton } from "./delete-list-button";
 import { EditListButton } from "./edit-list-button";
+import { ListDescription } from "./list-description";
 
 type ListContainerProps = {
 	username: string;
@@ -46,6 +47,8 @@ export function ListContainer({
 			? [...list.items].sort((a, b) => (a.position ?? 0) - (b.position ?? 0))
 			: list.items;
 
+	const hasItem = list.items.length > 0;
+
 	return (
 		<div className="container flex flex-col gap-6">
 			<div className="flex flex-col gap-2 justify-center">
@@ -79,16 +82,14 @@ export function ListContainer({
 						</div>
 					) : null}
 				</div>
-				<div className="flex flex-col justify-between gap-4">
+				<div className="flex flex-col justify-between gap-1">
 					{list.description ? (
-						<p className="text-muted-foreground whitespace-pre-wrap max-w-3/4">
-							{list.description}
-						</p>
+						<ListDescription description={list.description} />
 					) : (
 						<span></span>
 					)}
 
-					{list.items.length > 0 ? (
+					{hasItem ? (
 						<Link
 							to="/user/$username/lists/$slug/details"
 							params={{ username: username, slug: list.slug }}
@@ -100,7 +101,7 @@ export function ListContainer({
 				</div>
 			</div>
 
-			{list.items.length === 0 ? (
+			{!hasItem ? (
 				<p className="text-center py-12 text-muted-foreground">
 					{isOwnList ? (
 						<>

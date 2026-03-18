@@ -6,19 +6,32 @@ import {
 	CollapsibleContent,
 	CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { useMediaQuery } from "@/integrations/media-query";
 import { m } from "@/paraglide/messages";
 import { getTruncatedContent } from "@/utils/truncate-content";
 
-export const MediaOverview = ({ overview }: { overview: string }) => {
-	const [isExpanded, setIsExpanded] = useState(false);
+interface ListDescriptionProps {
+	description: string | null;
+}
 
-	const { shouldTruncate, displayText, hiddenText } =
-		getTruncatedContent(overview);
+export const ListDescription = ({ description }: ListDescriptionProps) => {
+	const [isExpanded, setIsExpanded] = useState(false);
+	const isMobile = useMediaQuery("(max-width: 768px)");
+	const searchWindow = isMobile ? 120 : 300;
+
+	if (!description) {
+		return <span />;
+	}
+
+	const { shouldTruncate, displayText, hiddenText } = getTruncatedContent(
+		description,
+		searchWindow,
+	);
 
 	if (!shouldTruncate) {
 		return (
-			<p className="text-sm xl:w-6/7 whitespace-pre-line text-foreground text-pretty leading-relaxed">
-				{overview}
+			<p className="text-muted-foreground whitespace-pre-wrap max-w-3/4">
+				{displayText}
 			</p>
 		);
 	}
@@ -27,9 +40,9 @@ export const MediaOverview = ({ overview }: { overview: string }) => {
 		<Collapsible
 			open={isExpanded}
 			onOpenChange={setIsExpanded}
-			className="group flex gap-3 text-sm xl:w-6/7"
+			className="flex flex-col"
 		>
-			<div className="flex-1 whitespace-pre-line leading-relaxed text-pretty text-foreground">
+			<div className="text-muted-foreground whitespace-pre-wrap max-w-3/4">
 				<span>{displayText}</span>
 				<CollapsibleContent
 					render={
@@ -40,19 +53,18 @@ export const MediaOverview = ({ overview }: { overview: string }) => {
 				/>
 			</div>
 
-			<div className="flex flex-none items-start">
+			<div>
 				<CollapsibleTrigger
 					render={
-						<Button
-							variant="secondary"
-							size="icon"
-							className="h-6 w-6 p-0 hover:bg-transparent text-muted-foreground hover:text-foreground"
-							title={isExpanded ? m.btn_show_less() : m.btn_show_more()}
-						>
+						<Button variant="link" size="sm" className="p-0">
 							{isExpanded ? (
-								<IconChevronUp size={18} />
+								<>
+									<IconChevronUp /> {m.btn_show_less()}
+								</>
 							) : (
-								<IconChevronDown size={18} />
+								<>
+									<IconChevronDown /> {m.btn_show_more()}
+								</>
 							)}
 						</Button>
 					}

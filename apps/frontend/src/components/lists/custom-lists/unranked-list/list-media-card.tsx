@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import fallbackPoster from "@/assets/media-image-placeholder.jpg";
 import { MovieBadge } from "@/components/badges/movie-badge";
 import { TvShowBadge } from "@/components/badges/tv-badge";
+import { PositionBadge } from "@/components/lists/custom-lists/position-badge";
 import { ListDropdown } from "@/components/lists/media-actions/list-dropdown";
 import { getTmdbImageUrl } from "@/utils/utils";
 
@@ -59,9 +60,9 @@ export const ListMediaCard = ({ item, showPosition }: ListMediaCardProps) => {
 					<div className="absolute inset-x-0 top-0 h-24 bg-linear-to-b from-black/90 to-transparent" />
 					<div className="absolute inset-x-0 bottom-0 h-12 bg-linear-to-b from-transparent to-black/90" />
 
-					{showPosition ? (
-						<div className="absolute top-2 left-2 z-10 bg-black/80 text-white px-2 py-1 rounded text-sm font-bold">
-							#{item.position}
+					{showPosition && item.position ? (
+						<div className="absolute top-2 left-2 z-10">
+							<PositionBadge position={item.position} variant="overlay" />
 						</div>
 					) : null}
 
