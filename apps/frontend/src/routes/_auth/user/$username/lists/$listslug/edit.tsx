@@ -70,7 +70,7 @@ function EditListPage() {
 
 	const form = useForm<EditListFormValues>({
 		resolver: zodResolver(createListSchema),
-		mode: "onTouched",
+		mode: "onChange",
 		defaultValues: {
 			name: "",
 			description: "",
