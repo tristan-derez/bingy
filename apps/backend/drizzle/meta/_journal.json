@@ -22,6 +22,20 @@
       "when": 1769962341602,
       "tag": "0002_plain_warlock",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1773855273910,
+      "tag": "0003_keen_thundra",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1773855599506,
+      "tag": "0004_wonderful_red_hulk",
+      "breakpoints": true
     }
   ]
 }

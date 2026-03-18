@@ -1,0 +1,1 @@
+ALTER TABLE "list_items" ALTER COLUMN "note" SET DATA TYPE varchar(1000);
