@@ -23,13 +23,11 @@ export function PersonProfilePortraitImage({
 	};
 
 	return (
-		<div className="relative w-full">
-			<img
-				src={imageUrl ?? fallbackPoster}
-				alt={alt}
-				className="aspect-2/3 w-full max-h-90 rounded-lg shadow-lg xl:max-h-[450px]"
-				onError={handleImageError}
-			/>
-		</div>
+		<img
+			src={imageUrl ?? fallbackPoster}
+			alt={alt}
+			className="aspect-2/3 w-44 h-65 md:w-52 md:h-80 lg:w-67 lg:h-100 xl:w-80 xl:h-120 rounded-lg shadow-lg"
+			onError={handleImageError}
+		/>
 	);
 }

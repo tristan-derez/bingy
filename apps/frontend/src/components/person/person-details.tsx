@@ -54,7 +54,7 @@ export const PersonDetailsView = ({
 			<BackButton />
 
 			<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
-				<div className="flex flex-col gap-2 items-center lg:items-start max-w-[250px] md:max-w-[300px] lg:max-w-[500px]">
+				<div className="flex flex-col gap-2 items-center lg:items-start w-44 md:w-52 lg:w-67 xl:w-80">
 					<PersonProfilePortraitImage
 						imagePath={person.profile_path}
 						alt={person.name}
@@ -62,14 +62,21 @@ export const PersonDetailsView = ({
 					/>
 
 					{person.also_known_as && person.also_known_as.length > 0 ? (
-						<div className="hidden xl:flex mt-2 text-muted-foreground">
+						<div className="hidden lg:flex">
 							<div className="flex flex-col">
-								<h3 className="font-bold text-foreground">
+								<h3 className="font-bold text-foreground text-base">
 									{m.person_also_known()}
 								</h3>
-								{person.also_known_as.map((name: string, index: number) => (
-									<span key={index}>{name.trim()}</span>
-								))}
+								<div className="flex flex-col gap-1">
+									{person.also_known_as.map((name: string, index: number) => (
+										<span
+											key={index}
+											className="text-muted-foreground text-sm flex-wrap"
+										>
+											{name.trim()}
+										</span>
+									))}
+								</div>
 							</div>
 						</div>
 					) : null}

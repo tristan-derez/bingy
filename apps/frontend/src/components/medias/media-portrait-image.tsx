@@ -30,11 +30,11 @@ export function MediaPortraitImage({
 	};
 
 	return (
-		<div className="relative w-full">
+		<div className="relative">
 			<img
 				src={imageUrl ?? fallbackPoster}
 				alt={alt}
-				className="aspect-2/3 w-full max-h-72 lg:max-h-90 rounded-lg shadow-lg xl:max-h-[450px]"
+				className="aspect-2/3 w-44 h-65 md:w-52 md:h-80 lg:w-67 lg:h-100 xl:w-80 xl:h-120 rounded-lg shadow-lg"
 				onError={handleImageError}
 			/>
 
