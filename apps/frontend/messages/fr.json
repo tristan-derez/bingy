@@ -601,8 +601,8 @@
 	"toast_form_create_list_success": "Liste « {list_name} » créée",
 	"toast_form_create_list_error": "Échec de la création de la liste {list_name}",
 	"schema_create_list_name_min": "Le nom est requis",
-	"schema_create_list_name_max": "Le nom ne doit pas dépasser 50 caractères",
-	"schema_create_list_description_max": "La description ne doit pas dépasser 1000 caractères",
+	"schema_create_list_name_max": "Le nom ne doit pas dépasser {maxCharsNumber} caractères",
+	"schema_create_list_description_max": "La description ne doit pas dépasser {maxCharsNumber} caractères",
 	"list_added_items": [
 		{
 			"declarations": ["input count", "local countPlural = count: plural"],
