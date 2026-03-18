@@ -4,6 +4,7 @@ import { useAtomValue } from "jotai";
 import { Badge } from "@/components/ui/badge";
 import {
 	Card,
+	CardAction,
 	CardContent,
 	CardDescription,
 	CardFooter,
@@ -13,6 +14,7 @@ import {
 import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
+import { getTruncatedContent } from "@/utils/truncate-content";
 import { DeleteListButton } from "../custom-lists/delete-list-button";
 import { EditListButton } from "../custom-lists/edit-list-button";
 
@@ -54,7 +56,13 @@ export function ListCard({ item, username, isOwnProfile }: ListCardProps) {
 		day: "2-digit",
 		year: "2-digit",
 	});
-	const displayDescription = item.description?.split("\n")[0] || "\u00A0";
+	const { displayText, shouldTruncate } = getTruncatedContent(
+		item.description ?? "",
+		100,
+	);
+
+	const description =
+		displayText && shouldTruncate ? displayText + "..." : displayText;
 
 	return (
 		<Link
@@ -64,14 +72,34 @@ export function ListCard({ item, username, isOwnProfile }: ListCardProps) {
 		>
 			<Card className="hover:bg-accent transition-colors h-full">
 				<CardHeader>
-					<div className="flex items-start justify-between gap-2">
-						<div className="flex items-center gap-2 flex-1 min-w-0">
-							<CardTitle className="line-clamp-1 leading-relaxed gap-2 flex">
-								{item.name}
-							</CardTitle>
-						</div>
+					<div className="flex items-center gap-2 min-w-0">
+						<CardTitle className="text-xl font-bold truncate min-w-0 flex-1">
+							{item.name}
+						</CardTitle>
 						{isOwnProfile ? (
-							<div className="flex gap-2" onClick={(e) => e.preventDefault()}>
+							<Badge variant="outline" className="shrink-0 flex gap-1">
+								<VisibilityIcon className="h-3 w-3" />
+								<span className="hidden sm:inline">
+									{visibilityConfig[item.visibility].label()}
+								</span>
+							</Badge>
+						) : null}
+					</div>
+					<CardDescription className="line-clamp-1 leading-relaxed">
+						{description}
+					</CardDescription>
+				</CardHeader>
+				<CardContent></CardContent>
+				<CardFooter className="flex justify-between">
+					<p className="text-sm text-muted-foreground">
+						{m.list_created_at({
+							date: formattedDate,
+						})}
+					</p>
+
+					{isOwnProfile ? (
+						<CardAction onClick={(e) => e.preventDefault()}>
+							<div className="flex gap-2">
 								<EditListButton
 									username={username}
 									listSlug={item.slug}
@@ -84,33 +112,8 @@ export function ListCard({ item, username, isOwnProfile }: ListCardProps) {
 									size="icon-sm"
 								/>
 							</div>
-						) : null}
-					</div>
-					<CardDescription className="line-clamp-1 leading-relaxed max-w-2/3 ">
-						{displayDescription}
-					</CardDescription>
-				</CardHeader>
-				<CardContent></CardContent>
-				<CardFooter className="flex justify-between">
-					<p className="text-sm text-muted-foreground">
-						{m.list_created_at({
-							date: formattedDate,
-						})}
-					</p>
-					<div className="flex gap-2">
-						<Badge
-							variant="default"
-							className="shrink-0 bg-accent text-accent-foreground"
-						>
-							{item.type === "ranked"
-								? m.list_type_ranked()
-								: m.list_type_unranked()}
-						</Badge>
-						<Badge variant="outline" className="shrink-0">
-							<VisibilityIcon className="h-3 w-3 mr-1" />
-							{visibilityConfig[item.visibility].label()}
-						</Badge>
-					</div>
+						</CardAction>
+					) : null}
 				</CardFooter>
 			</Card>
 		</Link>
