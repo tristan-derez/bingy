@@ -1,10 +1,11 @@
 import { IconPencil } from "@tabler/icons-react";
 import { Link, useNavigate } from "@tanstack/react-router";
+import { DeleteListButton } from "@/components/lists/custom-lists/delete-list-button";
 import { ListMediaDetailsCard } from "@/components/lists/custom-lists/details/list-media-details-card";
+import { ListDescription } from "@/components/lists/custom-lists/list-description";
+import { ListPagination } from "@/components/lists/list-pagination";
 import { Button } from "@/components/ui/button";
 import { m } from "@/paraglide/messages";
-import { ListPagination } from "../../list-pagination";
-import { DeleteListButton } from "../delete-list-button";
 
 type ListDetailsContainerProps = {
 	username: string;
@@ -82,11 +83,9 @@ export function ListDetailsContainer({
 						</div>
 					) : null}
 				</div>
-				<div className="flex flex-col justify-between gap-4">
+				<div className="flex flex-col justify-between gap-1">
 					{list.description ? (
-						<p className="text-muted-foreground whitespace-pre-wrap max-w-3/4">
-							{list.description}
-						</p>
+						<ListDescription description={list.description} />
 					) : (
 						<span></span>
 					)}

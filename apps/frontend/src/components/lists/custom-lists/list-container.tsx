@@ -4,6 +4,7 @@ import { ListPagination } from "@/components/lists/list-pagination";
 import { m } from "@/paraglide/messages";
 import { DeleteListButton } from "./delete-list-button";
 import { EditListButton } from "./edit-list-button";
+import { ListDescription } from "./list-description";
 
 type ListContainerProps = {
 	username: string;
@@ -81,11 +82,9 @@ export function ListContainer({
 						</div>
 					) : null}
 				</div>
-				<div className="flex flex-col justify-between gap-4">
+				<div className="flex flex-col justify-between gap-1">
 					{list.description ? (
-						<p className="text-muted-foreground whitespace-pre-wrap max-w-3/4">
-							{list.description}
-						</p>
+						<ListDescription description={list.description} />
 					) : (
 						<span></span>
 					)}
