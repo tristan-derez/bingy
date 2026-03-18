@@ -3,14 +3,26 @@ import { and, desc, eq, sql } from "drizzle-orm";
 import { Hono } from "hono";
 import { nanoid } from "nanoid";
 import { z } from "zod";
-import { customLists, listItems, media, watchlist } from "../../db/schemas/list";
+import {
+	customLists,
+	listItems,
+	media,
+	watchlist,
+} from "../../db/schemas/list";
 import type { User } from "../../db/schemas/user";
 import { activity, users } from "../../db/schemas/user";
 import { db } from "../../lib/database";
 import { serveNotFound } from "../../lib/responses/error";
-import { serveCreated, serveData, serveNoContent } from "../../lib/responses/resp";
+import {
+	serveCreated,
+	serveData,
+	serveNoContent,
+} from "../../lib/responses/resp";
 import { createSlug } from "../../lib/slug";
-import { getMediaDetails, NormalizedMedia } from "../../lib/tmdb/get-media-details";
+import {
+	getMediaDetails,
+	NormalizedMedia,
+} from "../../lib/tmdb/get-media-details";
 import { sessionMiddleware } from "../../web/middlewares/session";
 
 type Variables = {
@@ -230,8 +242,8 @@ userListRoutes.post(
 	zValidator(
 		"json",
 		z.object({
-			name: z.string().min(1).max(50),
-			description: z.string().max(1000).optional(),
+			name: z.string().min(1).max(200),
+			description: z.string().max(2000).optional(),
 			visibility: z.enum(["public", "limited", "private"]).default("public"),
 			type: z.enum(["unranked", "ranked"]).default("unranked"),
 			items: z
@@ -239,7 +251,7 @@ userListRoutes.post(
 					z.object({
 						tmdbId: z.number(),
 						mediaType: z.enum(["movie", "tv"]),
-						note: z.string().max(500).optional(),
+						note: z.string().max(1000).optional(),
 						position: z.number().optional(),
 					}),
 				)
@@ -386,7 +398,7 @@ userListRoutes.post(
 			tmdbId: z.number(),
 			mediaType: z.enum(["movie", "tv"]),
 			listId: z.uuidv7(),
-			note: z.string().max(500).optional(),
+			note: z.string().max(1000).optional(),
 		}),
 	),
 	async (c) => {
@@ -521,8 +533,8 @@ userListRoutes.patch(
 	zValidator(
 		"json",
 		z.object({
-			name: z.string().min(1).max(50).optional(),
-			description: z.string().max(1000).nullable().optional(),
+			name: z.string().min(1).max(200).optional(),
+			description: z.string().max(2000).nullable().optional(),
 			visibility: z.enum(["public", "limited", "private"]).optional(),
 			type: z.enum(["unranked", "ranked"]).optional(),
 			items: z
@@ -530,7 +542,7 @@ userListRoutes.patch(
 					z.object({
 						tmdbId: z.number(),
 						mediaType: z.enum(["movie", "tv"]),
-						note: z.string().max(500).optional(),
+						note: z.string().max(1000).optional(),
 						position: z.number().optional(),
 					}),
 				)
