@@ -605,8 +605,8 @@
 	"toast_form_create_list_success": "List \"{list_name}\" created successfully",
 	"toast_form_create_list_error": "Failed to create list \"{list_name}\"",
 	"schema_create_list_name_min": "Name is required",
-	"schema_create_list_name_max": "Name must be less than 50 chars",
-	"schema_create_list_description_max": "Description must be less than 1000 chars",
+	"schema_create_list_name_max": "Name must be less than {maxCharsNumber} chars",
+	"schema_create_list_description_max": "Description must be less than {maxCharsNumber} chars",
 	"list_added_items": [
 		{
 			"declarations": ["input count", "local countPlural = count: plural"],
