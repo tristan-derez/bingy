@@ -39,7 +39,7 @@ export const PersonBiography = ({ biography }: PersonBiographyProps) => {
 				<CollapsibleContent
 					render={
 						<span className={isExpanded ? "inline" : "hidden"}>
-							{" " + hiddenText}
+							{hiddenText}
 						</span>
 					}
 				/>
