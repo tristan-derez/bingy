@@ -42,10 +42,7 @@ export function ListRankedItemCard({
 
 	return (
 		<div className="relative border rounded-md" ref={setNodeRef} style={style}>
-			<Badge
-				className="absolute -left-4 top-1/2 -translate-y-1/2 z-10"
-				variant="secondary"
-			>
+			<Badge className="absolute top-2 left-2 z-10" variant="secondary">
 				{position}
 			</Badge>
 			<div className="flex items-stretch gap-3 p-2">
