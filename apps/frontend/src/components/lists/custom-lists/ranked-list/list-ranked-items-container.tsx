@@ -3,7 +3,8 @@ import {
 	DndContext,
 	type DragEndEvent,
 	KeyboardSensor,
-	PointerSensor,
+	MouseSensor,
+	TouchSensor,
 	useSensor,
 	useSensors,
 } from "@dnd-kit/core";
@@ -34,7 +35,19 @@ export function ListRankedItemsContainer({
 	onReorder,
 }: ListRankedItemsContainerProps) {
 	const sensors = useSensors(
-		useSensor(PointerSensor),
+		useSensor(MouseSensor, {
+			activationConstraint: {
+				distance: 10,
+			},
+		}),
+		useSensor(TouchSensor, {
+			activationConstraint: {
+				delay: 250,
+				tolerance: 5,
+			},
+		}),
+		// for keyboard, hover on the sortable zone and press space,
+		// then arrow keys to move item up and down
 		useSensor(KeyboardSensor, {
 			coordinateGetter: sortableKeyboardCoordinates,
 		}),
@@ -66,16 +79,18 @@ export function ListRankedItemsContainer({
 				items={items.map((item) => `${item.tmdbId}-${item.mediaType}`)}
 				strategy={verticalListSortingStrategy}
 			>
-				<div className="flex flex-col gap-2 pl-2 md:pl-0">
-					{items.map((item, index) => (
-						<ListRankedItemCard
-							key={`${item.tmdbId}-${item.mediaType}`}
-							item={item}
-							position={index + 1}
-							onRemove={onRemove}
-							onUpdateNote={onUpdateNote}
-						/>
-					))}
+				<div className="relative max-h-[70vh] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+					<div className="flex flex-col gap-2">
+						{items.map((item, index) => (
+							<ListRankedItemCard
+								key={`${item.tmdbId}-${item.mediaType}`}
+								item={item}
+								position={index + 1}
+								onRemove={onRemove}
+								onUpdateNote={onUpdateNote}
+							/>
+						))}
+					</div>
 				</div>
 			</SortableContext>
 		</DndContext>
