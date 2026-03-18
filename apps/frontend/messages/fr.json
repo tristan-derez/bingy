@@ -689,5 +689,6 @@
 	"region_canada": "Canada",
 	"region_united_states": "États-Unis",
 	"region_united_kingdom": "Royaume-Uni",
-	"region_australia": "Australie"
+	"region_australia": "Australie",
+	"btn_go_back": "Retour en arrière"
 }
