@@ -53,43 +53,46 @@ export function ListContainer({
 	return (
 		<div className="container flex flex-col gap-6">
 			<div className="flex flex-col gap-2 justify-center">
-				<div className="flex justify-between items-center">
-					<ListName listName={list.name} />
+				<ListName listName={list.name} />
 
-					{isOwnList ? (
-						<div className="flex gap-2" onClick={(e) => e.preventDefault()}>
-							<EditListButton
-								listSlug={list.slug}
-								username={username}
-								size="lg"
-								showText={true}
-							/>
-							<DeleteListButton
-								listId={list.id}
-								listName={list.name}
-								size="icon-lg"
-								onRedirect={() =>
-									navigate({
-										to: "/user/$username/lists",
-										params: { username },
-									})
-								}
-							/>
-						</div>
-					) : null}
-				</div>
 				<div className="flex flex-col justify-between gap-1">
 					<ListDescription description={list.description} />
 
-					{hasItem ? (
-						<Link
-							to="/user/$username/lists/$slug/details"
-							params={{ username: username, slug: list.slug }}
-							className="text-primary underline hover:text-primary/80 self-end"
-						>
-							{m.list_container_see_notes()}
-						</Link>
-					) : null}
+					<div className="flex flex-row justify-between">
+						{hasItem ? (
+							<Link
+								to="/user/$username/lists/$slug/details"
+								params={{ username: username, slug: list.slug }}
+								className="text-primary underline hover:text-primary/80 self-end"
+							>
+								{m.list_container_see_notes()}
+							</Link>
+						) : (
+							<span>&nbsp;</span>
+						)}
+
+						{isOwnList ? (
+							<div className="flex gap-2" onClick={(e) => e.preventDefault()}>
+								<EditListButton
+									listSlug={list.slug}
+									username={username}
+									size="lg"
+									showText={true}
+								/>
+								<DeleteListButton
+									listId={list.id}
+									listName={list.name}
+									size="icon-lg"
+									onRedirect={() =>
+										navigate({
+											to: "/user/$username/lists",
+											params: { username },
+										})
+									}
+								/>
+							</div>
+						) : null}
+					</div>
 				</div>
 			</div>
 

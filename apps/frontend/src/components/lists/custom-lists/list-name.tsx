@@ -5,7 +5,7 @@ interface ListNameProps {
 export function ListName({ listName }: ListNameProps) {
 	return (
 		<h1
-			className="text-xl lg:text-2xl font-bold truncate w-full"
+			className="text-lg lg:text-2xl font-bold w-full flex flex-wrap"
 			title={listName}
 		>
 			{listName}
