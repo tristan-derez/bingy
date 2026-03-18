@@ -5,6 +5,7 @@ import { m } from "@/paraglide/messages";
 import { DeleteListButton } from "./delete-list-button";
 import { EditListButton } from "./edit-list-button";
 import { ListDescription } from "./list-description";
+import { ListName } from "./list-name";
 
 type ListContainerProps = {
 	username: string;
@@ -53,12 +54,7 @@ export function ListContainer({
 		<div className="container flex flex-col gap-6">
 			<div className="flex flex-col gap-2 justify-center">
 				<div className="flex justify-between items-center">
-					<h1
-						className="text-3xl font-bold truncate max-w-[5ch] sm:max-w-[12ch] md:max-w-[20ch] lg:max-w-[30ch]"
-						title={list.name}
-					>
-						{list.name}
-					</h1>
+					<ListName listName={list.name} />
 
 					{isOwnList ? (
 						<div className="flex gap-2" onClick={(e) => e.preventDefault()}>
@@ -83,11 +79,7 @@ export function ListContainer({
 					) : null}
 				</div>
 				<div className="flex flex-col justify-between gap-1">
-					{list.description ? (
-						<ListDescription description={list.description} />
-					) : (
-						<span></span>
-					)}
+					<ListDescription description={list.description} />
 
 					{hasItem ? (
 						<Link
