@@ -19,18 +19,16 @@ export const CastCardCarousel = ({ person }: CastCardCarouselProps) => {
 
 	return (
 		<Link to="/person/$personId" params={{ personId: person.id.toString() }}>
-			<Card className="w-full h-full border-none bg-accent overflow-hidden pt-0 flex flex-col select-none gap-2 shadow-none pb-4">
-				<div className="aspect-3/4 md:aspect-2/3 w-full overflow-hidden">
-					<img
-						src={imageUrl}
-						alt={person.name}
-						onError={(e) => {
-							if (e.currentTarget.src !== fallbackPoster)
-								e.currentTarget.src = fallbackPoster;
-						}}
-						className="h-full w-full object-cover"
-					/>
-				</div>
+			<Card className="flex flex-col select-none gap-2 pt-0 pb-2 shadow-none rounded-md">
+				<img
+					src={imageUrl}
+					alt={person.name}
+					onError={(e) => {
+						if (e.currentTarget.src !== fallbackPoster)
+							e.currentTarget.src = fallbackPoster;
+					}}
+					className="w-30 h-45 md:w-45 md:h-67.5 object-cover aspect-2/3"
+				/>
 				<CardHeader className="grow justify-between gap-2">
 					<CardTitle
 						className="text-base leading-relaxed line-clamp-1"

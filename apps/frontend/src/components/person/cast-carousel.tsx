@@ -30,9 +30,7 @@ export const CastCarousel = ({ people }: CastCarouselProps) => {
 
 	const { showGradient } = useCarouselGradient(emblaApi);
 
-	if (!people.length) {
-		return null;
-	}
+	if (!people.length) return null;
 
 	const showButtons = !prevBtnDisabled || !nextBtnDisabled;
 
@@ -42,7 +40,7 @@ export const CastCarousel = ({ people }: CastCarouselProps) => {
 				<div className="overflow-hidden hover:cursor-grab" ref={emblaRef}>
 					<div className="flex gap-4 p-px">
 						{people.map((person) => (
-							<div key={person.id} className="flex-none w-[200px]">
+							<div key={person.id} className="flex-none">
 								<CastCardCarousel person={person} />
 							</div>
 						))}
