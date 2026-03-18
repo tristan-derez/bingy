@@ -47,10 +47,7 @@ export const MovieCarousel = ({ movies, title }: MovieCarouselProps) => {
 				<div className="overflow-hidden hover:cursor-grab" ref={emblaRef}>
 					<div className="flex gap-4 p-px">
 						{movies.map((movie) => (
-							<div
-								key={`${carouselId}-${movie.id}`}
-								className="flex-none w-[200px]"
-							>
+							<div key={`${carouselId}-${movie.id}`} className="flex-none">
 								<MovieCard movie={movie} />
 							</div>
 						))}
