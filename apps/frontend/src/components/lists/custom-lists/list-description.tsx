@@ -30,7 +30,7 @@ export const ListDescription = ({ description }: ListDescriptionProps) => {
 
 	if (!shouldTruncate) {
 		return (
-			<p className="text-muted-foreground whitespace-pre-wrap max-w-3/4">
+			<p className="text-muted-foreground whitespace-pre-wrap w-full md:max-w-6/7 lg:max-w-3/4 text-pretty leading-relaxed">
 				{displayText}
 			</p>
 		);
@@ -42,7 +42,7 @@ export const ListDescription = ({ description }: ListDescriptionProps) => {
 			onOpenChange={setIsExpanded}
 			className="flex flex-col"
 		>
-			<div className="text-muted-foreground whitespace-pre-wrap max-w-3/4">
+			<div className="text-muted-foreground whitespace-pre-wrap w-full md:max-w-6/7 lg:max-w-3/4">
 				<span>{displayText}</span>
 				<CollapsibleContent
 					render={
