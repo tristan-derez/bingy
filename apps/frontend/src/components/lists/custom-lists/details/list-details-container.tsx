@@ -3,6 +3,7 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { DeleteListButton } from "@/components/lists/custom-lists/delete-list-button";
 import { ListMediaDetailsCard } from "@/components/lists/custom-lists/details/list-media-details-card";
 import { ListDescription } from "@/components/lists/custom-lists/list-description";
+import { ListName } from "@/components/lists/custom-lists/list-name";
 import { ListPagination } from "@/components/lists/list-pagination";
 import { Button } from "@/components/ui/button";
 import { m } from "@/paraglide/messages";
@@ -51,13 +52,8 @@ export function ListDetailsContainer({
 	return (
 		<div className="container flex flex-col gap-6">
 			<div className="flex flex-col gap-2">
-				<div className="flex items-center justify-between">
-					<h1
-						className="text-3xl font-bold truncate max-w-[5ch] sm:max-w-[12ch] md:max-w-[20ch] lg:max-w-[30ch]"
-						title={list.name}
-					>
-						{list.name}
-					</h1>
+				<div className="flex items-center justify-between gap-1">
+					<ListName listName={list.name} />
 
 					{isOwnList ? (
 						<div className="flex gap-2">
@@ -84,11 +80,7 @@ export function ListDetailsContainer({
 					) : null}
 				</div>
 				<div className="flex flex-col justify-between gap-1">
-					{list.description ? (
-						<ListDescription description={list.description} />
-					) : (
-						<span></span>
-					)}
+					<ListDescription description={list.description} />
 
 					{list.items.length > 0 ? (
 						<Link
