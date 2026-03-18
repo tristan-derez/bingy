@@ -1,11 +1,11 @@
-import { IconPencil } from "@tabler/icons-react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { DeleteListButton } from "@/components/lists/custom-lists/delete-list-button";
 import { ListMediaDetailsCard } from "@/components/lists/custom-lists/details/list-media-details-card";
 import { ListDescription } from "@/components/lists/custom-lists/list-description";
+import { ListName } from "@/components/lists/custom-lists/list-name";
 import { ListPagination } from "@/components/lists/list-pagination";
-import { Button } from "@/components/ui/button";
 import { m } from "@/paraglide/messages";
+import { EditListButton } from "../edit-list-button";
 
 type ListDetailsContainerProps = {
 	username: string;
@@ -48,61 +48,53 @@ export function ListDetailsContainer({
 			? [...list.items].sort((a, b) => (a.position ?? 0) - (b.position ?? 0))
 			: list.items;
 
+	const hasItem = list.items.length > 0;
+
 	return (
 		<div className="container flex flex-col gap-6">
 			<div className="flex flex-col gap-2">
-				<div className="flex items-center justify-between">
-					<h1
-						className="text-3xl font-bold truncate max-w-[5ch] sm:max-w-[12ch] md:max-w-[20ch] lg:max-w-[30ch]"
-						title={list.name}
-					>
-						{list.name}
-					</h1>
+				<ListName listName={list.name} />
 
-					{isOwnList ? (
-						<div className="flex gap-2">
-							<Button
-								size="lg"
-								onClick={() =>
-									navigate({
-										to: "/user/$username/lists/$listslug/edit",
-										params: { username, listslug: list.slug },
-									})
-								}
+				<div className="flex flex-col justify-between gap-1">
+					<ListDescription description={list.description} />
+
+					<div className="flex flex-row justify-between">
+						{hasItem ? (
+							<Link
+								to="/user/$username/lists/$slug"
+								params={{ username: username, slug: list.slug }}
+								className="text-primary underline hover:text-primary/80 self-end"
 							>
-								<IconPencil />
-								<span className="hidden xs:inline">{m.btn_edit_list()}</span>
-							</Button>
-							<div onClick={(e) => e.preventDefault()}>
+								{m.list_details_container_hide_notes()}
+							</Link>
+						) : null}
+
+						{isOwnList ? (
+							<div className="flex gap-2" onClick={(e) => e.preventDefault()}>
+								<EditListButton
+									listSlug={list.slug}
+									username={username}
+									size="lg"
+									showText={true}
+								/>
 								<DeleteListButton
 									listId={list.id}
 									listName={list.name}
 									size="icon-lg"
+									onRedirect={() =>
+										navigate({
+											to: "/user/$username/lists",
+											params: { username },
+										})
+									}
 								/>
 							</div>
-						</div>
-					) : null}
-				</div>
-				<div className="flex flex-col justify-between gap-1">
-					{list.description ? (
-						<ListDescription description={list.description} />
-					) : (
-						<span></span>
-					)}
-
-					{list.items.length > 0 ? (
-						<Link
-							to="/user/$username/lists/$slug"
-							params={{ username: username, slug: list.slug }}
-							className="text-primary underline hover:text-primary/80 self-end"
-						>
-							{m.list_details_container_hide_notes()}
-						</Link>
-					) : null}
+						) : null}
+					</div>
 				</div>
 			</div>
 
-			{list.items.length === 0 ? (
+			{!hasItem ? (
 				<p className="text-center py-12 text-muted-foreground">
 					{isOwnList ? (
 						<>

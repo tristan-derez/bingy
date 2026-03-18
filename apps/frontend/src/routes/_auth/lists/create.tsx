@@ -49,7 +49,7 @@ function CreateListPage() {
 
 	const form = useForm<CreateListFormValues>({
 		resolver: zodResolver(createListSchema),
-		mode: "onTouched",
+		mode: "onChange",
 		defaultValues: {
 			name: "",
 			description: "",

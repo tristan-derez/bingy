@@ -1,4 +1,4 @@
-import { IconPencil } from "@tabler/icons-react";
+import { IconEdit } from "@tabler/icons-react";
 import { useNavigate } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { m } from "@/paraglide/messages";
@@ -28,7 +28,7 @@ export function EditListButton({
 				})
 			}
 		>
-			<IconPencil />
+			<IconEdit />
 			{showText && (
 				<span className="hidden xs:inline">{m.btn_edit_list()}</span>
 			)}
