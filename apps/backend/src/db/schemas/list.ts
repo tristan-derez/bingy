@@ -206,13 +206,13 @@ export const customLists = pgTable(
 		userId: uuid("user_id")
 			.notNull()
 			.references(() => users.id, { onDelete: "cascade" }),
-		name: varchar("name", { length: 50 }).notNull(),
-		slug: varchar("slug", { length: 200 }).notNull(),
+		name: varchar("name", { length: 200 }).notNull(),
+		slug: varchar("slug", { length: 300 }).notNull(),
 		type: varchar("type", { length: 20 })
 			.notNull()
 			.default("unranked")
 			.$type<"unranked" | "ranked">(),
-		description: varchar("description", { length: 1000 }),
+		description: varchar("description", { length: 2000 }),
 		visibility: varchar("visibility", { length: 20 })
 			.notNull()
 			.default("public")
@@ -236,7 +236,7 @@ export const listItems = pgTable(
 			.notNull()
 			.references(() => media.id, { onDelete: "cascade" }),
 		position: integer("position"), // null for unranked
-		note: varchar("note", { length: 500 }),
+		note: varchar("note", { length: 1000 }),
 		addedAt: timestamp("added_at").notNull().defaultNow(),
 	},
 	(table) => [

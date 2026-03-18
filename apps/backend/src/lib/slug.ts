@@ -8,11 +8,15 @@ const options = {
 	trim: true,
 };
 
-export function createSlug(text: string, prefix = "item"): string {
+export function createSlug(
+	text: string,
+	prefix = "item",
+	maxLength = 300,
+): string {
 	const emojiConverted = emoji.unemojify(text);
 	const base = slugify(emojiConverted, options);
 
-	if (base.length === 0) {
+	if (base.length === 0 || base.length > maxLength) {
 		return `${prefix}-${nanoid(8)}`;
 	}
 
