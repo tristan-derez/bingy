@@ -37,6 +37,7 @@ function WatchlistPage() {
 
 	return (
 		<WatchlistContainer
+			username={username}
 			title={m.watchlist_page_title_text()}
 			items={data?.data}
 			filter={filter}

@@ -8,6 +8,7 @@ import { m } from "@/paraglide/messages";
 export type MediaFilter = "all" | "movie" | "tv";
 
 type WatchlistContainerProps = {
+	username: string;
 	title: string;
 	items?: {
 		id: number;
@@ -27,6 +28,7 @@ type WatchlistContainerProps = {
 };
 
 export function WatchlistContainer({
+	username,
 	title,
 	items = [],
 	filter,
@@ -79,7 +81,7 @@ export function WatchlistContainer({
 			</ToggleGroup>
 
 			{items.length === 0 ? (
-				<WatchlistEmptyState filter={filter} />
+				<WatchlistEmptyState filter={filter} username={username} />
 			) : (
 				<>
 					<div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-5 xl:grid-cols-8 gap-2 sm:gap-4">
