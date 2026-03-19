@@ -221,12 +221,13 @@ export function TvDetailsView({
 							{tv.id ? <MediaLearnMoreCard id={tv.id} mediaType="tv" /> : null}
 						</div>
 
-						{cast.length > 0 ? (
+						{cast && cast.length > 0 ? (
 							<div className="flex flex-col gap-2">
 								<CastList people={cast} />
 								<Link
 									to="/tv/$tvId/credits"
 									params={{ tvId: tv.id.toString() }}
+									className="text-sm"
 								>
 									{m.link_text_full_credits()}
 								</Link>
