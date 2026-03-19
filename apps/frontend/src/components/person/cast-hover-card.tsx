@@ -1,6 +1,5 @@
 import { Link } from "@tanstack/react-router";
 import type { Schemas } from "shared";
-import fallbackPoster from "@/assets/user-placeholder.jpg";
 import { Badge } from "@/components/ui/badge";
 import {
 	Drawer,
@@ -26,35 +25,40 @@ interface CastHoverCardProps {
 export const CastHoverCard = ({ person }: CastHoverCardProps) => {
 	const isMobile = useMediaQuery("(pointer: coarse)");
 
+	const personName = person.name;
+	const character = person.character
+		? `${m.person_as()} ${person.character}`
+		: "N/A";
 	const imageUrl = person.profile_path
 		? `https://image.tmdb.org/t/p/w500${person.profile_path}`
-		: fallbackPoster;
+		: null;
+
+	const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+		e.currentTarget.style.display = "none";
+	};
 
 	if (isMobile) {
 		return (
 			<Drawer swipeDirection="down">
 				<DrawerTrigger>
-					<Badge>{person.name}</Badge>
+					<Badge>{personName}</Badge>
 				</DrawerTrigger>
 				<DrawerContent className="items-center">
 					<div className="flex gap-4 pt-6 pb-2 px-4">
-						<img
-							src={imageUrl}
-							alt={person.name}
-							onError={(e) => {
-								if (e.currentTarget.src !== fallbackPoster)
-									e.currentTarget.src = fallbackPoster;
-							}}
-							className="w-20 h-auto aspect-2/3 object-cover rounded-lg shrink-0"
-						/>
+						{imageUrl ? (
+							<img
+								src={imageUrl}
+								alt={personName}
+								onError={handleImageError}
+								className="w-20 h-auto aspect-2/3 object-cover rounded-lg shrink-0"
+							/>
+						) : null}
 						<div className="flex flex-col justify-center gap-1 flex-1">
 							<DrawerTitle className="wrap-break-words">
-								{person.name}
+								{personName}
 							</DrawerTitle>
 							<DrawerDescription className="wrap-break-words">
-								{person.character
-									? `${m.person_as()} ${person.character}`
-									: "N/A"}
+								{character}
 							</DrawerDescription>
 						</div>
 					</div>
@@ -75,7 +79,7 @@ export const CastHoverCard = ({ person }: CastHoverCardProps) => {
 	return (
 		<HoverCard>
 			<HoverCardTrigger
-				render={<Badge className="cursor-default">{person.name}</Badge>}
+				render={<Badge className="cursor-default">{personName}</Badge>}
 			/>
 			<HoverCardContent className="w-40 p-0" side="left" align="end">
 				<Link
@@ -83,22 +87,17 @@ export const CastHoverCard = ({ person }: CastHoverCardProps) => {
 					params={{ personId: person.id.toString() }}
 					className="block"
 				>
-					<img
-						src={imageUrl}
-						alt={person.name}
-						onError={(e) => {
-							if (e.currentTarget.src !== fallbackPoster)
-								e.currentTarget.src = fallbackPoster;
-						}}
-						className="w-full h-auto aspect-2/3 object-cover rounded-t-md"
-					/>
+					{imageUrl ? (
+						<img
+							src={imageUrl}
+							alt={personName}
+							onError={handleImageError}
+							className="w-full h-auto aspect-2/3 object-cover rounded-t-md"
+						/>
+					) : null}
 					<div className="p-2 space-y-1">
-						<p className="font-semibold text-xs">{person.name}</p>
-						<p className="text-xs text-muted-foreground">
-							{person.character
-								? `${m.person_as()} ${person.character}`
-								: "N/A"}
-						</p>
+						<p className="font-semibold text-xs">{personName}</p>
+						<p className="text-xs text-muted-foreground">{character}</p>
 					</div>
 				</Link>
 			</HoverCardContent>
