@@ -83,7 +83,6 @@ export function WatchlistEmptyState({
 					<SearchCommand
 						title={m.btn_form_search()}
 						className={isMobile ? "w-50 justify-center" : "w-50"}
-						buttonVariant="ghost"
 						showKbdHelper
 						showButton
 					/>
