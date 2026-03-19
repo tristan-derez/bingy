@@ -1,3 +1,4 @@
+import { IconExternalLink } from "@tabler/icons-react"; // or whichever icon you want
 import { Link } from "@tanstack/react-router";
 import type { Schemas } from "shared";
 import { Badge } from "@/components/ui/badge";
@@ -24,7 +25,6 @@ interface CastHoverCardProps {
 
 export const CastHoverCard = ({ person }: CastHoverCardProps) => {
 	const isMobile = useMediaQuery("(pointer: coarse)");
-
 	const personName = person.name;
 	const character = person.character
 		? `${m.person_as()} ${person.character}`
@@ -96,7 +96,12 @@ export const CastHoverCard = ({ person }: CastHoverCardProps) => {
 						/>
 					) : null}
 					<div className="p-2 space-y-1">
-						<p className="font-semibold text-xs">{personName}</p>
+						<div className="flex items-start gap-1">
+							<p className="font-semibold text-xs flex-1 wrap-break-words">
+								{personName}
+							</p>
+							<IconExternalLink size={14} className="shrink-0 mt-0.5" />
+						</div>
 						<p className="text-xs text-muted-foreground">{character}</p>
 					</div>
 				</Link>
