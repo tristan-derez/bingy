@@ -24,7 +24,9 @@ export const PersonBiography = ({ biography }: PersonBiographyProps) => {
 
 	if (!shouldTruncate) {
 		return (
-			<p className="whitespace-pre-line text-pretty w-6/7">{displayText}</p>
+			<p className="whitespace-pre-line text-pretty w-full lg:w-6/7">
+				{displayText}
+			</p>
 		);
 	}
 
@@ -34,7 +36,7 @@ export const PersonBiography = ({ biography }: PersonBiographyProps) => {
 			onOpenChange={setIsExpanded}
 			className="flex flex-col"
 		>
-			<div className="whitespace-pre-line text-pretty w-6/7">
+			<div className="whitespace-pre-line text-pretty w-full lg:w-6/7">
 				<span>{displayText}</span>
 				<CollapsibleContent
 					render={
