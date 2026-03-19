@@ -8,6 +8,8 @@ interface PersonTimelineProps {
 	combinedCredits: Schemas.PersonCombinedCredits;
 }
 
+// @todo: remove saga results from there
+// move logic to backend
 export const PersonTimeline = ({ combinedCredits }: PersonTimelineProps) => {
 	const id = useId();
 	const actingItems = combinedCredits.cast.map(mapToTimelineItem);

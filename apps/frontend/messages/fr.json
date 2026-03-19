@@ -225,7 +225,7 @@
 	"search_movie_badge": "Film",
 	"search_tv_badge": "TV",
 	"search_person_badge": "Personne",
-	"person_as": "en tant que",
+	"person_as": "incarne",
 	"movies_now_playing_title": "Films à l'affiche",
 	"movies_popular_title": "Films populaires",
 	"movies_upcoming_title": "Films à venir",
@@ -689,5 +689,6 @@
 	"region_canada": "Canada",
 	"region_united_states": "États-Unis",
 	"region_united_kingdom": "Royaume-Uni",
-	"region_australia": "Australie"
+	"region_australia": "Australie",
+	"btn_go_back": "Retour en arrière"
 }

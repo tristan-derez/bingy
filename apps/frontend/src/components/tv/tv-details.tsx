@@ -15,7 +15,7 @@ import { MediaLearnMoreCard } from "@/components/medias/media-learn-more";
 import { MediaOverview } from "@/components/medias/media-overview";
 import { MediaPortraitImage } from "@/components/medias/media-portrait-image";
 import { MediaRatingDisplayCard } from "@/components/medias/media-rating-display-card";
-import { CastCarousel } from "@/components/person/cast-carousel";
+import { CastList } from "@/components/person/cast-list";
 import { SocialLinks } from "@/components/social-links";
 import { TVStatusCard } from "@/components/tv/tv-details/status-card";
 import { BackButton } from "@/components/ui/back-button";
@@ -73,7 +73,7 @@ export function TvDetailsView({
 				<BackButton />
 
 				<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
-					<div className="flex flex-col gap-2 items-center lg:items-start max-w-[250px] md:max-w-[300px] lg:max-w-[500px]">
+					<div className="flex flex-col gap-2 items-center lg:items-start w-44 md:w-52 lg:w-67 xl:w-80">
 						<MediaPortraitImage
 							imagePath={tv.poster_path}
 							alt={tv.name}
@@ -221,12 +221,13 @@ export function TvDetailsView({
 							{tv.id ? <MediaLearnMoreCard id={tv.id} mediaType="tv" /> : null}
 						</div>
 
-						{cast.length > 0 ? (
+						{cast && cast.length > 0 ? (
 							<div className="flex flex-col gap-2">
-								<CastCarousel people={cast} />
+								<CastList people={cast} />
 								<Link
 									to="/tv/$tvId/credits"
 									params={{ tvId: tv.id.toString() }}
+									className="text-sm"
 								>
 									{m.link_text_full_credits()}
 								</Link>

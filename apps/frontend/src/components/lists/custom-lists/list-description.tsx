@@ -16,7 +16,7 @@ interface ListDescriptionProps {
 
 export const ListDescription = ({ description }: ListDescriptionProps) => {
 	const [isExpanded, setIsExpanded] = useState(false);
-	const isMobile = useMediaQuery("(max-width: 768px)");
+	const isMobile = useMediaQuery("(pointer: coarse)");
 	const searchWindow = isMobile ? 120 : 300;
 
 	if (!description) {

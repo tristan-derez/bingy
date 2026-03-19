@@ -87,7 +87,7 @@ export const LocaleRegionDropdown = () => {
 	const changeLocale = useSetAtom(setLocaleAtom);
 	const changeRegion = useSetAtom(regionAtom);
 	const [open, setOpen] = useState(false);
-	const isMobile = useMediaQuery("(max-width: 768px)");
+	const isMobile = useMediaQuery("(pointer: coarse)");
 
 	if (isMobile) {
 		return (

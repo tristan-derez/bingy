@@ -47,10 +47,7 @@ export const TvCarousel = ({ tvShows, title }: TvCarouselProps) => {
 				<div className="overflow-hidden hover:cursor-grab" ref={emblaRef}>
 					<div className="flex gap-4 p-px">
 						{tvShows.map((tv: Schemas.Tv) => (
-							<div
-								key={`${carouselId}-${tv.id}`}
-								className="flex-none w-[200px]"
-							>
+							<div key={`${carouselId}-${tv.id}`} className="flex-none">
 								<TvCard tvShow={tv} />
 							</div>
 						))}

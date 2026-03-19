@@ -34,27 +34,28 @@ export const MediaCard = ({ media }: MediaCardProps) => {
 
 	return (
 		<Link to={linkTo} params={linkParams}>
-			<Card className="w-full h-full border-none bg-accent overflow-hidden pt-0 select-none gap-4 pb-4">
-				<div className="relative aspect-3/4 md:aspect-2/3 w-full overflow-hidden">
-					<img
-						src={imageUrl ?? fallbackPoster}
-						alt={title}
-						loading="lazy"
-						className="h-full w-full object-cover"
-						onError={(e) => {
-							const target = e.currentTarget;
-							if (target.src !== fallbackPoster) {
-								target.src = fallbackPoster;
-							}
-						}}
-					/>
-				</div>
+			<Card className="flex flex-col select-none gap-2 pt-0 pb-2 shadow-none rounded-md">
+				<img
+					src={imageUrl ?? fallbackPoster}
+					alt={title}
+					loading="lazy"
+					className="w-30 h-45 md:w-45 md:h-67.5 object-cover aspect-2/3"
+					onError={(e) => {
+						const target = e.currentTarget;
+						if (target.src !== fallbackPoster) {
+							target.src = fallbackPoster;
+						}
+					}}
+				/>
 				<CardHeader>
 					<CardTitle className="line-clamp-1 leading-normal" title={title}>
 						{title}
 					</CardTitle>
 					{role ? (
-						<CardDescription className="line-clamp-1 leading-relaxed">
+						<CardDescription
+							className="line-clamp-1 leading-relaxed"
+							title={role}
+						>
 							{role}
 						</CardDescription>
 					) : null}

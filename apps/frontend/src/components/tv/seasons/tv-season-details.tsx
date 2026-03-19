@@ -11,7 +11,7 @@ import fallbackPoster from "@/assets/media-image-placeholder.jpg";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
 import { LoadingCentered } from "@/components/loading/loading-centered";
 import { MediaOverview } from "@/components/medias/media-overview";
-import { CastCarousel } from "@/components/person/cast-carousel";
+import { CastList } from "@/components/person/cast-list";
 import { EpisodesContainer } from "@/components/tv/episodes/episodes-container";
 import { BackButton } from "@/components/ui/back-button";
 import { Badge } from "@/components/ui/badge";
@@ -251,7 +251,7 @@ export function TvSeasonDetailsView({
 
 					{mergedCast.length > 0 && (
 						<div className="flex flex-col gap-2">
-							<CastCarousel people={mergedCast} />
+							<CastList people={mergedCast} />
 							<Link
 								to="/tv/$tvId/season/$seasonNumber/credits"
 								params={{
