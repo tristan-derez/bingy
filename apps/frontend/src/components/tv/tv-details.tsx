@@ -15,7 +15,7 @@ import { MediaLearnMoreCard } from "@/components/medias/media-learn-more";
 import { MediaOverview } from "@/components/medias/media-overview";
 import { MediaPortraitImage } from "@/components/medias/media-portrait-image";
 import { MediaRatingDisplayCard } from "@/components/medias/media-rating-display-card";
-import { CastCarousel } from "@/components/person/cast-carousel";
+import { CastList } from "@/components/person/cast-list";
 import { SocialLinks } from "@/components/social-links";
 import { TVStatusCard } from "@/components/tv/tv-details/status-card";
 import { BackButton } from "@/components/ui/back-button";
@@ -223,7 +223,7 @@ export function TvDetailsView({
 
 						{cast.length > 0 ? (
 							<div className="flex flex-col gap-2">
-								<CastCarousel people={cast} />
+								<CastList people={cast} />
 								<Link
 									to="/tv/$tvId/credits"
 									params={{ tvId: tv.id.toString() }}
