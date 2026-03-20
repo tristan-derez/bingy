@@ -23,3 +23,7 @@ export function isOwnProfile(
 	}
 	return sessionUsername.toLowerCase() === urlUsername.toLowerCase();
 }
+
+export const isMacOS = () => {
+	return navigator.userAgent.indexOf("Mac") > -1;
+};

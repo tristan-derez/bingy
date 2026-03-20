@@ -22,6 +22,7 @@ import { localeRegionAtom } from "@/lib/atoms/region";
 import { cn } from "@/lib/utils";
 import { m } from "@/paraglide/messages";
 import { getRelevanceScore } from "@/utils/search-relevance-score";
+import { isMacOS } from "@/utils/utils";
 
 interface SearchCommandProps {
 	title?: string;
@@ -48,6 +49,7 @@ export function SearchCommand({
 	const isMobile = useMediaQuery("(pointer: coarse)");
 	const navigate = useNavigate();
 	const localeRegion = useAtomValue(localeRegionAtom);
+	const isMac = isMacOS();
 
 	const { data, isLoading, isFetching } = useSearchQuery<
 		Schemas.PaginatedResponse<Schemas.MediaMulti>
@@ -127,7 +129,7 @@ export function SearchCommand({
 					</div>
 					{showKbdHelper && !isMobile ? (
 						<KbdGroup className="inline-end">
-							<Kbd>Ctrl</Kbd>
+							<Kbd>{isMac ? "⌘" : "Ctrl"}</Kbd>
 							<span>+</span>
 							<Kbd>K</Kbd>
 						</KbdGroup>
