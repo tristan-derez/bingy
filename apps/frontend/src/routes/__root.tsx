@@ -13,7 +13,6 @@ interface MyRouterContext {
 	authData?: ReturnType<typeof authClient.useSession>["data"];
 }
 
-
 export const Route = createRootRouteWithContext<MyRouterContext>()({
 	beforeLoad: async ({ context }) => {
 		const authData =
@@ -37,6 +36,18 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 				name: "description",
 				content: m.head_app_description(),
 			},
+			{
+				name: "theme-color",
+				content: "#000000",
+			},
+			{
+				name: "apple-mobile-web-app-capable",
+				content: "yes",
+			},
+			{
+				name: "apple-mobile-web-app-status-bar-style",
+				content: "black-translucent",
+			},
 		],
 		links: [
 			{
@@ -49,7 +60,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 			},
 			{
 				rel: "apple-touch-icon",
-				href: "/logo192.png",
+				href: "/apple-touch-icon.png",
 			},
 			{
 				rel: "manifest",
