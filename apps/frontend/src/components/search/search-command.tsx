@@ -14,18 +14,23 @@ import {
 	CommandItem,
 	CommandList,
 } from "@/components/ui/command";
-import { Kbd } from "@/components/ui/kbd";
+import { Kbd, KbdGroup } from "@/components/ui/kbd";
 import { LoaderFive } from "@/components/ui/loader";
 import { useSearchQuery } from "@/hooks/useSearch";
+import { useMediaQuery } from "@/integrations/media-query";
 import { localeRegionAtom } from "@/lib/atoms/region";
+import { cn } from "@/lib/utils";
 import { m } from "@/paraglide/messages";
 import { getRelevanceScore } from "@/utils/search-relevance-score";
+import { isMacOS } from "@/utils/utils";
 
 interface SearchCommandProps {
 	title?: string;
 	open?: boolean;
 	setOpen?: (v: boolean) => void;
 	showButton?: boolean;
+	className?: string;
+	showKbdHelper?: boolean;
 }
 
 export function SearchCommand({
@@ -33,15 +38,18 @@ export function SearchCommand({
 	showButton = true,
 	open: openProp,
 	setOpen: setOpenProp,
+	className,
+	showKbdHelper = false,
 }: SearchCommandProps) {
 	const [internalOpen, setInternalOpen] = useState(false);
 	const open = openProp ?? internalOpen;
 	const setOpen = setOpenProp ?? setInternalOpen;
 	const [query, setQuery] = useState("");
 	const [isTyping, setIsTyping] = useState(false);
-
+	const isMobile = useMediaQuery("(pointer: coarse)");
 	const navigate = useNavigate();
 	const localeRegion = useAtomValue(localeRegionAtom);
+	const isMac = isMacOS();
 
 	const { data, isLoading, isFetching } = useSearchQuery<
 		Schemas.PaginatedResponse<Schemas.MediaMulti>
@@ -113,10 +121,19 @@ export function SearchCommand({
 				<Button
 					variant="ghost"
 					onClick={() => setOpen(true)}
-					className="items-center gap-2"
+					className={cn("items-center justify-between gap-2", className)}
 				>
-					<IconSearch className="h-4 w-4" />
-					{title ? <span>{title}</span> : null}
+					<div className="flex items-center gap-2">
+						<IconSearch className="h-4 w-4" />
+						{title ? <span>{title}</span> : null}
+					</div>
+					{showKbdHelper && !isMobile ? (
+						<KbdGroup className="inline-end">
+							<Kbd>{isMac ? "⌘" : "Ctrl"}</Kbd>
+							<span>+</span>
+							<Kbd>K</Kbd>
+						</KbdGroup>
+					) : null}
 				</Button>
 			) : null}
 

@@ -13,3 +13,17 @@ export const getTmdbImageUrl = (
 
 export const capitalize = (str: string) =>
 	str.charAt(0).toUpperCase() + str.slice(1);
+
+export function isOwnProfile(
+	sessionUsername: string | null | undefined,
+	urlUsername: string | null | undefined,
+): boolean {
+	if (!sessionUsername || !urlUsername) {
+		return false;
+	}
+	return sessionUsername.toLowerCase() === urlUsername.toLowerCase();
+}
+
+export const isMacOS = () => {
+	return navigator.userAgent.indexOf("Mac") > -1;
+};

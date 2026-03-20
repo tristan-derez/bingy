@@ -1,13 +1,13 @@
-import { IconDeviceTv, IconLayoutGrid, IconMovie } from "@tabler/icons-react";
 import { ListPagination } from "@/components/lists/list-pagination";
 import { WatchlistEmptyState } from "@/components/lists/watchlist/watchlist-empty-state";
 import { WatchlistMediaCard } from "@/components/lists/watchlist/watchlist-media-card";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { m } from "@/paraglide/messages";
+import { MediaToggleGroup } from "../media-toggle-group";
 
 export type MediaFilter = "all" | "movie" | "tv";
 
 type WatchlistContainerProps = {
+	username: string;
+	isOwnProfile: boolean;
 	title: string;
 	items?: {
 		id: number;
@@ -27,6 +27,8 @@ type WatchlistContainerProps = {
 };
 
 export function WatchlistContainer({
+	username,
+	isOwnProfile,
 	title,
 	items = [],
 	filter,
@@ -35,51 +37,18 @@ export function WatchlistContainer({
 	totalPages,
 	onPageChange,
 }: WatchlistContainerProps) {
-	const handleFilterChange = (value: string) => {
-		if (value) {
-			onFilterChange(value as MediaFilter);
-			onPageChange(1);
-		}
-	};
-
 	return (
 		<div className="container flex flex-col gap-4">
 			<h1 className="text-3xl font-bold">{title}</h1>
 
-			<ToggleGroup
-				value={filter ? [filter] : []}
-				onValueChange={(values) => handleFilterChange(values[0] || "")}
-				className="justify-start"
-				spacing={2}
-			>
-				<ToggleGroupItem
-					value="all"
-					aria-label={m.toggle_aria_label_all()}
-					className="hover:cursor-pointer"
-				>
-					<IconLayoutGrid className="h-4 w-4" />
-					{m.toggle_group_item_all()}
-				</ToggleGroupItem>
-				<ToggleGroupItem
-					value="movie"
-					aria-label={m.toggle_aria_label_movies()}
-					className="hover:cursor-pointer"
-				>
-					<IconMovie className="h-4 w-4" />
-					{m.toggle_group_item_movies()}
-				</ToggleGroupItem>
-				<ToggleGroupItem
-					value="tv"
-					aria-label={m.toggle_aria_label_tv()}
-					className="hover:cursor-pointer"
-				>
-					<IconDeviceTv className="h-4 w-4" />
-					{m.toggle_group_item_tv()}
-				</ToggleGroupItem>
-			</ToggleGroup>
+			<MediaToggleGroup value={filter} onValueChange={onFilterChange} />
 
 			{items.length === 0 ? (
-				<WatchlistEmptyState filter={filter} />
+				<WatchlistEmptyState
+					filter={filter}
+					username={username}
+					isOwnProfile={isOwnProfile}
+				/>
 			) : (
 				<>
 					<div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-5 xl:grid-cols-8 gap-2 sm:gap-4">
