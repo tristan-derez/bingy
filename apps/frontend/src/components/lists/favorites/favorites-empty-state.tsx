@@ -5,6 +5,8 @@ type MediaFilter = "all" | "movie" | "tv";
 
 type FavoritesEmptyStateProps = {
 	filter: MediaFilter;
+	username: string;
+	isOwnProfile: boolean;
 };
 
 export function FavoritesEmptyState({ filter }: FavoritesEmptyStateProps) {

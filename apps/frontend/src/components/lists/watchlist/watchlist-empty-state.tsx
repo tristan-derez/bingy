@@ -1,4 +1,4 @@
-import { Link, useRouteContext } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { SearchCommand } from "@/components/search/search-command";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,23 +10,21 @@ import {
 } from "@/components/ui/empty";
 import { useMediaQuery } from "@/integrations/media-query";
 import { m } from "@/paraglide/messages";
-import { isOwnProfile } from "@/utils/utils";
 
 type MediaFilter = "all" | "movie" | "tv";
 
 type WatchlistEmptyStateProps = {
 	filter: MediaFilter;
 	username: string;
+	isOwnProfile: boolean;
 };
 
 export function WatchlistEmptyState({
 	filter,
 	username,
+	isOwnProfile,
 }: WatchlistEmptyStateProps) {
-	const { authData } = useRouteContext({ from: "__root__" });
-	const isOwnProfileFlag = isOwnProfile(authData?.user?.name, username);
-
-	const headerMessages = isOwnProfileFlag
+	const headerMessages = isOwnProfile
 		? {
 				all: m.watchlist_toggle_no_result_all(),
 				movie: m.watchlist_toggle_no_result_movies(),
@@ -38,7 +36,7 @@ export function WatchlistEmptyState({
 				tv: m.watchlist_toggle_no_result_tv_other(),
 			};
 
-	const headerDesc = isOwnProfileFlag
+	const headerDesc = isOwnProfile
 		? {
 				all: m.watchlist_toggle_no_result_all_desc(),
 				movie: m.watchlist_toggle_no_result_movies_desc(),
@@ -66,7 +64,7 @@ export function WatchlistEmptyState({
 				</EmptyTitle>
 				<EmptyDescription>{headerDesc[filter]}</EmptyDescription>
 			</EmptyHeader>
-			{isOwnProfileFlag ? (
+			{isOwnProfile ? (
 				<EmptyContent className="w-full">
 					<div className="flex flex-row justify-center gap-1 w-40">
 						{(filter === "all" || filter === "movie") && (
