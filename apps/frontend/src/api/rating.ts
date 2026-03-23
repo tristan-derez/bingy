@@ -15,14 +15,14 @@ export const getRatings = async (
 };
 
 export const getMovieRating = async (username: string, tmdbId: number) => {
-	const res = await apiFetch<GetRatingResponse>(
+	const res = await apiFetch<GetMovieRatingResponse>(
 		`/history/${username}/movie/${tmdbId}`,
 	);
 	return res;
 };
 
 export const getTvRating = async (username: string, tmdbId: number) => {
-	const res = await apiFetch<GetRatingResponse>(
+	const res = await apiFetch<GetTVRatingResponse>(
 		`/history/${username}/tv/${tmdbId}`,
 	);
 	return res;
@@ -101,12 +101,19 @@ export type GetRatingsResponse = Pretty<{
 	total_results: number;
 }>;
 
-export type GetRatingResponse = Pretty<{
+export type GetMovieRatingResponse = Pretty<{
 	rating: number | null;
 	review: string | null;
 	watchedAt: Date | null;
-	seasonNumber?: string | null;
-	episodeNumber?: string | null;
+}>;
+
+export type GetTVRatingResponse = Pretty<{
+	rating: number | null;
+	review: string | null;
+	watchedAt: Date | null;
+	seasonNumber: number | null;
+	episodeNumber: number | null;
+	absoluteEpisode: number | null;
 }>;
 
 type GetMediaAverageRatingResponse =
