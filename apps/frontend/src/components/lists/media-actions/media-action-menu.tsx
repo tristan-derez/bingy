@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -9,7 +9,7 @@ import {
 } from "@/hooks/useRating";
 import { useTv } from "@/hooks/useTv";
 import { m } from "@/paraglide/messages";
-import { getLastAiredEpisodeInfo } from "@/utils/season-helper";
+import { getTvShowProgress } from "@/utils/season-helper";
 import { getTmdbImageUrl } from "@/utils/utils";
 import { WatchlistToggleButton } from "../watchlist/watchlist-toggle-button";
 import { AddToListButton } from "./action-bar/add-to-list-button";
@@ -54,13 +54,9 @@ export const MediaActionMenu = ({
 	const isTvShow = !!tvShow;
 	const tmdbId = isTvShow ? tvShow.id : (movie?.id ?? 0);
 
-	const { data: tvDetails } = useTv(
-		tmdbId,
-		{},
-		{
-			enabled: isTvShow,
-		},
-	);
+	const { data: tvDetails } = useTv(tmdbId, {}, { enabled: isTvShow });
+
+	const tvProgress = useMemo(() => getTvShowProgress(tvDetails), [tvDetails]);
 
 	const { data: movieRating } = useMovieRating(username, tmdbId);
 	const { data: tvRating } = useTvRating(username, tmdbId);
@@ -78,15 +74,14 @@ export const MediaActionMenu = ({
 			});
 		}
 
-		const episodeInfo = getLastAiredEpisodeInfo(tvDetails);
-		if (!episodeInfo) return;
+		if (!tvProgress?.lastAired) return;
 
 		rateTvMutation.mutate({
 			tmdbId,
 			rating: newRating,
 			review: null,
-			lastWatchedSeason: episodeInfo.seasonNumber,
-			lastWatchedEpisode: episodeInfo.episodeNumber,
+			lastWatchedSeason: tvProgress.lastAired.seasonNumber,
+			lastWatchedEpisode: tvProgress.lastAired.episodeNumber,
 			absoluteEpisode: null,
 			trackingMode: "season",
 			watchedAt: new Date(),
@@ -129,7 +124,7 @@ export const MediaActionMenu = ({
 				</CardHeader>
 				<CardContent className="flex flex-col gap-2">
 					<LogReviewButton
-						existingRating={existingRating ? true : false}
+						existingRating={!!existingRating}
 						onClick={() => setShowLogReviewDialog(true)}
 					/>
 					<AddToListButton onClick={() => setShowAddToListDialog(true)} />

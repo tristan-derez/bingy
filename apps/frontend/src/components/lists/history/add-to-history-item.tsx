@@ -1,11 +1,12 @@
 import { useAtomValue } from "jotai";
+import { useMemo } from "react";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { useAddMovieToHistory, useAddTvToHistory } from "@/hooks/useHistory";
 import { useMovieRating, useTvRating } from "@/hooks/useRating";
 import { useTv } from "@/hooks/useTv";
 import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
-import { getLastAiredEpisodeInfo } from "@/utils/season-helper";
+import { getTvShowProgress } from "@/utils/season-helper";
 
 interface AddToHistoryItemProps {
 	movie?: {
@@ -34,6 +35,8 @@ export function AddToHistoryItem({
 		{ enabled: !!tvShow?.id },
 	);
 
+	const tvProgress = useMemo(() => getTvShowProgress(tvDetails), [tvDetails]);
+
 	const movieRating = useMovieRating(username, movie?.id ?? 0);
 	const tvRating = useTvRating(username, tvShow?.id ?? 0);
 
@@ -52,14 +55,12 @@ export function AddToHistoryItem({
 				rating: null,
 				review: null,
 			});
-		} else if (tvShow) {
-			const episodeInfo = getLastAiredEpisodeInfo(tvDetails);
-			if (!episodeInfo) return;
-
+		} else if (tvShow && tvProgress?.lastAired) {
+			const { lastAired } = tvProgress;
 			addTvToHistory.mutate({
 				tmdbId: tvShow.id,
-				lastWatchedSeason: episodeInfo.seasonNumber ?? null,
-				lastWatchedEpisode: episodeInfo.episodeNumber ?? null,
+				lastWatchedSeason: lastAired.seasonNumber,
+				lastWatchedEpisode: lastAired.episodeNumber,
 				absoluteEpisode: null,
 				trackingMode: "season",
 				rating: null,

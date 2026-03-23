@@ -1,6 +1,6 @@
 import { IconEye, IconEyeFilled, IconEyeOff } from "@tabler/icons-react";
 import { useAtomValue } from "jotai";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
 	useAddMovieToHistory,
 	useAddTvToHistory,
@@ -11,7 +11,7 @@ import { useMovieRating, useTvRating } from "@/hooks/useRating";
 import { useTv } from "@/hooks/useTv";
 import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
-import { getLastAiredEpisodeInfo } from "@/utils/season-helper";
+import { getTvShowProgress } from "@/utils/season-helper";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../../ui/tooltip";
 import { RemoveHistoryAlertDialog } from "./remove-history-alert-dialog";
 
@@ -49,6 +49,8 @@ export function WatchToggleButton({
 		{ enabled: !!tvShow?.id },
 	);
 
+	const tvProgress = useMemo(() => getTvShowProgress(tvDetails), [tvDetails]);
+
 	const movieRating = useMovieRating(username, movie?.id ?? 0);
 	const tvRating = useTvRating(username, tvShow?.id ?? 0);
 
@@ -82,14 +84,14 @@ export function WatchToggleButton({
 					review: null,
 					watchedAt: date,
 				});
-			} else if (tvShow) {
-				const episodeInfo = getLastAiredEpisodeInfo(tvDetails);
+			} else if (tvShow && tvProgress?.lastAired) {
+				const { lastAired } = tvProgress;
 				addTvToHistory.mutate({
 					tmdbId: tvShow.id,
 					rating: null,
 					review: null,
-					lastWatchedSeason: episodeInfo?.seasonNumber ?? null,
-					lastWatchedEpisode: episodeInfo?.episodeNumber ?? null,
+					lastWatchedSeason: lastAired.seasonNumber,
+					lastWatchedEpisode: lastAired.episodeNumber,
 					absoluteEpisode: null,
 					trackingMode: "season",
 					watchedAt: date,
