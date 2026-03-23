@@ -27,3 +27,31 @@ export function isOwnProfile(
 export const isMacOS = () => {
 	return navigator.userAgent.indexOf("Mac") > -1;
 };
+
+export const getMediaProps = (
+	mediaType: "movie" | "tv",
+	id: number,
+	title: string,
+	posterPath: string | null,
+	releaseDate: string,
+) => {
+	return mediaType === "movie"
+		? {
+				movie: {
+					mediaType,
+					id,
+					title,
+					posterPath,
+					releaseDate,
+				},
+			}
+		: {
+				tvShow: {
+					mediaType,
+					id,
+					name: title,
+					posterPath,
+					releaseDate,
+				},
+			};
+};
