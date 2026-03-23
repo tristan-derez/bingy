@@ -376,9 +376,19 @@ userHistoryRoutes.get(
 				rating: tvShowWatchHistory.rating,
 				review: tvShowWatchHistory.review,
 				watchedAt: tvShowWatchHistory.watchedAt,
+				seasonNumber: tvShowProgress.lastWatchedSeason,
+				episodeNumber: tvShowProgress.lastWatchedEpisode,
+				absoluteEpisode: tvShowProgress.absoluteEpisode,
 			})
 			.from(tvShowWatchHistory)
 			.innerJoin(media, eq(media.id, tvShowWatchHistory.mediaId))
+			.leftJoin(
+				tvShowProgress,
+				and(
+					eq(tvShowProgress.mediaId, media.id),
+					eq(tvShowProgress.userId, targetUser.id),
+				),
+			)
 			.where(
 				and(
 					eq(tvShowWatchHistory.userId, targetUser.id),
@@ -387,7 +397,7 @@ userHistoryRoutes.get(
 				),
 			);
 
-		return c.json(entry ?? null, 200);
+		return c.json(entry, 200);
 	},
 );
 
