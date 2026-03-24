@@ -19,94 +19,75 @@ interface TvDetails {
 }
 
 /**
- * Detects if a TV show uses continuous/absolute episode numbering
- * (common in anime) vs per-season numbering (common in western TV shows)
+ * Filters out Season 0 (Specials) and any seasons that haven't aired yet.
  */
-export function getHasContinuousEpisodeNumbering(
-	tvDetails: TvDetails | undefined,
-): boolean {
-	if (!tvDetails?.last_episode_to_air || !tvDetails.seasons) {
-		return false;
-	}
-
-	const lastEpisode = tvDetails.last_episode_to_air;
-	const { season_number, episode_number } = lastEpisode;
-
-	// Calculate total episodes before this season
-	const episodesBeforeSeason = tvDetails.seasons
-		.filter((s) => s.season_number > 0 && s.season_number < season_number)
-		.reduce((sum, s) => sum + s.episode_count, 0);
-
-	// If episode_number is much larger than episodes in current season,
-	// it's likely using continuous numbering
-	const currentSeason = tvDetails.seasons.find(
-		(s) => s.season_number === season_number,
-	);
-
-	if (!currentSeason) return false;
-
-	// If episode number exceeds current season's episode count,
-	// it's definitely continuous numbering
-	if (episode_number > currentSeason.episode_count) {
-		return true;
-	}
-
-	// Additional check: if the episode number is close to total episodes
-	// accumulated up to this season, it's continuous numbering
-	const expectedContinuousEpisode = episodesBeforeSeason + episode_number;
-	const totalEpisodes = tvDetails.number_of_episodes ?? 0;
-
-	// If we're close to the total and episode number is high, likely continuous
-	return (
-		episode_number > 100 &&
-		Math.abs(expectedContinuousEpisode - totalEpisodes) < 50
-	);
-}
-
 export function getValidSeasons(seasons: Season[] | undefined): Season[] {
 	if (!seasons) return [];
 
 	const now = new Date();
-
-	return seasons.filter((season) => {
-		if (season.season_number === 0) return false;
-		// Only filter by air_date if it exists
-		if (season.air_date && new Date(season.air_date) > now) return false;
-		return true;
-	});
+	return seasons.filter(
+		(s) => s.season_number > 0 && (!s.air_date || new Date(s.air_date) <= now),
+	);
 }
 
-export function getLastAiredEpisodeInfo(tvDetails: TvDetails | undefined): {
-	seasonNumber: number;
-	episodeNumber: number;
-} | null {
-	if (!tvDetails?.last_episode_to_air) return null;
+/**
+ * Returns a unified object containing the normalized last episode
+ * and the list of valid seasons.
+ */
+export function getTvShowProgress(tvDetails: TvDetails | undefined) {
+	if (!tvDetails) return null;
 
-	const { season_number, episode_number } = tvDetails.last_episode_to_air;
+	const validSeasons = getValidSeasons(tvDetails.seasons);
+	const lastEp = tvDetails.last_episode_to_air;
 
-	// For shows with continuous episode numbering, calculate the episode within the season
-	const season = tvDetails.seasons?.find(
-		(s) => s.season_number === season_number,
-	);
+	if (!lastEp) {
+		return { validSeasons, lastAired: null };
+	}
 
-	if (season && getHasContinuousEpisodeNumbering(tvDetails)) {
-		// Calculate episodes before this season
-		const episodesBeforeSeason =
-			tvDetails.seasons
-				?.filter((s) => s.season_number > 0 && s.season_number < season_number)
-				.reduce((sum, s) => sum + s.episode_count, 0) ?? 0;
+	const { season_number: lastSznNum, episode_number: lastEpNum } = lastEp;
 
-		// Episode number within current season
-		const episodeInSeason = episode_number - episodesBeforeSeason;
+	let episodesBefore = 0;
+	let currentSeasonTotal = 0;
 
-		return {
-			seasonNumber: season_number,
-			episodeNumber: Math.min(episodeInSeason, season.episode_count),
-		};
+	(tvDetails.seasons || []).forEach((s) => {
+		if (s.season_number > 0 && s.season_number < lastSznNum) {
+			episodesBefore += s.episode_count;
+		} else if (s.season_number === lastSznNum) {
+			currentSeasonTotal = s.episode_count;
+		}
+	});
+
+	/**
+	 * Logic: Only consider "Continuous Numbering" if:
+	 * 1. We are beyond Season 1.
+	 * 2. The episode number is greater than the total episodes in the current season.
+	 * 3. The episode number looks like an absolute count (greater than episodes before).
+	 */
+	const isContinuous =
+		lastSznNum > 1 &&
+		lastEpNum > currentSeasonTotal &&
+		lastEpNum > episodesBefore;
+
+	let normalizedEpisode = lastEpNum;
+
+	if (isContinuous) {
+		const calculated = lastEpNum - episodesBefore;
+		// If the subtraction results in a valid episode index, use it.
+		// Otherwise, fallback to the provided number or the season cap.
+		normalizedEpisode = calculated > 0 ? calculated : lastEpNum;
+	}
+
+	// Final safety: never let the episode number exceed the season's episode count
+	if (currentSeasonTotal > 0) {
+		normalizedEpisode = Math.min(normalizedEpisode, currentSeasonTotal);
 	}
 
 	return {
-		seasonNumber: season_number,
-		episodeNumber: episode_number,
+		validSeasons,
+		lastAired: {
+			seasonNumber: lastSznNum,
+			episodeNumber: normalizedEpisode,
+			isContinuous,
+		},
 	};
 }

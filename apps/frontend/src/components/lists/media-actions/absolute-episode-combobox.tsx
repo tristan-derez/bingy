@@ -12,8 +12,8 @@ import { m } from "@/paraglide/messages";
 
 interface AbsoluteEpisodeComboboxProps {
 	totalEpisodes: number;
-	selectedEpisode: string;
-	onEpisodeChange: (episode: string) => void;
+	selectedEpisode: number | null;
+	onEpisodeChange: (episode: number | null) => void;
 }
 
 export function AbsoluteEpisodeCombobox({
@@ -22,23 +22,11 @@ export function AbsoluteEpisodeCombobox({
 	onEpisodeChange,
 }: AbsoluteEpisodeComboboxProps) {
 	const episodes = useMemo(
-		() =>
-			Array.from({ length: totalEpisodes }, (_, i) => {
-				const num = (i + 1).toString();
-				return { value: num, label: num };
-			}),
+		() => Array.from({ length: totalEpisodes }, (_, i) => i + 1),
 		[totalEpisodes],
 	);
 
-	const [inputValue, setInputValue] = useState(selectedEpisode);
 	const [isOpen, setIsOpen] = useState(false);
-
-	const shouldShowClear = Boolean(selectedEpisode);
-
-	const filteredEpisodes = useMemo(() => {
-		if (!inputValue) return episodes;
-		return episodes.filter((ep) => ep.label.includes(inputValue));
-	}, [episodes, inputValue]);
 
 	return (
 		<div className="flex flex-col gap-2">
@@ -48,28 +36,25 @@ export function AbsoluteEpisodeCombobox({
 				onOpenChange={setIsOpen}
 				value={selectedEpisode}
 				onValueChange={(val) => {
-					onEpisodeChange(val ?? "");
-					if (val) setInputValue(val);
+					onEpisodeChange(val ?? null);
 				}}
-				inputValue={inputValue}
-				onInputValueChange={setInputValue}
 			>
 				<ComboboxInput
 					placeholder={m.log_review_dialog_absolute_episode_combobox_placeholder()}
-					showClear={shouldShowClear}
+					showClear={!!selectedEpisode}
 				/>
 
 				<ComboboxContent>
-					{filteredEpisodes.length === 0 ? (
+					{episodes.length === 0 ? (
 						<ComboboxEmpty>
 							{m.log_review_dialog_absolute_episode_combobox_no_result()}
 						</ComboboxEmpty>
 					) : null}
 
 					<ComboboxList>
-						{filteredEpisodes.map((episode) => (
-							<ComboboxItem key={episode.value} value={episode.value}>
-								{episode.label}
+						{episodes.map((episodeNum) => (
+							<ComboboxItem key={episodeNum} value={episodeNum.toString()}>
+								{episodeNum}
 							</ComboboxItem>
 						))}
 					</ComboboxList>

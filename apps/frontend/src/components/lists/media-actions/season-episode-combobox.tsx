@@ -17,10 +17,11 @@ interface Season {
 
 interface SeasonEpisodeComboboxProps {
 	seasons: Season[];
-	selectedSeason: string;
-	selectedEpisode: string;
-	onSeasonChange: (value: string) => void;
-	onEpisodeChange: (value: string) => void;
+	selectedSeason: number | null;
+	selectedEpisode: number | null;
+	onSeasonChange: (value: number | null) => void;
+	onEpisodeChange: (value: number | null) => void;
+	lastAired?: { seasonNumber: number; episodeNumber: number } | null;
 }
 
 export function SeasonEpisodeCombobox({
@@ -29,40 +30,47 @@ export function SeasonEpisodeCombobox({
 	selectedEpisode,
 	onSeasonChange,
 	onEpisodeChange,
+	lastAired,
 }: SeasonEpisodeComboboxProps) {
-	const [seasonInputValue, setSeasonInputValue] = useState(selectedSeason);
-	const [episodeInputValue, setEpisodeInputValue] = useState(selectedEpisode);
 	const [seasonOpen, setSeasonOpen] = useState(false);
 	const [episodeOpen, setEpisodeOpen] = useState(false);
 
-	const seasonNumbers = useMemo(
-		() => seasons.map((s) => s.season_number),
+	// Only show seasons that have aired (≤ lastAired.seasonNumber)
+	const availableSeasons = useMemo(() => {
+		if (!lastAired) return [];
+		return seasons.filter((s) => s.season_number <= lastAired.seasonNumber);
+	}, [seasons, lastAired]);
+
+	// Lookup for total episodes per season (for earlier seasons)
+	const seasonEpisodeCountMap = useMemo(
+		() => new Map(seasons.map((s) => [s.season_number, s.episode_count])),
 		[seasons],
 	);
 
-	const availableEpisodes = selectedSeason
-		? seasons.find((s) => s.season_number === Number(selectedSeason))
-				?.episode_count || 0
-		: 0;
+	// Helper to get max selectable episode for a season
+	const getMaxEpisode = (seasonNum: number): number => {
+		if (!lastAired) return 0;
+		if (seasonNum < lastAired.seasonNumber) {
+			// All episodes of this season have aired
+			return seasonEpisodeCountMap.get(seasonNum) ?? 0;
+		} else if (seasonNum === lastAired.seasonNumber) {
+			// Only up to the last aired episode
+			return lastAired.episodeNumber;
+		}
+		return 0;
+	};
+
+	// Number of episodes available for the selected season
+	const availableEpisodes = useMemo(() => {
+		if (!selectedSeason) return 0;
+		const seasonNum = Number(selectedSeason);
+		return getMaxEpisode(seasonNum);
+	}, [selectedSeason, lastAired, seasonEpisodeCountMap]);
 
 	const episodeNumbers = useMemo(
 		() => Array.from({ length: availableEpisodes }, (_, i) => i + 1),
 		[availableEpisodes],
 	);
-
-	const filteredSeasons = useMemo(() => {
-		if (!seasonInputValue) return seasonNumbers;
-		return seasonNumbers.filter((num) =>
-			num.toString().includes(seasonInputValue),
-		);
-	}, [seasonNumbers, seasonInputValue]);
-
-	const filteredEpisodes = useMemo(() => {
-		if (!episodeInputValue) return episodeNumbers;
-		return episodeNumbers.filter((num) =>
-			num.toString().includes(episodeInputValue),
-		);
-	}, [episodeNumbers, episodeInputValue]);
 
 	return (
 		<div className="flex flex-col gap-4 lg:flex-row">
@@ -73,30 +81,30 @@ export function SeasonEpisodeCombobox({
 					onOpenChange={setSeasonOpen}
 					value={selectedSeason}
 					onValueChange={(val) => {
-						const newValue = val ?? "";
+						const newValue = val ?? null;
 						onSeasonChange(newValue);
 						if (newValue !== selectedSeason) {
-							onEpisodeChange("");
+							onEpisodeChange(null);
 						}
-						if (val) setSeasonInputValue(val);
 					}}
-					inputValue={seasonInputValue}
-					onInputValueChange={setSeasonInputValue}
 				>
 					<ComboboxInput
 						placeholder={m.log_review_dialog_season_combobox_placeholder()}
 						showClear={!!selectedSeason}
 					/>
 					<ComboboxContent>
-						{filteredSeasons.length === 0 ? (
+						{availableSeasons.length === 0 ? (
 							<ComboboxEmpty>
 								{m.log_review_dialog_season_combobox_no_result()}
 							</ComboboxEmpty>
 						) : null}
 						<ComboboxList>
-							{filteredSeasons.map((seasonNum) => (
-								<ComboboxItem key={seasonNum} value={seasonNum.toString()}>
-									{seasonNum}
+							{availableSeasons.map((season) => (
+								<ComboboxItem
+									key={season.season_number}
+									value={season.season_number.toString()}
+								>
+									{season.season_number}
 								</ComboboxItem>
 							))}
 						</ComboboxList>
@@ -111,26 +119,23 @@ export function SeasonEpisodeCombobox({
 					onOpenChange={setEpisodeOpen}
 					value={selectedEpisode}
 					onValueChange={(val) => {
-						onEpisodeChange(val ?? "");
-						if (val) setEpisodeInputValue(val);
+						onEpisodeChange(val ?? null);
 					}}
-					inputValue={episodeInputValue}
-					onInputValueChange={setEpisodeInputValue}
-					disabled={!selectedSeason}
+					disabled={!selectedSeason || availableEpisodes === 0}
 				>
 					<ComboboxInput
 						placeholder={m.log_review_dialog_episode_combobox_placeholder()}
 						showClear={!!selectedEpisode}
-						disabled={!selectedSeason}
+						disabled={!selectedSeason || availableEpisodes === 0}
 					/>
 					<ComboboxContent>
-						{filteredEpisodes.length === 0 ? (
+						{episodeNumbers.length === 0 ? (
 							<ComboboxEmpty>
 								{m.log_review_dialog_episode_combobox_no_result()}
 							</ComboboxEmpty>
 						) : null}
 						<ComboboxList>
-							{filteredEpisodes.map((episodeNum) => (
+							{episodeNumbers.map((episodeNum) => (
 								<ComboboxItem key={episodeNum} value={episodeNum.toString()}>
 									{episodeNum}
 								</ComboboxItem>

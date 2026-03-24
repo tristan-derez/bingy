@@ -1,4 +1,9 @@
-import { type FormEvent, useEffect, useState } from "react";
+import { type FormEvent, useEffect, useMemo, useState } from "react";
+import { AbsoluteEpisodeCombobox } from "@/components/lists/media-actions/absolute-episode-combobox";
+import { ReviewTextarea } from "@/components/lists/media-actions/review-text-area";
+import { SeasonEpisodeCombobox } from "@/components/lists/media-actions/season-episode-combobox";
+import { StarRating } from "@/components/lists/media-actions/star-rating";
+import { WatchedDateControl } from "@/components/lists/media-actions/watched-date-controls";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -13,17 +18,7 @@ import { Label } from "@/components/ui/label";
 import { useRateMovie, useRateTvShow } from "@/hooks/useRating";
 import { useTv } from "@/hooks/useTv";
 import { m } from "@/paraglide/messages";
-import {
-	getHasContinuousEpisodeNumbering,
-	getLastAiredEpisodeInfo,
-	getValidSeasons,
-} from "@/utils/season-helper";
-import { getNumberOrNull } from "@/utils/utils";
-import { AbsoluteEpisodeCombobox } from "./absolute-episode-combobox";
-import { ReviewTextarea } from "./review-text-area";
-import { SeasonEpisodeCombobox } from "./season-episode-combobox";
-import { StarRating } from "./star-rating";
-import { WatchedDateControl } from "./watched-date-controls";
+import { getTvShowProgress } from "@/utils/season-helper";
 
 interface LogReviewDialogProps {
 	open: boolean;
@@ -44,17 +39,18 @@ interface LogReviewDialogProps {
 		rating: number | null;
 		review: string | null;
 		watchedAt: Date | null;
-		seasonNumber?: string | null;
-		episodeNumber?: string | null;
+		seasonNumber?: number | null;
+		episodeNumber?: number | null;
+		absoluteEpisode?: number | null;
 	};
 }
 
 interface ReviewFormData {
 	rating: number;
-	season: string;
-	episode: string;
+	season: number | null;
+	episode: number | null;
 	shouldUseAbsoluteEpisode: boolean;
-	absoluteEpisode: string;
+	absoluteEpisode: number | null;
 	isComplete: boolean;
 	review: string;
 	watchedDate: Date;
@@ -62,10 +58,10 @@ interface ReviewFormData {
 }
 
 const initialFormData = {
-	season: "",
-	episode: "",
+	season: null,
+	episode: null,
 	shouldUseAbsoluteEpisode: false,
-	absoluteEpisode: "",
+	absoluteEpisode: null,
 	isComplete: false,
 	review: "",
 	hasSpecificDate: true,
@@ -86,6 +82,14 @@ export function LogReviewDialog({
 
 	const { data: tvDetails } = useTv(tmdbId, {}, { enabled: isTvShow });
 
+	const tvProgress = useMemo(() => getTvShowProgress(tvDetails), [tvDetails]);
+
+	const validSeasons = tvProgress?.validSeasons ?? [];
+	const lastAired = tvProgress?.lastAired ?? null;
+	const hasContinuousNumbering = lastAired?.isContinuous ?? false;
+	const totalEpisodes = tvDetails?.number_of_episodes ?? 0;
+	const mediaTitle = isTvShow ? tvShow.name : movie?.title;
+
 	const rateMovieMutation = useRateMovie();
 	const rateTvMutation = useRateTvShow();
 
@@ -94,11 +98,6 @@ export function LogReviewDialog({
 		rating,
 		watchedDate: new Date(),
 	});
-
-	const seasons = getValidSeasons(tvDetails?.seasons);
-	const hasContinuousNumbering = getHasContinuousEpisodeNumbering(tvDetails);
-	const totalEpisodes = tvDetails?.number_of_episodes ?? 0;
-	const mediaTitle = isTvShow ? tvShow.name : movie?.title;
 
 	const handleOpenChange = (newOpen: boolean) => {
 		if (!newOpen) {
@@ -111,48 +110,49 @@ export function LogReviewDialog({
 		onOpenChange(newOpen);
 	};
 
-	// sync form with data available via the query
 	useEffect(() => {
 		if (!existingData || !open) return;
+
+		const hasAbsoluteEpisode = existingData.absoluteEpisode !== null;
 
 		setReviewFormData((prev) => ({
 			...prev,
 			rating,
 			review: existingData.review ?? "",
-			season: existingData.seasonNumber ?? "",
-			episode: existingData.episodeNumber ?? "",
+			shouldUseAbsoluteEpisode: hasAbsoluteEpisode,
+			absoluteEpisode: existingData.absoluteEpisode ?? null,
+			season: hasAbsoluteEpisode ? null : (existingData.seasonNumber ?? null),
+			episode: hasAbsoluteEpisode ? null : (existingData.episodeNumber ?? null),
 			watchedDate: existingData.watchedAt
 				? new Date(existingData.watchedAt)
 				: new Date(),
-			hasSpecificDate: !!existingData.watchedAt, // keep track of checkboxes states
+			hasSpecificDate: !!existingData.watchedAt,
 		}));
-	}, [open, existingData]);
+	}, [open, existingData, rating]);
 
 	const handleHasSpecificDateChange = (checked: boolean) => {
-		setReviewFormData((prev) => ({
-			...prev,
-			hasSpecificDate: checked,
-		}));
+		setReviewFormData((prev) => ({ ...prev, hasSpecificDate: checked }));
 	};
 
-	const handleCompleteChange = (checked: boolean) => {
-		if (!checked) {
+	const handleCompleteChange = (checked: boolean | string) => {
+		const isChecked = checked === true;
+		if (!isChecked) {
 			return setReviewFormData((prev) => ({
 				...prev,
 				isComplete: false,
-				season: "",
-				episode: "",
+				season: null,
+				episode: null,
 			}));
 		}
 
-		const episodeInfo = getLastAiredEpisodeInfo(tvDetails);
-		if (!episodeInfo) return;
+		if (!lastAired) return;
 
+		// Uses the normalized numbers (e.g., S22 E66 instead of E1155)
 		setReviewFormData((prev) => ({
 			...prev,
 			isComplete: true,
-			season: episodeInfo.seasonNumber.toString(),
-			episode: episodeInfo.episodeNumber.toString(),
+			season: lastAired.seasonNumber,
+			episode: lastAired.episodeNumber,
 		}));
 	};
 
@@ -160,9 +160,9 @@ export function LogReviewDialog({
 		setReviewFormData((prev) => ({
 			...prev,
 			shouldUseAbsoluteEpisode: checked,
-			season: "",
-			episode: "",
-			absoluteEpisode: "",
+			season: null,
+			episode: null,
+			absoluteEpisode: null,
 			isComplete: false,
 		}));
 	};
@@ -186,9 +186,9 @@ export function LogReviewDialog({
 		rateTvMutation.mutate(
 			{
 				...payload,
-				lastWatchedSeason: getNumberOrNull(reviewFormData.season),
-				lastWatchedEpisode: getNumberOrNull(reviewFormData.episode),
-				absoluteEpisode: getNumberOrNull(reviewFormData.absoluteEpisode),
+				lastWatchedSeason: reviewFormData.season,
+				lastWatchedEpisode: reviewFormData.episode,
+				absoluteEpisode: reviewFormData.absoluteEpisode,
 				trackingMode: reviewFormData.shouldUseAbsoluteEpisode
 					? "absolute"
 					: "season",
@@ -306,7 +306,8 @@ export function LogReviewDialog({
 													/>
 												) : (
 													<SeasonEpisodeCombobox
-														seasons={seasons}
+														lastAired={tvProgress?.lastAired}
+														seasons={validSeasons}
 														selectedSeason={reviewFormData.season}
 														selectedEpisode={reviewFormData.episode}
 														onSeasonChange={(season) =>

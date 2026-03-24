@@ -1,6 +1,15 @@
 import { IconDots } from "@tabler/icons-react";
 import { useRouteContext } from "@tanstack/react-router";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { AddToHistoryItem } from "@/components/lists/history/add-to-history-item";
+import { RemoveFromHistoryItem } from "@/components/lists/history/remove-from-history-item";
+import { AddToListDialog } from "@/components/lists/media-actions/add-to-list-dialog";
+import { LogReviewDialog } from "@/components/lists/media-actions/log-review-dialog";
+import { RemoveHistoryAlertDialog } from "@/components/lists/media-actions/remove-history-alert-dialog";
+import { RemoveRatingDropdownItem } from "@/components/lists/media-actions/remove-rating-dropdown-item";
+import { StarRating } from "@/components/lists/media-actions/star-rating";
+import { AddToWatchlistItem } from "@/components/lists/watchlist/add-to-watchlist-item";
+import { RemoveFromWatchlistItem } from "@/components/lists/watchlist/remove-from-watchlist-item";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -17,16 +26,7 @@ import {
 } from "@/hooks/useRating";
 import { useTv } from "@/hooks/useTv";
 import { m } from "@/paraglide/messages";
-import { getLastAiredEpisodeInfo } from "@/utils/season-helper";
-import { AddToHistoryItem } from "../history/add-to-history-item";
-import { RemoveFromHistoryItem } from "../history/remove-from-history-item";
-import { AddToWatchlistItem } from "../watchlist/add-to-watchlist-item";
-import { RemoveFromWatchlistItem } from "../watchlist/remove-from-watchlist-item";
-import { AddToListDialog } from "./add-to-list-dialog";
-import { LogReviewDialog } from "./log-review-dialog";
-import { RemoveHistoryAlertDialog } from "./remove-history-alert-dialog";
-import { RemoveRatingDropdownItem } from "./remove-rating-dropdown-item";
-import { StarRating } from "./star-rating";
+import { getTvShowProgress } from "@/utils/season-helper";
 
 interface ListDropdownProps {
 	movie?: {
@@ -48,22 +48,17 @@ interface ListDropdownProps {
 
 export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 	const { authData } = useRouteContext({ from: "__root__" });
+	if (!authData) return null;
+	const username = authData.user.name;
 	const isTvShow = !!tvShow;
 	const tmdbId = isTvShow ? tvShow.id : (movie?.id ?? 0);
 
-	const { data: tvDetails } = useTv(
-		tmdbId,
-		{},
-		{
-			enabled: isTvShow,
-		},
-	);
+	const { data: tvDetails } = useTv(tmdbId, {}, { enabled: isTvShow });
 
-	const { data: movieRating } = useMovieRating(
-		authData?.user.name ?? "",
-		tmdbId,
-	);
-	const { data: tvRating } = useTvRating(authData?.user.name ?? "", tmdbId);
+	const tvProgress = useMemo(() => getTvShowProgress(tvDetails), [tvDetails]);
+
+	const { data: movieRating } = useMovieRating(username, tmdbId);
+	const { data: tvRating } = useTvRating(username, tmdbId);
 
 	const rateMovieMutation = useRateMovie();
 	const rateTvMutation = useRateTvShow();
@@ -76,7 +71,6 @@ export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 
 	if (!authData) return null;
 
-	const username = authData.user.name;
 	const existingRating = isTvShow ? tvRating : movieRating;
 
 	const handleRatingChange = (newRating: number) => {
@@ -89,15 +83,14 @@ export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 			});
 		}
 
-		const episodeInfo = getLastAiredEpisodeInfo(tvDetails);
-		if (!episodeInfo) return;
+		if (!tvProgress?.lastAired) return;
 
 		rateTvMutation.mutate({
 			tmdbId,
 			rating: newRating,
 			review: null,
-			lastWatchedSeason: episodeInfo.seasonNumber,
-			lastWatchedEpisode: episodeInfo.episodeNumber,
+			lastWatchedSeason: tvProgress.lastAired.seasonNumber,
+			lastWatchedEpisode: tvProgress.lastAired.episodeNumber,
 			absoluteEpisode: null,
 			trackingMode: "season",
 			watchedAt: new Date(),
@@ -141,19 +134,12 @@ export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 							? m.list_dropdown_editreview()
 							: m.list_dropdown_logreview()}
 					</DropdownMenuItem>
-					<DropdownMenuItem
-						onClick={() => {
-							setShowAddToListDialog(true);
-						}}
-					>
+					<DropdownMenuItem onClick={() => setShowAddToListDialog(true)}>
 						{m.list_dropdown_item_add_to_list()}
 					</DropdownMenuItem>
 					<AddToWatchlistItem movie={movie} tvShow={tvShow} />
 					<AddToHistoryItem movie={movie} tvShow={tvShow} username={username} />
 
-					{/* items below will only be shown if item is in their category
-						eg: if a tv show is in watchlist, remove from watchlist will be shown
-					*/}
 					<DropdownMenuSeparator />
 					<RemoveFromWatchlistItem movie={movie} tvShow={tvShow} />
 					<RemoveRatingDropdownItem

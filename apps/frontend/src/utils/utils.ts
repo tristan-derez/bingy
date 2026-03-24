@@ -1,6 +1,3 @@
-export const getNumberOrNull = (value: string) =>
-	value ? Number(value) : null;
-
 export type ImageSize = "w200" | "w500" | "original";
 
 export const getTmdbImageUrl = (
