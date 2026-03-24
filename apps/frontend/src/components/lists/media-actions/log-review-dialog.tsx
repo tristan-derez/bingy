@@ -19,7 +19,6 @@ import { useRateMovie, useRateTvShow } from "@/hooks/useRating";
 import { useTv } from "@/hooks/useTv";
 import { m } from "@/paraglide/messages";
 import { getTvShowProgress } from "@/utils/season-helper";
-import { getNumberOrNull } from "@/utils/utils";
 
 interface LogReviewDialogProps {
 	open: boolean;
@@ -42,7 +41,7 @@ interface LogReviewDialogProps {
 		watchedAt: Date | null;
 		seasonNumber?: number | null;
 		episodeNumber?: number | null;
-		absoluteEpisode?: number | null; // @todo: use correct number type here
+		absoluteEpisode?: number | null;
 	};
 }
 
@@ -51,7 +50,7 @@ interface ReviewFormData {
 	season: number | null;
 	episode: number | null;
 	shouldUseAbsoluteEpisode: boolean;
-	absoluteEpisode: string;
+	absoluteEpisode: number | null;
 	isComplete: boolean;
 	review: string;
 	watchedDate: Date;
@@ -62,7 +61,7 @@ const initialFormData = {
 	season: null,
 	episode: null,
 	shouldUseAbsoluteEpisode: false,
-	absoluteEpisode: "",
+	absoluteEpisode: null,
 	isComplete: false,
 	review: "",
 	hasSpecificDate: true,
@@ -111,20 +110,23 @@ export function LogReviewDialog({
 		onOpenChange(newOpen);
 	};
 
-	// Sync form with existing data
 	useEffect(() => {
 		if (!existingData || !open) return;
+
+		const hasAbsoluteEpisode = existingData.absoluteEpisode !== null;
 
 		setReviewFormData((prev) => ({
 			...prev,
 			rating,
 			review: existingData.review ?? "",
-			season: existingData.seasonNumber ?? 0,
-			episode: existingData.episodeNumber ?? 0,
+			shouldUseAbsoluteEpisode: hasAbsoluteEpisode,
+			absoluteEpisode: existingData.absoluteEpisode ?? null,
+			season: hasAbsoluteEpisode ? null : (existingData.seasonNumber ?? null),
+			episode: hasAbsoluteEpisode ? null : (existingData.episodeNumber ?? null),
 			watchedDate: existingData.watchedAt
 				? new Date(existingData.watchedAt)
 				: new Date(),
-			hasSpecificDate: !!existingData.watchedAt, // keep track of checkboxes states
+			hasSpecificDate: !!existingData.watchedAt,
 		}));
 	}, [open, existingData, rating]);
 
@@ -160,7 +162,7 @@ export function LogReviewDialog({
 			shouldUseAbsoluteEpisode: checked,
 			season: null,
 			episode: null,
-			absoluteEpisode: "",
+			absoluteEpisode: null,
 			isComplete: false,
 		}));
 	};
@@ -186,7 +188,7 @@ export function LogReviewDialog({
 				...payload,
 				lastWatchedSeason: reviewFormData.season,
 				lastWatchedEpisode: reviewFormData.episode,
-				absoluteEpisode: getNumberOrNull(reviewFormData.absoluteEpisode),
+				absoluteEpisode: reviewFormData.absoluteEpisode,
 				trackingMode: reviewFormData.shouldUseAbsoluteEpisode
 					? "absolute"
 					: "season",
