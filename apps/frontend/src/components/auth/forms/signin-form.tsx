@@ -152,10 +152,10 @@ export function SignInForm() {
 
 	return (
 		<>
-			<Card className="border-none shadow-transparent p-0 w-full max-w-lg">
+			<Card className="border-none shadow-transparent p-0 w-78 md:w-md lg:w-lg">
 				<MagicCard
 					gradientColor="var(--shadow-pointer)"
-					className="py-4 md:px-2 w-full max-w-lg"
+					className="py-4 flex-1"
 				>
 					<CardHeader>
 						<CardTitle className="text-2xl">{m.signin_title()}</CardTitle>
@@ -259,7 +259,7 @@ export function SignInForm() {
 								onClick={() => handleOAuthSignIn("google")}
 							/>
 						</div>
-						<div className="flex justify-center text-sm gap-1">
+						<div className="flex justify-center items-center flex-wrap text-sm gap-1">
 							<span>{m.signin_no_account()}</span>
 							<Link to="/signup" className="underline">
 								{m.signin_no_account_link()}

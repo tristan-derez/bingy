@@ -11,5 +11,9 @@ export const Route = createFileRoute("/signup")({
 });
 
 function SignUpPage() {
-	return <SignUpForm />;
+	return (
+		<div className="flex w-full flex-1 justify-center items-center">
+			<SignUpForm />
+		</div>
+	);
 }
