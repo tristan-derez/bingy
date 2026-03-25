@@ -10,13 +10,13 @@ export function MediaBackgroundImage({
 	const bgColor = "var(--background)";
 
 	return (
-		<div className="absolute top-0 w-full ring-0 border-none shadow-none max-w-screen-2xl h-[450px] lg:h-[600px] -z-10 overflow-hidden">
+		<div className="absolute top-16 lg:top-0 left-1/2 -translate-x-1/2 w-full ring-0 border-none shadow-none max-w-xl lg:max-w-7xl h-[300px] lg:h-[500px] -z-10 overflow-hidden">
 			<div
 				className="absolute inset-0"
 				style={{
 					backgroundImage: `url(${backgroundImage ?? backgroundPlaceholder})`,
-					backgroundSize: "cover",
-					backgroundPosition: "center",
+					backgroundSize: "100%",
+					backgroundPosition: "initial",
 				}}
 			/>
 
