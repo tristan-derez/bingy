@@ -1,4 +1,4 @@
-import { type BetterAuthOptions, betterAuth } from "better-auth";
+import { APIError, type BetterAuthOptions, betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { customSession, lastLoginMethod, twoFactor } from "better-auth/plugins";
 import { redis } from "bun";
@@ -233,6 +233,17 @@ const options = {
 					const displayName = user.name
 						.replace(/[^a-z0-9._-]/gi, "")
 						.slice(0, 30);
+
+					const existing = await db.query.users.findFirst({
+						where: (users, { eq }) => eq(users.name, user.name.toLowerCase()),
+					});
+
+					if (existing) {
+						throw new APIError("UNPROCESSABLE_ENTITY", {
+							message: "Username is already taken",
+							code: "USERNAME_ALREADY_EXISTS",
+						});
+					}
 
 					return {
 						data: {

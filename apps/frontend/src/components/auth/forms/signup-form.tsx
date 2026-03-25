@@ -5,7 +5,7 @@ import {
 	IconLoader,
 } from "@tabler/icons-react";
 import { Link, useRouter } from "@tanstack/react-router";
-import React, { useId } from "react";
+import { useId, useState } from "react";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
@@ -42,16 +42,8 @@ import { signUpFormSchema } from "@/schemas/signup-form-schema";
 import { getRandomAvatarUrl } from "@/utils/avatar-generator";
 import { capitalize } from "@/utils/utils";
 
-type ErrorWithDetails = {
-	details?: {
-		cause?: {
-			constraint_name?: string;
-		};
-	};
-};
-
 export function SignUpForm() {
-	const [isSubmitting, setIsSubmitting] = React.useState(false);
+	const [isSubmitting, setIsSubmitting] = useState(false);
 	const router = useRouter();
 	const id = useId();
 
@@ -85,17 +77,8 @@ export function SignUpForm() {
 					case "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL":
 						toast.error(m.toast_error_duplicate_email());
 						break;
-					case "FAILED_TO_CREATE_USER":
-						// username must be unique, from db
-						if (
-							"details" in error &&
-							(error as ErrorWithDetails).details?.cause?.constraint_name ===
-								"users_name_unique"
-						) {
-							toast.error(m.toast_error_duplicate_username());
-						} else {
-							toast.error(m.toast_error_generic());
-						}
+					case "USERNAME_ALREADY_EXISTS":
+						toast.error(m.toast_error_duplicate_username());
 						break;
 					default:
 						toast.error(m.toast_error_generic());
