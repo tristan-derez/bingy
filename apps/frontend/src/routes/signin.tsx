@@ -3,6 +3,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { SignInForm } from "@/components/auth/forms/signin-form";
 import { CenteredLayout } from "@/components/layout/centered-layout";
+import { m } from "@/paraglide/messages";
 
 export const Route = createFileRoute("/signin")({
 	validateSearch: z.object({
@@ -19,13 +20,16 @@ export const Route = createFileRoute("/signin")({
 
 function SigninPage() {
 	const search = Route.useSearch();
-	// @todo: use paraglide here
+
+	// these errors happens after being redirect from backend
+	// eg: oauth sign-in/sign-up with an invalid/not verified email by google
+	//     token to verify email expired or not present/invalid
 	const errorMessages: Record<string, string> = {
-		auth_failed: "Authentication failed. Please try again.",
-		email_required: "Email is required and must be verified by your provider",
-		token_expired_or_invalid: "The reset password link is invalid or expired",
-		no_token: "Please request a new password reset email",
-		default: "An error occurred during login",
+		auth_failed: m.toast_error_auth_failed(),
+		email_required: m.toast_error_oauth_email_required(),
+		token_expired_or_invalid: m.toast_error_auth_token_expired_or_invalid(),
+		no_token: m.toast_error_auth_no_token(),
+		default: m.toast_error_auth_signin_default(),
 	};
 
 	const message =
