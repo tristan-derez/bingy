@@ -74,7 +74,7 @@ export function MovieDetailView({
 	return (
 		<>
 			<MediaBackgroundImage backgroundImage={backgroundImage} />
-			<div className="container pt-3 md:pt-10 lg:pt-30">
+			<div className="container pt-3 md:pt-10 lg:pt-50">
 				<BackButton />
 
 				<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
