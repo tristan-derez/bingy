@@ -1,5 +1,4 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { toast } from "sonner";
 import { z } from "zod";
 import { ResetPasswordForm } from "@/components/auth/forms/reset-password-form";
 
@@ -20,7 +19,6 @@ export const Route = createFileRoute("/reset-password")({
 		}
 
 		if (!search.token) {
-			toast.error("");
 			throw redirect({
 				to: "/signin",
 				search: { error: "no_token" },
