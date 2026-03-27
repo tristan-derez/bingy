@@ -6,7 +6,6 @@ import {
 } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import type { Pretty } from "shared";
-import { toast } from "sonner";
 import {
 	type AddMediaToListPayload,
 	type AddMediaToWatchlistPayload,
@@ -26,6 +25,7 @@ import {
 	type RemoveMediaFromWatchlistPayload,
 	type UpdateListPayload,
 } from "@/api/lists";
+import { toast } from "@/components/toast/toast";
 import { m } from "@/paraglide/messages";
 
 export type AddMediaToListMutationVariables = Pretty<
@@ -69,8 +69,9 @@ export function useIsInWatchlist(tmdbMediaType: string, tmdbId: number) {
 	});
 }
 
-export function useAddMediaToWatchlist() {
+export function useAddMediaToWatchlist(username: string) {
 	const queryClient = useQueryClient();
+	const navigate = useNavigate();
 
 	return useMutation({
 		mutationFn: async (payload: AddMediaToWatchlistPayload) => {
@@ -81,11 +82,24 @@ export function useAddMediaToWatchlist() {
 				queryKey: ["lists", "watchlist"],
 			});
 			const title = variables.title || variables.name;
-			toast.success(m.toast_watchlist_media_success({ media: `"${title}"` }));
+			toast.success({
+				title: m.toast_watchlist_media_success({ media: `"${title}"` }),
+				button: {
+					label: m.btn_go_to_watchlist(),
+					onClick: () => {
+						navigate({
+							to: "/user/$username/watchlist",
+							params: { username },
+						});
+					},
+				},
+			});
 		},
 		onError: (_, variables) => {
 			const title = variables.title || variables.name;
-			toast.error(m.toast_watchlist_media_error({ media: `"${title}"` }));
+			toast.error({
+				title: m.toast_watchlist_media_error({ media: `"${title}"` }),
+			});
 		},
 	});
 }
@@ -102,11 +116,15 @@ export function useRemoveFromWatchlist() {
 				queryKey: ["lists", "watchlist"],
 			});
 			const title = variables.title || variables.name;
-			toast.success(m.toast_remove_watchlist_success({ media: `"${title}"` }));
+			toast.success({
+				title: m.toast_remove_watchlist_success({ media: `"${title}"` }),
+			});
 		},
 		onError: (_, variables) => {
 			const title = variables.title || variables.name;
-			toast.error(m.toast_remove_watchlist_error({ media: `"${title}"` }));
+			toast.error({
+				title: m.toast_remove_watchlist_error({ media: `"${title}"` }),
+			});
 		},
 	});
 }
@@ -196,10 +214,10 @@ export function useDeleteList() {
 				queryKey: ["lists", "custom-list"],
 				exact: false,
 			});
-			toast.success(m.toast_delete_list_success());
+			toast.success({ title: m.toast_delete_list_success() });
 		},
 		onError: () => {
-			toast.error(m.toast_delete_list_error());
+			toast.error({ title: m.toast_delete_list_error() });
 		},
 	});
 }
@@ -223,35 +241,33 @@ export function useAddMediaToList() {
 				],
 			});
 			const mediaTitle = variables.title || variables.name;
-			toast.success(
-				m.toast_add_to_list_media_success({
+			toast.success({
+				title: m.toast_add_to_list_media_success({
 					media: `"${mediaTitle}"`,
 					list: variables.listName,
 				}),
-				{
-					action: {
-						label: m.item_added_to_list_success_cta(),
-						onClick: () => {
-							navigate({
-								to: "/user/$username/lists/$slug",
-								params: {
-									username: variables.username,
-									slug: variables.listSlug,
-								},
-							});
-						},
+				button: {
+					label: m.item_added_to_list_success_cta(),
+					onClick: () => {
+						navigate({
+							to: "/user/$username/lists/$slug",
+							params: {
+								username: variables.username,
+								slug: variables.listSlug,
+							},
+						});
 					},
 				},
-			);
+			});
 		},
 		onError: (_, variables) => {
 			const mediaTitle = variables.title || variables.name;
-			toast.error(
-				m.toast_add_to_list_media_error({
+			toast.error({
+				title: m.toast_add_to_list_media_error({
 					media: `"${mediaTitle}"`,
 					list: variables.listName,
 				}),
-			);
+			});
 		},
 	});
 }
@@ -268,21 +284,21 @@ export function useRemoveFromList() {
 				queryKey: ["lists", "custom-list", variables.listSlug],
 			});
 			const title = variables.title || variables.name;
-			toast.success(
-				m.toast_remove_from_list_media_success({
+			toast.success({
+				title: m.toast_remove_from_list_media_success({
 					media: `"${title}"`,
 					list: variables.listName,
 				}),
-			);
+			});
 		},
 		onError: (_, variables) => {
 			const title = variables.title || variables.name;
-			toast.error(
-				m.toast_remove_from_list_media_error({
+			toast.error({
+				title: m.toast_remove_from_list_media_error({
 					media: `"${title}"`,
 					list: variables.listName,
 				}),
-			);
+			});
 		},
 	});
 }

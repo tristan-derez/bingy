@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
+import { useNavigate } from "@tanstack/react-router";
 import {
 	getMediaAverageRating,
 	getMovieRating,
@@ -12,6 +12,7 @@ import {
 	removeMovieRating,
 	removeTvRating,
 } from "@/api/rating";
+import { toast } from "@/components/toast/toast";
 import { m } from "@/paraglide/messages";
 
 export function useRatings(
@@ -45,8 +46,9 @@ export function useTvRating(username: string, tmdbId: number) {
 	});
 }
 
-export function useRateMovie() {
+export function useRateMovie(username: string) {
 	const queryClient = useQueryClient();
+	const navigate = useNavigate();
 
 	return useMutation({
 		mutationFn: (payload: RateMoviePayload) => rateMovie(payload),
@@ -65,19 +67,31 @@ export function useRateMovie() {
 			});
 
 			if (res.rating) {
-				toast.success(m.toast_rate_movie_success());
+				toast.success({
+					title: m.toast_rate_movie_success(),
+					button: {
+						label: m.btn_go_to_history_page(),
+						onClick: () => {
+							navigate({
+								to: "/user/$username/history",
+								params: { username },
+							});
+						},
+					},
+				});
 			} else {
-				toast.success(m.toast_add_movie_watched_success());
+				toast.success({ title: m.toast_add_movie_watched_success() });
 			}
 		},
 		onError: () => {
-			toast.error(m.toast_rate_movie_error());
+			toast.error({ title: m.toast_rate_movie_error() });
 		},
 	});
 }
 
-export function useRateTvShow() {
+export function useRateTvShow(username: string) {
 	const queryClient = useQueryClient();
+	const navigate = useNavigate();
 
 	return useMutation({
 		mutationFn: (payload: RateTvPayload) => rateTvShow(payload),
@@ -96,13 +110,35 @@ export function useRateTvShow() {
 			});
 
 			if (res.rating) {
-				toast.success(m.toast_rate_tv_success());
+				toast.success({
+					title: m.toast_rate_tv_success(),
+					button: {
+						label: m.btn_go_to_history_page(),
+						onClick: () => {
+							navigate({
+								to: "/user/$username/history",
+								params: { username },
+							});
+						},
+					},
+				});
 			} else {
-				toast.success(m.toast_add_tv_watched_success());
+				toast.success({
+					title: m.toast_add_tv_watched_success(),
+					button: {
+						label: m.btn_go_to_history_page(),
+						onClick: () => {
+							navigate({
+								to: "/user/$username/history",
+								params: { username },
+							});
+						},
+					},
+				});
 			}
 		},
 		onError: () => {
-			toast.error(m.toast_rate_tv_error());
+			toast.error({ title: m.toast_rate_tv_error() });
 		},
 	});
 }
@@ -123,10 +159,10 @@ export function useRemoveMovieRating() {
 				queryKey: ["average-rating", "movie", tmdbId],
 			});
 
-			toast.success(m.toast_remove_movie_rating_success());
+			toast.success({ title: m.toast_remove_movie_rating_success() });
 		},
 		onError: () => {
-			toast.error(m.toast_remove_movie_rating_error());
+			toast.error({ title: m.toast_remove_movie_rating_error() });
 		},
 	});
 }
@@ -147,10 +183,10 @@ export function useRemoveTvRating() {
 				queryKey: ["average-rating", "tv", tmdbId],
 			});
 
-			toast.success(m.toast_remove_tv_rating_success());
+			toast.success({ title: m.toast_remove_tv_rating_success() });
 		},
 		onError: () => {
-			toast.error(m.toast_remove_tv_rating_error());
+			toast.error({ title: m.toast_remove_tv_rating_error() });
 		},
 	});
 }

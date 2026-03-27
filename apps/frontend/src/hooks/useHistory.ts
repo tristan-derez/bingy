@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
+import { useNavigate } from "@tanstack/react-router";
 import {
 	addMovieToHistory,
 	addTvToHistory,
@@ -8,10 +8,12 @@ import {
 	type TrackMoviePayload,
 	type TrackTvPayload,
 } from "@/api/history";
+import { toast } from "@/components/toast/toast";
 import { m } from "@/paraglide/messages";
 
-export function useAddMovieToHistory() {
+export function useAddMovieToHistory(username: string) {
 	const queryClient = useQueryClient();
+	const navigate = useNavigate();
 
 	return useMutation({
 		mutationFn: (payload: TrackMoviePayload) => addMovieToHistory(payload),
@@ -26,16 +28,28 @@ export function useAddMovieToHistory() {
 				queryKey: ["lists", "watchlist"],
 			});
 
-			toast.success(m.toast_add_movie_watched_success());
+			toast.success({
+				title: m.toast_add_movie_watched_success(),
+				button: {
+					label: m.btn_go_to_history_page(),
+					onClick: () => {
+						navigate({
+							to: "/user/$username/history",
+							params: { username },
+						});
+					},
+				},
+			});
 		},
 		onError: () => {
-			toast.error(m.toast_add_movie_watched_error());
+			toast.error({ title: m.toast_add_movie_watched_error() });
 		},
 	});
 }
 
-export function useAddTvToHistory() {
+export function useAddTvToHistory(username: string) {
 	const queryClient = useQueryClient();
+	const navigate = useNavigate();
 
 	return useMutation({
 		mutationFn: (payload: TrackTvPayload) => addTvToHistory(payload),
@@ -50,10 +64,21 @@ export function useAddTvToHistory() {
 				queryKey: ["lists", "watchlist"],
 			});
 
-			toast.success(m.toast_add_tv_watched_success());
+			toast.success({
+				title: m.toast_add_tv_watched_success(),
+				button: {
+					label: m.btn_go_to_history_page(),
+					onClick: () => {
+						navigate({
+							to: "/user/$username/history",
+							params: { username },
+						});
+					},
+				},
+			});
 		},
 		onError: () => {
-			toast.error(m.toast_add_tv_watched_error());
+			toast.error({ title: m.toast_add_tv_watched_error() });
 		},
 	});
 }
@@ -77,10 +102,10 @@ export function useRemoveMovieHistory() {
 				queryKey: ["favorites"],
 			});
 
-			toast.success(m.toast_remove_movie_history_success());
+			toast.success({ title: m.toast_remove_movie_history_success() });
 		},
 		onError: () => {
-			toast.error(m.toast_remove_movie_history_error());
+			toast.error({ title: m.toast_remove_movie_history_error() });
 		},
 	});
 }
@@ -104,10 +129,10 @@ export function useRemoveTvHistory() {
 				queryKey: ["favorites"],
 			});
 
-			toast.success(m.toast_remove_tv_history_success());
+			toast.success({ title: m.toast_remove_tv_history_success() });
 		},
 		onError: () => {
-			toast.error(m.toast_remove_tv_history_error());
+			toast.error({ title: m.toast_remove_tv_history_error() });
 		},
 	});
 }
