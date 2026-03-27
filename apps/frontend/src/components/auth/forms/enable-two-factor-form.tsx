@@ -3,8 +3,9 @@ import { IconExclamationCircleFilled, IconLoader } from "@tabler/icons-react";
 import { useRouteContext, useRouter } from "@tanstack/react-router";
 import { useId, useState } from "react";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
-import { toast } from "sonner";
 import type { z } from "zod";
+import { SetupTwoFactorDialog } from "@/components/auth/setup-two-factor-dialog";
+import { toast } from "@/components/toast/toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,7 +20,6 @@ import { authClient } from "@/lib/auth-client";
 import { sessionQueryOptions } from "@/lib/queries/session";
 import { m } from "@/paraglide/messages";
 import { twoFactorSchema } from "@/schemas/two-factor-schema";
-import { SetupTwoFactorDialog } from "../setup-two-factor-dialog";
 
 export function EnableTwoFactorForm() {
 	const { authData } = useRouteContext({ from: "__root__" });
@@ -50,7 +50,9 @@ export function EnableTwoFactorForm() {
 				});
 
 			if (enableError) {
-				toast.error(enableError.message || m.toast_error_enable_twofactor());
+				toast.error({
+					title: enableError.message || m.toast_error_enable_twofactor(),
+				});
 				return;
 			}
 
@@ -61,7 +63,9 @@ export function EnableTwoFactorForm() {
 					});
 
 				if (totpError) {
-					toast.error(totpError.message || m.toast_error_invalid_code());
+					toast.error({
+						title: totpError.message || m.toast_error_invalid_code(),
+					});
 					return;
 				}
 
@@ -71,12 +75,13 @@ export function EnableTwoFactorForm() {
 				}
 			}
 		} catch (err) {
-			toast.error(m.toast_error_generic());
+			toast.error({ title: m.toast_error_generic() });
 		} finally {
 			setIsSubmitting(false);
 		}
 	};
 
+	// @todo: rework this part
 	const handleVerify = async (code: string) => {
 		try {
 			const { data, error } = await authClient.twoFactor.verifyTotp({
@@ -85,10 +90,10 @@ export function EnableTwoFactorForm() {
 			});
 
 			if (error?.message === "Invalid two factor cookie") {
-				toast.error(m.toast_error_invalid_code());
+				toast.error({ title: m.toast_error_invalid_code() });
 				return;
 			} else if (error) {
-				toast.error(error.message);
+				toast.error({ title: error.message ?? m.toast_error_generic() });
 				return;
 			}
 
@@ -98,13 +103,13 @@ export function EnableTwoFactorForm() {
 				});
 				queryClient.setQueryData(sessionQueryOptions.queryKey, freshSession);
 
-				toast.success(m.toast_success_enable_twofactor());
+				toast.success({ title: m.toast_success_enable_twofactor() });
 				setShowDialog(false);
 				form.reset();
 				router.navigate({ to: "/settings" });
 			}
 		} catch (err) {
-			toast.error(m.toast_error_generic());
+			toast.error({ title: m.toast_error_generic() });
 		}
 	};
 
@@ -117,13 +122,13 @@ export function EnableTwoFactorForm() {
 				<p className="text-sm text-muted-foreground mt-1.5">
 					{m.two_factor_enable_short_desc()}
 				</p>
-				{!isEmailVerified && (
+				{!isEmailVerified ? (
 					<Alert className="border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-50">
 						<IconExclamationCircleFilled />
 						<AlertTitle>{m.two_factor_enable_alert_mail()}</AlertTitle>
 						<AlertDescription>{m.email_not_verified()}</AlertDescription>
 					</Alert>
-				)}
+				) : null}
 
 				<form
 					onSubmit={form.handleSubmit(onFormSubmit)}

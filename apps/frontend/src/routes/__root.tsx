@@ -41,7 +41,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 				content: "#000000",
 			},
 			{
-				name: "apple-mobile-web-app-capable",
+				name: "mobile-web-app-capable",
 				content: "yes",
 			},
 			{

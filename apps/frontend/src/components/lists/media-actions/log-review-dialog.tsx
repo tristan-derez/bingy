@@ -90,8 +90,8 @@ export function LogReviewDialog({
 	const totalEpisodes = tvDetails?.number_of_episodes ?? 0;
 	const mediaTitle = isTvShow ? tvShow.name : movie?.title;
 
-	const rateMovieMutation = useRateMovie();
-	const rateTvMutation = useRateTvShow();
+	const rateMovieMutation = useRateMovie(username);
+	const rateTvMutation = useRateTvShow(username);
 
 	const [reviewFormData, setReviewFormData] = useState<ReviewFormData>({
 		...initialFormData,

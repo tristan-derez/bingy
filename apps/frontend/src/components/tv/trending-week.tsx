@@ -1,11 +1,11 @@
 import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
-import { toast } from "sonner";
 import { LoadingSection } from "@/components/loading/loading-section";
+import { toast } from "@/components/toast/toast";
+import { TvCarousel } from "@/components/tv/tv-carousel";
 import { useTrendingWeekTv } from "@/hooks/useTv";
 import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
-import { TvCarousel } from "./tv-carousel";
 
 interface TrendingWeekTvProps {
 	title: string;
@@ -25,8 +25,8 @@ export const TrendingWeekTv = ({ title }: TrendingWeekTvProps) => {
 	}
 
 	if (error) {
-		toast.error(m.toast_error_not_found_generic({ title }));
-		return null;
+		toast.error({ title: m.toast_error_not_found_generic({ title }) });
+		return;
 	}
 
 	const seenIds = new Set<number>();

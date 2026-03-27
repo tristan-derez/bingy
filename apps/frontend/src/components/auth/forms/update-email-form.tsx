@@ -3,8 +3,8 @@ import { IconLoader } from "@tabler/icons-react";
 import { useRouteContext } from "@tanstack/react-router";
 import React, { useId } from "react";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
-import { toast } from "sonner";
 import type { z } from "zod";
+import { toast } from "@/components/toast/toast";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -50,23 +50,23 @@ export function UpdateEmailForm() {
 			});
 
 			if (error) {
-				toast.error(m.toast_error_update_email());
+				toast.error({ title: m.toast_error_update_email() });
 				return;
 			}
 
 			if (data) {
 				if (data.status) {
-					toast.success(
-						m.toast_success_update_email_confirmation_needed({
+					toast.success({
+						title: m.toast_success_update_email_confirmation_needed({
 							userEmail: user.email,
 						}),
-					);
+					});
 				} else {
-					toast.success(m.toast_success_update_email());
+					toast.success({ title: m.toast_success_update_email() });
 				}
 			}
 		} catch (err) {
-			toast.error(m.toast_error_generic());
+			toast.error({ title: m.toast_error_generic() });
 		} finally {
 			setIsSubmitting(false);
 		}

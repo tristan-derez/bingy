@@ -3,8 +3,8 @@ import { IconLoader } from "@tabler/icons-react";
 import { useNavigate } from "@tanstack/react-router";
 import { useId, useState } from "react";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
-import { toast } from "sonner";
 import type * as z from "zod";
+import { toast } from "@/components/toast/toast";
 import { Button } from "@/components/ui/button";
 import {
 	Field,
@@ -46,13 +46,13 @@ export function DisableTwoFactorForm() {
 				});
 				queryClient.setQueryData(sessionQueryOptions.queryKey, freshSession);
 
-				toast.success(m.toast_success_disable_twofactor());
+				toast.success({ title: m.toast_success_disable_twofactor() });
 				navigate({ to: "/settings" });
 			}
 
-			error && toast.error(m.toast_error_disable_twofactor());
+			error && toast.error({ title: m.toast_error_disable_twofactor() });
 		} catch (err) {
-			toast.error(m.toast_error_generic());
+			toast.error({ title: m.toast_error_generic() });
 		} finally {
 			setIsSubmitting(false);
 		}

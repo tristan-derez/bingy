@@ -4,8 +4,8 @@ import {
 	useRouteContext,
 } from "@tanstack/react-router";
 import { useState } from "react";
-import { toast } from "sonner";
 import z from "zod";
+import { toast } from "@/components/toast/toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
@@ -48,7 +48,7 @@ export const Route = createFileRoute("/_auth/verify-email")({
 });
 
 export function VerifyEmailPage() {
-	const { authData} = useRouteContext({ from: "__root__" });
+	const { authData } = useRouteContext({ from: "__root__" });
 	const { verified } = Route.useSearch();
 	const [isResending, setIsResending] = useState(false);
 
@@ -61,11 +61,12 @@ export function VerifyEmailPage() {
 				email: authData.user.email,
 				callbackURL: `${config.appUrl}/verify-email?verified=true`,
 			});
-			toast.success(m.toast_success_email_sent_title_welcome_page(), {
+			toast.success({
+				title: m.toast_success_email_sent_title_welcome_page(),
 				description: m.toast_success_email_sent_desc_welcome_page(),
 			});
 		} catch {
-			toast.error(m.toast_error_email_failed_welcome_page());
+			toast.error({ title: m.toast_error_email_failed_welcome_page() });
 		} finally {
 			setIsResending(false);
 		}

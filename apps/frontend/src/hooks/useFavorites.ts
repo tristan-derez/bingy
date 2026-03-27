@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
+import { useNavigate } from "@tanstack/react-router";
 import {
 	type AddToFavoritesPayload,
 	addToFavorites,
@@ -7,6 +7,7 @@ import {
 	getFavorites,
 	removeFromFavorites,
 } from "@/api/favorites";
+import { toast } from "@/components/toast/toast";
 import { m } from "@/paraglide/messages";
 
 export function useFavorites(
@@ -31,8 +32,9 @@ export function useFavorite(tmdbId: number, mediaType: "movie" | "tv") {
 	});
 }
 
-export function useAddToFavorites() {
+export function useAddToFavorites(username: string) {
 	const queryClient = useQueryClient();
+	const navigate = useNavigate();
 
 	return useMutation({
 		mutationFn: (payload: AddToFavoritesPayload & { mediaName: string }) =>
@@ -48,14 +50,23 @@ export function useAddToFavorites() {
 				queryKey: ["lists", "watchlist"],
 			});
 
-			toast.success(
-				m.toast_add_to_favorites_success({ name: variables.mediaName }),
-			);
+			toast.success({
+				title: m.toast_add_to_favorites_success({ name: variables.mediaName }),
+				button: {
+					label: m.btn_go_to_favorites(),
+					onClick: () => {
+						navigate({
+							to: "/user/$username/favorites",
+							params: { username },
+						});
+					},
+				},
+			});
 		},
 		onError: (_error, variables) => {
-			toast.error(
-				m.toast_add_to_favorites_error({ name: variables.mediaName }),
-			);
+			toast.error({
+				title: m.toast_add_to_favorites_error({ name: variables.mediaName }),
+			});
 		},
 	});
 }
@@ -77,16 +88,18 @@ export function useRemoveFromFavorites() {
 				queryKey: ["favorites"],
 			});
 
-			toast.success(
-				m.toast_remove_from_favorites_success({
+			toast.success({
+				title: m.toast_remove_from_favorites_success({
 					name: variables.mediaName,
 				}),
-			);
+			});
 		},
 		onError: (_error, variables) => {
-			toast.error(
-				m.toast_remove_from_favorites_error({ name: variables.mediaName }),
-			);
+			toast.error({
+				title: m.toast_remove_from_favorites_error({
+					name: variables.mediaName,
+				}),
+			});
 		},
 	});
 }

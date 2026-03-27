@@ -1,9 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IconLoader } from "@tabler/icons-react";
-import React, { useId } from "react";
+import { useId, useState } from "react";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
-import { toast } from "sonner";
 import type { z } from "zod";
+import { toast } from "@/components/toast/toast";
 import {
 	AlertDialog,
 	AlertDialogCancel,
@@ -23,8 +23,8 @@ import { m } from "@/paraglide/messages";
 import { deleteAccountSchema } from "@/schemas/delete-account-schema";
 
 export function DeleteAccountForm() {
-	const [isSubmitting, setIsSubmitting] = React.useState(false);
-	const [open, setOpen] = React.useState(false);
+	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [open, setOpen] = useState(false);
 	const id = useId();
 
 	const { control, handleSubmit } = useForm<
@@ -45,13 +45,13 @@ export function DeleteAccountForm() {
 			});
 
 			if (data) {
-				toast.success(m.toast_email_sent_account_delete());
+				toast.success({ title: m.toast_email_sent_account_delete() });
 				setOpen(false);
 			}
 
-			error && toast.error(m.toast_error_generic());
+			error ? toast.error({ title: m.toast_error_generic() }) : null;
 		} catch (err) {
-			toast.error(m.toast_error_generic());
+			toast.error({ title: m.toast_error_generic() });
 		} finally {
 			setIsSubmitting(false);
 		}

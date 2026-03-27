@@ -2,8 +2,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { IconLoader } from "@tabler/icons-react";
 import React, { useId } from "react";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
-import { toast } from "sonner";
 import type { z } from "zod";
+import { toast } from "@/components/toast/toast";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -54,16 +54,16 @@ export function UpdatePasswordForm({ hasPassword }: UpdatePasswordFormProps) {
 			});
 
 			if (error) {
-				toast.error(m.toast_error_update_password());
+				toast.error({ title: m.toast_error_update_password() });
 				return;
 			}
 
 			if (data) {
-				toast.success(m.toast_success_update_password());
+				toast.success({ title: m.toast_success_update_password() });
 				setIsSuccess(true);
 			}
 		} catch (err) {
-			toast.error(m.toast_error_generic());
+			toast.error({ title: m.toast_error_generic() });
 		} finally {
 			setIsSubmitting(false);
 		}

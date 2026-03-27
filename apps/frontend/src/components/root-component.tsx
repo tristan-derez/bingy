@@ -10,6 +10,7 @@ import { GlobalLoadingIndicator } from "./loading/loading-global";
 
 export function RootComponent() {
 	const isProd = config.appEnv === "production";
+
 	useEffect(() => {
 		document.documentElement.lang = getLocale();
 	}, []);

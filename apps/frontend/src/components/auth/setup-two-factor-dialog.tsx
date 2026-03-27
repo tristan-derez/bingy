@@ -1,7 +1,6 @@
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { useState } from "react";
 import QRCode from "react-qr-code";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -17,6 +16,7 @@ import {
 	InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { m } from "@/paraglide/messages";
+import { toast } from "../toast/toast";
 
 export function SetupTwoFactorDialog({
 	open,
@@ -44,7 +44,7 @@ export function SetupTwoFactorDialog({
 
 	const copyText = () => {
 		navigator.clipboard.writeText(secret);
-		toast.success(m.toast_success_text_copied({ x: "Secret" }));
+		toast.success({ title: m.toast_success_text_copied({ x: "Secret" }) });
 	};
 
 	return (

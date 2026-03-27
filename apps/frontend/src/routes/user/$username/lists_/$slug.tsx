@@ -5,9 +5,9 @@ import {
 } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import { useState } from "react";
-import { toast } from "sonner";
 import { ListContainer } from "@/components/lists/custom-lists/list-container";
 import { LoadingCentered } from "@/components/loading/loading-centered";
+import { toast } from "@/components/toast/toast";
 import { useListBySlug } from "@/hooks/useLists";
 import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
@@ -34,7 +34,7 @@ function ListPage() {
 
 	if (isLoading) return <LoadingCentered />;
 	if (!list || error) {
-		toast.error(m.toast_error_list_not_found());
+		toast.error({ title: m.toast_error_list_not_found() });
 		navigate({ to: "/user/$username/lists", params: { username } });
 		return;
 	}

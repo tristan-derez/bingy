@@ -3,8 +3,8 @@ import { IconLoader } from "@tabler/icons-react";
 import { useNavigate } from "@tanstack/react-router";
 import React, { useId } from "react";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
-import { toast } from "sonner";
 import type { z } from "zod";
+import { toast } from "@/components/toast/toast";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -53,14 +53,17 @@ export function ForgotPasswordForm({ email }: ForgotPasswordFormProps) {
 				redirectTo: `${config.appUrl}/reset-password`,
 			});
 
-			error && toast.error(m.email_not_send);
+			error &&
+				toast.error({
+					title: m.toast_error_email_not_sent() ?? m.toast_error_generic(),
+				});
 
 			if (data && data.status) {
 				navigate({ to: "/signin" });
-				toast.success(m.forgot_password_email_sent());
+				toast.success({ title: m.forgot_password_email_sent() });
 			}
 		} catch (err) {
-			toast.error(m.toast_error_generic());
+			toast.error({ title: m.toast_error_generic() });
 		} finally {
 			setIsSubmitting(false);
 		}

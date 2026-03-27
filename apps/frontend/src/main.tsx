@@ -2,7 +2,6 @@ import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { ThemeProvider } from "@/components/theme/theme-provider.tsx";
-import { Toaster } from "./components/ui/sonner.tsx";
 import {
 	queryClient,
 	Provider as TanStackQueryProvider,
@@ -12,6 +11,7 @@ import { routeTree } from "./routeTree.gen";
 import "@/styles/app.css";
 import "@/styles/autofill.css";
 import "flag-icons/css/flag-icons.min.css";
+import { Toaster } from "./components/ui/sonner.tsx";
 
 const router = createRouter({
 	routeTree,
@@ -39,8 +39,17 @@ if (rootElement && !rootElement.innerHTML) {
 		<StrictMode>
 			<TanStackQueryProvider>
 				<ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-					<Toaster richColors position="bottom-center" />
 					<RouterProvider router={router} />
+					<Toaster
+						position="bottom-center"
+						expand={false}
+						richColors={false}
+						closeButton={false}
+						duration={3000}
+						toastOptions={{
+							unstyled: true,
+						}}
+					/>
 				</ThemeProvider>
 			</TanStackQueryProvider>
 		</StrictMode>,

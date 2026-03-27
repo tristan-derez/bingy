@@ -25,6 +25,7 @@ interface WatchlistToggleButtonProps {
 	};
 	color?: string;
 	size?: number;
+	username: string;
 }
 
 export function WatchlistToggleButton({
@@ -32,10 +33,11 @@ export function WatchlistToggleButton({
 	tvShow,
 	color = "foreground",
 	size = 8,
+	username,
 }: WatchlistToggleButtonProps) {
 	const { authData } = useRouteContext({ from: "__root__" });
 
-	const addToWatchlist = useAddMediaToWatchlist();
+	const addToWatchlist = useAddMediaToWatchlist(username);
 	const removeFromWatchlist = useRemoveFromWatchlist();
 
 	const mediaType = movie ? "movie" : "tv";
