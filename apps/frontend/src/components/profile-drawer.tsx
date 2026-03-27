@@ -16,7 +16,8 @@ import {
 	useRouter,
 } from "@tanstack/react-router";
 import { useState } from "react";
-import { toast } from "sonner";
+import { ProfileTriggerButton } from "@/components/profile-trigger-button";
+import { toast } from "@/components/toast/toast";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -33,7 +34,6 @@ import { queryClient } from "@/integrations/tanstack-query/root-provider";
 import { authClient } from "@/lib/auth-client";
 import { sessionQueryOptions } from "@/lib/queries/session";
 import { m } from "@/paraglide/messages";
-import { ProfileTriggerButton } from "./profile-trigger-button";
 
 export function ProfileDrawer() {
 	const { authData } = useRouteContext({ from: "__root__" });
@@ -52,7 +52,7 @@ export function ProfileDrawer() {
 		queryClient.setQueryData(sessionQueryOptions.queryKey, null);
 		queryClient.removeQueries({ queryKey: ["accounts"] });
 
-		toast.success(m.toast_success_logout());
+		toast.success({ title: m.toast_success_logout() });
 
 		await router.navigate({ to: "/" });
 	};

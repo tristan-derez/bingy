@@ -3,8 +3,8 @@ import { IconBrandGoogleFilled, IconLoader } from "@tabler/icons-react";
 import { Link, useRouter } from "@tanstack/react-router";
 import { useId, useState } from "react";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
-import { toast } from "sonner";
 import type { z } from "zod";
+import { toast } from "@/components/toast/toast";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -88,13 +88,13 @@ export function SignInForm() {
 					error.code === "INVALID_EMAIL_OR_PASSWORD" ||
 					error.code === "INVALID_PASSWORD"
 				) {
-					toast.error(m.toast_error_invalid_email_password());
+					toast.error({ title: m.toast_error_invalid_email_password() });
 				} else {
-					toast.error(m.toast_error_generic());
+					toast.error({ title: m.toast_error_generic() });
 				}
 			}
 		} catch (err) {
-			toast.error(m.toast_error_generic());
+			toast.error({ title: m.toast_error_generic() });
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -109,7 +109,7 @@ export function SignInForm() {
 				newUserCallbackURL: `${config.appUrl}/welcome`,
 			});
 		} catch (err) {
-			toast.error(m.toast_error_generic());
+			toast.error({ title: m.toast_error_generic() });
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -125,10 +125,10 @@ export function SignInForm() {
 			authClient.$ERROR_CODES;
 
 			if (error?.message === "Invalid two factor cookie") {
-				toast.error(m.toast_error_invalid_code());
+				toast.error({ title: m.toast_error_invalid_code() });
 				return;
 			} else if (error) {
-				toast.error(m.toast_error_generic());
+				toast.error({ title: m.toast_error_generic() });
 				return;
 			}
 
@@ -140,13 +140,15 @@ export function SignInForm() {
 					queryKey: sessionQueryOptions.queryKey,
 				});
 
-				toast.success(m.welcome_back_message({ username: data.user.name }));
+				toast.success({
+					title: m.welcome_back_message({ username: data.user.name }),
+				});
 				setShowDialog(false);
 				form.reset();
 				await router.navigate({ to: "/dashboard" });
 			}
 		} catch (err) {
-			toast.error(m.toast_error_signin_invalid_code());
+			toast.error({ title: m.toast_error_signin_invalid_code() });
 		}
 	};
 

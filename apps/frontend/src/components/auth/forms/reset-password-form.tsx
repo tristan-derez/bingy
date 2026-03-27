@@ -3,8 +3,8 @@ import { IconLoader } from "@tabler/icons-react";
 import { useNavigate } from "@tanstack/react-router";
 import React, { useId } from "react";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
-import { toast } from "sonner";
 import type { z } from "zod";
+import { toast } from "@/components/toast/toast";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -50,14 +50,14 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
 				token,
 			});
 
-			error && toast.error(m.toast_error_reset_password());
+			error && toast.error({ title: m.toast_error_reset_password() });
 
 			if (data) {
-				toast.success(m.toast_success_reset_password());
+				toast.success({ title: m.toast_success_reset_password() });
 				navigate({ to: "/signin" });
 			}
 		} catch (err) {
-			toast.error(m.toast_error_generic());
+			toast.error({ title: m.toast_error_generic() });
 		} finally {
 			setIsSubmitting(false);
 		}

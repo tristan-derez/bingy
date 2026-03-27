@@ -1,7 +1,7 @@
 import type { Schemas } from "shared";
-import { toast } from "sonner";
 import { LoadingSection } from "@/components/loading/loading-section";
 import { MovieCarousel } from "@/components/movies/movie-carousel";
+import { toast } from "@/components/toast/toast";
 import { m } from "@/paraglide/messages";
 
 interface NowPlayingMovieProps {
@@ -22,7 +22,7 @@ export const NowPlayingMovies = ({
 	}
 
 	if (isError) {
-		toast.error(m.error_failed_to_load({ title }));
+		toast.error({ title: m.error_failed_to_load({ title }) });
 		return null;
 	}
 

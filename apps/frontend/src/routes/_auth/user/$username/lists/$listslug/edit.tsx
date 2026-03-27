@@ -8,11 +8,11 @@ import {
 import { useAtom, useAtomValue } from "jotai";
 import { useEffect, useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { z } from "zod";
 import { ListItemsPreview } from "@/components/lists/custom-lists/list-items-preview";
 import { ListSearchAddInput } from "@/components/lists/custom-lists/list-search-add";
 import { LoadingCentered } from "@/components/loading/loading-centered";
+import { toast } from "@/components/toast/toast";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -153,9 +153,9 @@ function EditListPage() {
 			{ listId: list.id, payload },
 			{
 				onSuccess: (data) => {
-					toast.success(
-						m.toast_form_update_list_success({ list_name: values.name }),
-					);
+					toast.success({
+						title: m.toast_form_update_list_success({ list_name: values.name }),
+					});
 
 					navigate({
 						to: "/user/$username/lists/$slug",
@@ -163,16 +163,16 @@ function EditListPage() {
 					});
 				},
 				onError: () => {
-					toast.error(
-						m.toast_form_update_list_error({ list_name: values.name }),
-					);
+					toast.error({
+						title: m.toast_form_update_list_error({ list_name: values.name }),
+					});
 				},
 			},
 		);
 	};
 
 	if (!isOwnProfile) {
-		toast.error(m.toast_error_list_unauthorized_edit());
+		toast.error({ title: m.toast_error_list_unauthorized_edit() });
 		navigate({
 			to: "/user/$username/lists/$slug",
 			params: { username, slug: listslug },
@@ -185,7 +185,7 @@ function EditListPage() {
 	}
 
 	if (error || !list) {
-		toast.error(m.toast_error_list_not_found());
+		toast.error({ title: m.toast_error_list_not_found() });
 		navigate({
 			to: "/user/$username/lists/$slug",
 			params: { username, slug: listslug },

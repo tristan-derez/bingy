@@ -2,10 +2,10 @@ import { IconBrandGoogle } from "@tabler/icons-react";
 import { useNavigate } from "@tanstack/react-router";
 import type { Account } from "better-auth";
 import { useState } from "react";
-import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { config } from "@/lib/env";
 import { m } from "@/paraglide/messages";
+import { toast } from "../toast/toast";
 import { OAuthButton } from "../ui/oauth-button";
 
 type LinkAccountComponentProps = {
@@ -36,12 +36,16 @@ export function LinkAccountComponent({ accounts }: LinkAccountComponentProps) {
 
 			if (googleConnected) {
 				if (accounts.length <= 1) {
-					toast.error(m.toast_error_unlink_account({ provider: "Google" }));
+					toast.error({
+						title: m.toast_error_unlink_account({ provider: "Google" }),
+					});
 					return;
 				}
 
 				await authClient.unlinkAccount({ providerId: provider });
-				toast.success(m.toast_success_unlink_account({ provider: "Google" }));
+				toast.success({
+					title: m.toast_success_unlink_account({ provider: "Google" }),
+				});
 				navigate({ to: "/settings" });
 			} else {
 				await authClient.linkSocial({
@@ -51,7 +55,7 @@ export function LinkAccountComponent({ accounts }: LinkAccountComponentProps) {
 				});
 			}
 		} catch (err) {
-			toast.error(m.toast_error_generic());
+			toast.error({ title: m.toast_error_generic() });
 		} finally {
 			setIsLoading(false);
 		}

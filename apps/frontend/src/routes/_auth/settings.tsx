@@ -1,8 +1,8 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, useSearch } from "@tanstack/react-router";
-import { toast } from "sonner";
 import z from "zod";
 import { SettingsComponent } from "@/components/auth/settings-component";
+import { toast } from "@/components/toast/toast";
 import { authClient } from "@/lib/auth-client";
 import { m } from "@/paraglide/messages";
 
@@ -41,11 +41,7 @@ function SettingsPage() {
 	if (error) {
 		const message =
 			errorMessages[error] ?? m.toast_error_generic_error_settings_page();
-		toast.error(message, {
-			id: `error-${error}`,
-			duration: Infinity,
-			closeButton: true,
-		});
+		toast.error({ title: message }, { duration: 8000, closeButton: true });
 	}
 
 	return (

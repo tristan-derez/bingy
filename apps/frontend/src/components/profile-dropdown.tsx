@@ -16,7 +16,8 @@ import {
 	useRouter,
 } from "@tanstack/react-router";
 import { useState } from "react";
-import { toast } from "sonner";
+import { ProfileTriggerButton } from "@/components/profile-trigger-button";
+import { toast } from "@/components/toast/toast";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -30,7 +31,6 @@ import { authClient } from "@/lib/auth-client";
 import { sessionQueryOptions } from "@/lib/queries/session";
 import { cn } from "@/lib/utils";
 import { m } from "@/paraglide/messages";
-import { ProfileTriggerButton } from "./profile-trigger-button";
 
 interface ProfileDropdownProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -54,7 +54,7 @@ export const ProfileDropdown = ({
 		queryClient.setQueryData(sessionQueryOptions.queryKey, null);
 		queryClient.removeQueries({ queryKey: ["accounts"] });
 
-		toast.success(m.toast_success_logout());
+		toast.success({ title: m.toast_success_logout() });
 
 		await router.navigate({ to: "/" });
 	};

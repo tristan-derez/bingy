@@ -7,8 +7,8 @@ import {
 import { Link, useRouter } from "@tanstack/react-router";
 import { useId, useState } from "react";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
-import { toast } from "sonner";
 import type { z } from "zod";
+import { toast } from "@/components/toast/toast";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -75,13 +75,13 @@ export function SignUpForm() {
 				switch (error.code) {
 					case "USER_ALREADY_EXISTS":
 					case "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL":
-						toast.error(m.toast_error_duplicate_email());
+						toast.error({ title: m.toast_error_duplicate_email() });
 						break;
 					case "USERNAME_ALREADY_EXISTS":
-						toast.error(m.toast_error_duplicate_username());
+						toast.error({ title: m.toast_error_duplicate_username() });
 						break;
 					default:
-						toast.error(m.toast_error_generic());
+						toast.error({ title: m.toast_error_generic() });
 				}
 				return;
 			}
@@ -96,13 +96,15 @@ export function SignUpForm() {
 					queryKey: sessionQueryOptions.queryKey,
 				});
 
-				toast.success(
-					m.toast_success_signup_verify_email({ email: data.user.email }),
-				);
+				toast.success({
+					title: m.toast_success_signup_verify_email({
+						email: data.user.email,
+					}),
+				});
 				await router.navigate({ to: "/verify-email" });
 			}
 		} catch (err) {
-			toast.error(m.toast_error_generic());
+			toast.error({ title: m.toast_error_generic() });
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -111,10 +113,11 @@ export function SignUpForm() {
 	const handleOAuthRegister = async (provider: "google") => {
 		const providerCapitalized = capitalize(provider);
 		try {
-			toast.loading(
-				m.toast_loading_redirect_to_provider({ provider: providerCapitalized }),
-				{ id: "oauth" },
-			);
+			toast.loading({
+				title: m.toast_loading_redirect_to_provider({
+					provider: providerCapitalized,
+				}),
+			});
 
 			await authClient.signIn.social({
 				provider,
@@ -123,12 +126,11 @@ export function SignUpForm() {
 				newUserCallbackURL: `${config.appUrl}/welcome`,
 			});
 		} catch (err: unknown) {
-			toast.error(
-				m.toast_error_oauth_provider_generic({
+			toast.error({
+				title: m.toast_error_oauth_provider_generic({
 					provider: providerCapitalized,
 				}),
-				{ id: "oauth" },
-			);
+			});
 		}
 	};
 
