@@ -13,10 +13,15 @@ interface AddToWatchlistItemProps {
 		id: number;
 		name: string;
 	};
+	username: string;
 }
 
-export function AddToWatchlistItem({ movie, tvShow }: AddToWatchlistItemProps) {
-	const addToWatchlist = useAddMediaToWatchlist();
+export function AddToWatchlistItem({
+	movie,
+	tvShow,
+	username,
+}: AddToWatchlistItemProps) {
+	const addToWatchlist = useAddMediaToWatchlist(username);
 
 	const mediaType = movie ? "movie" : "tv";
 	const mediaId = movie?.id ?? tvShow?.id;

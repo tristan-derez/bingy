@@ -38,8 +38,8 @@ export function WatchToggleButton({
 }: WatchToggleButtonProps) {
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const localeRegion = useAtomValue(localeRegionAtom);
-	const addMovieToHistory = useAddMovieToHistory();
-	const addTvToHistory = useAddTvToHistory();
+	const addMovieToHistory = useAddMovieToHistory(username);
+	const addTvToHistory = useAddTvToHistory(username);
 	const removeMovieHistory = useRemoveMovieHistory();
 	const removeTvHistory = useRemoveTvHistory();
 

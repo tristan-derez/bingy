@@ -61,8 +61,8 @@ export const MediaActionMenu = ({
 	const { data: movieRating } = useMovieRating(username, tmdbId);
 	const { data: tvRating } = useTvRating(username, tmdbId);
 
-	const rateMovieMutation = useRateMovie();
-	const rateTvMutation = useRateTvShow();
+	const rateMovieMutation = useRateMovie(username);
+	const rateTvMutation = useRateTvShow(username);
 
 	const handleRatingChange = (newRating: number) => {
 		if (!isTvShow) {

@@ -26,8 +26,8 @@ export function AddToHistoryItem({
 	username,
 }: AddToHistoryItemProps) {
 	const localeRegion = useAtomValue(localeRegionAtom);
-	const addMovieToHistory = useAddMovieToHistory();
-	const addTvToHistory = useAddTvToHistory();
+	const addMovieToHistory = useAddMovieToHistory(username);
+	const addTvToHistory = useAddTvToHistory(username);
 
 	const { data: tvDetails } = useTv(
 		tvShow?.id ?? 0,

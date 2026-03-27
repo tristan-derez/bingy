@@ -60,8 +60,8 @@ export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 	const { data: movieRating } = useMovieRating(username, tmdbId);
 	const { data: tvRating } = useTvRating(username, tmdbId);
 
-	const rateMovieMutation = useRateMovie();
-	const rateTvMutation = useRateTvShow();
+	const rateMovieMutation = useRateMovie(username);
+	const rateTvMutation = useRateTvShow(username);
 	const removeMovieHistory = useRemoveMovieHistory();
 	const removeTvHistory = useRemoveTvHistory();
 
@@ -137,7 +137,11 @@ export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 					<DropdownMenuItem onClick={() => setShowAddToListDialog(true)}>
 						{m.list_dropdown_item_add_to_list()}
 					</DropdownMenuItem>
-					<AddToWatchlistItem movie={movie} tvShow={tvShow} />
+					<AddToWatchlistItem
+						movie={movie}
+						tvShow={tvShow}
+						username={username}
+					/>
 					<AddToHistoryItem movie={movie} tvShow={tvShow} username={username} />
 
 					<DropdownMenuSeparator />

@@ -25,15 +25,17 @@ interface FavoriteToggleButtonProps {
 		name: string;
 	};
 	color?: string;
+	username: string;
 }
 
 export function FavoriteToggleButton({
 	movie,
 	tvShow,
 	color = "foreground",
+	username,
 }: FavoriteToggleButtonProps) {
 	const [showTvConfirmDialog, setShowTvConfirmDialog] = useState(false);
-	const addToFavorites = useAddToFavorites();
+	const addToFavorites = useAddToFavorites(username);
 	const removeFromFavorites = useRemoveFromFavorites();
 	const tmdbId = movie?.id ?? tvShow?.id ?? 0;
 	const mediaType = movie ? "movie" : "tv";
