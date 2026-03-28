@@ -721,5 +721,7 @@
 	"btn_go_back": "Retour en arrière",
 	"btn_go_to_history_page": "Voir",
 	"btn_go_to_watchlist": "Voir",
-	"btn_go_to_favorites": "Voir"
+	"btn_go_to_favorites": "Voir",
+	"cast_text": "Distribution",
+	"crew_text": "Équipe technique"
 }

@@ -723,5 +723,7 @@
 	"btn_go_back": "Go back",
 	"btn_go_to_history_page": "View",
 	"btn_go_to_watchlist": "View",
-	"btn_go_to_favorites": "View"
+	"btn_go_to_favorites": "View",
+	"cast_text": "Cast",
+	"crew_text": "Crew"
 }
