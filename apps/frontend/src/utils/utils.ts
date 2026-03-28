@@ -1,3 +1,5 @@
+import type { Schemas } from "shared";
+
 export type ImageSize = "w200" | "w500" | "original";
 
 export const getTmdbImageUrl = (
@@ -52,3 +54,39 @@ export const getMediaProps = (
 				},
 			};
 };
+
+export function mergeCastMemberCharacters(
+	cast: Array<Schemas.CastMember & { characters?: string[] }>,
+	member: Schemas.CastMember,
+): void {
+	const existing = cast.find((c) => c.id === member.id);
+
+	if (existing) {
+		if (member.character && !existing.characters?.includes(member.character)) {
+			existing.characters = [...(existing.characters || []), member.character];
+		}
+	} else {
+		cast.push({
+			...member,
+			characters: member.character ? [member.character] : [],
+		});
+	}
+}
+
+export function mergeCrewMemberJobs(
+	crew: Array<Schemas.CrewMember & { jobs?: string[] }>,
+	member: Schemas.CrewMember,
+): void {
+	const existing = crew.find((c) => c.id === member.id);
+
+	if (existing) {
+		if (member.job && !existing.jobs?.includes(member.job)) {
+			existing.jobs = [...(existing.jobs || []), member.job];
+		}
+	} else {
+		crew.push({
+			...member,
+			jobs: member.job ? [member.job] : [],
+		});
+	}
+}
