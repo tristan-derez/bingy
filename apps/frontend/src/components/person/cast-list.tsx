@@ -2,7 +2,7 @@ import type { Schemas } from "shared";
 import { CastHoverCard } from "@/components/person/cast-hover-card";
 
 interface CastListProps {
-	people: Schemas.CastMember[];
+	people: Array<Schemas.CastMember & { characters?: string[] }>;
 }
 
 export const CastList = ({ people }: CastListProps) => {

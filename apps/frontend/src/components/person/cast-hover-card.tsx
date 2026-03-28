@@ -20,15 +20,17 @@ import { m } from "@/paraglide/messages";
 import { Button } from "../ui/button";
 
 interface CastHoverCardProps {
-	person: Schemas.CastMember;
+	person: Schemas.CastMember & { characters?: string[] };
 }
 
 export const CastHoverCard = ({ person }: CastHoverCardProps) => {
 	const isMobile = useMediaQuery("(pointer: coarse)");
 	const personName = person.name;
-	const character = person.character
-		? `${m.person_as()} ${person.character}`
-		: "N/A";
+	const characterText = person.characters?.length
+		? `${m.person_as()} ${person.characters.join(", ")}`
+		: person.character
+			? `${m.person_as()} ${person.character}`
+			: "N/A";
 	const imageUrl = person.profile_path
 		? `https://image.tmdb.org/t/p/w500${person.profile_path}`
 		: null;
@@ -58,7 +60,7 @@ export const CastHoverCard = ({ person }: CastHoverCardProps) => {
 								{personName}
 							</DrawerTitle>
 							<DrawerDescription className="wrap-break-words">
-								{character}
+								{characterText}
 							</DrawerDescription>
 						</div>
 					</div>
@@ -102,7 +104,7 @@ export const CastHoverCard = ({ person }: CastHoverCardProps) => {
 							</p>
 							<IconExternalLink size={14} className="shrink-0 mt-0.5" />
 						</div>
-						<p className="text-xs text-muted-foreground">{character}</p>
+						<p className="text-xs text-muted-foreground">{characterText}</p>
 					</div>
 				</Link>
 			</HoverCardContent>
