@@ -173,6 +173,7 @@ const appendOptions = z.union([
 	z.literal("combined_credits"),
 	z.literal("external_ids"),
 	z.literal("translations"),
+	z.literal("credits"),
 	z.literal("combined_credits,external_ids"),
 	z.literal("external_ids,combined_credits"),
 	z.literal("combined_credits,translations"),
