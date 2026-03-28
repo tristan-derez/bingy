@@ -26,7 +26,12 @@ function CollectionDetailsPage() {
 		queries:
 			collectionData?.parts?.map((movie: Schemas.MovieDetails) => ({
 				queryKey: ["movie", movie.id, localeRegion],
-				queryFn: () => fetchMovie(movie.id, { language: localeRegion, region }),
+				queryFn: () =>
+					fetchMovie(movie.id, {
+						language: localeRegion,
+						region,
+						append_to_response: "credits",
+					}),
 				enabled: !!collectionData,
 				staleTime: 1000 * 60 * 60,
 			})) || [],

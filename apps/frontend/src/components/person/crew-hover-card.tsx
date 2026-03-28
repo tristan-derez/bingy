@@ -19,17 +19,17 @@ import { useMediaQuery } from "@/integrations/media-query";
 import { m } from "@/paraglide/messages";
 import { Button } from "../ui/button";
 
-interface CastHoverCardProps {
-	person: Schemas.CastMember & { characters?: string[] };
+interface CrewHoverCardProps {
+	person: Schemas.CrewMember & { jobs?: string[] };
 }
 
-export const CastHoverCard = ({ person }: CastHoverCardProps) => {
+export const CrewHoverCard = ({ person }: CrewHoverCardProps) => {
 	const isMobile = useMediaQuery("(pointer: coarse)");
 	const personName = person.name;
-	const characterText = person.characters?.length
-		? `${m.person_as()} ${person.characters.join(", ")}`
-		: person.character
-			? `${m.person_as()} ${person.character}`
+	const jobsText = person.jobs?.length
+		? person.jobs.join(", ")
+		: person.job
+			? person.job
 			: "N/A";
 	const imageUrl = person.profile_path
 		? `https://image.tmdb.org/t/p/w500${person.profile_path}`
@@ -60,7 +60,7 @@ export const CastHoverCard = ({ person }: CastHoverCardProps) => {
 								{personName}
 							</DrawerTitle>
 							<DrawerDescription className="wrap-break-words">
-								{characterText}
+								{jobsText}
 							</DrawerDescription>
 						</div>
 					</div>
@@ -104,7 +104,7 @@ export const CastHoverCard = ({ person }: CastHoverCardProps) => {
 							</p>
 							<IconExternalLink size={14} className="shrink-0 mt-0.5" />
 						</div>
-						<p className="text-xs text-muted-foreground">{characterText}</p>
+						<p className="text-xs text-muted-foreground">{jobsText}</p>
 					</div>
 				</Link>
 			</HoverCardContent>

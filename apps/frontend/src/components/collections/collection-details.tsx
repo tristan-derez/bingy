@@ -1,20 +1,20 @@
 import type { Schemas } from "shared";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
 import { LoadingCentered } from "@/components/loading/loading-centered";
+import { MediaBackgroundImage } from "@/components/medias/media-background-image";
 import { MediaOverview } from "@/components/medias/media-overview";
 import { MediaPortraitImage } from "@/components/medias/media-portrait-image";
 import { MovieCarousel } from "@/components/movies/movie-carousel";
 import { BackButton } from "@/components/ui/back-button";
 import { Badge } from "@/components/ui/badge";
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { m } from "@/paraglide/messages";
-import { getTmdbImageUrl } from "@/utils/utils";
+import {
+	getTmdbImageUrl,
+	mergeCastMemberCharacters,
+	mergeCrewMemberJobs,
+} from "@/utils/utils";
+import { CastCrewTabs } from "../person/cast-crew-tabs";
 
 interface CollectionDetailsViewProps {
 	collectionData: Schemas.CollectionDetails | undefined;
@@ -23,8 +23,6 @@ interface CollectionDetailsViewProps {
 	isError: boolean;
 }
 
-// @todo: rework this page (move the background_path to the top etc etc)
-// probably get rid of the budget and earning as this is not very relevant / not always accurate data
 export function CollectionDetailsView({
 	collectionData,
 	moviesData,
@@ -44,45 +42,51 @@ export function CollectionDetailsView({
 		);
 	}
 
-	const collectionStats = moviesData.reduce(
+	const moviesAggregate = moviesData.reduce(
 		(acc, movie) => {
-			if (movie?.revenue) {
-				acc.totalRevenue += movie.revenue;
-			}
+			if (!movie) return acc;
 
-			if (movie?.genres) {
+			if (movie.genres) {
 				movie.genres.forEach((genre) => {
-					if (!acc.genres.some((g) => g.id === genre.id)) {
+					const exists = acc.genres.some((g) => g.id === genre.id);
+					if (!exists) {
 						acc.genres.push(genre);
 					}
 				});
 			}
 
+			if (movie.credits?.cast) {
+				const leadRoles = movie.credits.cast.slice(0, 10);
+				leadRoles.forEach((castMember) =>
+					mergeCastMemberCharacters(acc.cast, castMember),
+				);
+			}
+
+			if (movie.credits?.crew) {
+				const filteredCrew = movie.credits.crew.filter(
+					(crewMember) =>
+						crewMember.department === "Writing" ||
+						crewMember.job === "Director",
+				);
+				filteredCrew.forEach((crewMember) =>
+					mergeCrewMemberJobs(acc.crew, crewMember),
+				);
+			}
+
 			return acc;
 		},
 		{
-			totalRevenue: 0,
 			genres: [] as Array<{ id: number; name: string }>,
+			cast: [] as Array<Schemas.CastMember & { characters?: string[] }>,
+			crew: [] as Array<Schemas.CrewMember & { jobs?: string[] }>,
 		},
 	);
 
-	const formattedRevenue = new Intl.NumberFormat("en-US", {
-		style: "currency",
-		currency: "USD",
-		minimumFractionDigits: 0,
-		maximumFractionDigits: 0,
-	}).format(collectionStats.totalRevenue);
-
-	const totalBudget = moviesData.reduce((sum, movie) => {
-		return sum + (movie?.budget ?? 0);
-	}, 0);
-
-	const formattedBudget = new Intl.NumberFormat("en-US", {
-		style: "currency",
-		currency: "USD",
-		minimumFractionDigits: 0,
-		maximumFractionDigits: 0,
-	}).format(totalBudget);
+	const sortedAggregate = {
+		genres: moviesAggregate.genres,
+		cast: moviesAggregate.cast,
+		crew: moviesAggregate.crew,
+	};
 
 	const sortedParts = [...collectionData.parts].sort((a, b) => {
 		const dateA = a.release_date
@@ -100,80 +104,57 @@ export function CollectionDetailsView({
 	);
 
 	return (
-		<div className="container">
-			<BackButton />
+		<>
+			<MediaBackgroundImage backgroundImage={backgroundImage} />
+			<div className="container pt-3 md:pt-10 lg:pt-50">
+				<BackButton />
 
-			<div className="flex flex-col gap-4 pt-2">
-				<Card
-					className="relative overflow-hidden min-h-[200px] justify-center text-dark-card-foreground"
-					style={
-						backgroundImage
-							? {
-									backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(${backgroundImage})`,
-									backgroundSize: "cover",
-									backgroundPosition: "center",
-								}
-							: undefined
-					}
-				>
-					<div className="flex flex-col md:flex-row gap-6 p-6 items-center md:items-start">
-						<div className="flex justify-center md:justify-start">
-							<MediaPortraitImage
-								imagePath={collectionData.poster_path}
-								alt={collectionData.name}
-								imageSize="w500"
-							/>
-						</div>
-
-						<div className="flex-1">
-							<CardHeader className="p-0 pb-4">
-								<CardTitle className="text-2xl">
-									{collectionData.name}
-								</CardTitle>
-								<CardDescription className="flex flex-wrap gap-2">
-									{collectionStats.genres.map((genre) => (
-										<Badge
-											key={genre.id}
-											variant="outline"
-											className="text-dark-card-foreground"
-										>
-											{genre.name}
-										</Badge>
-									))}
-								</CardDescription>
-							</CardHeader>
-							<CardContent className="p-0 flex flex-col gap-2">
-								<MediaOverview overview={collectionData.overview} />
-
-								{totalBudget > 0 ? (
-									<div className="flex gap-2">
-										<h3 className="text-semi-bold text-md">
-											{m.collection_details_budget()}
-										</h3>
-										<p>{formattedBudget}</p>
-									</div>
-								) : null}
-
-								{collectionStats.totalRevenue > 0 ? (
-									<div className="flex gap-2">
-										<h3 className="text-semi-bold text-md">
-											{m.collection_details_revenue()}
-										</h3>
-										<p>{formattedRevenue}</p>
-									</div>
-								) : null}
-							</CardContent>
-						</div>
+				<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
+					<div className="flex flex-col gap-2 items-center lg:items-start max-w-[250px] md:max-w-[300px] lg:max-w-[400px]">
+						<MediaPortraitImage
+							imagePath={collectionData.poster_path}
+							alt={collectionData.name}
+							imageSize="w500"
+						/>
 					</div>
-				</Card>
 
-				<MovieCarousel
-					title={m.collection_carousel_title({
-						number: collectionData.parts.length,
-					})}
-					movies={sortedParts}
-				/>
+					<div className="w-full flex flex-col gap-4 overflow-hidden">
+						<Card className="shadow-none bg-transparent border-none ring-0 lg:p-0">
+							<CardContent className="p-0">
+								<div className="flex flex-col gap-2 px-0.5 py-0.5">
+									<h1 className="text-2xl lg:text-4xl font-bold leading-relaxed">
+										{collectionData.name}
+									</h1>
+
+									<div className="flex flex-wrap gap-2">
+										{sortedAggregate.genres.map((genre) => (
+											<Badge key={genre.id} variant="outline">
+												{genre.name}
+											</Badge>
+										))}
+									</div>
+
+									<div className="flex flex-col gap-1">
+										<MediaOverview overview={collectionData.overview} />
+									</div>
+								</div>
+							</CardContent>
+						</Card>
+
+						<MovieCarousel
+							title={m.collection_carousel_title({
+								number: collectionData.parts.length,
+							})}
+							movies={sortedParts}
+						/>
+
+						<CastCrewTabs
+							cast={sortedAggregate.cast}
+							crew={sortedAggregate.crew}
+						/>
+					</div>
+				</div>
 			</div>
-		</div>
+		</>
 	);
 }
