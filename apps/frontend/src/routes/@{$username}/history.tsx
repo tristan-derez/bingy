@@ -1,32 +1,32 @@
 import { createFileRoute, useRouteContext } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import { useState } from "react";
-import { FavoriteContainer } from "@/components/lists/favorites/favorites-container";
+import { HistoryContainer } from "@/components/lists/history/history-container";
 import { type MediaFilter } from "@/components/lists/media-toggle-group";
 import { GlobalLoadingIndicator } from "@/components/loading/loading-global";
-import { useFavorites } from "@/hooks/useFavorites";
+import { useRatings } from "@/hooks/useRating";
 import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { isOwnProfile } from "@/utils/utils";
 
-export const Route = createFileRoute("/user/$username/favorites")({
-	component: Favorites,
+export const Route = createFileRoute("/@{$username}/history")({
+	component: HistoryPage,
 });
 
-function Favorites() {
+function HistoryPage() {
 	const { username } = Route.useParams();
 	const { authData } = useRouteContext({ from: "__root__" });
+	const isOwnProfileFlag = isOwnProfile(authData?.user?.name, username);
 	const localeRegion = useAtomValue(localeRegionAtom);
 	const [filter, setFilter] = useState<MediaFilter>("all");
 	const [page, setPage] = useState(1);
-	const isOwnProfileFlag = isOwnProfile(authData?.user?.name, username);
 
 	const handleFilterChange = (newFilter: MediaFilter) => {
 		setFilter(newFilter);
 		setPage(1);
 	};
 
-	const { data, isLoading, isError } = useFavorites(
+	const { data, isLoading, isError } = useRatings(
 		username,
 		page,
 		localeRegion,
@@ -38,11 +38,11 @@ function Favorites() {
 	}
 
 	if (isError) {
-		return <p>{m.favorites_error()}</p>;
+		return <p>{m.history_error()}</p>;
 	}
 
 	return (
-		<FavoriteContainer
+		<HistoryContainer
 			username={username}
 			isOwnProfile={isOwnProfileFlag}
 			items={data?.data}

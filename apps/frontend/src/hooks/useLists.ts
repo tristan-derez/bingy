@@ -88,7 +88,7 @@ export function useAddMediaToWatchlist(username: string) {
 					label: m.btn_go_to_watchlist(),
 					onClick: () => {
 						navigate({
-							to: "/user/$username/watchlist",
+							to: "/@{$username}/watchlist",
 							params: { username },
 						});
 					},
@@ -250,7 +250,7 @@ export function useAddMediaToList() {
 					label: m.item_added_to_list_success_cta(),
 					onClick: () => {
 						navigate({
-							to: "/user/$username/lists/$slug",
+							to: "/@{$username}/lists/$slug",
 							params: {
 								username: variables.username,
 								slug: variables.listSlug,

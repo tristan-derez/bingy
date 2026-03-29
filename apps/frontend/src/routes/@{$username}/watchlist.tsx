@@ -1,19 +1,21 @@
 import { createFileRoute, useRouteContext } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import { useState } from "react";
-import { HistoryContainer } from "@/components/lists/history/history-container";
-import { type MediaFilter } from "@/components/lists/media-toggle-group";
+import {
+	type MediaFilter,
+	WatchlistContainer,
+} from "@/components/lists/watchlist/watchlist-container";
 import { GlobalLoadingIndicator } from "@/components/loading/loading-global";
-import { useRatings } from "@/hooks/useRating";
+import { useWatchlist } from "@/hooks/useLists";
 import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { isOwnProfile } from "@/utils/utils";
 
-export const Route = createFileRoute("/user/$username/history")({
-	component: HistoryPage,
+export const Route = createFileRoute("/@{$username}/watchlist")({
+	component: WatchlistPage,
 });
 
-function HistoryPage() {
+function WatchlistPage() {
 	const { username } = Route.useParams();
 	const { authData } = useRouteContext({ from: "__root__" });
 	const isOwnProfileFlag = isOwnProfile(authData?.user?.name, username);
@@ -26,7 +28,7 @@ function HistoryPage() {
 		setPage(1);
 	};
 
-	const { data, isLoading, isError } = useRatings(
+	const { data, isLoading, isError } = useWatchlist(
 		username,
 		page,
 		localeRegion,
@@ -38,12 +40,11 @@ function HistoryPage() {
 	}
 
 	if (isError) {
-		return <p>{m.history_error()}</p>;
+		return <p>{m.watchlist_error()}</p>;
 	}
 
 	return (
-		<HistoryContainer
-			title={m.history_page_title_text()}
+		<WatchlistContainer
 			username={username}
 			isOwnProfile={isOwnProfileFlag}
 			items={data?.data}

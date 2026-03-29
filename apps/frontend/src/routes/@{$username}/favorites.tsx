@@ -1,34 +1,32 @@
 import { createFileRoute, useRouteContext } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import { useState } from "react";
-import {
-	type MediaFilter,
-	WatchlistContainer,
-} from "@/components/lists/watchlist/watchlist-container";
+import { FavoriteContainer } from "@/components/lists/favorites/favorites-container";
+import { type MediaFilter } from "@/components/lists/media-toggle-group";
 import { GlobalLoadingIndicator } from "@/components/loading/loading-global";
-import { useWatchlist } from "@/hooks/useLists";
+import { useFavorites } from "@/hooks/useFavorites";
 import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { isOwnProfile } from "@/utils/utils";
 
-export const Route = createFileRoute("/user/$username/watchlist")({
-	component: WatchlistPage,
+export const Route = createFileRoute("/@{$username}/favorites")({
+	component: Favorites,
 });
 
-function WatchlistPage() {
+function Favorites() {
 	const { username } = Route.useParams();
 	const { authData } = useRouteContext({ from: "__root__" });
-	const isOwnProfileFlag = isOwnProfile(authData?.user?.name, username);
 	const localeRegion = useAtomValue(localeRegionAtom);
 	const [filter, setFilter] = useState<MediaFilter>("all");
 	const [page, setPage] = useState(1);
+	const isOwnProfileFlag = isOwnProfile(authData?.user?.name, username);
 
 	const handleFilterChange = (newFilter: MediaFilter) => {
 		setFilter(newFilter);
 		setPage(1);
 	};
 
-	const { data, isLoading, isError } = useWatchlist(
+	const { data, isLoading, isError } = useFavorites(
 		username,
 		page,
 		localeRegion,
@@ -40,14 +38,13 @@ function WatchlistPage() {
 	}
 
 	if (isError) {
-		return <p>{m.watchlist_error()}</p>;
+		return <p>{m.favorites_error()}</p>;
 	}
 
 	return (
-		<WatchlistContainer
+		<FavoriteContainer
 			username={username}
 			isOwnProfile={isOwnProfileFlag}
-			title={m.watchlist_page_title_text()}
 			items={data?.data}
 			filter={filter}
 			onFilterChange={handleFilterChange}

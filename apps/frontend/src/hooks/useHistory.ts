@@ -34,7 +34,7 @@ export function useAddMovieToHistory(username: string) {
 					label: m.btn_go_to_history_page(),
 					onClick: () => {
 						navigate({
-							to: "/user/$username/history",
+							to: "/@{$username}/history",
 							params: { username },
 						});
 					},
@@ -70,7 +70,7 @@ export function useAddTvToHistory(username: string) {
 					label: m.btn_go_to_history_page(),
 					onClick: () => {
 						navigate({
-							to: "/user/$username/history",
+							to: "/@{$username}/history",
 							params: { username },
 						});
 					},

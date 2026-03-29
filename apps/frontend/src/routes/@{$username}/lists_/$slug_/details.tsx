@@ -5,18 +5,18 @@ import {
 } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import { useState } from "react";
-import { ListContainer } from "@/components/lists/custom-lists/list-container";
+import { ListDetailsContainer } from "@/components/lists/custom-lists/details/list-details-container";
 import { LoadingCentered } from "@/components/loading/loading-centered";
 import { toast } from "@/components/toast/toast";
 import { useListBySlug } from "@/hooks/useLists";
 import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 
-export const Route = createFileRoute("/user/$username/lists_/$slug")({
-	component: ListPage,
+export const Route = createFileRoute("/@{$username}/lists_/$slug_/details")({
+	component: ListDetailsPage,
 });
 
-function ListPage() {
+function ListDetailsPage() {
 	const { username, slug } = Route.useParams();
 	const navigate = useNavigate();
 	const localeRegion = useAtomValue(localeRegionAtom);
@@ -35,12 +35,12 @@ function ListPage() {
 	if (isLoading) return <LoadingCentered />;
 	if (!list || error) {
 		toast.error({ title: m.toast_error_list_not_found() });
-		navigate({ to: "/user/$username/lists", params: { username } });
+		navigate({ to: "/@{$username}/lists", params: { username } });
 		return;
 	}
 
 	return (
-		<ListContainer
+		<ListDetailsContainer
 			username={username}
 			list={list}
 			page={page}

@@ -39,7 +39,7 @@ import { m } from "@/paraglide/messages";
 import { createListSchema } from "@/schemas/create-list-schema";
 
 export const Route = createFileRoute(
-	"/_auth/user/$username/lists/$listslug/edit",
+	"/_auth/@{$username}/lists/$listslug/edit",
 )({
 	component: EditListPage,
 });
@@ -158,7 +158,7 @@ function EditListPage() {
 					});
 
 					navigate({
-						to: "/user/$username/lists/$slug",
+						to: "/@{$username}/lists/$slug",
 						params: { username, slug: data.slug },
 					});
 				},
@@ -174,7 +174,7 @@ function EditListPage() {
 	if (!isOwnProfile) {
 		toast.error({ title: m.toast_error_list_unauthorized_edit() });
 		navigate({
-			to: "/user/$username/lists/$slug",
+			to: "/@{$username}/lists/$slug",
 			params: { username, slug: listslug },
 		});
 		return null;
@@ -187,7 +187,7 @@ function EditListPage() {
 	if (error || !list) {
 		toast.error({ title: m.toast_error_list_not_found() });
 		navigate({
-			to: "/user/$username/lists/$slug",
+			to: "/@{$username}/lists/$slug",
 			params: { username, slug: listslug },
 		});
 		return null;

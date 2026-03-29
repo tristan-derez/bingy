@@ -23,6 +23,7 @@ const router = createRouter({
 	defaultStructuralSharing: true,
 	defaultPreloadStaleTime: 30_000,
 	defaultPendingMinMs: 30_000,
+	pathParamsAllowedCharacters: ["@"],
 });
 
 // Register the router instance for type safety

@@ -5,10 +5,11 @@ import {
 	type VisibilityFilter,
 } from "@/components/lists/custom-lists/lists-container";
 import { GlobalLoadingIndicator } from "@/components/loading/loading-global";
+import { toast } from "@/components/toast/toast";
 import { useLists } from "@/hooks/useLists";
 import { m } from "@/paraglide/messages";
 
-export const Route = createFileRoute("/user/$username/lists_/")({
+export const Route = createFileRoute("/@{$username}/lists_/")({
 	component: ListsPage,
 });
 
@@ -25,8 +26,8 @@ function ListsPage() {
 		return <GlobalLoadingIndicator />;
 	}
 
-	if (isError) {
-		return <p>{m.lists_error()}</p>;
+	if (!data || isError) {
+		return toast.error({ title: m.lists_error() });
 	}
 
 	return (

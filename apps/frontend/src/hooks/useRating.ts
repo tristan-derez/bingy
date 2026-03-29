@@ -73,7 +73,7 @@ export function useRateMovie(username: string) {
 						label: m.btn_go_to_history_page(),
 						onClick: () => {
 							navigate({
-								to: "/user/$username/history",
+								to: "/@{$username}/history",
 								params: { username },
 							});
 						},
@@ -116,7 +116,7 @@ export function useRateTvShow(username: string) {
 						label: m.btn_go_to_history_page(),
 						onClick: () => {
 							navigate({
-								to: "/user/$username/history",
+								to: "/@{$username}/history",
 								params: { username },
 							});
 						},
@@ -129,7 +129,7 @@ export function useRateTvShow(username: string) {
 						label: m.btn_go_to_history_page(),
 						onClick: () => {
 							navigate({
-								to: "/user/$username/history",
+								to: "/@{$username}/history",
 								params: { username },
 							});
 						},

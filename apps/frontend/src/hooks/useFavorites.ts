@@ -56,7 +56,7 @@ export function useAddToFavorites(username: string) {
 					label: m.btn_go_to_favorites(),
 					onClick: () => {
 						navigate({
-							to: "/user/$username/favorites",
+							to: "/@{$username}/favorites",
 							params: { username },
 						});
 					},

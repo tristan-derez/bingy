@@ -111,7 +111,7 @@ function CreateListPage() {
 					title: m.toast_form_create_list_success({ list_name: values.name }),
 				});
 				navigate({
-					to: "/user/$username/lists/$slug",
+					to: "/@{$username}/lists/$slug",
 					params: { username, slug: data.slug },
 				});
 			},
@@ -254,7 +254,7 @@ function CreateListPage() {
 								variant="destructive"
 								onClick={() =>
 									navigate({
-										to: "/user/$username/lists",
+										to: "/@{$username}/lists",
 										params: { username },
 									})
 								}
