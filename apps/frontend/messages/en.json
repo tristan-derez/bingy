@@ -544,6 +544,7 @@
 	"schema_password_max_length": "Password must not exceed 256 characters",
 	"schema_search_min_length": "Search cannot be empty",
 	"schema_search_max_length": "Search cannot exceed 300 characters",
+	"history_page_title_text": "History",
 	"history_toggle_no_result_all": "History is empty",
 	"history_toggle_no_result_movies": "No movies in history",
 	"history_toggle_no_result_tv": "No TV shows in history",
@@ -725,5 +726,9 @@
 	"btn_go_to_watchlist": "View",
 	"btn_go_to_favorites": "View",
 	"cast_text": "Cast",
-	"crew_text": "Crew"
+	"crew_text": "Crew",
+	"toast_update_avatar_success": "Image uploaded succesfully",
+	"toast_update_avatar_error": "Something went wrong while uploading image, try again",
+	"inprogress_title_text": "In progress",
+	"profile_page_title_text": "Profile"
 }

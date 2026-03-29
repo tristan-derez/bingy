@@ -723,5 +723,9 @@
 	"btn_go_to_watchlist": "Voir",
 	"btn_go_to_favorites": "Voir",
 	"cast_text": "Distribution",
-	"crew_text": "Équipe technique"
+	"crew_text": "Équipe technique",
+	"toast_update_avatar_success": "Avatar modifié avec succès",
+	"toast_update_avatar_error": "Echec lors de la modification de l'avatar",
+	"inprogress_title_text": "En cours",
+	"profile_page_title_text": "Profil"
 }
