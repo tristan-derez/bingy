@@ -61,7 +61,7 @@ export function ListContainer({
 					<div className="flex flex-row justify-between">
 						{hasItem ? (
 							<Link
-								to="/user/$username/lists/$slug/details"
+								to="/@{$username}/lists/$slug/details"
 								params={{ username: username, slug: list.slug }}
 								className="text-primary underline hover:text-primary/80 self-end"
 							>
@@ -85,7 +85,7 @@ export function ListContainer({
 									size="icon-lg"
 									onRedirect={() =>
 										navigate({
-											to: "/user/$username/lists",
+											to: "/@{$username}/lists",
 											params: { username },
 										})
 									}
@@ -102,7 +102,7 @@ export function ListContainer({
 						<>
 							{m.list_container_empty_own()}{" "}
 							<Link
-								to="/user/$username/lists/$listslug/edit"
+								to="/@{$username}/lists/$listslug/edit"
 								params={{ username, listslug: list.slug }}
 								className="text-primary underline hover:text-primary/80"
 							>
@@ -115,7 +115,7 @@ export function ListContainer({
 				</p>
 			) : (
 				<>
-					<div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-5 xl:grid-cols-8 gap-2 sm:gap-4">
+					<div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-12 gap-2 sm:gap-4">
 						{sortedItems.map((item) => (
 							<ListMediaCard
 								key={`${item.mediaType}-${item.id}`}
