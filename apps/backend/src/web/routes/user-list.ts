@@ -124,6 +124,7 @@ userListRoutes.delete("/watchlist/:mediaType/:tmdbId", async (c) => {
 userListRoutes.get("/:username/watchlist", async (c) => {
 	const { username } = c.req.param();
 	const language = c.req.query("language") || "en-US";
+	const limitQuery = c.req.query("limit") || 48;
 	const page = Math.max(1, parseInt(c.req.query("page") || "1"));
 
 	const targetUser = await db.query.users.findFirst({
@@ -137,7 +138,7 @@ userListRoutes.get("/:username/watchlist", async (c) => {
 		| "tv"
 		| undefined;
 
-	const limit = 24;
+	const limit = Number(limitQuery);
 	const offset = (page - 1) * limit;
 
 	const filters = and(
@@ -473,6 +474,7 @@ userListRoutes.post(
 userListRoutes.get("/:username", async (c) => {
 	const { username } = c.req.param();
 	const currentUser = c.get("user");
+	const limitQuery = c.req.query("limit") || 48;
 	const page = Math.max(1, parseInt(c.req.query("page") || "1"));
 	const filter = c.req.query("filter") || "all";
 
@@ -484,7 +486,7 @@ userListRoutes.get("/:username", async (c) => {
 
 	const isOwnProfile = currentUser?.id === targetUser.id;
 
-	const limit = 24;
+	const limit = Number(limitQuery);
 	const offset = (page - 1) * limit;
 
 	let filters = isOwnProfile
@@ -764,6 +766,7 @@ userListRoutes.delete("/:listId/items/:mediaType/:tmdbId", async (c) => {
 userListRoutes.get("/:username/lists/:slug", async (c) => {
 	const { username, slug } = c.req.param();
 	const language = c.req.query("language") || "en-US";
+	const limitQuery = c.req.query("limit") || 48;
 	const page = Math.max(1, parseInt(c.req.query("page") || "1"));
 	const currentUser = c.get("user");
 
@@ -787,7 +790,7 @@ userListRoutes.get("/:username/lists/:slug", async (c) => {
 		return serveNotFound(c, "List not found");
 	}
 
-	const limit = 24;
+	const limit = Number(limitQuery);
 	const offset = (page - 1) * limit;
 
 	const filters = and(eq(listItems.listId, list.id));

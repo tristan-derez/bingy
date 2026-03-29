@@ -229,13 +229,14 @@ userFavoriteRoutes.get(
 userFavoriteRoutes.get("/:username", async (c) => {
 	const { username } = c.req.param();
 	const language = c.req.query("language") || "en-US";
+	const limitQuery = c.req.query("limit") || 48;
 	const page = Math.max(1, Number(c.req.query("page") || 1));
 	const mediaTypeFilter = c.req.query("mediaType") as
 		| "movie"
 		| "tv"
 		| undefined;
 
-	const limit = 24;
+	const limit = Number(limitQuery);
 	const offset = (page - 1) * limit;
 
 	const targetUser = await db.query.users.findFirst({
