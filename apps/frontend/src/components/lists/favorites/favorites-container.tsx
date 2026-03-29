@@ -5,7 +5,6 @@ import {
 	type MediaFilter,
 	MediaToggleGroup,
 } from "@/components/lists/media-toggle-group";
-import { m } from "@/paraglide/messages";
 
 type FavoriteContainerProps = {
 	username: string;
@@ -43,9 +42,7 @@ export function FavoriteContainer({
 	onPageChange,
 }: FavoriteContainerProps) {
 	return (
-		<div className="container flex flex-col gap-4">
-			<h1 className="text-3xl font-bold">{m.favorites_page_title_text()}</h1>
-
+		<div className="flex flex-col gap-4 flex-1">
 			<MediaToggleGroup value={filter} onValueChange={onFilterChange} />
 
 			{items.length === 0 ? (
@@ -56,7 +53,7 @@ export function FavoriteContainer({
 				/>
 			) : (
 				<>
-					<div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-5 xl:grid-cols-8 gap-2 sm:gap-4">
+					<div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-12 gap-2 sm:gap-4">
 						{items.map((item) => {
 							const type = item.mediaType === "movie" ? "movies" : "tv";
 							return (

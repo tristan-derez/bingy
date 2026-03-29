@@ -40,10 +40,11 @@ export const Navbar = ({ children, className }: NavbarProps) => {
 		<motion.div
 			ref={ref}
 			initial={{ top: 0 }}
-			animate={{ top: visible ? 30 : 30 }}
+			animate={{ top: 30 }}
 			transition={{ type: "tween", stiffness: 350 }}
 			className={cn(
-				"fixed top-0 left-1/2 -translate-x-1/2 z-99 container",
+				"fixed top-0 left-1/2 -translate-x-1/2 z-99 w-full px-5 md:px-6 lg:px-28 xl:px-30 2xl:px-80",
+				visible && "",
 				className,
 			)}
 		>
@@ -67,7 +68,7 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => {
 				boxShadow: visible
 					? "0 0 24px rgba(34, 42, 53, 0.06), 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(34, 42, 53, 0.04), 0 0 4px rgba(34, 42, 53, 0.08), 0 16px 68px rgba(47, 48, 55, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1) inset"
 					: "none",
-				width: visible ? "80%" : "100%",
+				width: visible ? "70%" : "100%",
 			}}
 			transition={{
 				type: "tween",
@@ -75,8 +76,10 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => {
 				damping: 50,
 			}}
 			className={cn(
-				"relative z-60 hidden w-full min-w-[600px] max-w-full mx-auto flex-row items-center justify-between self-start rounded-full px-4 py-2 lg:flex",
-				visible && "border-none bg-card/70 backdrop-blur-lg shadow-sm",
+				"relative z-60 hidden w-full min-w-[768px] max-w-full flex-row items-center justify-between self-start rounded-full mx-auto lg:flex",
+				visible
+					? "border-none bg-card/70 backdrop-blur-lg shadow-sm px-4 py-2"
+					: "",
 				className,
 			)}
 		>
@@ -92,7 +95,7 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
 		<motion.div
 			onMouseLeave={() => setHovered(null)}
 			className={cn(
-				"hidden flex-row items-center justify-center space-x-2 text-sm font-medium transition duration-200 lg:flex lg:space-x-2",
+				"hidden flex-row items-center justify-center space-x-2 text-sm font-medium transition duration-200 lg:flex",
 				className,
 			)}
 		>
