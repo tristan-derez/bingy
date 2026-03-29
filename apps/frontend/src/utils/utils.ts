@@ -90,3 +90,16 @@ export function mergeCrewMemberJobs(
 		});
 	}
 }
+
+// temporary solution until we call the real justwatch api
+// @todo: rework that
+export function getProviderName(name: string): string {
+	switch (name) {
+		case "Amazon Prime Video":
+			return "Prime Video";
+		case "Crunchyroll Amazon Channel":
+			return "Crunchyroll";
+		default:
+			return name;
+	}
+}
