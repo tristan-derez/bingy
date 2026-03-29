@@ -120,7 +120,7 @@ export const ProfileDropdown = ({
 						<DropdownMenuItem
 							onClick={() =>
 								navigate({
-									to: "/user/$username",
+									to: "/@{$username}",
 									params: { username },
 								})
 							}
@@ -131,7 +131,7 @@ export const ProfileDropdown = ({
 						<DropdownMenuItem
 							onClick={() =>
 								navigate({
-									to: "/user/$username/watchlist",
+									to: "/@{$username}/watchlist",
 									params: { username },
 								})
 							}
@@ -142,7 +142,7 @@ export const ProfileDropdown = ({
 						<DropdownMenuItem
 							onClick={() =>
 								navigate({
-									to: "/user/$username/lists",
+									to: "/@{$username}/lists",
 									params: { username },
 								})
 							}
@@ -153,7 +153,7 @@ export const ProfileDropdown = ({
 						<DropdownMenuItem
 							onClick={() =>
 								navigate({
-									to: "/user/$username/favorites",
+									to: "/@{$username}/favorites",
 									params: { username },
 								})
 							}
@@ -164,7 +164,7 @@ export const ProfileDropdown = ({
 						<DropdownMenuItem
 							onClick={() =>
 								navigate({
-									to: "/user/$username/history",
+									to: "/@{$username}/history",
 									params: { username },
 								})
 							}

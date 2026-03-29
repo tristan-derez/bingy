@@ -23,7 +23,7 @@ export function EditListButton({
 			size={size}
 			onClick={() =>
 				navigate({
-					to: "/user/$username/lists/$listslug/edit",
+					to: "/@{$username}/lists/$listslug/edit",
 					params: { username, listslug: listSlug },
 				})
 			}
