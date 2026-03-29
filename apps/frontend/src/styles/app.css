@@ -131,10 +131,12 @@
 	--brand: oklch(0.7104 0.1908 42.84);
 }
 
-@utility no-scrollbar {
-	scrollbar-width: none;
-	-ms-overflow-style: none;
-	&::-webkit-scrollbar {
+@layer utilities {
+	.scrollbar-hide {
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+	.scrollbar-hide::-webkit-scrollbar {
 		display: none;
 	}
 }
@@ -148,11 +150,21 @@
 		-webkit-overflow-scrolling: touch;
 		touch-action: pan-x pan-y;
 		height: 100%;
+		scrollbar-gutter: stable;
 	}
 	body {
 		@apply bg-background text-foreground;
 		overscroll-behavior-x: none;
 		overscroll-behavior-y: auto;
+	}
+	@media (max-width: 768px) {
+		html {
+			-ms-overflow-style: none;
+			scrollbar-width: none;
+		}
+		html::-webkit-scrollbar {
+			display: none;
+		}
 	}
 }
 
