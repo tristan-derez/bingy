@@ -16,7 +16,6 @@ import {
 	useRouter,
 } from "@tanstack/react-router";
 import { useState } from "react";
-import { ProfileTriggerButton } from "@/components/profile-trigger-button";
 import { toast } from "@/components/toast/toast";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -34,6 +33,7 @@ import { queryClient } from "@/integrations/tanstack-query/root-provider";
 import { authClient } from "@/lib/auth-client";
 import { sessionQueryOptions } from "@/lib/queries/session";
 import { m } from "@/paraglide/messages";
+import { MobileProfileTriggerButton } from "./mobile-profile-trigger";
 
 export function ProfileDrawer() {
 	const { authData } = useRouteContext({ from: "__root__" });
@@ -60,16 +60,7 @@ export function ProfileDrawer() {
 	return (
 		<Drawer swipeDirection="left" open={isOpen} onOpenChange={setIsOpen}>
 			<DrawerTrigger
-				render={(props) => (
-					<ProfileTriggerButton
-						{...props}
-						username={username}
-						displayName={displayName}
-						image={image}
-						showUsername={false}
-						className="border-0 border-none ring-0 p-0"
-					/>
-				)}
+				render={(props) => <MobileProfileTriggerButton {...props} />}
 			/>
 			<DrawerContent className="focus:outline-none focus-visible:outline-none *:focus:outline-none">
 				<DrawerHeader className="px-6">
@@ -78,7 +69,7 @@ export function ProfileDrawer() {
 						onClick={() => {
 							setIsOpen(false);
 							navigate({
-								to: "/user/$username",
+								to: "/@{$username}",
 								params: { username },
 							});
 						}}
@@ -103,7 +94,7 @@ export function ProfileDrawer() {
 						onClick={() => {
 							setIsOpen(false);
 							navigate({
-								to: "/user/$username",
+								to: "/@{$username}",
 								params: { username },
 							});
 						}}
@@ -117,7 +108,7 @@ export function ProfileDrawer() {
 						onClick={() => {
 							setIsOpen(false);
 							navigate({
-								to: "/user/$username/watchlist",
+								to: "/@{$username}/watchlist",
 								params: { username },
 							});
 						}}
@@ -131,7 +122,7 @@ export function ProfileDrawer() {
 						onClick={() => {
 							setIsOpen(false);
 							navigate({
-								to: "/user/$username/lists",
+								to: "/@{$username}/lists",
 								params: { username },
 							});
 						}}
@@ -145,7 +136,7 @@ export function ProfileDrawer() {
 						onClick={() => {
 							setIsOpen(false);
 							navigate({
-								to: "/user/$username/favorites",
+								to: "/@{$username}/favorites",
 								params: { username },
 							});
 						}}
@@ -159,7 +150,7 @@ export function ProfileDrawer() {
 						onClick={() => {
 							setIsOpen(false);
 							navigate({
-								to: "/user/$username/history",
+								to: "/@{$username}/history",
 								params: { username },
 							});
 						}}
