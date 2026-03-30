@@ -48,6 +48,10 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 				name: "apple-mobile-web-app-status-bar-style",
 				content: "black-translucent",
 			},
+			{
+				name: "viewport",
+				content: "width=device-width, initial-scale=1, viewport-fit=cover",
+			},
 		],
 		links: [
 			{

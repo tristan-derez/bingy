@@ -149,7 +149,7 @@
 		overscroll-behavior-x: none;
 		-webkit-overflow-scrolling: touch;
 		touch-action: pan-x pan-y;
-		height: 100%;
+		height: 100svh;
 		scrollbar-gutter: stable;
 	}
 	body {
