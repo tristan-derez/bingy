@@ -6,8 +6,12 @@ import { toast } from "@/components/toast/toast";
 import { authClient } from "@/lib/auth-client";
 import { m } from "@/paraglide/messages";
 
+const tabs = ["account", "display"] as const;
+export type SettingsTab = (typeof tabs)[number];
+
 const settingsPageSchema = z.object({
 	error: z.string().optional(),
+	tab: z.enum(tabs).default("account").catch("account"),
 });
 
 export const Route = createFileRoute("/_auth/settings")({
@@ -32,6 +36,11 @@ function SettingsPage() {
 		select: (search) => search.error,
 	});
 
+	const currentTab = useSearch({
+		from: "/_auth/settings",
+		select: (search) => search.tab,
+	});
+
 	const errorMessages: Record<string, string> = {
 		email_doesn_match: m.toast_error_email_doesnt_match_settings_page(),
 		account_already_linked_to_different_user:
@@ -46,7 +55,7 @@ function SettingsPage() {
 
 	return (
 		<div className="flex w-full max-w-md flex-col gap-6">
-			<SettingsComponent accounts={data} />
+			<SettingsComponent accounts={data} currentTab={currentTab} />
 		</div>
 	);
 }
