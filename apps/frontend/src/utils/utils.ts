@@ -13,6 +13,11 @@ export const getTmdbImageUrl = (
 export const capitalize = (str: string) =>
 	str.charAt(0).toUpperCase() + str.slice(1);
 
+/**
+ * @param sessionUsername
+ * @param urlUsername
+ * @returns a boolean
+ */
 export function isOwnProfile(
 	sessionUsername: string | null | undefined,
 	urlUsername: string | null | undefined,
