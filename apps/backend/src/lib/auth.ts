@@ -2,13 +2,18 @@ import { APIError, type BetterAuthOptions, betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { customSession, lastLoginMethod, twoFactor } from "better-auth/plugins";
 import { redis } from "bun";
+import { and, eq, ne } from "drizzle-orm";
 import * as schema from "../db/schemas/user";
 import { sendEmail } from "../emails/index";
 import { db } from "../lib/database";
 import env from "./env";
 import { logger } from "./logger";
 import { hash, verify } from "./password-processing";
-import { generateUniqueUsername } from "./username";
+import {
+	assertUsernameAvailable,
+	generateUniqueUsername,
+	validateUsernameOrThrow,
+} from "./username";
 
 const options = {
 	appName: "Bingy",
@@ -188,10 +193,6 @@ const options = {
 			clientSecret: env.GOOGLE_CLIENT_SECRET,
 			prompt: "select_account",
 		},
-		discord: {
-			clientId: env.DISCORD_CLIENT_ID,
-			clientSecret: env.DISCORD_CLIENT_SECRET,
-		},
 	},
 	databaseHooks: {
 		user: {
@@ -200,55 +201,29 @@ const options = {
 					const isOAuth = !ctx?.body?.password;
 
 					if (isOAuth) {
-						const uniqueName = await generateUniqueUsername(user.name);
-
-						if (uniqueName.startsWith("user")) {
-							return {
-								data: {
-									...user,
-									name: uniqueName,
-									displayName: uniqueName,
-								},
-							};
-						}
-
-						const match = uniqueName.match(/(\d+)$/);
-						const suffix = match ? match[1] : "";
-						const displayName = `${user.name}${suffix}`.slice(0, 30);
+						const { username, displayName } = await generateUniqueUsername(
+							user.name,
+						);
 
 						return {
 							data: {
 								...user,
-								name: uniqueName,
+								name: username,
 								displayName,
 							},
 						};
 					}
 
-					// Normal auth: ensure lowercase and only allowed chars
-					const normalizedName = user.name
-						.toLowerCase()
-						.replace(/[^a-z0-9._]/g, "");
+					const { normalized, displayName } = validateUsernameOrThrow(
+						user.name,
+					);
 
-					const displayName = user.name
-						.replace(/[^a-z0-9._-]/gi, "")
-						.slice(0, 30);
-
-					const existing = await db.query.users.findFirst({
-						where: (users, { eq }) => eq(users.name, user.name.toLowerCase()),
-					});
-
-					if (existing) {
-						throw new APIError("UNPROCESSABLE_ENTITY", {
-							message: "Username is already taken",
-							code: "USERNAME_ALREADY_EXISTS",
-						});
-					}
+					await assertUsernameAvailable(normalized);
 
 					return {
 						data: {
 							...user,
-							name: normalizedName,
+							name: normalized,
 							displayName,
 						},
 					};
@@ -270,17 +245,11 @@ export const auth = betterAuth({
 	plugins: [
 		...(options.plugins ?? []),
 		customSession(async ({ user, session }) => {
-			const userWithCustomFields = user as typeof user & {
-				displayName: string;
-				twoFactorEnabled: boolean;
-			};
 			return {
+				session,
 				user: {
 					...user,
-					displayName: userWithCustomFields.displayName,
-					twoFactorEnabled: userWithCustomFields.twoFactorEnabled,
 				},
-				session,
 			};
 		}, options),
 	],
