@@ -36,6 +36,27 @@
       "when": 1773855599506,
       "tag": "0004_wonderful_red_hulk",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1774912553665,
+      "tag": "0005_glamorous_aaron_stack",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1774988198454,
+      "tag": "0006_wakeful_valeria_richards",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1775142147444,
+      "tag": "0007_sharp_miss_america",
+      "breakpoints": true
     }
   ]
 }

@@ -29,9 +29,12 @@ export const users = pgTable(
 	{
 		id: uuid("id").primaryKey().default(sql`uuidv7()`),
 		name: varchar("name", { length: 30 }).notNull().unique(),
-		displayName: varchar("display_name", { length: 30 }).notNull(),
+		displayName: varchar("display_name", { length: 30 }).notNull().unique(),
+		bio: varchar("bio", { length: 160 }),
+		location: varchar("location", { length: 30 }),
 		email: varchar("email", { length: 256 }).unique().notNull(),
 		avatarUrl: text("avatar_url"),
+		bannerUrl: text("banner_url"),
 		emailVerified: boolean("email_verified").default(false).notNull(),
 		emailVerifiedAt: timestamp("email_verified_at"),
 		twoFactorEnabled: boolean("two_factor_enabled").default(false).notNull(),
