@@ -21,9 +21,11 @@ type MediaDetails = Pretty<{
 
 export type UserProfileInfoResponse = Pretty<{
 	name: string;
-	displayName: string | null;
+	displayName: string;
 	avatarUrl: string | null;
 	emailVerified: Date | null;
+	bio?: string | null;
+	location?: string | null;
 }>;
 
 export type UserActivityResponse = Pretty<{
@@ -94,6 +96,18 @@ export type UpdateAvatarResponse = Pretty<{
 	avatarUrl: string | null;
 }>;
 
+export type UpdateUserProfilePayload = Pretty<{
+	bio?: string;
+	location?: string;
+}>;
+
+export type UpdateUserProfileResponse = Pretty<{
+	user: {
+		bio: string | null;
+		location: string | null;
+	};
+}>;
+
 export const fetchUserProfileInfo = async (username: string) => {
 	const res = await apiFetch<UserProfileInfoResponse>(`/user/${username}`, {
 		method: "GET",
@@ -147,6 +161,14 @@ export const fetchUserLists = async (username: string, language = "en-US") => {
 	const res = await apiFetch<UserListsResponse>(`/user/${username}/lists`, {
 		method: "GET",
 		query: { language },
+	});
+	return res;
+};
+
+export const updateUserProfile = async (payload: UpdateUserProfilePayload) => {
+	const res = await apiFetch<UpdateUserProfileResponse>("/user", {
+		method: "PATCH",
+		body: payload,
 	});
 	return res;
 };

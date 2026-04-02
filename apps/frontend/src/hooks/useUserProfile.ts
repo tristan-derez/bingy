@@ -6,7 +6,9 @@ import {
 	fetchUserProfileInfo,
 	fetchUserWatchlist,
 	type UpdateAvatarPayload,
+	type UpdateUserProfilePayload,
 	updateAvatar,
+	updateUserProfile,
 } from "@/api/user-profile";
 import { toast } from "@/components/toast/toast";
 import { m } from "@/paraglide/messages";
@@ -72,6 +74,29 @@ export function useUpdateAvatar() {
 		},
 		onError: () => {
 			toast.error({ title: m.toast_update_avatar_error() });
+		},
+	});
+}
+
+export function useUpdateUserProfile() {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: async (payload: UpdateUserProfilePayload) => {
+			return updateUserProfile(payload);
+		},
+		onSuccess: (_data) => {
+			queryClient.invalidateQueries({
+				queryKey: ["user-profile"],
+				exact: false,
+			});
+			queryClient.invalidateQueries({
+				queryKey: ["session"],
+			});
+			toast.success({ title: m.toast_update_profile_success() });
+		},
+		onError: () => {
+			toast.error({ title: m.toast_update_profile_error() });
 		},
 	});
 }
