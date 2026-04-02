@@ -102,7 +102,7 @@
 	"link_account_desc": "Connecte plusieurs comptes pour faciliter la connexion",
 	"unlink_account_title": "Comptes liés",
 	"unlink_account_desc": "Tu peux dissocier les comptes que tu n'utilises plus",
-	"settings_tabs_trigger_account": "Compte",
+	"settings_tab_trigger_account": "Compte",
 	"settings_tab_trigger_display": "Affichage",
 	"settings_card_title_account": "Modifier les paramètres du compte",
 	"settings_card_desc_account": "Gère tes informations personnelles, tes méthodes de connexion et la sécurité de ton compte.",
@@ -727,5 +727,15 @@
 	"toast_update_avatar_success": "Avatar modifié avec succès",
 	"toast_update_avatar_error": "Echec lors de la modification de l'avatar",
 	"inprogress_title_text": "En cours",
-	"profile_page_title_text": "Profil"
+	"profile_page_title_text": "Profil",
+	"toast_error_profile_route_generic": "Echec lors du chargement du profil",
+	"profile_page_user_bio_empty": "{username} n'a pas encore de bio",
+	"profile_page_edit_btn_label": "Modifier",
+	"edit_profile_title": "Modifier le profil",
+	"form_bio_label": "Bio",
+	"form_bio_input_placeholder": "Dis nous en plus sur toi",
+	"form_location_label": "Localisation",
+	"btn_save": "Sauvegarder",
+	"btn_saving": "Sauvegarde...",
+	"toast_update_profile_success": "Les informations de profil ont été modifiés avec succès"
 }
