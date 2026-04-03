@@ -1,5 +1,5 @@
 import { zValidator } from "@hono/zod-validator";
-import { and, asc, desc, eq, sql } from "drizzle-orm";
+import { asc, desc, eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { z } from "zod";
 import {
@@ -12,8 +12,12 @@ import {
 import type { User } from "../../db/schemas/user";
 import { activity, users } from "../../db/schemas/user";
 import { db } from "../../lib/database";
+import { logger } from "../../lib/logger";
 import { getMediaDetails } from "../../lib/tmdb/get-media-details";
 import { sessionMiddleware } from "../../web/middlewares/session";
+import { deleteImageByUrl, uploadImage } from "../../web/utils/image";
+import { processImage } from "../../web/utils/process-image";
+import { validateImage } from "../../web/validators/image";
 
 type Variables = {
 	user: User | null;
@@ -43,11 +47,13 @@ userProfileRoutes.get(
 				displayName: true,
 				avatarUrl: true,
 				emailVerified: true,
+				bio: true,
+				location: true,
 			},
 		});
 
 		if (!user) {
-			return c.json({ error: "User not found" }, 404);
+			return c.json({ error: "USER_NOT_FOUND" }, 404);
 		}
 
 		return c.json(user, 200);
@@ -64,7 +70,7 @@ userProfileRoutes.get("/:username/activity", async (c) => {
 	});
 
 	if (!targetUser) {
-		return c.json({ error: "User not found" }, 404);
+		return c.json({ error: "USER_NOT_FOUND" }, 404);
 	}
 
 	const activities = await db.query.activity.findMany({
@@ -147,7 +153,7 @@ userProfileRoutes.get("/:username/favorites", async (c) => {
 	});
 
 	if (!targetUser) {
-		return c.json({ error: "User not found" }, 404);
+		return c.json({ error: "USER_NOT_FOUND" }, 404);
 	}
 
 	const entries = await db
@@ -193,7 +199,7 @@ userProfileRoutes.get("/:username/watchlist", async (c) => {
 	});
 
 	if (!targetUser) {
-		return c.json({ error: "User not found" }, 404);
+		return c.json({ error: "USER_NOT_FOUND" }, 404);
 	}
 
 	const entries = await db
@@ -239,7 +245,7 @@ userProfileRoutes.get("/:username/lists", async (c) => {
 	});
 
 	if (!targetUser) {
-		return c.json({ error: "User not found" }, 404);
+		return c.json({ error: "USER_NOT_FOUND" }, 404);
 	}
 
 	const lists = await db.query.customLists.findMany({
@@ -298,31 +304,86 @@ userProfileRoutes.get("/:username/lists", async (c) => {
 	return c.json({ data: listsWithItems });
 });
 
-// Update avatar URL (authenticated)
-userProfileRoutes.patch(
-	"/avatar",
-	zValidator(
-		"json",
-		z.object({
-			avatarUrl: z.url().nullable(),
-		}),
-	),
-	async (c) => {
-		const user = c.get("user");
+// Update user avatar
+userProfileRoutes.patch("/avatar", async (c) => {
+	const sessionUser = c.get("user");
+	if (!sessionUser) return c.json({ error: "Unauthorized" }, 401);
 
-		if (!user) {
-			return c.json({ error: "Unauthorized" }, 401);
+	try {
+		const currentUser = await db.query.users.findFirst({
+			where: eq(users.id, sessionUser.id),
+		});
+
+		if (!currentUser) {
+			return c.json({ error: "USER_NOT_FOUND" }, 404);
 		}
 
-		const { avatarUrl } = c.req.valid("json");
+		const oldAvatarUrl = currentUser.avatarUrl;
+
+		const body = await c.req.parseBody();
+		const file = body.avatar;
+		const buffer = await validateImage(file);
+		const optimized = await processImage(buffer);
+
+		const newKey = `avatars/${sessionUser.id}-${Date.now()}.webp`;
+		const newAvatarUrl = await uploadImage(optimized, newKey);
 
 		const [updated] = await db
 			.update(users)
-			.set({ avatarUrl })
-			.where(eq(users.id, user.id))
+			.set({ avatarUrl: newAvatarUrl })
+			.where(eq(users.id, sessionUser.id))
 			.returning({ avatarUrl: users.avatarUrl });
 
+		if (oldAvatarUrl) {
+			deleteImageByUrl(oldAvatarUrl);
+		}
+
 		return c.json(updated, 200);
+	} catch (err) {
+		logger.error(
+			{ err, userId: sessionUser.id },
+			"Avatar upload process failed",
+		);
+
+		return c.json({ error: "UPLOAD_FAILED" }, 400);
+	}
+});
+
+// Update user bio and location
+userProfileRoutes.patch(
+	"/",
+	zValidator(
+		"json",
+		z.object({
+			bio: z.string().max(160).optional(),
+			location: z.string().max(30).optional(),
+		}),
+	),
+	async (c) => {
+		const sessionUser = c.get("user");
+		if (!sessionUser) return c.json({ error: "Unauthorized" }, 401);
+		const body = c.req.valid("json");
+
+		try {
+			const [updatedUser] = await db
+				.update(users)
+				.set({
+					bio: body.bio,
+					location: body.location,
+					updatedAt: new Date(),
+				})
+				.where(eq(users.id, sessionUser.id))
+				.returning();
+
+			if (!updatedUser) {
+				return c.json({ error: "USER_NOT_FOUND" }, 404);
+			}
+
+			return c.json({ user: updatedUser });
+		} catch (err) {
+			logger.error(err, "Error while updating user profile");
+			return c.json({ error: "FAILED_PROFILE_UPDATE" }, 500);
+		}
 	},
 );
 
