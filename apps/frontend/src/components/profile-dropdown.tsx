@@ -67,7 +67,7 @@ export const ProfileDropdown = ({
 						render={
 							<ProfileTriggerButton
 								username={username}
-								displayName={displayName}
+								displayName={displayName ?? username}
 								image={image}
 							/>
 						}
