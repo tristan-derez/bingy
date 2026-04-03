@@ -47,20 +47,20 @@ const options = {
 		max: 20,
 		storage: "memory",
 	},
-	secondaryStorage: {
-		get: async (key) => {
-			return await redis.get(key);
-		},
-		set: async (key, value, ttl) => {
-			await redis.set(key, value);
-			if (ttl) {
-				await redis.expire(key, ttl);
-			}
-		},
-		delete: async (key) => {
-			await redis.del(key);
-		},
-	},
+	// secondaryStorage: {
+	// 	get: async (key) => {
+	// 		return await redis.get(key);
+	// 	},
+	// 	set: async (key, value, ttl) => {
+	// 		await redis.set(key, value);
+	// 		if (ttl) {
+	// 			await redis.expire(key, ttl);
+	// 		}
+	// 	},
+	// 	delete: async (key) => {
+	// 		await redis.del(key);
+	// 	},
+	// },
 	user: {
 		fields: {
 			image: "avatarUrl",
