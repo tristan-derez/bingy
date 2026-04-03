@@ -88,10 +88,6 @@ export type UserListsResponse = Pretty<{
 	}>;
 }>;
 
-export type UpdateAvatarPayload = Pretty<{
-	avatarUrl: string | null;
-}>;
-
 export type UpdateAvatarResponse = Pretty<{
 	avatarUrl: string | null;
 }>;
@@ -173,10 +169,13 @@ export const updateUserProfile = async (payload: UpdateUserProfilePayload) => {
 	return res;
 };
 
-export const updateAvatar = async (payload: UpdateAvatarPayload) => {
+export const updateAvatar = async (file: File) => {
+	const formData = new FormData();
+	formData.append("avatar", file);
+
 	const res = await apiFetch<UpdateAvatarResponse>("/user/avatar", {
 		method: "PATCH",
-		body: payload,
+		body: formData,
 	});
 	return res;
 };

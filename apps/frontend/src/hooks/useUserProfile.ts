@@ -5,12 +5,13 @@ import {
 	fetchUserLists,
 	fetchUserProfileInfo,
 	fetchUserWatchlist,
-	type UpdateAvatarPayload,
 	type UpdateUserProfilePayload,
 	updateAvatar,
 	updateUserProfile,
 } from "@/api/user-profile";
 import { toast } from "@/components/toast/toast";
+import { authClient } from "@/lib/auth-client";
+import { sessionQueryOptions } from "@/lib/queries/session";
 import { m } from "@/paraglide/messages";
 
 export function useUserProfileInfo(username: string) {
@@ -62,14 +63,20 @@ export function useUpdateAvatar() {
 	const queryClient = useQueryClient();
 
 	return useMutation({
-		mutationFn: async (payload: UpdateAvatarPayload) => {
-			return updateAvatar(payload);
+		mutationFn: async (file: File) => {
+			return updateAvatar(file);
 		},
-		onSuccess: () => {
+		onSuccess: async () => {
 			queryClient.invalidateQueries({
 				queryKey: ["user-profile"],
 				exact: false,
 			});
+
+			const { data: freshSession } = await authClient.getSession({
+				query: { disableCookieCache: true },
+			});
+			queryClient.setQueryData(sessionQueryOptions.queryKey, freshSession);
+
 			toast.success({ title: m.toast_update_avatar_success() });
 		},
 		onError: () => {
