@@ -46,7 +46,6 @@ userProfileRoutes.get(
 				name: true,
 				displayName: true,
 				avatarUrl: true,
-				emailVerified: true,
 				bio: true,
 				location: true,
 			},
