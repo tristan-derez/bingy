@@ -39,7 +39,7 @@ import { config } from "@/lib/env";
 import { sessionQueryOptions } from "@/lib/queries/session";
 import { m } from "@/paraglide/messages";
 import { signUpFormSchema } from "@/schemas/signup-form-schema";
-import { getRandomAvatarUrl } from "@/utils/avatar-generator";
+import { getRandomAvatarUrl } from "@/utils/image";
 import { capitalize } from "@/utils/utils";
 
 export function SignUpForm() {
