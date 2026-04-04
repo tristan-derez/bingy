@@ -3,7 +3,8 @@ import { useRouteContext } from "@tanstack/react-router";
 import { useId } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
-import { ProfilePicture } from "@/components/profile-picture";
+import { EditProfilePicture } from "@/components/auth/edit-profile-picture";
+import { UpdateProfileForm } from "@/components/auth/forms/update-profile-form";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -24,7 +25,6 @@ import { useUpdateUserProfile } from "@/hooks/useUserProfile";
 import { useMediaQuery } from "@/integrations/media-query";
 import { m } from "@/paraglide/messages";
 import { profileSchema } from "@/schemas/edit-profile-schema";
-import { UpdateProfileForm } from "./forms/update-profile-form";
 
 interface EditProfileDialogProps {
 	open: boolean;
@@ -43,8 +43,8 @@ export function EditProfileDialog({
 }: EditProfileDialogProps) {
 	const { authData } = useRouteContext({ from: "__root__" });
 	if (!authData) return null;
-	const id = useId();
 
+	const id = useId();
 	const isMobile = useMediaQuery("(pointer: coarse)");
 	const updateProfile = useUpdateUserProfile();
 
@@ -101,7 +101,10 @@ export function EditProfileDialog({
 				</DrawerHeader>
 				<div className="overflow-y-auto px-4 pb-4">
 					<div className="flex flex-col gap-4">
-						<ProfilePicture avatar={avatar} displayName={displayName ?? ""} />
+						<EditProfilePicture
+							avatar={avatar}
+							displayName={displayName ?? ""}
+						/>
 						<Separator />
 						{formContent}
 					</div>
@@ -117,7 +120,10 @@ export function EditProfileDialog({
 				</DialogHeader>
 				<div className="px-4 overflow-y-auto max-h-[60vh]">
 					<div className="flex flex-col gap-4 py-4">
-						<ProfilePicture avatar={avatar} displayName={displayName ?? ""} />
+						<EditProfilePicture
+							avatar={avatar}
+							displayName={displayName ?? ""}
+						/>
 						<Separator />
 						{formContent}
 					</div>
