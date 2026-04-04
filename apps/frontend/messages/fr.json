@@ -735,7 +735,12 @@
 	"form_bio_label": "Bio",
 	"form_bio_input_placeholder": "Dis nous en plus sur toi",
 	"form_location_label": "Localisation",
+	"btn_cancel": "Annuler",
 	"btn_save": "Sauvegarder",
 	"btn_saving": "Sauvegarde...",
-	"toast_update_profile_success": "Les informations de profil ont été modifiés avec succès"
+	"toast_update_profile_success": "Les informations de profil ont été modifiés avec succès",
+	"toast_edit_profile_picture_success": "Avatar modifié avec succès",
+	"toast_edit_profile_picture_error": "Une erreur est survenue lors de la modification de l'avatar",
+	"toast_error_crop_image": "Échec du recadrage de l'image, réessaie",
+	"edit_image_zoom_label": "Zoom"
 }

@@ -740,8 +740,13 @@
 	"form_bio_label": "Bio",
 	"form_bio_input_placeholder": "Tell us about yourself",
 	"form_location_label": "Location",
+	"btn_cancel": "Cancel",
 	"btn_save": "Save",
 	"btn_saving": "Saving...",
 	"toast_update_profile_success": "Profile informations updated succesfully",
-	"toast_update_profile_error": "Error while updating profile, try again!"
+	"toast_update_profile_error": "Error while updating profile, try again!",
+	"toast_edit_profile_picture_success": "Profile picture updated succesfully",
+	"toast_edit_profile_picture_error": "An error occured while updating profile picture, try again later",
+	"toast_error_crop_image": "Failed to crop image, try again",
+	"edit_image_zoom_label": "Zoom"
 }
