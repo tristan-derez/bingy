@@ -23,7 +23,6 @@ export type UserProfileInfoResponse = Pretty<{
 	name: string;
 	displayName: string;
 	avatarUrl: string | null;
-	emailVerified: Date | null;
 	bio?: string | null;
 	location?: string | null;
 }>;
