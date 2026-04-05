@@ -52,25 +52,27 @@ function UserProfileLayout() {
 	const backgroundImage = getTmdbImageUrl("/gyrFASZMHZ3d4X2ZlrEZhRGr1zV.jpg");
 
 	return (
-		<div className="flex flex-col gap-4 w-full max-w-full min-w-full pt-8 lg:pt-30">
-			<ProfileBanner backgroundImage={backgroundImage} />
-			<ProfileInfos
-				displayName={data.displayName}
-				avatar={data.avatarUrl}
-				bio={data.bio}
-				location={data.location}
-				showEditButton={showEditButton}
-				onEditClick={onEditClick}
-			/>
-			<ProfileNav username={username} />
+		<div className="flex flex-col w-full max-w-full min-w-full pt-8 lg:pt-30">
+			<div className="max-w-4xl mx-auto w-full gap-4 flex flex-col">
+				<ProfileBanner backgroundImage={backgroundImage} />
+				<ProfileInfos
+					displayName={data.displayName}
+					avatar={data.avatarUrl}
+					bio={data.bio}
+					location={data.location}
+					showEditButton={showEditButton}
+					onEditClick={onEditClick}
+				/>
+				<ProfileNav username={username} />
 
-			<Outlet />
-			<EditProfileDialog
-				open={isEditDialogOpen}
-				onOpenChange={setIsEditDialogOpen}
-				bio={data.bio}
-				location={data.location}
-			/>
+				<Outlet />
+				<EditProfileDialog
+					open={isEditDialogOpen}
+					onOpenChange={setIsEditDialogOpen}
+					bio={data.bio}
+					location={data.location}
+				/>
+			</div>
 		</div>
 	);
 }

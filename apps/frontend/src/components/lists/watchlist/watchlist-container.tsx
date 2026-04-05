@@ -47,7 +47,7 @@ export function WatchlistContainer({
 				/>
 			) : (
 				<>
-					<div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-12 gap-2 sm:gap-4">
+					<div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-4">
 						{items.map((item) => {
 							const type = item.mediaType === "movie" ? "movies" : "tv";
 							return (
