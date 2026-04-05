@@ -124,7 +124,7 @@ userListRoutes.delete("/watchlist/:mediaType/:tmdbId", async (c) => {
 userListRoutes.get("/:username/watchlist", async (c) => {
 	const { username } = c.req.param();
 	const language = c.req.query("language") || "en-US";
-	const limitQuery = c.req.query("limit") || 48;
+	const limitQuery = c.req.query("limit") || 24;
 	const page = Math.max(1, parseInt(c.req.query("page") || "1"));
 
 	const targetUser = await db.query.users.findFirst({
@@ -474,7 +474,7 @@ userListRoutes.post(
 userListRoutes.get("/:username", async (c) => {
 	const { username } = c.req.param();
 	const currentUser = c.get("user");
-	const limitQuery = c.req.query("limit") || 48;
+	const limitQuery = c.req.query("limit") || 24;
 	const page = Math.max(1, parseInt(c.req.query("page") || "1"));
 	const filter = c.req.query("filter") || "all";
 
@@ -766,7 +766,7 @@ userListRoutes.delete("/:listId/items/:mediaType/:tmdbId", async (c) => {
 userListRoutes.get("/:username/lists/:slug", async (c) => {
 	const { username, slug } = c.req.param();
 	const language = c.req.query("language") || "en-US";
-	const limitQuery = c.req.query("limit") || 48;
+	const limitQuery = c.req.query("limit") || 24;
 	const page = Math.max(1, parseInt(c.req.query("page") || "1"));
 	const currentUser = c.get("user");
 
