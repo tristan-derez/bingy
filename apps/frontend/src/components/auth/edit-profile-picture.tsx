@@ -66,7 +66,7 @@ export function EditProfilePicture({
 					onChange={handleFileChange}
 				/>
 				<Avatar
-					className="w-16 h-16 object-cover rounded-full cursor-pointer"
+					className="w-16 h-16 object-cover rounded-full"
 					onClick={() => fileInputRef.current?.click()}
 				>
 					<AvatarImage src={displayAvatar} alt={displayName} />
@@ -77,7 +77,7 @@ export function EditProfilePicture({
 				<button
 					type="button"
 					onClick={() => fileInputRef.current?.click()}
-					className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-80 hover:opacity-100 text-muted-foreground hover:text-white transition-opacity cursor-pointer"
+					className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-80 hover:opacity-100 text-muted-foreground hover:text-white transition-opacity"
 				>
 					<IconPencil className="w-5 h-5" />
 				</button>

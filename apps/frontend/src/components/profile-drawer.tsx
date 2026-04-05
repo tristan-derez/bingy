@@ -65,7 +65,7 @@ export function ProfileDrawer() {
 			<DrawerContent className="focus:outline-none focus-visible:outline-none *:focus:outline-none">
 				<DrawerHeader className="px-6">
 					<Avatar
-						className="w-16 h-16 object-cover rounded-full cursor-pointer"
+						className="w-16 h-16 object-cover rounded-full"
 						onClick={() => {
 							setIsOpen(false);
 							navigate({

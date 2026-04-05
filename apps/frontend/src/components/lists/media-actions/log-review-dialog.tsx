@@ -267,7 +267,7 @@ export function LogReviewDialog({
 											/>
 											<Label
 												htmlFor="isComplete"
-												className="text-sm font-normal cursor-pointer"
+												className="text-sm font-normal"
 											>
 												{m.log_review_dialog_tv_show_completed_label()}
 											</Label>
@@ -286,7 +286,7 @@ export function LogReviewDialog({
 														/>
 														<Label
 															htmlFor="useAbsoluteEpisode"
-															className="text-sm font-normal cursor-pointer"
+															className="text-sm font-normal"
 														>
 															{m.log_review_dialog_absolute_episode_label()}
 														</Label>

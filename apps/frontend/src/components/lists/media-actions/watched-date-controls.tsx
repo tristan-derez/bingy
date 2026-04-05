@@ -72,10 +72,7 @@ export function WatchedDateControl({
 					checked={!hasSpecificDate}
 					onCheckedChange={(c) => handleHasSpecificDateChange(!c)}
 				/>
-				<Label
-					htmlFor="unknownDate"
-					className="text-sm font-normal cursor-pointer"
-				>
+				<Label htmlFor="unknownDate" className="text-sm font-normal">
 					{m.log_review_dialog_seen_before()}
 				</Label>
 			</div>

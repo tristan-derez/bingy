@@ -87,7 +87,7 @@ export function WatchlistToggleButton({
 						type="button"
 						onClick={handleWatchlistToggle}
 						disabled={isPending}
-						className={`group flex flex-col items-center gap-1 transition-colors hover:cursor-pointer ${
+						className={`group flex flex-col items-center gap-1 transition-colors hover:text-blue-400 ${
 							isInWatchlist ? "text-blue-500" : `text-${color}`
 						}`}
 					>
