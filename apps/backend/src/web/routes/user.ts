@@ -165,7 +165,7 @@ userProfileRoutes.get("/:username/favorites", async (c) => {
 		.innerJoin(media, eq(favorites.mediaId, media.id))
 		.where(eq(favorites.userId, targetUser.id))
 		.orderBy(desc(favorites.addedAt))
-		.limit(5);
+		.limit(4);
 
 	const hydratedData = (
 		await Promise.all(
@@ -211,7 +211,7 @@ userProfileRoutes.get("/:username/watchlist", async (c) => {
 		.innerJoin(media, eq(watchlist.mediaId, media.id))
 		.where(eq(watchlist.userId, targetUser.id))
 		.orderBy(desc(watchlist.addedAt))
-		.limit(5);
+		.limit(4);
 
 	const hydratedData = (
 		await Promise.all(
@@ -271,7 +271,7 @@ userProfileRoutes.get("/:username/lists", async (c) => {
 						? asc(listItems.position)
 						: desc(listItems.addedAt),
 				)
-				.limit(5);
+				.limit(4);
 
 			const hydratedItems = (
 				await Promise.all(
