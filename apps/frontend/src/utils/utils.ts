@@ -130,3 +130,11 @@ export const calculateAge = (
 
 	return age;
 };
+
+export const getStars = (rating: number): string => {
+	const fullStars = Math.floor(rating);
+	const hasHalfStar = rating % 1 !== 0;
+	const fullStarStr = "★".repeat(fullStars);
+	const halfStarStr = hasHalfStar ? "½" : "";
+	return fullStarStr + halfStarStr;
+};
