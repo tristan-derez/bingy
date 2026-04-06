@@ -748,5 +748,23 @@
 	"toast_edit_profile_picture_success": "Profile picture updated succesfully",
 	"toast_edit_profile_picture_error": "An error occured while updating profile picture, try again later",
 	"toast_error_crop_image": "Failed to crop image, try again",
-	"edit_image_zoom_label": "Zoom"
+	"edit_image_zoom_label": "Zoom",
+	"profile_favorites_section_title": "Recent favorites",
+	"profile_favorites_section_link": "All",
+	"profile_watchlist_section_title": "Watchlist",
+	"profile_watchlist_section_link": "All",
+	"profile_lists_section_title": "Recent lists",
+	"profile_lists_section_link": "All",
+	"profile_ratings_title": "Ratings",
+	"profile_ratings_total": [
+		{
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "{count} rating",
+				"countPlural=other": "{count} ratings"
+			}
+		}
+	],
+	"profile_ratings_tooltip": "{count} {stars}"
 }

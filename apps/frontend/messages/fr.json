@@ -742,5 +742,23 @@
 	"toast_edit_profile_picture_success": "Avatar modifié avec succès",
 	"toast_edit_profile_picture_error": "Une erreur est survenue lors de la modification de l'avatar",
 	"toast_error_crop_image": "Échec du recadrage de l'image, réessaie",
-	"edit_image_zoom_label": "Zoom"
+	"edit_image_zoom_label": "Zoom",
+	"profile_favorites_section_title": "Favoris récents",
+	"profile_favorites_section_link": "Tous",
+	"profile_watchlist_section_title": "Watchlist",
+	"profile_watchlist_section_link": "Tous",
+	"profile_lists_section_title": "Listes récentes",
+	"profile_lists_section_link": "Toutes",
+	"profile_ratings_title": "Reviews",
+	"profile_ratings_total": [
+		{
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "{count} review",
+				"countPlural=other": "{count} reviews"
+			}
+		}
+	],
+	"profile_ratings_tooltip": "{count} {stars}"
 }
