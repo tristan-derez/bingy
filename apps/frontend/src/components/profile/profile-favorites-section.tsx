@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { EmptyPosterCard } from "@/components/profile/cards/empty-poster-card";
+import { EmptyCardSlot } from "@/components/profile/cards/empty-card-slot";
 import { ProfileFavoriteCard } from "@/components/profile/cards/profile-favorite-card";
 import { useUserFavorites } from "@/hooks/useUserProfile";
 import { m } from "@/paraglide/messages";
@@ -60,7 +60,7 @@ export function ProfileFavoritesSection({
 					);
 				})}
 				{[...Array(emptySlots)].map((_, i) => (
-					<EmptyPosterCard key={`fav-empty-${i}`} isOwnProfile={ownProfile} />
+					<EmptyCardSlot key={`fav-empty-${i}`} isOwnProfile={ownProfile} />
 				))}
 			</div>
 		</section>

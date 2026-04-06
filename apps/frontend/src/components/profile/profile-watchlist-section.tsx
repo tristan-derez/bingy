@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { LoadingCentered } from "@/components/loading/loading-centered";
-import { EmptyPosterCard } from "@/components/profile/cards/empty-poster-card";
+import { EmptyCardSlot } from "@/components/profile/cards/empty-card-slot";
 import { ProfileWatchlistCard } from "@/components/profile/cards/profile-watchlist-card";
 import { useUserWatchlist } from "@/hooks/useUserProfile";
 import { m } from "@/paraglide/messages";
@@ -59,7 +59,7 @@ export function ProfileWatchlistSection({
 					);
 				})}
 				{[...Array(emptySlots)].map((_, i) => (
-					<EmptyPosterCard key={`fav-empty-${i}`} isOwnProfile={ownProfile} />
+					<EmptyCardSlot key={`fav-empty-${i}`} isOwnProfile={ownProfile} />
 				))}
 			</div>
 		</section>
