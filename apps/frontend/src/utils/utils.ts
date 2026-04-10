@@ -138,3 +138,19 @@ export const getStars = (rating: number): string => {
 	const halfStarStr = hasHalfStar ? "½" : "";
 	return fullStarStr + halfStarStr;
 };
+
+export const getMediaLink = (
+	mediaId?: number,
+	mediaType?: "movie" | "tv",
+): string | null => {
+	if (!mediaId || !mediaType) return null;
+
+	const type = mediaType === "movie" ? "movies" : "tv";
+	return `/${type}/${mediaId}`;
+};
+
+export const getListLink = (username: string, slug?: string): string | null => {
+	if (!slug) return null;
+
+	return `/@${username.toLowerCase()}/lists/${slug}`;
+};
