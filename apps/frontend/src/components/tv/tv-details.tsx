@@ -73,7 +73,7 @@ export function TvDetailsView({
 				<BackButton />
 
 				<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
-					<div className="flex flex-col gap-2 items-center lg:items-start w-44 md:w-52 lg:w-67 xl:w-80">
+					<div className="flex flex-col gap-2 items-center lg:items-start max-w-[250px] md:max-w-[300px] lg:max-w-[400px]">
 						<MediaPortraitImage
 							imagePath={tv.poster_path}
 							alt={tv.name}
