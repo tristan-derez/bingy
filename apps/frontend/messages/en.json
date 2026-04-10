@@ -388,6 +388,7 @@
 	"tv_details_status_canceled": "Canceled",
 	"tv_details_status_ended": "Ended",
 	"tv_details_status_pilot": "Pilot",
+	"tv_details_status_planned": "Planned",
 	"tv_details_networks": [
 		{
 			"declarations": ["input count", "local countPlural = count: plural"],
@@ -766,5 +767,90 @@
 			}
 		}
 	],
-	"profile_ratings_tooltip": "{count} {stars}"
+	"profile_ratings_tooltip": "{count} {stars}",
+	"profile_activity_section_title": "Activity",
+	"profile_activity_you": "You",
+	"profile_activity_watchlist": "watchlist",
+	"profile_activity_favorites": "favorites",
+	"profile_activity_empty": "No activity yet",
+	"profile_activity_action_added_to_watchlist": [
+		{
+			"declarations": ["input isOwnProfile"],
+			"selectors": ["isOwnProfile"],
+			"match": {
+				"isOwnProfile=true": " added ",
+				"isOwnProfile=false": " added "
+			}
+		}
+	],
+	"profile_activity_action_added_to_favorites": [
+		{
+			"declarations": ["input isOwnProfile"],
+			"selectors": ["isOwnProfile"],
+			"match": {
+				"isOwnProfile=true": " added ",
+				"isOwnProfile=false": " added "
+			}
+		}
+	],
+	"profile_activity_added_to_watchlist": [
+		{
+			"declarations": ["input isOwnProfile"],
+			"selectors": ["isOwnProfile"],
+			"match": {
+				"isOwnProfile=true": " to your watchlist",
+				"isOwnProfile=false": " to their watchlist"
+			}
+		}
+	],
+	"profile_activity_added_to_favorites": [
+		{
+			"declarations": ["input isOwnProfile"],
+			"selectors": ["isOwnProfile"],
+			"match": {
+				"isOwnProfile=true": " to your favorites",
+				"isOwnProfile=false": " to their favorites"
+			}
+		}
+	],
+	"profile_activity_action_watched": [
+		{
+			"declarations": ["input isOwnProfile"],
+			"selectors": ["isOwnProfile"],
+			"match": {
+				"isOwnProfile=true": " watched ",
+				"isOwnProfile=false": " watched "
+			}
+		}
+	],
+	"profile_activity_action_followed": [
+		{
+			"declarations": ["input isOwnProfile"],
+			"selectors": ["isOwnProfile"],
+			"match": {
+				"isOwnProfile=true": " followed ",
+				"isOwnProfile=false": " followed "
+			}
+		}
+	],
+	"profile_activity_action_rated": [
+		{
+			"declarations": ["input isOwnProfile"],
+			"selectors": ["isOwnProfile"],
+			"match": {
+				"isOwnProfile=true": " rated ",
+				"isOwnProfile=false": " rated "
+			}
+		}
+	],
+	"profile_activity_action_created_list": [
+		{
+			"declarations": ["input isOwnProfile"],
+			"selectors": ["isOwnProfile"],
+			"match": {
+				"isOwnProfile=true": " created a list: ",
+				"isOwnProfile=false": " created a list: "
+			}
+		}
+	]
 }

@@ -1,4 +1,5 @@
 import {
+	IconCalendarWeek,
 	IconCircleCheck,
 	IconCircleX,
 	IconClipboard,
@@ -28,6 +29,10 @@ const STATUS_CONFIG = {
 	Pilot: {
 		icon: IconSparkles,
 		key: "tv_details_status_pilot",
+	},
+	Planned: {
+		icon: IconCalendarWeek,
+		key: "tv_details_status_planned",
 	},
 } as const;
 

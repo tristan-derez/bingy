@@ -389,6 +389,7 @@
 	"tv_details_status_canceled": "Annulée",
 	"tv_details_status_ended": "Terminée",
 	"tv_details_status_pilot": "Pilote",
+	"tv_details_status_planned": "Annoncée",
 	"tv_details_networks": [
 		{
 			"declarations": ["input count", "local countPlural = count: plural"],
@@ -760,5 +761,88 @@
 			}
 		}
 	],
-	"profile_ratings_tooltip": "{count} {stars}"
+	"profile_ratings_tooltip": "{count} {stars}",
+	"profile_activity_section_title": "Activité",
+	"profile_activity_you": "Tu",
+	"profile_activity_empty": "Pas encore d'activité",
+	"profile_activity_added_to_watchlist": [
+		{
+			"declarations": ["input isOwnProfile"],
+			"selectors": ["isOwnProfile"],
+			"match": {
+				"isOwnProfile=true": " à ta watchlist",
+				"isOwnProfile=false": " à sa watchlist"
+			}
+		}
+	],
+	"profile_activity_added_to_favorites": [
+		{
+			"declarations": ["input isOwnProfile"],
+			"selectors": ["isOwnProfile"],
+			"match": {
+				"isOwnProfile=true": " à tes favoris",
+				"isOwnProfile=false": " à ses favoris"
+			}
+		}
+	],
+	"profile_activity_action_added_to_watchlist": [
+		{
+			"declarations": ["input isOwnProfile"],
+			"selectors": ["isOwnProfile"],
+			"match": {
+				"isOwnProfile=true": " as ajouté ",
+				"isOwnProfile=false": " a ajouté "
+			}
+		}
+	],
+	"profile_activity_action_added_to_favorites": [
+		{
+			"declarations": ["input isOwnProfile"],
+			"selectors": ["isOwnProfile"],
+			"match": {
+				"isOwnProfile=true": " as ajouté ",
+				"isOwnProfile=false": " a ajouté "
+			}
+		}
+	],
+	"profile_activity_action_watched": [
+		{
+			"declarations": ["input isOwnProfile"],
+			"selectors": ["isOwnProfile"],
+			"match": {
+				"isOwnProfile=true": " as regardé ",
+				"isOwnProfile=false": " a regardé "
+			}
+		}
+	],
+	"profile_activity_action_followed": [
+		{
+			"declarations": ["input isOwnProfile"],
+			"selectors": ["isOwnProfile"],
+			"match": {
+				"isOwnProfile=true": " suis ",
+				"isOwnProfile=false": " suit "
+			}
+		}
+	],
+	"profile_activity_action_rated": [
+		{
+			"declarations": ["input isOwnProfile"],
+			"selectors": ["isOwnProfile"],
+			"match": {
+				"isOwnProfile=true": " as noté ",
+				"isOwnProfile=false": " a noté "
+			}
+		}
+	],
+	"profile_activity_action_created_list": [
+		{
+			"declarations": ["input isOwnProfile"],
+			"selectors": ["isOwnProfile"],
+			"match": {
+				"isOwnProfile=true": " as créé une liste : ",
+				"isOwnProfile=false": " a créé une liste : "
+			}
+		}
+	]
 }
