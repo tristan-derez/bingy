@@ -772,7 +772,7 @@
 	"profile_activity_you": "You",
 	"profile_activity_watchlist": "watchlist",
 	"profile_activity_favorites": "favorites",
-	"profile_activity_empty": "No activity yet",
+	"profile_activity_empty": "No recent activity",
 	"profile_activity_action_added_to_watchlist": [
 		{
 			"declarations": ["input isOwnProfile"],

@@ -764,7 +764,7 @@
 	"profile_ratings_tooltip": "{count} {stars}",
 	"profile_activity_section_title": "Activité",
 	"profile_activity_you": "Tu",
-	"profile_activity_empty": "Pas encore d'activité",
+	"profile_activity_empty": "Pas d'activité récente",
 	"profile_activity_added_to_watchlist": [
 		{
 			"declarations": ["input isOwnProfile"],
