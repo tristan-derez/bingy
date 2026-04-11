@@ -1,4 +1,4 @@
-import { APIError, type BetterAuthOptions, betterAuth } from "better-auth";
+import { type BetterAuthOptions, betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { customSession, lastLoginMethod, twoFactor } from "better-auth/plugins";
 import { redis } from "bun";
@@ -6,6 +6,7 @@ import { and, eq, ne } from "drizzle-orm";
 import * as schema from "../db/schemas/user";
 import { sendEmail } from "../emails/index";
 import { db } from "../lib/database";
+import { deleteImageByUrl } from "../web/utils/image";
 import env from "./env";
 import { logger } from "./logger";
 import { hash, verify } from "./password-processing";
@@ -115,6 +116,10 @@ const options = {
 					month: "long",
 					day: "numeric",
 				});
+
+				if (user.image) {
+					await deleteImageByUrl(user.image);
+				}
 
 				await sendEmail({
 					type: "deleted-account",
