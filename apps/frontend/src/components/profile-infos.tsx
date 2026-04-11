@@ -1,5 +1,5 @@
 import { IconEdit, IconLocation } from "@tabler/icons-react";
-import { ProfilePicture } from "@/components/profile-picture";
+import { ProfilePictureDialog } from "@/components/profile-picture-dialog";
 import { Button } from "@/components/ui/button";
 import { m } from "@/paraglide/messages";
 
@@ -22,7 +22,7 @@ export function ProfileInfos({
 }: ProfileInfosProps) {
 	return (
 		<div className="flex flex-col md:flex-row gap-2 lg:gap-4 self-center lg:self-start w-full md:w-lg">
-			<ProfilePicture avatar={avatar} displayName={displayName} />
+			<ProfilePictureDialog avatar={avatar} displayName={displayName} />
 			<div className="flex flex-col gap-2 justify-center flex-1 min-w-0">
 				<div className="flex flex-row w-full justify-between gap-2 items-center">
 					<p className="font-extrabold text-sm md:text-base">{displayName}</p>
