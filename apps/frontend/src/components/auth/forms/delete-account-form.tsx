@@ -22,25 +22,28 @@ import { config } from "@/lib/env";
 import { m } from "@/paraglide/messages";
 import { deleteAccountSchema } from "@/schemas/delete-account-schema";
 
-export function DeleteAccountForm() {
+interface DeleteAccountFormProps {
+	hasPassword: boolean;
+}
+
+export function DeleteAccountForm({ hasPassword }: DeleteAccountFormProps) {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [open, setOpen] = useState(false);
 	const id = useId();
 
-	const { control, handleSubmit } = useForm<
-		z.infer<typeof deleteAccountSchema>
-	>({
-		resolver: zodResolver(deleteAccountSchema),
+	const schema = deleteAccountSchema(hasPassword);
+	const { control, handleSubmit } = useForm<z.infer<typeof schema>>({
+		resolver: zodResolver(schema),
 		defaultValues: { password: "" },
 	});
 
 	const onFormSubmit: SubmitHandler<
-		z.infer<typeof deleteAccountSchema>
+		z.infer<ReturnType<typeof deleteAccountSchema>>
 	> = async (formData) => {
 		setIsSubmitting(true);
 		try {
 			const { data, error } = await authClient.deleteUser({
-				password: formData.password,
+				...(hasPassword ? { password: formData.password } : {}),
 				callbackURL: `${config.appUrl}/goodbye`,
 			});
 
@@ -49,7 +52,13 @@ export function DeleteAccountForm() {
 				setOpen(false);
 			}
 
-			error ? toast.error({ title: m.toast_error_generic() }) : null;
+			if (error) {
+				if (error.code === "INVALID_PASSWORD") {
+					toast.error({ title: m.toast_invalid_password_error() });
+				} else {
+					toast.error({ title: m.toast_error_generic() });
+				}
+			}
 		} catch (err) {
 			toast.error({ title: m.toast_error_generic() });
 		} finally {
@@ -86,24 +95,28 @@ export function DeleteAccountForm() {
 					</AlertDialogHeader>
 
 					<form onSubmit={handleSubmit(onFormSubmit)} className="grid gap-4">
-						<Controller
-							control={control}
-							name="password"
-							render={({ field }) => (
-								<Field>
-									<FieldLabel htmlFor={`${id}-password`}>
-										{m.form_password_label()}
-									</FieldLabel>
-									<Input
-										id={`${id}-password`}
-										type="password"
-										autoComplete="current-password"
-										{...field}
-									/>
-									<FieldError />
-								</Field>
-							)}
-						/>
+						{hasPassword ? (
+							<Controller
+								control={control}
+								name="password"
+								render={({ field, fieldState }) => (
+									<Field>
+										<FieldLabel htmlFor={`${id}-password`}>
+											{m.form_password_label()}
+										</FieldLabel>
+										<Input
+											id={`${id}-password`}
+											type="password"
+											autoComplete="current-password"
+											{...field}
+										/>
+										<FieldError
+											errors={fieldState.error ? [fieldState.error] : undefined}
+										/>
+									</Field>
+								)}
+							/>
+						) : null}
 
 						<AlertDialogFooter>
 							<AlertDialogCancel>{m.dialog_cancel_action()}</AlertDialogCancel>

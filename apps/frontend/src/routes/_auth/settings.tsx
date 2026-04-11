@@ -1,4 +1,4 @@
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, useSearch } from "@tanstack/react-router";
 import z from "zod";
 import { SettingsComponent } from "@/components/auth/settings-component";
@@ -23,7 +23,7 @@ export const Route = createFileRoute("/_auth/settings")({
 });
 
 function SettingsPage() {
-	const { data } = useSuspenseQuery({
+	const { data } = useQuery({
 		queryKey: ["accounts"],
 		queryFn: async () => {
 			const result = await authClient.listAccounts();
@@ -52,6 +52,8 @@ function SettingsPage() {
 			errorMessages[error] ?? m.toast_error_generic_error_settings_page();
 		toast.error({ title: message }, { duration: 8000, closeButton: true });
 	}
+
+	if (!data) return null;
 
 	return (
 		<div className="flex w-full max-w-md flex-col gap-6">

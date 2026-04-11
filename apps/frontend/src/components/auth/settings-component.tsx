@@ -74,7 +74,7 @@ export function SettingsComponent({
 					<Separator />
 					<UpdatePasswordForm hasPassword={hasPassword} />
 					<Separator />
-					<DeleteAccountForm />
+					<DeleteAccountForm hasPassword={hasPassword} />
 				</Card>
 			</TabsContent>
 			<TabsContent value="display">
