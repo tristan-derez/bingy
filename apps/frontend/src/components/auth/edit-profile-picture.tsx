@@ -1,8 +1,9 @@
-import { IconPencil } from "@tabler/icons-react";
+import { IconPencil, IconTrash } from "@tabler/icons-react";
+import { useNavigate } from "@tanstack/react-router";
 import { useRef, useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useUpdateAvatar } from "@/hooks/useUserProfile";
+import { useDeleteAvatar, useUpdateAvatar } from "@/hooks/useUserProfile";
 import { m } from "@/paraglide/messages";
+import { ProfilePicture } from "../profile-picture";
 import { toast } from "../toast/toast";
 import { CropImageDialog } from "./crop-image-dialog";
 
@@ -15,10 +16,12 @@ export function EditProfilePicture({
 	avatar,
 	displayName,
 }: EditProfilePictureProps) {
+	const navigate = useNavigate();
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const [preview, setPreview] = useState<string | null>(null);
 	const [cropSrc, setCropSrc] = useState<string | null>(null);
 	const updateAvatar = useUpdateAvatar();
+	const deleteAvatar = useDeleteAvatar();
 
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0];
@@ -29,6 +32,17 @@ export function EditProfilePicture({
 			setCropSrc(reader.result as string);
 		};
 		reader.readAsDataURL(file);
+	};
+
+	const handleDeleteAvatar = () => {
+		deleteAvatar.mutate(undefined, {
+			onSuccess: () => {
+				navigate({
+					to: "/@{$username}",
+					params: { username: displayName.toLowerCase() },
+				});
+			},
+		});
 	};
 
 	const handleCropComplete = async (croppedBlob: Blob) => {
@@ -44,7 +58,10 @@ export function EditProfilePicture({
 
 		await updateAvatar.mutateAsync(file, {
 			onSuccess: () => {
-				toast.success({ title: m.toast_edit_profile_picture_success() });
+				navigate({
+					to: "/@{$username}",
+					params: { username: displayName.toLowerCase() },
+				});
 			},
 			onError: () => {
 				setPreview(null);
@@ -57,30 +74,34 @@ export function EditProfilePicture({
 
 	return (
 		<>
-			<div className="relative w-16 h-16">
-				<input
-					ref={fileInputRef}
-					type="file"
-					accept="image/*"
-					className="hidden"
-					onChange={handleFileChange}
-				/>
-				<Avatar
-					className="w-16 h-16 object-cover rounded-full"
-					onClick={() => fileInputRef.current?.click()}
-				>
-					<AvatarImage src={displayAvatar} alt={displayName} />
-					<AvatarFallback className="rounded-full">
-						{displayName[0].toUpperCase()}
-					</AvatarFallback>
-				</Avatar>
-				<button
-					type="button"
-					onClick={() => fileInputRef.current?.click()}
-					className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-80 hover:opacity-100 text-muted-foreground hover:text-white transition-opacity"
-				>
-					<IconPencil className="w-5 h-5" />
-				</button>
+			<div className="flex items-center gap-2">
+				<div className="relative w-16 h-16">
+					<input
+						ref={fileInputRef}
+						type="file"
+						accept="image/*"
+						className="hidden"
+						onChange={handleFileChange}
+					/>
+					<ProfilePicture avatar={displayAvatar} displayName={displayName} />
+					<button
+						type="button"
+						onClick={() => fileInputRef.current?.click()}
+						className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-80 hover:opacity-100 text-muted-foreground hover:text-white transition-opacity"
+					>
+						<IconPencil className="w-5 h-5" />
+					</button>
+				</div>
+				{!avatar?.startsWith("https://api.dicebear.com") ? (
+					<button
+						type="button"
+						onClick={handleDeleteAvatar}
+						disabled={deleteAvatar.isPending}
+						className="text-muted-foreground hover:text-destructive transition-colors"
+					>
+						<IconTrash className="w-5 h-5" />
+					</button>
+				) : null}
 			</div>
 
 			{cropSrc ? (

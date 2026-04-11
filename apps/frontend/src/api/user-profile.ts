@@ -168,6 +168,13 @@ export const updateUserProfile = async (payload: UpdateUserProfilePayload) => {
 	return res;
 };
 
+export const deleteAvatar = async () => {
+	const res = await apiFetch<UpdateAvatarResponse>("/user/avatar", {
+		method: "DELETE",
+	});
+	return res;
+};
+
 export const updateAvatar = async (file: File) => {
 	const formData = new FormData();
 	formData.append("avatar", file);

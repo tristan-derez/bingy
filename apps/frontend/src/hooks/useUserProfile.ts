@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+	deleteAvatar,
 	fetchUserActivity,
 	fetchUserFavorites,
 	fetchUserLists,
@@ -85,6 +86,32 @@ export function useUpdateAvatar() {
 	});
 }
 
+export function useDeleteAvatar() {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: async () => {
+			return deleteAvatar();
+		},
+		onSuccess: async () => {
+			queryClient.invalidateQueries({
+				queryKey: ["user-profile"],
+				exact: false,
+			});
+
+			const { data: freshSession } = await authClient.getSession({
+				query: { disableCookieCache: true },
+			});
+			queryClient.setQueryData(sessionQueryOptions.queryKey, freshSession);
+
+			toast.success({ title: m.toast_delete_avatar_success() });
+		},
+		onError: () => {
+			toast.error({ title: m.toast_delete_avatar_error() });
+		},
+	});
+}
+
 export function useUpdateUserProfile() {
 	const queryClient = useQueryClient();
 
@@ -100,6 +127,7 @@ export function useUpdateUserProfile() {
 			queryClient.invalidateQueries({
 				queryKey: ["session"],
 			});
+
 			toast.success({ title: m.toast_update_profile_success() });
 		},
 		onError: () => {
