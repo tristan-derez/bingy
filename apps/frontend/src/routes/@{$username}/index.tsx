@@ -1,9 +1,7 @@
 import { createFileRoute, useRouteContext } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
-import { ProfileActivitySection } from "@/components/profile/profile-activity-section";
 import { ProfileFavoritesSection } from "@/components/profile/profile-favorites-section";
 import { ProfileListsSection } from "@/components/profile/profile-lists-section";
-import { ProfileRatingsSection } from "@/components/profile/profile-ratings-section";
 import { ProfileWatchlistSection } from "@/components/profile/profile-watchlist-section";
 import { localeRegionAtom } from "@/lib/atoms/region";
 import { isOwnProfile } from "@/utils/utils";
@@ -38,12 +36,12 @@ function ProfilePage() {
 				/>
 			</div>
 			<div className="flex flex-col gap-6 flex-1 max-w-full lg:max-w-3/9">
-				<ProfileRatingsSection username={username} />
-				<ProfileActivitySection
+				{/* <ProfileRatingsSection username={username} /> */}
+				{/* <ProfileActivitySection
 					username={username}
 					isOwnProfile={ownProfile}
 					localeRegion={localeRegion}
-				/>
+				/> */}
 			</div>
 		</div>
 	);
