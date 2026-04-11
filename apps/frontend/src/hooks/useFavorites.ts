@@ -49,6 +49,9 @@ export function useAddToFavorites(username: string) {
 			queryClient.invalidateQueries({
 				queryKey: ["lists", "watchlist"],
 			});
+			queryClient.invalidateQueries({
+				queryKey: ["user-profile", username],
+			});
 
 			toast.success({
 				title: m.toast_add_to_favorites_success({ name: variables.mediaName }),
@@ -86,6 +89,9 @@ export function useRemoveFromFavorites() {
 		onSuccess: (_data, variables) => {
 			queryClient.invalidateQueries({
 				queryKey: ["favorites"],
+			});
+			queryClient.invalidateQueries({
+				queryKey: ["user-profile"],
 			});
 
 			toast.success({
