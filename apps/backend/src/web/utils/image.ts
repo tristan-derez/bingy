@@ -46,7 +46,6 @@ export async function deleteImageByUrl(url: string | null): Promise<void> {
 	// Only attempt deletion if the URL belongs to our bucket
 	if (!url.startsWith(baseUrl)) return;
 
-	// Extract the key: "https://url.com/avatars/1.webp" -> "avatars/1.webp"
 	const key = url.replace(`${baseUrl}/`, "");
 
 	try {

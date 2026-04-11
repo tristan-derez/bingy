@@ -348,6 +348,50 @@ userProfileRoutes.patch("/avatar", async (c) => {
 	}
 });
 
+// Delete user avatar (reverts to generated random avatar)
+userProfileRoutes.delete("/avatar", async (c) => {
+	const sessionUser = c.get("user");
+	if (!sessionUser) return c.json({ error: "Unauthorized" }, 401);
+
+	try {
+		const currentUser = await db.query.users.findFirst({
+			where: eq(users.id, sessionUser.id),
+		});
+
+		if (!currentUser) {
+			return c.json({ error: "USER_NOT_FOUND" }, 404);
+		}
+
+		if (currentUser.avatarUrl?.includes("api.dicebear.com")) {
+			return c.json({ avatarUrl: currentUser.avatarUrl }, 200);
+		}
+
+		const oldAvatarUrl = currentUser.avatarUrl;
+
+		const randomSeed = Math.floor(Math.random() * 100);
+		const newAvatarUrl = `https://api.dicebear.com/9.x/thumbs/svg?seed=${encodeURIComponent(`${currentUser.name}${randomSeed}`)}`;
+
+		const [updated] = await db
+			.update(users)
+			.set({ avatarUrl: newAvatarUrl })
+			.where(eq(users.id, sessionUser.id))
+			.returning({ avatarUrl: users.avatarUrl });
+
+		if (oldAvatarUrl) {
+			await deleteImageByUrl(oldAvatarUrl);
+		}
+
+		return c.json(updated, 200);
+	} catch (err) {
+		logger.error(
+			{ err, userId: sessionUser.id },
+			"Avatar deletion process failed",
+		);
+
+		return c.json({ error: "DELETE_FAILED" }, 400);
+	}
+});
+
 // Update user bio and location
 userProfileRoutes.patch(
 	"/",
