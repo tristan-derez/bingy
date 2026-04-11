@@ -4,6 +4,7 @@ import { Link, useRouter } from "@tanstack/react-router";
 import { useId, useState } from "react";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 import type { z } from "zod";
+import { TwoFactorDialog } from "@/components/auth/two-factor-dialog";
 import { toast } from "@/components/toast/toast";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -30,7 +31,6 @@ import { config } from "@/lib/env";
 import { sessionQueryOptions } from "@/lib/queries/session";
 import { m } from "@/paraglide/messages";
 import { signinFormSchema } from "@/schemas/signin-form-schema";
-import { TwoFactorDialog } from "../two-factor.dialog";
 
 export function SignInForm() {
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -154,10 +154,10 @@ export function SignInForm() {
 
 	return (
 		<>
-			<Card className="border-none shadow-transparent p-0 w-78 md:w-md lg:w-lg">
+			<Card className="border-none p-0 w-xs md:w-md lg:w-lg max-w-lg overflow-visible">
 				<MagicCard
 					gradientColor="var(--shadow-pointer)"
-					className="py-4 flex-1"
+					className="py-4 md:px-2 flex-1"
 				>
 					<CardHeader>
 						<CardTitle className="text-2xl">{m.signin_title()}</CardTitle>
@@ -178,7 +178,7 @@ export function SignInForm() {
 									<Controller
 										control={form.control}
 										name="email"
-										render={({ field }) => (
+										render={({ field, fieldState }) => (
 											<Field className="grid gap-2">
 												<FieldLabel htmlFor={`${id}-email`}>
 													{m.form_email_label()}
@@ -193,14 +193,18 @@ export function SignInForm() {
 														{...field}
 													/>
 												</FieldContent>
-												<FieldError />
+												<FieldError
+													errors={
+														fieldState.error ? [fieldState.error] : undefined
+													}
+												/>
 											</Field>
 										)}
 									/>
 									<Controller
 										control={form.control}
 										name="password"
-										render={({ field }) => (
+										render={({ field, fieldState }) => (
 											<Field className="grid gap-2">
 												<div className="flex items-center">
 													<FieldLabel htmlFor={`${id}-password`}>
@@ -222,7 +226,11 @@ export function SignInForm() {
 													autoComplete="current-password"
 													{...field}
 												/>
-												<FieldError />
+												<FieldError
+													errors={
+														fieldState.error ? [fieldState.error] : undefined
+													}
+												/>
 											</Field>
 										)}
 									/>
