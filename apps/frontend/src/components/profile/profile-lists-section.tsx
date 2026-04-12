@@ -1,24 +1,23 @@
 import { Link } from "@tanstack/react-router";
+import type { UserListsResponse } from "@/api/user-profile";
 import { ListCard } from "@/components/lists/custom-lists/list-card";
 import { LoadingCentered } from "@/components/loading/loading-centered";
-import { useUserLists } from "@/hooks/useUserProfile";
 import { m } from "@/paraglide/messages";
 
 type ProfileListsSectionProps = {
-	username: string;
+	lists: UserListsResponse["data"];
+	isLoading: boolean;
 	localeRegion: string;
 	ownProfile: boolean;
+	username: string;
 };
 
 export function ProfileListsSection({
-	username,
-	localeRegion,
+	lists,
+	isLoading,
 	ownProfile,
+	username,
 }: ProfileListsSectionProps) {
-	const { data: listsData, isLoading } = useUserLists(username, localeRegion);
-	const lists = listsData?.data ?? [];
-
-	if (lists.length === 0) return null;
 	if (isLoading) {
 		return (
 			<section className="flex flex-col gap-2 min-h-[150px] lg:min-h-[300px]">
@@ -26,6 +25,8 @@ export function ProfileListsSection({
 			</section>
 		);
 	}
+
+	if (lists.length === 0) return null;
 
 	return (
 		<section className="flex flex-col gap-2">

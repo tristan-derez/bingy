@@ -1,7 +1,7 @@
 import type { Pretty } from "shared";
 import { apiFetch } from "./fetcher";
 
-type MediaDetails = Pretty<{
+export type MediaDetails = Pretty<{
 	id: number;
 	title?: string;
 	name?: string;

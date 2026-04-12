@@ -1,29 +1,26 @@
 import { Link } from "@tanstack/react-router";
+import type { MediaDetails } from "@/api/user-profile";
 import { LoadingCentered } from "@/components/loading/loading-centered";
 import { EmptyCardSlot } from "@/components/profile/cards/empty-card-slot";
 import { ProfileWatchlistCard } from "@/components/profile/cards/profile-watchlist-card";
-import { useUserWatchlist } from "@/hooks/useUserProfile";
 import { m } from "@/paraglide/messages";
 
 type ProfileWatchlistSectionProps = {
-	username: string;
+	watchlist: MediaDetails[];
+	isLoading: boolean;
 	localeRegion: string;
 	ownProfile: boolean;
+	username: string;
 };
 
 export function ProfileWatchlistSection({
-	username,
-	localeRegion,
+	watchlist,
+	isLoading,
 	ownProfile,
+	username,
 }: ProfileWatchlistSectionProps) {
-	const { data: watchlistData, isLoading } = useUserWatchlist(
-		username,
-		localeRegion,
-	);
-	const watchlist = watchlistData?.data ?? [];
 	const emptySlots = 4 - watchlist.length;
 
-	if (watchlist.length === 0) return null;
 	if (isLoading) {
 		return (
 			<section className="flex flex-col gap-2 min-h-[150px] lg:min-h-[300px]">
@@ -31,6 +28,8 @@ export function ProfileWatchlistSection({
 			</section>
 		);
 	}
+
+	if (watchlist.length === 0) return null;
 
 	return (
 		<section className="flex flex-col gap-2">

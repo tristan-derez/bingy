@@ -1,26 +1,24 @@
 import { Link } from "@tanstack/react-router";
+import type { MediaDetails } from "@/api/user-profile";
 import { EmptyCardSlot } from "@/components/profile/cards/empty-card-slot";
 import { ProfileFavoriteCard } from "@/components/profile/cards/profile-favorite-card";
-import { useUserFavorites } from "@/hooks/useUserProfile";
 import { m } from "@/paraglide/messages";
 import { LoadingCentered } from "../loading/loading-centered";
 
 type ProfileFavoritesSectionProps = {
-	username: string;
+	favorites: MediaDetails[];
+	isLoading: boolean;
 	localeRegion: string;
 	ownProfile: boolean;
+	username: string;
 };
 
 export function ProfileFavoritesSection({
-	username,
-	localeRegion,
+	favorites,
+	isLoading,
 	ownProfile,
+	username,
 }: ProfileFavoritesSectionProps) {
-	const { data: favoritesData, isLoading } = useUserFavorites(
-		username,
-		localeRegion,
-	);
-	const favorites = favoritesData?.data ?? [];
 	const emptySlots = 4 - favorites.length;
 
 	if (isLoading) {
