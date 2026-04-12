@@ -66,26 +66,30 @@ export default function Header() {
 		return true;
 	});
 
-	const mobileBottomItems = [
+	const allMobileBottomItems = [
 		{
 			name: m.header_link_home(),
 			link: authData ? "/dashboard" : "/",
 			icon: <IconSmartHome className="h-6 w-6" />,
+			requiresAuth: false,
 		},
 		{
 			name: m.header_link_movies(),
 			link: "/movies",
 			icon: <IconMovie className="h-6 w-6" />,
+			requiresAuth: false,
 		},
 		{
 			name: m.header_link_tv_shows(),
 			link: "/tv",
 			icon: <IconDeviceTv className="h-6 w-6" />,
+			requiresAuth: false,
 		},
 		{
 			name: m.header_link_search(),
 			icon: <IconSearch className="h-6 w-6" />,
 			onClick: () => setSearchOpen(true),
+			requiresAuth: false,
 		},
 		{
 			name: authData?.user.displayName ?? "",
@@ -96,8 +100,14 @@ export default function Header() {
 					<AvatarFallback>{authData?.user.name ?? "U"}</AvatarFallback>
 				</Avatar>
 			),
+			requiresAuth: true,
 		},
-	];
+	] as const;
+
+	const mobileBottomItems = allMobileBottomItems.filter((item) => {
+		if ("requiresAuth" in item && item.requiresAuth && !authData) return false;
+		return true;
+	});
 
 	return (
 		<>
