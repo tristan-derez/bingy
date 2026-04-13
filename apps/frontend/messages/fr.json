@@ -157,6 +157,17 @@
 			}
 		}
 	],
+	"movie_details_director": [
+		{
+			"declarations": ["input gender"],
+			"selectors": ["gender"],
+			"match": {
+				"gender=male": "Réalisateur",
+				"gender=female": "Réalisatrice",
+				"gender=*": "Réalisateur"
+			}
+		}
+	],
 	"btn_jump_to_crew": "Voir l'équipe",
 	"title_crew": "Équipe de production",
 	"link_text_full_credits": "Voir le casting complet et l'équipe de production",

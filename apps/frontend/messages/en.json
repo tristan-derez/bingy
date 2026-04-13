@@ -156,6 +156,17 @@
 			}
 		}
 	],
+	"movie_details_director": [
+		{
+			"declarations": ["input gender"],
+			"selectors": ["gender"],
+			"match": {
+				"gender=male": "Director",
+				"gender=female": "Director",
+				"gender=*": "Director"
+			}
+		}
+	],
 	"movies_now_playing_title": "Movies In Theaters Now",
 	"movies_popular_title": "Popular Movies",
 	"movies_upcoming_title": "Upcoming Movies",
