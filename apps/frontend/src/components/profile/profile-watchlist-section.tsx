@@ -58,7 +58,12 @@ export function ProfileWatchlistSection({
 					);
 				})}
 				{[...Array(emptySlots)].map((_, i) => (
-					<EmptyCardSlot key={`fav-empty-${i}`} isOwnProfile={ownProfile} />
+					<EmptyCardSlot
+						key={`fav-empty-${i}`}
+						isOwnProfile={ownProfile}
+						type="watchlist"
+						username={username}
+					/>
 				))}
 			</div>
 		</section>

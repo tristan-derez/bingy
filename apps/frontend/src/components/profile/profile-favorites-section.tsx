@@ -58,7 +58,12 @@ export function ProfileFavoritesSection({
 					);
 				})}
 				{[...Array(emptySlots)].map((_, i) => (
-					<EmptyCardSlot key={`fav-empty-${i}`} isOwnProfile={ownProfile} />
+					<EmptyCardSlot
+						key={`fav-empty-${i}`}
+						isOwnProfile={ownProfile}
+						type="favorites"
+						username={username}
+					/>
 				))}
 			</div>
 		</section>
