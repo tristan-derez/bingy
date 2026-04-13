@@ -122,9 +122,7 @@ export default function Header() {
 						{authData ? (
 							<ProfileDropdown />
 						) : (
-							<NavbarButton variant="primary" to="/signin">
-								{m.header_btn_sign_in()}
-							</NavbarButton>
+							<NavbarButton to="/signin">{m.header_btn_sign_in()}</NavbarButton>
 						)}
 					</div>
 				</NavBody>
@@ -137,11 +135,7 @@ export default function Header() {
 						authData ? (
 							<ProfileDrawer />
 						) : (
-							<NavbarButton
-								variant="primary"
-								to="/signin"
-								className="text-xs py-2.5 px-2"
-							>
+							<NavbarButton to="/signin" size="sm">
 								{m.header_btn_sign_in()}
 							</NavbarButton>
 						)

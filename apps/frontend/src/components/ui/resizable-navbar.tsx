@@ -1,8 +1,10 @@
 import { Link } from "@tanstack/react-router";
+import type { VariantProps } from "class-variance-authority";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import React, { useRef, useState } from "react";
 import logo from "@/assets/bingy-icon.svg";
 import logoFull from "@/assets/bingy-icon_text.svg";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 interface NavbarProps {
@@ -164,33 +166,23 @@ export const NavbarButton = ({
 	to,
 	children,
 	className,
-	variant = "primary",
+	variant = "default",
+	size = "default",
 	...props
 }: {
 	to: string;
 	children: React.ReactNode;
-	className?: string;
-	variant?: "primary" | "secondary" | "dark" | "gradient";
-} & React.ComponentPropsWithoutRef<typeof Link>) => {
-	const baseStyles =
-		"px-2 py-2 rounded-md bg-white button bg-white text-black text-sm font-bold relative cursor-pointer hover:-translate-y-0.5 transition duration-200 inline-block text-center";
-
-	const variantStyles = {
-		primary:
-			"shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]",
-		secondary: "bg-transparent shadow-none text-foreground",
-		dark: "bg-black text-white shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]",
-		gradient:
-			"bg-gradient-to-b from-blue-500 to-blue-700 text-white shadow-[0px_2px_0px_0px_rgba(255,255,255,0.3)_inset]",
-	};
-
+} & VariantProps<typeof buttonVariants> &
+	React.ComponentPropsWithoutRef<typeof Link>) => {
 	return (
-		<Link
-			to={to}
-			className={cn(baseStyles, variantStyles[variant], className)}
-			{...props}
-		>
-			{children}
+		<Link to={to} {...props}>
+			<Button
+				variant={variant}
+				size={size}
+				className={cn("cursor-pointer", className)}
+			>
+				{children}
+			</Button>
 		</Link>
 	);
 };
