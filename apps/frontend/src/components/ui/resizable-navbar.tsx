@@ -95,7 +95,7 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
 		<motion.div
 			onMouseLeave={() => setHovered(null)}
 			className={cn(
-				"hidden flex-row items-center justify-center space-x-2 text-sm font-medium transition duration-200 lg:flex",
+				"hidden flex-row items-center justify-center text-sm font-medium transition duration-200 lg:flex",
 				className,
 			)}
 		>
@@ -106,7 +106,7 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
 						type="button"
 						onMouseEnter={() => setHovered(idx)}
 						onClick={item.onClick}
-						className="relative px-4 py-2 flex items-center gap-2 hover:cursor-pointer"
+						className="relative px-2 py-2 flex items-center gap-1 hover:cursor-pointer"
 					>
 						{hovered === idx && (
 							<motion.div
@@ -125,7 +125,7 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
 						to={item.link}
 						onMouseEnter={() => setHovered(idx)}
 						onClick={onItemClick}
-						className="relative px-4 py-2 flex items-center gap-2 [&.active]:font-bold"
+						className="relative px-4 py-2 flex items-center gap-1 [&.active]:font-bold"
 					>
 						{hovered === idx && (
 							<motion.div
@@ -173,7 +173,7 @@ export const NavbarButton = ({
 	variant?: "primary" | "secondary" | "dark" | "gradient";
 } & React.ComponentPropsWithoutRef<typeof Link>) => {
 	const baseStyles =
-		"px-4 py-2 rounded-md bg-white button bg-white text-black text-sm font-bold relative cursor-pointer hover:-translate-y-0.5 transition duration-200 inline-block text-center";
+		"px-2 py-2 rounded-md bg-white button bg-white text-black text-sm font-bold relative cursor-pointer hover:-translate-y-0.5 transition duration-200 inline-block text-center";
 
 	const variantStyles = {
 		primary:

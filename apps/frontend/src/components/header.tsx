@@ -115,23 +115,16 @@ export default function Header() {
 			<Navbar>
 				<NavBody>
 					<NavbarLogo />
-					<div className="flex items-center gap-2">
-						<NavItems items={desktopNavItems} />
-					</div>
-					<div className="flex items-center gap-4">
+					<NavItems items={desktopNavItems} />
+					<div className="flex items-center gap-1">
 						<LocaleRegionDropdown />
 
 						{authData ? (
 							<ProfileDropdown />
 						) : (
-							<>
-								<NavbarButton variant="secondary" to="/signin">
-									{m.header_btn_sign_in()}
-								</NavbarButton>
-								<NavbarButton variant="primary" to="/signup">
-									{m.header_btn_get_started()}
-								</NavbarButton>
-							</>
+							<NavbarButton variant="primary" to="/signin">
+								{m.header_btn_sign_in()}
+							</NavbarButton>
 						)}
 					</div>
 				</NavBody>

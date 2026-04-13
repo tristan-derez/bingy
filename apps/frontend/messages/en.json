@@ -464,7 +464,6 @@
 	"dropdown_support_text": "Support",
 	"dropdown_logout_text": "Log out",
 	"header_btn_sign_in": "Sign In",
-	"header_btn_get_started": "Get Started",
 	"person_also_known": "Also known as:",
 	"add_watchlist_media_tooltip": "Add to your watchlist",
 	"toast_watchlist_media_success": "{media} added to your watchlist",
