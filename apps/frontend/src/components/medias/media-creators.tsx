@@ -15,7 +15,7 @@ export function MediaCreators({ creators, getRoleLabel }: MediaCreatorsProps) {
 	if (creators.length === 0) return null;
 
 	return (
-		<div className="flex flex-wrap gap-x-8 gap-y-4">
+		<div className="flex flex-wrap gap-x-6 gap-y-2">
 			{creators.slice(0, 3).map((person) => (
 				<div className="flex flex-col min-w-0" key={person.id}>
 					<Link
