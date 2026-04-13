@@ -145,7 +145,11 @@ export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 					<AddToHistoryItem movie={movie} tvShow={tvShow} username={username} />
 
 					<DropdownMenuSeparator />
-					<RemoveFromWatchlistItem movie={movie} tvShow={tvShow} />
+					<RemoveFromWatchlistItem
+						movie={movie}
+						tvShow={tvShow}
+						username={username}
+					/>
 					<RemoveRatingDropdownItem
 						movie={movie}
 						tvShow={tvShow}

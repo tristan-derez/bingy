@@ -110,6 +110,7 @@ export function ListCard({ item, username, isOwnProfile }: ListCardProps) {
 									listId={item.id}
 									listName={item.name}
 									size="icon-sm"
+									username={username}
 								/>
 							</div>
 						</CardAction>

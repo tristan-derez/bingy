@@ -24,6 +24,7 @@ interface DeleteListButtonProps {
 	listName: string;
 	size: "icon-lg" | "icon-sm";
 	onRedirect?: () => void;
+	username: string;
 }
 
 export function DeleteListButton({
@@ -31,9 +32,10 @@ export function DeleteListButton({
 	listName,
 	size,
 	onRedirect,
+	username,
 }: DeleteListButtonProps) {
 	const [open, setOpen] = useState(false);
-	const { mutate: deleteList, isPending } = useDeleteList();
+	const { mutate: deleteList, isPending } = useDeleteList(username);
 
 	const handleDelete = () => {
 		deleteList(listId);

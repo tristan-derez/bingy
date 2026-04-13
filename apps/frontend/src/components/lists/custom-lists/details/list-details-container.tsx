@@ -81,6 +81,7 @@ export function ListDetailsContainer({
 									listId={list.id}
 									listName={list.name}
 									size="icon-lg"
+									username={username}
 									onRedirect={() =>
 										navigate({
 											to: "/@{$username}/lists",

@@ -74,7 +74,7 @@ export function useAddToFavorites(username: string) {
 	});
 }
 
-export function useRemoveFromFavorites() {
+export function useRemoveFromFavorites(username: string) {
 	const queryClient = useQueryClient();
 
 	return useMutation({
@@ -91,7 +91,7 @@ export function useRemoveFromFavorites() {
 				queryKey: ["favorites"],
 			});
 			queryClient.invalidateQueries({
-				queryKey: ["user-profile"],
+				queryKey: ["user-profile", username],
 			});
 
 			toast.success({

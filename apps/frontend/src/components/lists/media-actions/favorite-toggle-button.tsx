@@ -36,7 +36,7 @@ export function FavoriteToggleButton({
 }: FavoriteToggleButtonProps) {
 	const [showTvConfirmDialog, setShowTvConfirmDialog] = useState(false);
 	const addToFavorites = useAddToFavorites(username);
-	const removeFromFavorites = useRemoveFromFavorites();
+	const removeFromFavorites = useRemoveFromFavorites(username);
 	const tmdbId = movie?.id ?? tvShow?.id ?? 0;
 	const mediaType = movie ? "movie" : "tv";
 	const { data: favoriteData } = useFavorite(

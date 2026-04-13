@@ -53,7 +53,7 @@ function EditListPage() {
 	const navigate = useNavigate();
 	const router = useRouter();
 	const onBack = () => router.history.back();
-	const updateList = useUpdateList();
+	const updateList = useUpdateList(username);
 
 	const {
 		data: list,

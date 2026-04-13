@@ -26,7 +26,7 @@ export function useUserProfileInfo(username: string) {
 
 export function useUserActivity(username: string, language = "en-US") {
 	return useQuery({
-		queryKey: ["user-profile", "activity", username, language],
+		queryKey: ["user-profile", username, "activity", language],
 		queryFn: () => fetchUserActivity(username, language),
 		staleTime: 1000 * 60 * 5,
 		enabled: !!username,
@@ -35,7 +35,7 @@ export function useUserActivity(username: string, language = "en-US") {
 
 export function useUserFavorites(username: string, language = "en-US") {
 	return useQuery({
-		queryKey: ["user-profile", "favorites", username, language],
+		queryKey: ["user-profile", username, "favorites", language],
 		queryFn: () => fetchUserFavorites(username, language),
 		staleTime: 1000 * 60 * 10,
 		enabled: !!username,
@@ -44,7 +44,7 @@ export function useUserFavorites(username: string, language = "en-US") {
 
 export function useUserWatchlist(username: string, language = "en-US") {
 	return useQuery({
-		queryKey: ["user-profile", "watchlist", username, language],
+		queryKey: ["user-profile", username, "watchlist", language],
 		queryFn: () => fetchUserWatchlist(username, language),
 		staleTime: 1000 * 60 * 10,
 		enabled: !!username,
@@ -53,7 +53,7 @@ export function useUserWatchlist(username: string, language = "en-US") {
 
 export function useUserLists(username: string, language = "en-US") {
 	return useQuery({
-		queryKey: ["user-profile", "lists", username, language],
+		queryKey: ["user-profile", username, "lists", language],
 		queryFn: () => fetchUserLists(username, language),
 		staleTime: 1000 * 60 * 10,
 		enabled: !!username,

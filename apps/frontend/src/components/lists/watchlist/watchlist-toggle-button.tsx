@@ -38,7 +38,7 @@ export function WatchlistToggleButton({
 	const { authData } = useRouteContext({ from: "__root__" });
 
 	const addToWatchlist = useAddMediaToWatchlist(username);
-	const removeFromWatchlist = useRemoveFromWatchlist();
+	const removeFromWatchlist = useRemoveFromWatchlist(username);
 
 	const mediaType = movie ? "movie" : "tv";
 	const mediaId = movie?.id ?? tvShow?.id;
