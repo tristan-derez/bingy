@@ -3,6 +3,7 @@ import { forwardRef } from "react";
 import type { Schemas } from "shared";
 import fallbackPoster from "@/assets/media-image-placeholder.jpg";
 import { localeAtom } from "@/lib/atoms/locale";
+import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { getTmdbImageUrl } from "@/utils/utils";
 
@@ -53,7 +54,7 @@ export const SearchDialogCard = forwardRef<
 					</p>
 
 					<p className="text-xs text-muted-foreground truncate">
-						{year ? `${year} - ` : null} Movie
+						{year ? `${year} - ` : null} {m.search_dialog_card_movie()}
 					</p>
 				</div>
 			</div>
@@ -92,7 +93,7 @@ export const SearchDialogCard = forwardRef<
 					<p className="font-medium text-xs md:text-sm truncate">{tv.name}</p>
 
 					<p className="text-xs text-muted-foreground truncate">
-						{year ? `${year} - ` : null} TV show
+						{year ? `${year} - ` : null} {m.search_dialog_card_tv()}
 					</p>
 				</div>
 			</div>

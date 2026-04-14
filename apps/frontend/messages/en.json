@@ -876,5 +876,7 @@
 	],
 	"empty_profile_title": "No activity yet",
 	"empty_profile_desc_own": "Your profile will come to life as you explore and discover content",
-	"empty_profile_desc_other": "This user has no recent activity, check back later to see what they've been up to"
+	"empty_profile_desc_other": "This user has no recent activity, check back later to see what they've been up to",
+	"search_dialog_card_movie": "Movie",
+	"search_dialog_card_tv": "TV show"
 }

@@ -868,5 +868,7 @@
 	],
 	"empty_profile_title": "Pas encore d'activité",
 	"empty_profile_desc_own": "Ton profil prendra vie au fur et à mesure que tu explores et découvres du contenu",
-	"empty_profile_desc_other": "Cet utilisateur n'a pas d'activité récente"
+	"empty_profile_desc_other": "Cet utilisateur n'a pas d'activité récente",
+	"search_dialog_card_movie": "Film",
+	"search_dialog_card_tv": "Série TV"
 }
