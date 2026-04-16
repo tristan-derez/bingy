@@ -878,5 +878,16 @@
 	"empty_profile_desc_own": "Your profile will come to life as you explore and discover content",
 	"empty_profile_desc_other": "This user has no recent activity, check back later to see what they've been up to",
 	"search_dialog_card_movie": "Movie",
-	"search_dialog_card_tv": "TV show"
+	"search_dialog_card_tv": "TV show",
+	"profile_page_following": "Following",
+	"profile_page_followers": "Followers",
+	"profile_page_following_dialog_title": "Following",
+	"profile_page_followers_dialog_title": "Followers",
+	"profile_page_following_dialog_description": "People you follow",
+	"profile_page_followers_dialog_description": "People who follow you",
+	"profile_page_following_empty": "No one followed yet",
+	"profile_page_followers_empty": "No followers yet",
+	"profile_page_follow_button": "Follow",
+	"profile_page_unfollow_button": "Unfollow",
+	"profile_page_follow_button_loading": "Loading..."
 }

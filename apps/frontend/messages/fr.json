@@ -870,5 +870,16 @@
 	"empty_profile_desc_own": "Ton profil prendra vie au fur et à mesure que tu explores et découvres du contenu",
 	"empty_profile_desc_other": "Cet utilisateur n'a pas d'activité récente",
 	"search_dialog_card_movie": "Film",
-	"search_dialog_card_tv": "Série TV"
+	"search_dialog_card_tv": "Série TV",
+	"profile_page_following": "Abonnements",
+	"profile_page_followers": "Abonnés",
+	"profile_page_following_dialog_title": "Abonnements",
+	"profile_page_followers_dialog_title": "Abonnés",
+	"profile_page_following_dialog_description": "Personnes que tu suis",
+	"profile_page_followers_dialog_description": "Personnes qui te suivent",
+	"profile_page_following_empty": "Aucun abonnement pour le moment",
+	"profile_page_followers_empty": "Aucun abonné pour le moment",
+	"profile_page_follow_button": "Suivre",
+	"profile_page_unfollow_button": "Ne plus suivre",
+	"profile_page_follow_button_loading": "Chargement..."
 }

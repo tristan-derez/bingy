@@ -1,4 +1,6 @@
 import { IconEdit, IconLocation } from "@tabler/icons-react";
+import { FollowButton } from "@/components/follow-button";
+import { FollowStats } from "@/components/follow-stats";
 import { ProfilePictureDialog } from "@/components/profile-picture-dialog";
 import { Button } from "@/components/ui/button";
 import { m } from "@/paraglide/messages";
@@ -38,7 +40,9 @@ export function ProfileInfos({
 								{m.profile_page_edit_btn_label()}
 							</span>
 						</Button>
-					) : null}
+					) : (
+						<FollowButton />
+					)}
 				</div>
 				<p className="text-muted-foreground text-pretty">
 					{bio ?? m.profile_page_user_bio_empty({ username: displayName })}
@@ -49,6 +53,7 @@ export function ProfileInfos({
 						<p>{location}</p>
 					</div>
 				) : null}
+				<FollowStats />
 			</div>
 		</div>
 	);
