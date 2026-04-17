@@ -46,6 +46,7 @@ userProfileRoutes.get(
 				name: true,
 				displayName: true,
 				avatarUrl: true,
+				bannerUrl: true,
 				bio: true,
 				location: true,
 			},
@@ -429,5 +430,79 @@ userProfileRoutes.patch(
 		}
 	},
 );
+
+// Update user banner URL
+userProfileRoutes.patch(
+	"/banner",
+	zValidator(
+		"json",
+		z.object({
+			bannerUrl: z.string(),
+		}),
+	),
+	async (c) => {
+		const sessionUser = c.get("user");
+		if (!sessionUser) return c.json({ error: "Unauthorized" }, 401);
+		const { bannerUrl } = c.req.valid("json");
+
+		try {
+			const [updatedUser] = await db
+				.update(users)
+				.set({
+					bannerUrl,
+					updatedAt: new Date(),
+				})
+				.where(eq(users.id, sessionUser.id))
+				.returning({ bannerUrl: users.bannerUrl });
+
+			if (!updatedUser) {
+				return c.json({ error: "USER_NOT_FOUND" }, 404);
+			}
+
+			return c.json(updatedUser);
+		} catch (err) {
+			logger.error(err, "Error while updating user banner");
+			return c.json({ error: "FAILED_BANNER_UPDATE" }, 500);
+		}
+	},
+);
+
+// Delete user banner URL
+userProfileRoutes.delete("/banner", async (c) => {
+	const sessionUser = c.get("user");
+	if (!sessionUser) return c.json({ error: "Unauthorized" }, 401);
+
+	try {
+		const currentUser = await db.query.users.findFirst({
+			where: eq(users.id, sessionUser.id),
+		});
+
+		if (!currentUser) {
+			return c.json({ error: "USER_NOT_FOUND" }, 404);
+		}
+
+		const oldBannerUrl = currentUser.bannerUrl;
+
+		await db
+			.update(users)
+			.set({
+				bannerUrl: null,
+				updatedAt: new Date(),
+			})
+			.where(eq(users.id, sessionUser.id));
+
+		if (oldBannerUrl) {
+			await deleteImageByUrl(oldBannerUrl);
+		}
+
+		return c.body(null, 204);
+	} catch (err) {
+		logger.error(
+			{ err, userId: sessionUser.id },
+			"Banner deletion process failed",
+		);
+		return c.json({ error: "FAILED_BANNER_DELETE" }, 500);
+	}
+});
 
 export default userProfileRoutes;
