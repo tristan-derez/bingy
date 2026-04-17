@@ -14,7 +14,7 @@ export function ProfilePictureDialog({
 		<Dialog>
 			<DialogTrigger
 				render={
-					<button type="button" className="cursor-pointer">
+					<button type="button" className="hover:opacity-60 transition-opacity">
 						<ProfilePicture avatar={avatar} displayName={displayName} />
 					</button>
 				}
