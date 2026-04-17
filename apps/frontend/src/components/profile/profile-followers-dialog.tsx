@@ -23,10 +23,9 @@ export function ProfileFollowersDialog({ users }: ProfileFollowersDialogProps) {
 		<Dialog>
 			<DialogTrigger
 				render={
-					<Button variant="ghost" className="flex flex-row gap-1 items-center">
-						<span className="font-semibold">{users.length ?? 0}</span>
-						<span className="text-muted-foreground">
-							{m.profile_page_followers()}
+					<Button variant="link" className="flex flex-row items-center p-0">
+						<span className="font-semibold">
+							{users.length ?? 0} {m.profile_page_followers()}
 						</span>
 					</Button>
 				}
