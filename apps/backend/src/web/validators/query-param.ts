@@ -28,7 +28,7 @@ export const tvEpisodeGroupId = z.object({
 });
 
 export const languageQuerySchema = z.object({
-	language: z.string().default("en-US"),
+	language: z.string().optional(),
 });
 
 export const paginationQuerySchema = z.object({
