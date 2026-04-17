@@ -34,8 +34,10 @@ export function SearchDialog({
 }: SearchDialogProps) {
 	const [query, setQuery] = useState("");
 	const [selectedIndex, setSelectedIndex] = useState(0);
+	const [isTyping, setIsTyping] = useState(false);
 	const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
 	const localeRegion = useAtomValue(localeRegionAtom);
+	const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
 	// Parse filter from query (!movie, !tv, or default to "all")
 	const { filter, cleanQuery } = useMemo(() => {
@@ -58,15 +60,16 @@ export function SearchDialog({
 	// Use different hooks based on filter (they handle debouncing internally)
 	const multiSearch = useSearchQuery<
 		Schemas.PaginatedResponse<Schemas.MediaMulti>
-	>(filter === "all" ? cleanQuery : "", { language: localeRegion });
+	>(cleanQuery, { language: localeRegion }, { enabled: filter === "all" });
 
 	const movieSearch = useSearchMovieQuery<
 		Schemas.PaginatedResponse<Schemas.MovieMedia>
-	>(filter === "movie" ? cleanQuery : "", { language: localeRegion });
+	>(cleanQuery, { language: localeRegion }, { enabled: filter === "movie" });
 
 	const tvSearch = useSearchTvQuery<Schemas.PaginatedResponse<Schemas.TvMedia>>(
-		filter === "tv" ? cleanQuery : "",
+		cleanQuery,
 		{ language: localeRegion },
+		{ enabled: filter === "tv" },
 	);
 
 	// Get results based on filter
@@ -97,6 +100,15 @@ export function SearchDialog({
 		setSelectedIndex(0);
 	}, [results]);
 
+	// Cleanup typing timeout on unmount
+	useEffect(() => {
+		return () => {
+			if (typingTimeoutRef.current) {
+				clearTimeout(typingTimeoutRef.current);
+			}
+		};
+	}, []);
+
 	// Scroll selected item into view
 	useEffect(() => {
 		const selectedElement = itemRefs.current[selectedIndex];
@@ -114,6 +126,10 @@ export function SearchDialog({
 		onSelectMedia?.(item);
 		onOpenChange(false);
 		setQuery("");
+		setIsTyping(false);
+		if (typingTimeoutRef.current) {
+			clearTimeout(typingTimeoutRef.current);
+		}
 	};
 
 	const filterLabel = useMemo(() => {
@@ -155,7 +171,16 @@ export function SearchDialog({
 				<Input
 					type="text"
 					value={query}
-					onChange={(e) => setQuery(e.target.value)}
+					onChange={(e) => {
+						setQuery(e.target.value);
+						setIsTyping(true);
+						if (typingTimeoutRef.current) {
+							clearTimeout(typingTimeoutRef.current);
+						}
+						typingTimeoutRef.current = setTimeout(() => {
+							setIsTyping(false);
+						}, 300);
+					}}
 					onKeyDown={handleKeyDown}
 					placeholder={m.search_dialog_input_placeholder()}
 					className="px-10 py-5"
@@ -184,7 +209,7 @@ export function SearchDialog({
 					</div>
 				) : null}
 
-				{!loading && cleanQuery && results.length === 0 ? (
+				{!loading && !isTyping && cleanQuery && results.length === 0 ? (
 					<p className="text-center text-muted-foreground py-8">
 						{m.search_dialog_no_results()}
 					</p>
@@ -211,7 +236,7 @@ export function SearchDialog({
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className="w-full max-w-sm md:max-w-md lg:max-w-lg overflow-hidden">
+			<DialogContent className="w-full max-w-sm md:max-w-md lg:max-w-lg overflow-hidden z-150">
 				<DialogHeader>
 					<DialogTitle>{m.search_dialog_title()}</DialogTitle>
 				</DialogHeader>
