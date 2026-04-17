@@ -9,18 +9,15 @@ export function ProfileBanner({ backgroundImage }: ProfileBannerProps) {
 
 	return (
 		<div
-			className="absolute top-0 left-1/2 -translate-x-1/2 w-full ring-0 border-none shadow-none
+			className="absolute top-0 left-0 right-0 mx-auto w-full
 				max-w-full md:max-w-[480px] lg:max-w-[640px] xl:max-w-[711px]
 				h-[180px] md:h-[270px] lg:h-[360px] xl:h-[400px]
 				-z-10 overflow-hidden"
 		>
-			<div
-				className="absolute inset-0"
-				style={{
-					backgroundImage: `url(${backgroundImage ?? backgroundPlaceholder})`,
-					backgroundSize: "cover",
-					backgroundPosition: "center",
-				}}
+			<img
+				src={backgroundImage ?? backgroundPlaceholder}
+				alt=""
+				className="absolute inset-0 w-full h-full object-cover"
 			/>
 
 			<div
