@@ -45,7 +45,9 @@ export function ProfileInfos({
 					)}
 				</div>
 				<p className="text-muted-foreground text-pretty">
-					{bio ?? m.profile_page_user_bio_empty({ username: displayName })}
+					{bio?.trim()
+						? bio
+						: m.profile_page_user_bio_empty({ username: displayName })}
 				</p>
 				{location ? (
 					<div className="flex flex-row gap-2 items-center text-sm">
