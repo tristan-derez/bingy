@@ -77,11 +77,13 @@ export function useTvResources<T>(
 	id: number,
 	endpoint: TvEndPoints,
 	params?: TvParams,
+	options?: Omit<UseQueryOptions<T>, "queryKey" | "queryFn">,
 ) {
 	return useQuery<T>({
 		queryKey: ["tv", id, endpoint, params],
 		queryFn: () => fetchTvResources(id, { endpoint, params }),
 		staleTime: 1000 * 60 * 20,
+		...options,
 	});
 }
 
