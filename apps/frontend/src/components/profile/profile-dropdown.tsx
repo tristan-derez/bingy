@@ -189,7 +189,7 @@ export const ProfileDropdown = ({
 							{m.dropdown_settings_text()}
 						</DropdownMenuItem>
 						<DropdownMenuSeparator className="bg-border" />
-						<DropdownMenuItem>
+						<DropdownMenuItem className="hover:cursor-pointer">
 							<a
 								href="https://github.com/tristan-derez/bingy"
 								target="_blank"
