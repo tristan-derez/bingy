@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Schemas } from "shared";
+import { BackdropImagesEmptyState } from "@/components/auth/banner-images-empty-state";
 import {
 	Dialog,
 	DialogContent,
@@ -12,7 +13,6 @@ import { useTvResources } from "@/hooks/useTv";
 import { cn } from "@/lib/utils";
 import { m } from "@/paraglide/messages";
 import { getTmdbImageUrl } from "@/utils/utils";
-import { BackdropImagesEmptyState } from "./banner-images-empty-state";
 
 interface BannerImageSelectDialogProps {
 	open: boolean;
@@ -147,7 +147,7 @@ export function BannerImageSelectDialog({
 					<DialogTitle>{m.banner_image_select_title()}</DialogTitle>
 				</DialogHeader>
 
-				<div className="mt-4 overflow-y-auto max-h-[60vh]">
+				<div className="mt-4 overflow-y-auto max-h-[60vh] no-scrollbar">
 					{isLoading ? (
 						<div className="flex justify-center py-8">
 							<LoaderFive text={m.banner_image_select_loading()} />
@@ -157,7 +157,7 @@ export function BannerImageSelectDialog({
 					{!isLoading && !hasBackdrops ? <BackdropImagesEmptyState /> : null}
 
 					{!isLoading && hasBackdrops ? (
-						<div className="grid grid-cols-1 md:grid-cols-2 gap-3 p-1">
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-2 p-1">
 							{validBackdrops.map((image, index) => (
 								<button
 									key={image.file_path}
@@ -167,7 +167,7 @@ export function BannerImageSelectDialog({
 									type="button"
 									onClick={() => handleImageSelect(image.file_path)}
 									className={cn(
-										"relative aspect-video overflow-hidden rounded-lg border transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
+										"relative aspect-video overflow-hidden rounded-lg border transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 select-none",
 										index === selectedIndex
 											? "border-primary ring-2 ring-primary ring-offset-2"
 											: "border-border hover:border-primary",

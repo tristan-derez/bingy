@@ -164,7 +164,7 @@ export function SearchDialog({
 	);
 
 	const content = (
-		<div className="flex flex-col gap-2">
+		<div className="flex flex-col gap-2 overflow-hidden">
 			{/* Search Input */}
 			<div className="relative">
 				<IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -202,7 +202,7 @@ export function SearchDialog({
 				</div>
 			) : null}
 			{/* Results */}
-			<div className="max-h-[60vh] overflow-y-auto scrollbar-hide">
+			<div className="max-h-[60vh] overflow-y-auto no-scrollbar">
 				{loading ? (
 					<div className="flex justify-center py-8">
 						<LoaderFive text={m.loader_text_searching()} />

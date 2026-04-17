@@ -39,7 +39,7 @@ export const SearchDialogCard = forwardRef<
 				}}
 				tabIndex={0}
 				role="button"
-				className={`flex w-full items-center gap-2 md:gap-3 p-2 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 overflow-hidden ${
+				className={`flex w-full items-center gap-2 p-2 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
 					isSelected ? "bg-accent" : "hover:bg-accent"
 				}`}
 			>
@@ -48,7 +48,7 @@ export const SearchDialogCard = forwardRef<
 					alt={movie.title}
 					className="w-10 md:w-12 h-15 md:h-18 object-cover aspect-2/3 rounded shrink-0"
 				/>
-				<div className="flex-1 min-w-0">
+				<div className="flex-1 max-w-full min-w-0">
 					<p className="font-medium text-xs md:text-sm truncate">
 						{movie.title}
 					</p>
@@ -80,7 +80,7 @@ export const SearchDialogCard = forwardRef<
 				}}
 				tabIndex={0}
 				role="button"
-				className={`flex w-full items-center gap-2 md:gap-3 p-2 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 overflow-hidden ${
+				className={`flex w-full items-center gap-2 p-2 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
 					isSelected ? "bg-accent" : "hover:bg-accent"
 				}`}
 			>
@@ -89,7 +89,7 @@ export const SearchDialogCard = forwardRef<
 					alt={tv.name}
 					className="w-10 md:w-12 h-15 md:h-18 object-cover aspect-2/3 rounded shrink-0"
 				/>
-				<div className="flex-1 min-w-0">
+				<div className="flex-1 max-w-full min-w-0">
 					<p className="font-medium text-xs md:text-sm truncate">{tv.name}</p>
 
 					<p className="text-xs text-muted-foreground truncate">
