@@ -63,10 +63,10 @@ export function EditProfileBanner({ bannerUrl }: EditProfileBannerProps) {
 					}}
 				/>
 
-				<div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+				<div className="absolute inset-0 bg-black/40 opacity-100 transition-opacity flex items-center justify-center gap-3">
 					<button
 						type="button"
-						className="p-2 rounded-full bg-black/60 text-white hover:bg-black/80 transition-colors disabled:opacity-50"
+						className="p-2 rounded-full bg-black/60 text-white hover:bg-white/30 transition-colors disabled:opacity-50"
 						onClick={handleEditClick}
 						disabled={updateBanner.isPending}
 					>
