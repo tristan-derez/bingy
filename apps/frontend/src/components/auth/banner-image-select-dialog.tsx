@@ -1,3 +1,4 @@
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { Schemas } from "shared";
 import {
 	Dialog,
@@ -8,6 +9,7 @@ import {
 import { LoaderFive } from "@/components/ui/loader";
 import { useMovieResource } from "@/hooks/useMovies";
 import { useTvResources } from "@/hooks/useTv";
+import { cn } from "@/lib/utils";
 import { m } from "@/paraglide/messages";
 import { getTmdbImageUrl } from "@/utils/utils";
 import { BackdropImagesEmptyState } from "./banner-images-empty-state";
@@ -27,6 +29,9 @@ export function BannerImageSelectDialog({
 	mediaType,
 	onSelectImage,
 }: BannerImageSelectDialogProps) {
+	const [selectedIndex, setSelectedIndex] = useState(0);
+	const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
 	const { data: movieImages, isLoading: isLoadingMovie } =
 		useMovieResource<Schemas.MovieImages>(
 			mediaId ?? 0,
@@ -50,15 +55,94 @@ export function BannerImageSelectDialog({
 
 	const isLoading = isLoadingMovie || isLoadingTv;
 
-	const handleImageSelect = (filePath: string | null) => {
-		if (!filePath) return;
-		onSelectImage(filePath);
-		onOpenChange(false);
-	};
+	// Reset selected index when dialog opens or images change
+	useEffect(() => {
+		setSelectedIndex(0);
+	}, [open, backdrops]);
+
+	// Scroll selected item into view
+	useEffect(() => {
+		const selectedElement = itemRefs.current[selectedIndex];
+		if (selectedElement) {
+			selectedElement.scrollIntoView({ block: "nearest", behavior: "smooth" });
+		}
+	}, [selectedIndex]);
+
+	const handleImageSelect = useCallback(
+		(filePath: string | null) => {
+			if (!filePath) return;
+			onSelectImage(filePath);
+			onOpenChange(false);
+		},
+		[onSelectImage, onOpenChange],
+	);
+
+	// Filter out items without file_path for keyboard navigation
+	const validBackdrops =
+		backdrops?.filter((image): image is typeof image & { file_path: string } =>
+			Boolean(image.file_path),
+		) ?? [];
+
+	// Grid navigation: 2 columns on md+ screens
+	const COLS = 2;
+
+	// Keyboard navigation handler
+	const handleKeyDown = useCallback(
+		(e: React.KeyboardEvent) => {
+			if (validBackdrops.length === 0) return;
+
+			switch (e.key) {
+				case "ArrowDown":
+					e.preventDefault();
+					setSelectedIndex((prev) => {
+						const next = prev + COLS;
+						return next < validBackdrops.length ? next : prev;
+					});
+					break;
+				case "ArrowUp":
+					e.preventDefault();
+					setSelectedIndex((prev) => {
+						const next = prev - COLS;
+						return next >= 0 ? next : prev;
+					});
+					break;
+				case "ArrowRight":
+					e.preventDefault();
+					setSelectedIndex((prev) => {
+						// Don't wrap to next row, only move right within same row
+						const currentRow = Math.floor(prev / COLS);
+						const next = prev + 1;
+						const nextRow = Math.floor(next / COLS);
+						return nextRow === currentRow && next < validBackdrops.length
+							? next
+							: prev;
+					});
+					break;
+				case "ArrowLeft":
+					e.preventDefault();
+					setSelectedIndex((prev) => {
+						// Don't wrap to previous row, only move left within same row
+						const currentRow = Math.floor(prev / COLS);
+						const next = prev - 1;
+						const nextRow = Math.floor(next / COLS);
+						return nextRow === currentRow && next >= 0 ? next : prev;
+					});
+					break;
+				case "Enter":
+					e.preventDefault();
+					handleImageSelect(validBackdrops[selectedIndex]?.file_path ?? null);
+					break;
+			}
+		},
+		[validBackdrops, selectedIndex, handleImageSelect],
+	);
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className="w-full max-w-sm md:max-w-md lg:max-w-lg overflow-hidden max-h-[80vh] z-150">
+			<DialogContent
+				className="w-full max-w-sm md:max-w-md lg:max-w-lg overflow-hidden max-h-[80vh] z-150"
+				onKeyDown={handleKeyDown}
+			>
 				<DialogHeader>
 					<DialogTitle>{m.banner_image_select_title()}</DialogTitle>
 				</DialogHeader>
@@ -74,25 +158,29 @@ export function BannerImageSelectDialog({
 
 					{!isLoading && hasBackdrops ? (
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-3 p-1">
-							{backdrops.map((image) =>
-								image.file_path ? (
-									<button
-										key={image.file_path}
-										type="button"
-										onClick={() => handleImageSelect(image.file_path)}
-										className="relative aspect-video overflow-hidden rounded-lg border border-border hover:border-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-									>
-										<img
-											src={
-												getTmdbImageUrl(image.file_path, "w500") ?? undefined
-											}
-											alt="Backdrop"
-											className="w-full h-full object-cover"
-											loading="lazy"
-										/>
-									</button>
-								) : null,
-							)}
+							{validBackdrops.map((image, index) => (
+								<button
+									key={image.file_path}
+									ref={(el) => {
+										itemRefs.current[index] = el;
+									}}
+									type="button"
+									onClick={() => handleImageSelect(image.file_path)}
+									className={cn(
+										"relative aspect-video overflow-hidden rounded-lg border transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
+										index === selectedIndex
+											? "border-primary ring-2 ring-primary ring-offset-2"
+											: "border-border hover:border-primary",
+									)}
+								>
+									<img
+										src={getTmdbImageUrl(image.file_path, "w500") ?? undefined}
+										alt="Backdrop"
+										className="w-full h-full object-cover"
+										loading="lazy"
+									/>
+								</button>
+							))}
 						</div>
 					) : null}
 				</div>
