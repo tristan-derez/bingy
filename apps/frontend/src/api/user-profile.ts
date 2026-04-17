@@ -23,6 +23,7 @@ export type UserProfileInfoResponse = Pretty<{
 	name: string;
 	displayName: string;
 	avatarUrl: string | null;
+	bannerUrl: string | null;
 	bio?: string | null;
 	location?: string | null;
 }>;
@@ -101,6 +102,14 @@ export type UpdateUserProfileResponse = Pretty<{
 		bio: string | null;
 		location: string | null;
 	};
+}>;
+
+export type UpdateBannerPayload = Pretty<{
+	bannerUrl: string;
+}>;
+
+export type UpdateBannerResponse = Pretty<{
+	bannerUrl: string | null;
 }>;
 
 export const fetchUserProfileInfo = async (username: string) => {
@@ -184,4 +193,18 @@ export const updateAvatar = async (file: File) => {
 		body: formData,
 	});
 	return res;
+};
+
+export const updateBanner = async (payload: UpdateBannerPayload) => {
+	const res = await apiFetch<UpdateBannerResponse>("/user/banner", {
+		method: "PATCH",
+		body: payload,
+	});
+	return res;
+};
+
+export const deleteBanner = async () => {
+	await apiFetch<void>("/user/banner", {
+		method: "DELETE",
+	});
 };

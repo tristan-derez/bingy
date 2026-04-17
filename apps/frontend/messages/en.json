@@ -752,6 +752,10 @@
 	"toast_update_avatar_error": "Something went wrong while uploading image, try again",
 	"toast_delete_avatar_success": "Avatar removed succesfully",
 	"toast_delete_avatar_error": "Something went wrong while removing avatar, try again",
+	"toast_update_banner_success": "Banner updated successfully",
+	"toast_update_banner_error": "Something went wrong while updating banner, try again",
+	"toast_delete_banner_success": "Banner removed successfully",
+	"toast_delete_banner_error": "Something went wrong while removing banner, try again",
 	"inprogress_title_text": "In progress",
 	"profile_page_title_text": "Profile",
 	"toast_error_profile_route_generic": "Something went wrong while loading profile, try again",
@@ -889,5 +893,9 @@
 	"profile_page_followers_empty": "No followers yet",
 	"profile_page_follow_button": "Follow",
 	"profile_page_unfollow_button": "Unfollow",
-	"profile_page_follow_button_loading": "Loading..."
+	"profile_page_follow_button_loading": "Loading...",
+	"banner_image_select_title": "Select Banner Image",
+	"banner_image_select_loading": "Loading images...",
+	"banner_image_select_empty_title": "No backdrop images",
+	"banner_image_select_empty_desc": "No backdrop images are available for this title"
 }

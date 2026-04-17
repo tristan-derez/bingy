@@ -3,6 +3,7 @@ import { useRouteContext } from "@tanstack/react-router";
 import { useId } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
+import { EditProfileBanner } from "@/components/auth/edit-profile-banner";
 import { EditProfilePicture } from "@/components/auth/edit-profile-picture";
 import { UpdateProfileForm } from "@/components/auth/forms/update-profile-form";
 import { Button } from "@/components/ui/button";
@@ -31,6 +32,7 @@ interface EditProfileDialogProps {
 	onOpenChange: (open: boolean) => void;
 	bio?: string | null;
 	location?: string | null;
+	bannerUrl?: string | null;
 }
 
 type ProfileFormValues = z.infer<typeof profileSchema>;
@@ -40,6 +42,7 @@ export function EditProfileDialog({
 	onOpenChange,
 	bio,
 	location,
+	bannerUrl,
 }: EditProfileDialogProps) {
 	const { authData } = useRouteContext({ from: "__root__" });
 	if (!authData) return null;
@@ -92,8 +95,6 @@ export function EditProfileDialog({
 	);
 
 	return isMobile ? (
-		// @todo: add icon button in avatar to upload new image
-		// add profile banner with edit/delete button
 		<Drawer open={open} onOpenChange={onOpenChange}>
 			<DrawerContent className="max-h-[96vh]">
 				<DrawerHeader className="justify-start items-start">
@@ -101,6 +102,7 @@ export function EditProfileDialog({
 				</DrawerHeader>
 				<div className="overflow-y-auto px-4 pb-4">
 					<div className="flex flex-col gap-4">
+						<EditProfileBanner bannerUrl={bannerUrl} />
 						<EditProfilePicture
 							avatar={avatar}
 							displayName={displayName ?? ""}
@@ -120,6 +122,7 @@ export function EditProfileDialog({
 				</DialogHeader>
 				<div className="px-4 overflow-y-auto max-h-[60vh]">
 					<div className="flex flex-col gap-4 py-4">
+						<EditProfileBanner bannerUrl={bannerUrl} />
 						<EditProfilePicture
 							avatar={avatar}
 							displayName={displayName ?? ""}

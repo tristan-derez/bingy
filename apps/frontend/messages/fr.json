@@ -749,6 +749,10 @@
 	"toast_update_avatar_error": "Echec lors de la modification de l'avatar",
 	"toast_delete_avatar_success": "Avatar supprimé avec succès",
 	"toast_delete_avatar_error": "Echec lors de la suppression de l'avatar",
+	"toast_update_banner_success": "Bannière mise à jour avec succès",
+	"toast_update_banner_error": "Echec lors de la mise à jour de la bannière",
+	"toast_delete_banner_success": "Bannière supprimée avec succès",
+	"toast_delete_banner_error": "Echec lors de la suppression de la bannière",
 	"inprogress_title_text": "En cours",
 	"profile_page_title_text": "Profil",
 	"toast_error_profile_route_generic": "Echec lors du chargement du profil",
@@ -881,5 +885,9 @@
 	"profile_page_followers_empty": "Aucun abonné pour le moment",
 	"profile_page_follow_button": "Suivre",
 	"profile_page_unfollow_button": "Ne plus suivre",
-	"profile_page_follow_button_loading": "Chargement..."
+	"profile_page_follow_button_loading": "Chargement...",
+	"banner_image_select_title": "Sélectionner une image de bannière",
+	"banner_image_select_loading": "Chargement des images...",
+	"banner_image_select_empty_title": "Pas d'images d'arrière-plan",
+	"banner_image_select_empty_desc": "Aucune image d'arrière-plan n'est disponible pour ce titre"
 }

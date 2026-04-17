@@ -1,13 +1,16 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
 	deleteAvatar,
+	deleteBanner,
 	fetchUserActivity,
 	fetchUserFavorites,
 	fetchUserLists,
 	fetchUserProfileInfo,
 	fetchUserWatchlist,
+	type UpdateBannerPayload,
 	type UpdateUserProfilePayload,
 	updateAvatar,
+	updateBanner,
 	updateUserProfile,
 } from "@/api/user-profile";
 import { toast } from "@/components/toast/toast";
@@ -132,6 +135,58 @@ export function useUpdateUserProfile() {
 		},
 		onError: () => {
 			toast.error({ title: m.toast_update_profile_error() });
+		},
+	});
+}
+
+export function useUpdateBanner() {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: async (payload: UpdateBannerPayload) => {
+			return updateBanner(payload);
+		},
+		onSuccess: async () => {
+			queryClient.invalidateQueries({
+				queryKey: ["user-profile"],
+				exact: false,
+			});
+
+			const { data: freshSession } = await authClient.getSession({
+				query: { disableCookieCache: true },
+			});
+			queryClient.setQueryData(sessionQueryOptions.queryKey, freshSession);
+
+			toast.success({ title: m.toast_update_banner_success() });
+		},
+		onError: () => {
+			toast.error({ title: m.toast_update_banner_error() });
+		},
+	});
+}
+
+export function useDeleteBanner() {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: async () => {
+			return deleteBanner();
+		},
+		onSuccess: async () => {
+			queryClient.invalidateQueries({
+				queryKey: ["user-profile"],
+				exact: false,
+			});
+
+			const { data: freshSession } = await authClient.getSession({
+				query: { disableCookieCache: true },
+			});
+			queryClient.setQueryData(sessionQueryOptions.queryKey, freshSession);
+
+			toast.success({ title: m.toast_delete_banner_success() });
+		},
+		onError: () => {
+			toast.error({ title: m.toast_delete_banner_error() });
 		},
 	});
 }
