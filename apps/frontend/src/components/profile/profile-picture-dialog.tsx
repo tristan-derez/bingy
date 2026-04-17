@@ -1,4 +1,4 @@
-import { ProfilePicture } from "@/components/profile-picture";
+import { ProfilePicture } from "@/components/profile/profile-picture";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 interface ProfilePictureDialogProps {

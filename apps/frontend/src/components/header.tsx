@@ -7,8 +7,8 @@ import {
 import { useRouteContext } from "@tanstack/react-router";
 import { useState } from "react";
 import { LocaleRegionDropdown } from "@/components/locale-region-dropdown";
+import { ProfileDropdown } from "@/components/profile/profile-dropdown";
 import { ProfileDrawer } from "@/components/profile-drawer";
-import { ProfileDropdown } from "@/components/profile-dropdown";
 import { SearchCommand } from "@/components/search/search-command";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { MobileBottomNav, MobileTopBar } from "@/components/ui/mobile-navbar";

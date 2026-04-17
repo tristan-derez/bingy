@@ -1,11 +1,11 @@
 import { IconPencil, IconTrash } from "@tabler/icons-react";
 import { useNavigate } from "@tanstack/react-router";
 import { useRef, useState } from "react";
+import { CropImageDialog } from "@/components/auth/crop-image-dialog";
+import { ProfilePicture } from "@/components/profile/profile-picture";
+import { toast } from "@/components/toast/toast";
 import { useDeleteAvatar, useUpdateAvatar } from "@/hooks/useUserProfile";
 import { m } from "@/paraglide/messages";
-import { ProfilePicture } from "../profile-picture";
-import { toast } from "../toast/toast";
-import { CropImageDialog } from "./crop-image-dialog";
 
 interface EditProfilePictureProps {
 	avatar?: string | null;

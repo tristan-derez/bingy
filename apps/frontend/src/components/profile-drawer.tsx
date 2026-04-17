@@ -16,6 +16,7 @@ import {
 	useRouter,
 } from "@tanstack/react-router";
 import { useState } from "react";
+import { MobileProfileTriggerButton } from "@/components/mobile-profile-trigger";
 import { toast } from "@/components/toast/toast";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -33,7 +34,6 @@ import { queryClient } from "@/integrations/tanstack-query/root-provider";
 import { authClient } from "@/lib/auth-client";
 import { sessionQueryOptions } from "@/lib/queries/session";
 import { m } from "@/paraglide/messages";
-import { MobileProfileTriggerButton } from "./mobile-profile-trigger";
 
 export function ProfileDrawer() {
 	const { authData } = useRouteContext({ from: "__root__" });

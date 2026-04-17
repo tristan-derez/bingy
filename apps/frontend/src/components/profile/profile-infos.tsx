@@ -1,7 +1,7 @@
 import { IconEdit, IconLocation } from "@tabler/icons-react";
-import { FollowButton } from "@/components/follow-button";
-import { FollowStats } from "@/components/follow-stats";
-import { ProfilePictureDialog } from "@/components/profile-picture-dialog";
+import { ProfileFollowButton } from "@/components/profile/profile-follow-button";
+import { ProfileFollowStats } from "@/components/profile/profile-follow-stats";
+import { ProfilePictureDialog } from "@/components/profile/profile-picture-dialog";
 import { Button } from "@/components/ui/button";
 import { m } from "@/paraglide/messages";
 
@@ -41,7 +41,7 @@ export function ProfileInfos({
 							</span>
 						</Button>
 					) : (
-						<FollowButton />
+						<ProfileFollowButton />
 					)}
 				</div>
 				<p className="text-muted-foreground text-pretty">
@@ -53,7 +53,7 @@ export function ProfileInfos({
 						<p>{location}</p>
 					</div>
 				) : null}
-				<FollowStats />
+				<ProfileFollowStats />
 			</div>
 		</div>
 	);
