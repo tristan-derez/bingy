@@ -149,8 +149,13 @@
 	"btn_media_learn_more": "En savoir plus",
 	"movie_details_production_companies": [
 		{
-			"declarations": ["input count", "local countPlural = count: plural"],
-			"selectors": ["countPlural"],
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
 			"match": {
 				"countPlural=one": "Société de production",
 				"countPlural=other": "Sociétés de production"
@@ -159,8 +164,12 @@
 	],
 	"movie_details_director": [
 		{
-			"declarations": ["input gender"],
-			"selectors": ["gender"],
+			"declarations": [
+				"input gender"
+			],
+			"selectors": [
+				"gender"
+			],
 			"match": {
 				"gender=male": "Réalisateur",
 				"gender=female": "Réalisatrice",
@@ -184,8 +193,12 @@
 	"person_death_age": "à {age} ans",
 	"person_actor": [
 		{
-			"declarations": ["input gender"],
-			"selectors": ["gender"],
+			"declarations": [
+				"input gender"
+			],
+			"selectors": [
+				"gender"
+			],
 			"match": {
 				"gender=male": "Acteur",
 				"gender=female": "Actrice",
@@ -195,8 +208,12 @@
 	],
 	"person_writer": [
 		{
-			"declarations": ["input gender"],
-			"selectors": ["gender"],
+			"declarations": [
+				"input gender"
+			],
+			"selectors": [
+				"gender"
+			],
 			"match": {
 				"gender=male": "Scénariste",
 				"gender=female": "Scénariste",
@@ -206,8 +223,12 @@
 	],
 	"person_director": [
 		{
-			"declarations": ["input gender"],
-			"selectors": ["gender"],
+			"declarations": [
+				"input gender"
+			],
+			"selectors": [
+				"gender"
+			],
 			"match": {
 				"gender=male": "Réalisateur",
 				"gender=female": "Réalisatrice",
@@ -218,8 +239,13 @@
 	"person_biography": "Biographie",
 	"person_place_of_birth": [
 		{
-			"declarations": ["input gender", "input place"],
-			"selectors": ["gender"],
+			"declarations": [
+				"input gender",
+				"input place"
+			],
+			"selectors": [
+				"gender"
+			],
 			"match": {
 				"gender=male": "Né à {place}",
 				"gender=female": "Née à {place}",
@@ -229,8 +255,12 @@
 	],
 	"person_known_for": [
 		{
-			"declarations": ["input gender"],
-			"selectors": ["gender"],
+			"declarations": [
+				"input gender"
+			],
+			"selectors": [
+				"gender"
+			],
 			"match": {
 				"gender=male": "Connu pour",
 				"gender=female": "Connue pour",
@@ -284,8 +314,13 @@
 	"episodes_container_guest_stars": "guest stars",
 	"season_card_episode_badge": [
 		{
-			"declarations": ["input count", "local countPlural = count: plural"],
-			"selectors": ["countPlural"],
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
 			"match": {
 				"countPlural=one": "Épisode",
 				"countPlural=other": "Épisodes"
@@ -307,8 +342,13 @@
 	"season_details_air_date": "Date de diffusion",
 	"season_details_episodes": [
 		{
-			"declarations": ["input count", "local countPlural = count: plural"],
-			"selectors": ["countPlural"],
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
 			"match": {
 				"countPlural=one": "Épisode",
 				"countPlural=other": "Épisodes"
@@ -317,8 +357,13 @@
 	],
 	"season_details_networks": [
 		{
-			"declarations": ["input count", "local countPlural = count: plural"],
-			"selectors": ["countPlural"],
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
 			"match": {
 				"countPlural=one": "Distributeur",
 				"countPlural=other": "Distributeurs"
@@ -350,8 +395,12 @@
 	"tv_details_overview": "Résumé",
 	"tv_details_creator": [
 		{
-			"declarations": ["input gender"],
-			"selectors": ["gender"],
+			"declarations": [
+				"input gender"
+			],
+			"selectors": [
+				"gender"
+			],
 			"match": {
 				"gender=male": "Créateur",
 				"gender=female": "Créatrice",
@@ -368,7 +417,9 @@
 				"input voteCount",
 				"local countPlural = count: plural"
 			],
-			"selectors": ["countPlural"],
+			"selectors": [
+				"countPlural"
+			],
 			"match": {
 				"countPlural=one": "{voteCount} vote",
 				"countPlural=other": "{voteCount} votes"
@@ -378,8 +429,13 @@
 	"media_details_no_votes": "Ajoute la première note",
 	"tv_details_seasons": [
 		{
-			"declarations": ["input count", "local countPlural = count: plural"],
-			"selectors": ["countPlural"],
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
 			"match": {
 				"countPlural=one": "Saison",
 				"countPlural=other": "Saisons"
@@ -388,8 +444,13 @@
 	],
 	"tv_details_episodes": [
 		{
-			"declarations": ["input count", "local countPlural = count: plural"],
-			"selectors": ["countPlural"],
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
 			"match": {
 				"countPlural=one": "Épisode au total",
 				"countPlural=other": "Épisodes au total"
@@ -404,8 +465,13 @@
 	"tv_details_status_planned": "Annoncée",
 	"tv_details_networks": [
 		{
-			"declarations": ["input count", "local countPlural = count: plural"],
-			"selectors": ["countPlural"],
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
 			"match": {
 				"countPlural=one": "Distributeur",
 				"countPlural=other": "Distributeurs"
@@ -414,8 +480,13 @@
 	],
 	"tv_details_companies": [
 		{
-			"declarations": ["input count", "local countPlural = count: plural"],
-			"selectors": ["countPlural"],
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
 			"match": {
 				"countPlural=one": "Société de production",
 				"countPlural=other": "Sociétés de production"
@@ -641,8 +712,14 @@
 	"schema_create_list_description_max": "La description ne doit pas dépasser {maxCharsNumber} caractères",
 	"list_added_items": [
 		{
-			"declarations": ["input count", "local countPlural = count: plural"],
-			"selectors": ["countPlural"],
+			"declarations": [
+				"input count",
+				"input total_items",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
 			"match": {
 				"countPlural=one": "Média ajouté ({total_items})",
 				"countPlural=other": "Médias ajoutés ({total_items})"
@@ -778,8 +855,13 @@
 	"profile_ratings_title": "Reviews",
 	"profile_ratings_total": [
 		{
-			"declarations": ["input count", "local countPlural = count: plural"],
-			"selectors": ["countPlural"],
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
 			"match": {
 				"countPlural=one": "{count} review",
 				"countPlural=other": "{count} reviews"
@@ -792,8 +874,12 @@
 	"profile_activity_empty": "Pas d'activité récente",
 	"profile_activity_added_to_watchlist": [
 		{
-			"declarations": ["input isOwnProfile"],
-			"selectors": ["isOwnProfile"],
+			"declarations": [
+				"input isOwnProfile"
+			],
+			"selectors": [
+				"isOwnProfile"
+			],
 			"match": {
 				"isOwnProfile=true": " à ta watchlist",
 				"isOwnProfile=false": " à sa watchlist"
@@ -802,8 +888,12 @@
 	],
 	"profile_activity_added_to_favorites": [
 		{
-			"declarations": ["input isOwnProfile"],
-			"selectors": ["isOwnProfile"],
+			"declarations": [
+				"input isOwnProfile"
+			],
+			"selectors": [
+				"isOwnProfile"
+			],
 			"match": {
 				"isOwnProfile=true": " à tes favoris",
 				"isOwnProfile=false": " à ses favoris"
@@ -812,8 +902,12 @@
 	],
 	"profile_activity_action_added_to_watchlist": [
 		{
-			"declarations": ["input isOwnProfile"],
-			"selectors": ["isOwnProfile"],
+			"declarations": [
+				"input isOwnProfile"
+			],
+			"selectors": [
+				"isOwnProfile"
+			],
 			"match": {
 				"isOwnProfile=true": " as ajouté ",
 				"isOwnProfile=false": " a ajouté "
@@ -822,8 +916,12 @@
 	],
 	"profile_activity_action_added_to_favorites": [
 		{
-			"declarations": ["input isOwnProfile"],
-			"selectors": ["isOwnProfile"],
+			"declarations": [
+				"input isOwnProfile"
+			],
+			"selectors": [
+				"isOwnProfile"
+			],
 			"match": {
 				"isOwnProfile=true": " as ajouté ",
 				"isOwnProfile=false": " a ajouté "
@@ -832,8 +930,12 @@
 	],
 	"profile_activity_action_watched": [
 		{
-			"declarations": ["input isOwnProfile"],
-			"selectors": ["isOwnProfile"],
+			"declarations": [
+				"input isOwnProfile"
+			],
+			"selectors": [
+				"isOwnProfile"
+			],
 			"match": {
 				"isOwnProfile=true": " as regardé ",
 				"isOwnProfile=false": " a regardé "
@@ -842,8 +944,12 @@
 	],
 	"profile_activity_action_followed": [
 		{
-			"declarations": ["input isOwnProfile"],
-			"selectors": ["isOwnProfile"],
+			"declarations": [
+				"input isOwnProfile"
+			],
+			"selectors": [
+				"isOwnProfile"
+			],
 			"match": {
 				"isOwnProfile=true": " suis ",
 				"isOwnProfile=false": " suit "
@@ -852,8 +958,12 @@
 	],
 	"profile_activity_action_rated": [
 		{
-			"declarations": ["input isOwnProfile"],
-			"selectors": ["isOwnProfile"],
+			"declarations": [
+				"input isOwnProfile"
+			],
+			"selectors": [
+				"isOwnProfile"
+			],
 			"match": {
 				"isOwnProfile=true": " as noté ",
 				"isOwnProfile=false": " a noté "
@@ -862,8 +972,12 @@
 	],
 	"profile_activity_action_created_list": [
 		{
-			"declarations": ["input isOwnProfile"],
-			"selectors": ["isOwnProfile"],
+			"declarations": [
+				"input isOwnProfile"
+			],
+			"selectors": [
+				"isOwnProfile"
+			],
 			"match": {
 				"isOwnProfile=true": " as créé une liste : ",
 				"isOwnProfile=false": " a créé une liste : "

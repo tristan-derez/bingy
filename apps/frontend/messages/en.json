@@ -644,7 +644,11 @@
 	"schema_create_list_description_max": "Description must be less than {maxCharsNumber} chars",
 	"list_added_items": [
 		{
-			"declarations": ["input count", "local countPlural = count: plural"],
+			"declarations": [
+				"input count",
+				"input total_items",
+				"local countPlural = count: plural"
+			],
 			"selectors": ["countPlural"],
 			"match": {
 				"countPlural=one": "Added item ({total_items})",
@@ -897,5 +901,6 @@
 	"banner_image_select_title": "Select Banner Image",
 	"banner_image_select_loading": "Loading images...",
 	"banner_image_select_empty_title": "No backdrop images",
-	"banner_image_select_empty_desc": "No backdrop images are available for this title"
+	"banner_image_select_empty_desc": "No backdrop images are available for this title",
+	"toast_error_signin_invalid_code": "Code seems to be invalid, try again!"
 }
