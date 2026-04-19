@@ -731,7 +731,6 @@
 	"search_command_helper_kbd_esc": "esc",
 	"search_command_helper_close": "to close",
 	"search_dialog_title": "Search for a movie or a TV show",
-	"search_dialog_input_placeholder": "",
 	"search_dialog_empty": "Start typing to search...",
 	"search_dialog_no_results": "No results found",
 	"search_dialog_loading": "Searching...",

@@ -34,10 +34,8 @@ export function SearchDialog({
 }: SearchDialogProps) {
 	const [query, setQuery] = useState("");
 	const [selectedIndex, setSelectedIndex] = useState(0);
-	const [isTyping, setIsTyping] = useState(false);
 	const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
 	const localeRegion = useAtomValue(localeRegionAtom);
-	const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
 	// Parse filter from query (!movie, !tv, or default to "all")
 	const { filter, cleanQuery } = useMemo(() => {
@@ -95,20 +93,6 @@ export function SearchDialog({
 		return [];
 	}, [filter, movieSearch.data, tvSearch.data, multiSearch.data]);
 
-	// Auto-select first item when results change
-	useEffect(() => {
-		setSelectedIndex(0);
-	}, [results]);
-
-	// Cleanup typing timeout on unmount
-	useEffect(() => {
-		return () => {
-			if (typingTimeoutRef.current) {
-				clearTimeout(typingTimeoutRef.current);
-			}
-		};
-	}, []);
-
 	// Scroll selected item into view
 	useEffect(() => {
 		const selectedElement = itemRefs.current[selectedIndex];
@@ -122,14 +106,17 @@ export function SearchDialog({
 		(filter === "movie" && (movieSearch.isLoading || movieSearch.isFetching)) ||
 		(filter === "tv" && (tvSearch.isLoading || tvSearch.isFetching));
 
+	const handleOpenChange = (newOpen: boolean) => {
+		if (!newOpen) {
+			setQuery("");
+			setSelectedIndex(0);
+		}
+		onOpenChange(newOpen);
+	};
+
 	const handleSelect = (item: Schemas.MediaMulti) => {
 		onSelectMedia?.(item);
-		onOpenChange(false);
-		setQuery("");
-		setIsTyping(false);
-		if (typingTimeoutRef.current) {
-			clearTimeout(typingTimeoutRef.current);
-		}
+		handleOpenChange(false);
 	};
 
 	const filterLabel = useMemo(() => {
@@ -171,18 +158,11 @@ export function SearchDialog({
 				<Input
 					type="text"
 					value={query}
-					onChange={(e) => {
-						setQuery(e.target.value);
-						setIsTyping(true);
-						if (typingTimeoutRef.current) {
-							clearTimeout(typingTimeoutRef.current);
-						}
-						typingTimeoutRef.current = setTimeout(() => {
-							setIsTyping(false);
-						}, 300);
-					}}
+				onChange={(e) => {
+					setQuery(e.target.value);
+					setSelectedIndex(0);
+				}}
 					onKeyDown={handleKeyDown}
-					placeholder={m.search_dialog_input_placeholder()}
 					className="px-10 py-5"
 					autoFocus
 				/>
@@ -202,21 +182,23 @@ export function SearchDialog({
 				</div>
 			) : null}
 			{/* Results */}
-			<div className="max-h-[60vh] overflow-y-auto no-scrollbar">
+			<div className="max-h-[60vh] overflow-y-auto no-scrollbar pb-1">
 				{loading ? (
 					<div className="flex justify-center py-8">
 						<LoaderFive text={m.loader_text_searching()} />
 					</div>
 				) : null}
 
-				{!loading && !isTyping && cleanQuery && results.length === 0 ? (
+				{!loading &&
+				(filter === "all" ? multiSearch.data : filter === "movie" ? movieSearch.data : tvSearch.data) &&
+				results.length === 0 ? (
 					<p className="text-center text-muted-foreground py-8">
 						{m.search_dialog_no_results()}
 					</p>
 				) : null}
 
 				{!loading && results.length > 0 ? (
-					<div className="flex flex-col gap-2">
+					<div className="flex flex-col gap-2 p-1">
 						{results.map((item, index) => (
 							<SearchDialogCard
 								key={`${item.id}-${item.media_type}`}
@@ -235,7 +217,7 @@ export function SearchDialog({
 	);
 
 	return (
-		<Dialog open={open} onOpenChange={onOpenChange}>
+		<Dialog open={open} onOpenChange={handleOpenChange}>
 			<DialogContent className="w-full max-w-sm md:max-w-md lg:max-w-lg overflow-hidden z-150">
 				<DialogHeader>
 					<DialogTitle>{m.search_dialog_title()}</DialogTitle>

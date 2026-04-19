@@ -167,10 +167,10 @@ export function BannerImageSelectDialog({
 									type="button"
 									onClick={() => handleImageSelect(image.file_path)}
 									className={cn(
-										"relative aspect-video overflow-hidden rounded-lg border transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 select-none",
+										"relative aspect-video overflow-hidden rounded-lg border-2 transition-all opacity-80 focus:outline-none select-none",
 										index === selectedIndex
-											? "border-primary ring-2 ring-primary ring-offset-2"
-											: "border-border hover:border-primary",
+											? "border-primary ring-1 ring-primary ring-inset opacity-100"
+											: "border-transparent hover:opacity-100 hover:ring-1 hover:ring-primary/30 hover:ring-inset",
 									)}
 								>
 									<img

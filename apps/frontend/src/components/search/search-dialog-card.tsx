@@ -40,7 +40,7 @@ export const SearchDialogCard = forwardRef<
 				tabIndex={0}
 				role="button"
 				className={`flex w-full items-center gap-2 p-2 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
-					isSelected ? "bg-accent" : "hover:bg-accent"
+					isSelected ? "ring-2 ring-inset ring-primary" : "hover:bg-accent"
 				}`}
 			>
 				<img
@@ -81,7 +81,7 @@ export const SearchDialogCard = forwardRef<
 				tabIndex={0}
 				role="button"
 				className={`flex w-full items-center gap-2 p-2 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
-					isSelected ? "bg-accent" : "hover:bg-accent"
+					isSelected ? "ring-1 ring-inset ring-primary" : "hover:bg-accent"
 				}`}
 			>
 				<img
