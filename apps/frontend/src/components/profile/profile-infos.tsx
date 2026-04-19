@@ -44,11 +44,9 @@ export function ProfileInfos({
 						<ProfileFollowButton />
 					)}
 				</div>
-				<p className="text-muted-foreground text-pretty">
-					{bio?.trim()
-						? bio
-						: m.profile_page_user_bio_empty({ username: displayName })}
-				</p>
+				{bio?.trim() ? (
+					<p className="text-muted-foreground text-pretty">{bio}</p>
+				) : null}
 				{location ? (
 					<div className="flex flex-row gap-2 items-center text-sm">
 						<IconLocation size={16} />

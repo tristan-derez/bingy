@@ -759,7 +759,6 @@
 	"inprogress_title_text": "En cours",
 	"profile_page_title_text": "Profil",
 	"toast_error_profile_route_generic": "Echec lors du chargement du profil",
-	"profile_page_user_bio_empty": "{username} n'a pas encore de bio",
 	"profile_page_edit_btn_label": "Modifier",
 	"edit_profile_title": "Modifier le profil",
 	"form_bio_label": "Bio",
