@@ -44,7 +44,11 @@ type CreateListFormValues = z.infer<typeof createListSchema>;
 function CreateListPage() {
 	const { authData } = useRouteContext({ from: "__root__" });
 	const navigate = useNavigate();
-	const createList = useCreateList();
+
+	if (!authData) return null;
+	const username = authData.user.name;
+
+	const createList = useCreateList(username);
 	const [selectedItems, setSelectedItems] = useAtom(createListDraftItemsAtom);
 
 	const form = useForm<CreateListFormValues>({
@@ -59,9 +63,6 @@ function CreateListPage() {
 	});
 
 	const listType = form.watch("type");
-
-	if (!authData) return null;
-	const username = authData.user.name;
 
 	const handleRemoveItem = (tmdbId: number, mediaType: string) => {
 		setSelectedItems(
@@ -111,7 +112,7 @@ function CreateListPage() {
 					title: m.toast_form_create_list_success({ list_name: values.name }),
 				});
 				navigate({
-					to: "/user/$username/lists/$slug",
+					to: "/@{$username}/lists/$slug",
 					params: { username, slug: data.slug },
 				});
 			},
@@ -254,7 +255,7 @@ function CreateListPage() {
 								variant="destructive"
 								onClick={() =>
 									navigate({
-										to: "/user/$username/lists",
+										to: "/@{$username}/lists",
 										params: { username },
 									})
 								}

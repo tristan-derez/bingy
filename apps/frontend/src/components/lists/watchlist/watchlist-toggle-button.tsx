@@ -38,7 +38,7 @@ export function WatchlistToggleButton({
 	const { authData } = useRouteContext({ from: "__root__" });
 
 	const addToWatchlist = useAddMediaToWatchlist(username);
-	const removeFromWatchlist = useRemoveFromWatchlist();
+	const removeFromWatchlist = useRemoveFromWatchlist(username);
 
 	const mediaType = movie ? "movie" : "tv";
 	const mediaId = movie?.id ?? tvShow?.id;
@@ -87,7 +87,7 @@ export function WatchlistToggleButton({
 						type="button"
 						onClick={handleWatchlistToggle}
 						disabled={isPending}
-						className={`group flex flex-col items-center gap-1 transition-colors hover:cursor-pointer ${
+						className={`group flex flex-col items-center gap-1 transition-colors hover:text-blue-400 ${
 							isInWatchlist ? "text-blue-500" : `text-${color}`
 						}`}
 					>

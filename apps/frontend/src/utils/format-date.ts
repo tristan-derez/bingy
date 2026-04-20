@@ -1,3 +1,14 @@
+import {
+	formatDistanceToNow as dfnsFormatDistanceToNow,
+	type Locale,
+} from "date-fns";
+import { enUS as enUSLocale, fr as frLocale } from "date-fns/locale";
+
+const localeMap: Record<string, Locale> = {
+	en: enUSLocale,
+	fr: frLocale,
+};
+
 /**
  * Formats a date string into a localized date format.
  *
@@ -21,4 +32,24 @@ export function formatDate(
 	},
 ): string {
 	return new Date(dateString).toLocaleDateString(locale, options);
+}
+
+/**
+ * Formats a date as a relative time string (e.g., "5 minutes ago", "2 hours ago").
+ *
+ * @param date - Date object or ISO date string
+ * @param locale - BCP 47 language tag (default: "en-US")
+ * @returns Formatted relative time string
+ *
+ * @example
+ * formatDistanceToNow(new Date(Date.now() - 1000 * 60 * 5)) // "5 minutes ago"
+ * formatDistanceToNow(new Date(Date.now() - 1000 * 60 * 60 * 2)) // "2 hours ago"
+ */
+export function formatDistanceToNow(date: Date, locale = "en-US"): string {
+	const lang = locale.split("-")[0];
+	const dateLocale = localeMap[lang] ?? enUSLocale;
+	return dfnsFormatDistanceToNow(date, {
+		addSuffix: true,
+		locale: dateLocale,
+	});
 }

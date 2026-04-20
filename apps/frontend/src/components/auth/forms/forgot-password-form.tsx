@@ -70,7 +70,7 @@ export function ForgotPasswordForm({ email }: ForgotPasswordFormProps) {
 	};
 
 	return (
-		<Card className="border-none p-0">
+		<Card className="border-none p-0 overflow-visible">
 			<MagicCard
 				gradientColor="var(--shadow-pointer)"
 				className="py-4 md:px-2 min-w-[300px] md:min-w-md lg:min-w-lg"

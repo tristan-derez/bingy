@@ -28,17 +28,13 @@ export function ListPagination({
 					<PaginationPrevious
 						onClick={() => onPageChange(Math.max(1, page - 1))}
 						className={
-							page === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"
+							page === 1 ? "pointer-events-none opacity-50" : "cursor-default"
 						}
 					/>
 				</PaginationItem>
 
 				<PaginationItem>
-					<PaginationLink
-						onClick={() => onPageChange(1)}
-						isActive={page === 1}
-						className="cursor-pointer"
-					>
+					<PaginationLink onClick={() => onPageChange(1)} isActive={page === 1}>
 						1
 					</PaginationLink>
 				</PaginationItem>
@@ -56,7 +52,6 @@ export function ListPagination({
 							<PaginationLink
 								onClick={() => onPageChange(p)}
 								isActive={p === page}
-								className="cursor-pointer"
 							>
 								{p}
 							</PaginationLink>
@@ -74,7 +69,6 @@ export function ListPagination({
 						<PaginationLink
 							onClick={() => onPageChange(totalPages)}
 							isActive={page === totalPages}
-							className="cursor-pointer"
 						>
 							{totalPages}
 						</PaginationLink>
@@ -87,7 +81,7 @@ export function ListPagination({
 						className={
 							page === totalPages
 								? "pointer-events-none opacity-50"
-								: "cursor-pointer"
+								: "cursor-default"
 						}
 					/>
 				</PaginationItem>

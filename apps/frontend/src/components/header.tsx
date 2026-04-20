@@ -7,9 +7,10 @@ import {
 import { useRouteContext } from "@tanstack/react-router";
 import { useState } from "react";
 import { LocaleRegionDropdown } from "@/components/locale-region-dropdown";
+import { ProfileDropdown } from "@/components/profile/profile-dropdown";
 import { ProfileDrawer } from "@/components/profile-drawer";
-import { ProfileDropdown } from "@/components/profile-dropdown";
 import { SearchCommand } from "@/components/search/search-command";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { MobileBottomNav, MobileTopBar } from "@/components/ui/mobile-navbar";
 import {
 	MobileNavbarLogo,
@@ -19,11 +20,13 @@ import {
 	NavbarLogo,
 	NavItems,
 } from "@/components/ui/resizable-navbar";
+import { useShowTopMobileNavbar } from "@/hooks/useShowTopMobileNavbar";
 import { m } from "@/paraglide/messages";
 
 export default function Header() {
 	const { authData } = useRouteContext({ from: "__root__" });
 	const [searchOpen, setSearchOpen] = useState(false);
+	const showTopMobileNavbar = useShowTopMobileNavbar();
 
 	const allNavItems = [
 		{
@@ -57,39 +60,54 @@ export default function Header() {
 		},
 	] as const;
 
-	const navItems = allNavItems.filter((item) => {
+	const desktopNavItems = allNavItems.filter((item) => {
 		if ("requiresAuth" in item && item.requiresAuth && !authData) return false;
 		if ("hideWhenAuth" in item && item.hideWhenAuth && authData) return false;
 		return true;
 	});
 
-	const mobileBottomItems = [
+	const allMobileBottomItems = [
 		{
 			name: m.header_link_home(),
 			link: authData ? "/dashboard" : "/",
 			icon: <IconSmartHome className="h-6 w-6" />,
+			requiresAuth: false,
 		},
 		{
 			name: m.header_link_movies(),
 			link: "/movies",
 			icon: <IconMovie className="h-6 w-6" />,
+			requiresAuth: false,
 		},
 		{
 			name: m.header_link_tv_shows(),
 			link: "/tv",
 			icon: <IconDeviceTv className="h-6 w-6" />,
+			requiresAuth: false,
 		},
 		{
 			name: m.header_link_search(),
 			icon: <IconSearch className="h-6 w-6" />,
 			onClick: () => setSearchOpen(true),
+			requiresAuth: false,
 		},
-		// {
-		// 	name: m.header_link_profile(),
-		// 	link: authData ? `/user/${authData?.user.name}` : `/signin`,
-		// 	icon: <IconUser className="h-6 w-6" />,
-		// },
-	];
+		{
+			name: authData?.user.displayName ?? "",
+			link: `/@${authData?.user.name}`,
+			icon: (
+				<Avatar className="h-6 w-6">
+					<AvatarImage src={authData?.user.image ?? ""} />
+					<AvatarFallback>{authData?.user.name ?? "U"}</AvatarFallback>
+				</Avatar>
+			),
+			requiresAuth: true,
+		},
+	] as const;
+
+	const mobileBottomItems = allMobileBottomItems.filter((item) => {
+		if ("requiresAuth" in item && item.requiresAuth && !authData) return false;
+		return true;
+	});
 
 	return (
 		<>
@@ -97,46 +115,35 @@ export default function Header() {
 			<Navbar>
 				<NavBody>
 					<NavbarLogo />
-					<div className="flex items-center gap-2">
-						<NavItems items={navItems} />
-					</div>
-					<div className="flex items-center gap-4">
+					<NavItems items={desktopNavItems} />
+					<div className="flex items-center gap-1">
 						<LocaleRegionDropdown />
 
 						{authData ? (
 							<ProfileDropdown />
 						) : (
-							<>
-								<NavbarButton variant="secondary" to="/signin">
-									{m.header_btn_sign_in()}
-								</NavbarButton>
-								<NavbarButton variant="primary" to="/signup">
-									{m.header_btn_get_started()}
-								</NavbarButton>
-							</>
+							<NavbarButton to="/signin">{m.header_btn_sign_in()}</NavbarButton>
 						)}
 					</div>
 				</NavBody>
 			</Navbar>
 
 			{/* Mobile Top Bar */}
-			<MobileTopBar
-				left={
-					authData ? (
-						<ProfileDrawer />
-					) : (
-						<NavbarButton
-							variant="primary"
-							to="/signin"
-							className="text-xs py-2.5 px-2"
-						>
-							{m.header_btn_sign_in()}
-						</NavbarButton>
-					)
-				}
-				center={<MobileNavbarLogo />}
-				right={<LocaleRegionDropdown />}
-			/>
+			{showTopMobileNavbar ? (
+				<MobileTopBar
+					left={
+						authData ? (
+							<ProfileDrawer />
+						) : (
+							<NavbarButton to="/signin" size="sm">
+								{m.header_btn_sign_in()}
+							</NavbarButton>
+						)
+					}
+					center={<MobileNavbarLogo />}
+					right={<LocaleRegionDropdown />}
+				/>
+			) : null}
 
 			{/* Mobile Bottom Navigation */}
 			<MobileBottomNav items={mobileBottomItems} />

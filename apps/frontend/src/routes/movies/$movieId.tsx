@@ -3,7 +3,6 @@ import { useAtomValue } from "jotai";
 import { MovieDetailView } from "@/components/movies/movie-details";
 import { useMovie, useMovieResource } from "@/hooks/useMovies";
 import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
-import { getRole } from "@/utils/excluded-jobs";
 import { getReleaseDate } from "@/utils/release-dates";
 import { getSocialUrls } from "@/utils/social-urls";
 
@@ -45,28 +44,13 @@ function MovieDetailsPage() {
 	);
 
 	const directors =
-		movie?.credits?.crew.reduce<
-			Map<number, { id: number; name: string; roles: Set<string> }>
-		>((map, person) => {
-			const role = getRole(person);
-			if (!role) return map;
-
-			const existing = map.get(person.id);
-
-			if (existing) {
-				existing.roles.add(role);
-			} else if (role === "Director") {
-				map.set(person.id, {
-					id: person.id,
-					name: person.name,
-					roles: new Set([role]),
-				});
-			}
-
-			return map;
-		}, new Map()) ?? new Map();
-
-	const crew = Array.from(directors.values());
+		movie?.credits?.crew
+			.filter((person) => person.job === "Director")
+			.map((person) => ({
+				id: person.id,
+				name: person.name,
+				gender: person.gender,
+			})) ?? [];
 	const cast = movie?.credits?.cast?.slice(0, 10) || [];
 	const socialUrls = movie?.external_ids
 		? getSocialUrls(movie.external_ids)
@@ -78,7 +62,7 @@ function MovieDetailsPage() {
 		<MovieDetailView
 			movie={movie}
 			socials={socialUrls}
-			crew={crew}
+			directors={directors}
 			cast={cast}
 			watchProviders={watchProviders}
 			collection={collection}

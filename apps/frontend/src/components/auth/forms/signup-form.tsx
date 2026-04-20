@@ -39,7 +39,7 @@ import { config } from "@/lib/env";
 import { sessionQueryOptions } from "@/lib/queries/session";
 import { m } from "@/paraglide/messages";
 import { signUpFormSchema } from "@/schemas/signup-form-schema";
-import { getRandomAvatarUrl } from "@/utils/avatar-generator";
+import { getRandomAvatarUrl } from "@/utils/image";
 import { capitalize } from "@/utils/utils";
 
 export function SignUpForm() {
@@ -137,10 +137,10 @@ export function SignUpForm() {
 	const isRegistering = isSubmitting;
 
 	return (
-		<Card className="border-none p-0 w-full max-w-lg">
+		<Card className="border-none p-0 w-xs md:w-md lg:w-lg max-w-lg overflow-visible">
 			<MagicCard
 				gradientColor="var(--shadow-pointer)"
-				className="py-4 md:px-2 w-full max-w-lg"
+				className="py-4 md:px-2 flex-1"
 			>
 				<CardHeader>
 					<CardTitle className="text-2xl">{m.signup_title()}</CardTitle>
@@ -158,7 +158,7 @@ export function SignUpForm() {
 								<Controller
 									control={form.control}
 									name="name"
-									render={({ field }) => (
+									render={({ field, fieldState }) => (
 										<Field className="grid gap-2">
 											<div className="flex items-center">
 												<FieldLabel htmlFor={`${id}-username`}>
@@ -185,14 +185,18 @@ export function SignUpForm() {
 													{...field}
 												/>
 											</FieldContent>
-											<FieldError />
+											<FieldError
+												errors={
+													fieldState.error ? [fieldState.error] : undefined
+												}
+											/>
 										</Field>
 									)}
 								/>
 								<Controller
 									control={form.control}
 									name="email"
-									render={({ field }) => (
+									render={({ field, fieldState }) => (
 										<Field className="grid gap-2">
 											<FieldLabel htmlFor={`${id}-email`}>
 												{m.form_email_label()}
@@ -207,14 +211,18 @@ export function SignUpForm() {
 													{...field}
 												/>
 											</FieldContent>
-											<FieldError />
+											<FieldError
+												errors={
+													fieldState.error ? [fieldState.error] : undefined
+												}
+											/>
 										</Field>
 									)}
 								/>
 								<Controller
 									control={form.control}
 									name="password"
-									render={({ field }) => (
+									render={({ field, fieldState }) => (
 										<Field className="grid gap-2">
 											<div className="flex items-center">
 												<FieldLabel htmlFor={`${id}-password`}>
@@ -241,7 +249,11 @@ export function SignUpForm() {
 													{...field}
 												/>
 											</FieldContent>
-											<FieldError />
+											<FieldError
+												errors={
+													fieldState.error ? [fieldState.error] : undefined
+												}
+											/>
 										</Field>
 									)}
 								/>

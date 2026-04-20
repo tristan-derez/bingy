@@ -1,7 +1,6 @@
 import { IconStarFilled } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 import { MediaPosterContainer } from "@/components/lists/media-poster-container";
-import { formatEpisode } from "@/utils/format-season-episode";
 
 interface HistoryMediaCardProps {
 	item: {
@@ -45,18 +44,7 @@ export const HistoryMediaCard = ({ item, linkTo }: HistoryMediaCardProps) => {
 		<div key={`${item.mediaType}-${item.id}`} className="group">
 			<Link to={linkTo}>
 				<MediaPosterContainer {...item} />
-				<div className="flex flex-row justify-between items-center mt-2">
-					{item.mediaType === "tv" && item.progress ? (
-						<p className="text-sm text-muted-foreground">
-							{formatEpisode(
-								item.progress.lastWatchedSeason,
-								item.progress.lastWatchedEpisode,
-								item.progress.absoluteEpisode,
-							)}
-						</p>
-					) : (
-						<span />
-					)}
+				<div className="mt-2">
 					{item.rating ? (
 						<div>
 							<RatingStars rating={item.rating} />

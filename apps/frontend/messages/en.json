@@ -7,6 +7,7 @@
 	"toast_success_disable_twofactor": "Two-factor authentication disabled successfully",
 	"toast_error_disable_twofactor": "Failed to disable two-factor authentication",
 	"toast_error_generic": "Something went wrong, try again later",
+	"toast_invalid_password_error": "Invalid password",
 	"toast_email_sent_account_delete": "An email has been sent. Check your inbox and click on the link to confirm account deletion",
 	"dialog_delete_account_title": "Are you absolutely sure?",
 	"dialog_cancel_action": "Cancel",
@@ -101,7 +102,7 @@
 	"link_account_desc": "Connect multiple accounts for easier sign-in options",
 	"unlink_account_title": "Linked accounts",
 	"unlink_account_desc": "You can unlink accounts you no longer use",
-	"settings_tabs_trigger_account": "Account",
+	"settings_tab_trigger_account": "Account",
 	"settings_tab_trigger_display": "Display",
 	"settings_card_title_account": "Edit account",
 	"settings_card_desc_account": "Manage your email, password, and security settings",
@@ -152,6 +153,17 @@
 			"match": {
 				"countPlural=one": "Company",
 				"countPlural=other": "Companies"
+			}
+		}
+	],
+	"movie_details_director": [
+		{
+			"declarations": ["input gender"],
+			"selectors": ["gender"],
+			"match": {
+				"gender=male": "Director",
+				"gender=female": "Director",
+				"gender=*": "Director"
 			}
 		}
 	],
@@ -388,6 +400,7 @@
 	"tv_details_status_canceled": "Canceled",
 	"tv_details_status_ended": "Ended",
 	"tv_details_status_pilot": "Pilot",
+	"tv_details_status_planned": "Planned",
 	"tv_details_networks": [
 		{
 			"declarations": ["input count", "local countPlural = count: plural"],
@@ -462,7 +475,6 @@
 	"dropdown_support_text": "Support",
 	"dropdown_logout_text": "Log out",
 	"header_btn_sign_in": "Sign In",
-	"header_btn_get_started": "Get Started",
 	"person_also_known": "Also known as:",
 	"add_watchlist_media_tooltip": "Add to your watchlist",
 	"toast_watchlist_media_success": "{media} added to your watchlist",
@@ -497,7 +509,7 @@
 	"list_dropdown_logreview": "Log or review",
 	"list_dropdown_editreview": "Edit review",
 	"log_review_dialog_title_movie": "Rate Movie",
-	"log_review_dialog_desc_movie": "Add your rating and review or just mark as watched by clicking on save",
+	"log_review_dialog_desc_movie": "Add your rating and review or just mark as watched by clicking on submit",
 	"log_review_dialog_title_tv": "Rate TV Show",
 	"log_review_dialog_desc_tv": "Add your rating and review. You can also just save your progress and rate later.",
 	"log_review_dialog_rating_label": "Rating",
@@ -544,6 +556,7 @@
 	"schema_password_max_length": "Password must not exceed 256 characters",
 	"schema_search_min_length": "Search cannot be empty",
 	"schema_search_max_length": "Search cannot exceed 300 characters",
+	"history_page_title_text": "History",
 	"history_toggle_no_result_all": "History is empty",
 	"history_toggle_no_result_movies": "No movies in history",
 	"history_toggle_no_result_tv": "No TV shows in history",
@@ -631,7 +644,11 @@
 	"schema_create_list_description_max": "Description must be less than {maxCharsNumber} chars",
 	"list_added_items": [
 		{
-			"declarations": ["input count", "local countPlural = count: plural"],
+			"declarations": [
+				"input count",
+				"input total_items",
+				"local countPlural = count: plural"
+			],
 			"selectors": ["countPlural"],
 			"match": {
 				"countPlural=one": "Added item ({total_items})",
@@ -713,6 +730,14 @@
 	"search_command_helper_navigate": "to navigate",
 	"search_command_helper_kbd_esc": "esc",
 	"search_command_helper_close": "to close",
+	"search_dialog_title": "Search for a movie or a TV show",
+	"search_dialog_empty": "Start typing to search...",
+	"search_dialog_no_results": "No results found",
+	"search_dialog_loading": "Searching...",
+	"search_dialog_filter_movies": "Movies",
+	"search_dialog_filter_tv": "TV shows",
+	"search_dialog_filter_all": "All media",
+	"search_dialog_hint_filter": "Type !movie or !tv to filter results",
 	"locale_dropdown_label": "Display Language",
 	"region_dropdown_label": "Content Region",
 	"region_france": "France",
@@ -725,5 +750,155 @@
 	"btn_go_to_watchlist": "View",
 	"btn_go_to_favorites": "View",
 	"cast_text": "Cast",
-	"crew_text": "Crew"
+	"crew_text": "Crew",
+	"toast_update_avatar_success": "Image uploaded succesfully",
+	"toast_update_avatar_error": "Something went wrong while uploading image, try again",
+	"toast_delete_avatar_success": "Avatar removed succesfully",
+	"toast_delete_avatar_error": "Something went wrong while removing avatar, try again",
+	"toast_update_banner_success": "Banner updated successfully",
+	"toast_update_banner_error": "Something went wrong while updating banner, try again",
+	"toast_delete_banner_success": "Banner removed successfully",
+	"toast_delete_banner_error": "Something went wrong while removing banner, try again",
+	"inprogress_title_text": "In progress",
+	"profile_page_title_text": "Profile",
+	"toast_error_profile_route_generic": "Something went wrong while loading profile, try again",
+	"profile_page_edit_btn_label": "Edit",
+	"edit_profile_title": "Edit profile",
+	"schema_bio_max_length": "Bio must not exceed {maxChars} characters",
+	"schema_location_max_length": "Location must not exceed {maxChars} characters",
+	"form_bio_label": "Bio",
+	"form_bio_input_placeholder": "Tell us about yourself",
+	"form_location_label": "Location",
+	"btn_cancel": "Cancel",
+	"btn_save": "Save",
+	"btn_saving": "Saving...",
+	"toast_update_profile_success": "Profile informations updated succesfully",
+	"toast_update_profile_error": "Error while updating profile, try again!",
+	"toast_edit_profile_picture_error": "An error occured while updating profile picture, try again later",
+	"toast_error_crop_image": "Failed to crop image, try again",
+	"edit_image_zoom_label": "Zoom",
+	"profile_favorites_section_title": "Recent favorites",
+	"profile_favorites_section_link": "All",
+	"profile_watchlist_section_title": "Watchlist",
+	"profile_watchlist_section_link": "All",
+	"profile_lists_section_title": "Recent lists",
+	"profile_lists_section_link": "All",
+	"profile_ratings_title": "Ratings",
+	"profile_ratings_total": [
+		{
+			"declarations": ["input count", "local countPlural = count: plural"],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "{count} rating",
+				"countPlural=other": "{count} ratings"
+			}
+		}
+	],
+	"profile_ratings_tooltip": "{count} {stars}",
+	"profile_activity_section_title": "Activity",
+	"profile_activity_you": "You",
+	"profile_activity_watchlist": "watchlist",
+	"profile_activity_favorites": "favorites",
+	"profile_activity_empty": "No recent activity",
+	"profile_activity_action_added_to_watchlist": [
+		{
+			"declarations": ["input isOwnProfile"],
+			"selectors": ["isOwnProfile"],
+			"match": {
+				"isOwnProfile=true": " added ",
+				"isOwnProfile=false": " added "
+			}
+		}
+	],
+	"profile_activity_action_added_to_favorites": [
+		{
+			"declarations": ["input isOwnProfile"],
+			"selectors": ["isOwnProfile"],
+			"match": {
+				"isOwnProfile=true": " added ",
+				"isOwnProfile=false": " added "
+			}
+		}
+	],
+	"profile_activity_added_to_watchlist": [
+		{
+			"declarations": ["input isOwnProfile"],
+			"selectors": ["isOwnProfile"],
+			"match": {
+				"isOwnProfile=true": " to your watchlist",
+				"isOwnProfile=false": " to their watchlist"
+			}
+		}
+	],
+	"profile_activity_added_to_favorites": [
+		{
+			"declarations": ["input isOwnProfile"],
+			"selectors": ["isOwnProfile"],
+			"match": {
+				"isOwnProfile=true": " to your favorites",
+				"isOwnProfile=false": " to their favorites"
+			}
+		}
+	],
+	"profile_activity_action_watched": [
+		{
+			"declarations": ["input isOwnProfile"],
+			"selectors": ["isOwnProfile"],
+			"match": {
+				"isOwnProfile=true": " watched ",
+				"isOwnProfile=false": " watched "
+			}
+		}
+	],
+	"profile_activity_action_followed": [
+		{
+			"declarations": ["input isOwnProfile"],
+			"selectors": ["isOwnProfile"],
+			"match": {
+				"isOwnProfile=true": " followed ",
+				"isOwnProfile=false": " followed "
+			}
+		}
+	],
+	"profile_activity_action_rated": [
+		{
+			"declarations": ["input isOwnProfile"],
+			"selectors": ["isOwnProfile"],
+			"match": {
+				"isOwnProfile=true": " rated ",
+				"isOwnProfile=false": " rated "
+			}
+		}
+	],
+	"profile_activity_action_created_list": [
+		{
+			"declarations": ["input isOwnProfile"],
+			"selectors": ["isOwnProfile"],
+			"match": {
+				"isOwnProfile=true": " created a list: ",
+				"isOwnProfile=false": " created a list: "
+			}
+		}
+	],
+	"empty_profile_title": "No activity yet",
+	"empty_profile_desc_own": "Your profile will come to life as you explore and discover content",
+	"empty_profile_desc_other": "This user has no recent activity, check back later to see what they've been up to",
+	"search_dialog_card_movie": "Movie",
+	"search_dialog_card_tv": "TV show",
+	"profile_page_following": "Following",
+	"profile_page_followers": "Followers",
+	"profile_page_following_dialog_title": "Following",
+	"profile_page_followers_dialog_title": "Followers",
+	"profile_page_following_dialog_description": "People you follow",
+	"profile_page_followers_dialog_description": "People who follow you",
+	"profile_page_following_empty": "No one followed yet",
+	"profile_page_followers_empty": "No followers yet",
+	"profile_page_follow_button": "Follow",
+	"profile_page_unfollow_button": "Unfollow",
+	"profile_page_follow_button_loading": "Loading...",
+	"banner_image_select_title": "Select Banner Image",
+	"banner_image_select_loading": "Loading images...",
+	"banner_image_select_empty_title": "No backdrop images",
+	"banner_image_select_empty_desc": "No backdrop images are available for this title",
+	"toast_error_signin_invalid_code": "Code seems to be invalid, try again!"
 }

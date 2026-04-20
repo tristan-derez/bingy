@@ -62,7 +62,7 @@ export function StarRating({
 						displayRating > starIndex && displayRating < starIndex + 1;
 
 					return (
-						<div key={starIndex} className="relative cursor-pointer text-brand">
+						<div key={starIndex} className="relative text-brand">
 							<div
 								className="absolute left-0 w-1/2 h-full z-10"
 								onMouseEnter={() => setHoverRating(starIndex + 0.5)}

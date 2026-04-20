@@ -1,8 +1,10 @@
 import { Link } from "@tanstack/react-router";
+import type { VariantProps } from "class-variance-authority";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import React, { useRef, useState } from "react";
 import logo from "@/assets/bingy-icon.svg";
 import logoFull from "@/assets/bingy-icon_text.svg";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 interface NavbarProps {
@@ -40,10 +42,11 @@ export const Navbar = ({ children, className }: NavbarProps) => {
 		<motion.div
 			ref={ref}
 			initial={{ top: 0 }}
-			animate={{ top: visible ? 30 : 30 }}
+			animate={{ top: 30 }}
 			transition={{ type: "tween", stiffness: 350 }}
 			className={cn(
-				"fixed top-0 left-1/2 -translate-x-1/2 z-99 container",
+				"fixed top-0 left-1/2 -translate-x-1/2 z-99 w-full px-5 md:px-6 lg:px-28 xl:px-30 2xl:px-80",
+				visible && "",
 				className,
 			)}
 		>
@@ -67,7 +70,7 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => {
 				boxShadow: visible
 					? "0 0 24px rgba(34, 42, 53, 0.06), 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(34, 42, 53, 0.04), 0 0 4px rgba(34, 42, 53, 0.08), 0 16px 68px rgba(47, 48, 55, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1) inset"
 					: "none",
-				width: visible ? "80%" : "100%",
+				width: visible ? "70%" : "100%",
 			}}
 			transition={{
 				type: "tween",
@@ -75,8 +78,10 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => {
 				damping: 50,
 			}}
 			className={cn(
-				"relative z-60 hidden w-full min-w-[600px] max-w-full mx-auto flex-row items-center justify-between self-start rounded-full px-4 py-2 lg:flex",
-				visible && "border-none bg-card/70 backdrop-blur-lg shadow-sm",
+				"relative z-60 hidden w-full min-w-[768px] max-w-full flex-row items-center justify-between self-start rounded-full mx-auto lg:flex",
+				visible
+					? "border-none bg-card/70 backdrop-blur-lg shadow-sm px-4 py-2"
+					: "",
 				className,
 			)}
 		>
@@ -92,7 +97,7 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
 		<motion.div
 			onMouseLeave={() => setHovered(null)}
 			className={cn(
-				"hidden flex-row items-center justify-center space-x-2 text-sm font-medium transition duration-200 lg:flex lg:space-x-2",
+				"hidden flex-row items-center justify-center text-sm font-medium transition duration-200 lg:flex",
 				className,
 			)}
 		>
@@ -103,7 +108,7 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
 						type="button"
 						onMouseEnter={() => setHovered(idx)}
 						onClick={item.onClick}
-						className="relative px-4 py-2 flex items-center gap-2 hover:cursor-pointer"
+						className="relative px-2 py-2 flex items-center gap-1 hover:cursor-pointer"
 					>
 						{hovered === idx && (
 							<motion.div
@@ -122,7 +127,7 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
 						to={item.link}
 						onMouseEnter={() => setHovered(idx)}
 						onClick={onItemClick}
-						className="relative px-4 py-2 flex items-center gap-2 [&.active]:font-bold"
+						className="relative px-4 py-2 flex items-center gap-1 [&.active]:font-bold"
 					>
 						{hovered === idx && (
 							<motion.div
@@ -161,33 +166,23 @@ export const NavbarButton = ({
 	to,
 	children,
 	className,
-	variant = "primary",
+	variant = "default",
+	size = "default",
 	...props
 }: {
 	to: string;
 	children: React.ReactNode;
-	className?: string;
-	variant?: "primary" | "secondary" | "dark" | "gradient";
-} & React.ComponentPropsWithoutRef<typeof Link>) => {
-	const baseStyles =
-		"px-4 py-2 rounded-md bg-white button bg-white text-black text-sm font-bold relative cursor-pointer hover:-translate-y-0.5 transition duration-200 inline-block text-center";
-
-	const variantStyles = {
-		primary:
-			"shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]",
-		secondary: "bg-transparent shadow-none text-foreground",
-		dark: "bg-black text-white shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]",
-		gradient:
-			"bg-gradient-to-b from-blue-500 to-blue-700 text-white shadow-[0px_2px_0px_0px_rgba(255,255,255,0.3)_inset]",
-	};
-
+} & VariantProps<typeof buttonVariants> &
+	React.ComponentPropsWithoutRef<typeof Link>) => {
 	return (
-		<Link
-			to={to}
-			className={cn(baseStyles, variantStyles[variant], className)}
-			{...props}
-		>
-			{children}
+		<Link to={to} {...props}>
+			<Button
+				variant={variant}
+				size={size}
+				className={cn("cursor-pointer", className)}
+			>
+				{children}
+			</Button>
 		</Link>
 	);
 };

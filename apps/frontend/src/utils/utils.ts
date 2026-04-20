@@ -13,6 +13,11 @@ export const getTmdbImageUrl = (
 export const capitalize = (str: string) =>
 	str.charAt(0).toUpperCase() + str.slice(1);
 
+/**
+ * @param sessionUsername
+ * @param urlUsername
+ * @returns a boolean
+ */
 export function isOwnProfile(
 	sessionUsername: string | null | undefined,
 	urlUsername: string | null | undefined,
@@ -90,3 +95,62 @@ export function mergeCrewMemberJobs(
 		});
 	}
 }
+
+// temporary solution until we call the real justwatch api
+// @todo: rework that
+export function getProviderName(name: string): string {
+	switch (name) {
+		case "Amazon Prime Video":
+			return "Prime Video";
+		case "Crunchyroll Amazon Channel":
+			return "Crunchyroll";
+		default:
+			return name;
+	}
+}
+
+/**
+ *
+ * @param birthDate
+ * @param deathDate
+ * @returns the age as number
+ */
+export const calculateAge = (
+	birthDate: string,
+	deathDate?: string | null,
+): number => {
+	const birth = new Date(birthDate);
+	const end = deathDate ? new Date(deathDate) : new Date();
+	let age = end.getFullYear() - birth.getFullYear();
+	const monthDiff = end.getMonth() - birth.getMonth();
+
+	if (monthDiff < 0 || (monthDiff === 0 && end.getDate() < birth.getDate())) {
+		age--;
+	}
+
+	return age;
+};
+
+export const getStars = (rating: number): string => {
+	const fullStars = Math.floor(rating);
+	const hasHalfStar = rating % 1 !== 0;
+	const fullStarStr = "★".repeat(fullStars);
+	const halfStarStr = hasHalfStar ? "½" : "";
+	return fullStarStr + halfStarStr;
+};
+
+export const getMediaLink = (
+	mediaId?: number,
+	mediaType?: "movie" | "tv",
+): string | null => {
+	if (!mediaId || !mediaType) return null;
+
+	const type = mediaType === "movie" ? "movies" : "tv";
+	return `/${type}/${mediaId}`;
+};
+
+export const getListLink = (username: string, slug?: string): string | null => {
+	if (!slug) return null;
+
+	return `/@${username.toLowerCase()}/lists/${slug}`;
+};

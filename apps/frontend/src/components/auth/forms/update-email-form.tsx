@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IconLoader } from "@tabler/icons-react";
 import { useRouteContext } from "@tanstack/react-router";
-import React, { useId } from "react";
+import { useId, useState } from "react";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 import type { z } from "zod";
 import { toast } from "@/components/toast/toast";
@@ -27,10 +27,12 @@ import { m } from "@/paraglide/messages";
 import { updateEmailSchema } from "@/schemas/update-email-schema";
 
 export function UpdateEmailForm() {
-	const [isSubmitting, setIsSubmitting] = React.useState(false);
-	const [open, setOpen] = React.useState(false);
+	const { authData } = useRouteContext({ from: "__root__" });
+	if (!authData) return null;
+
+	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [open, setOpen] = useState(false);
 	const id = useId();
-	const { user } = useRouteContext({ from: "/_auth" });
 
 	const form = useForm<z.infer<typeof updateEmailSchema>>({
 		resolver: zodResolver(updateEmailSchema),
@@ -38,6 +40,8 @@ export function UpdateEmailForm() {
 			email: "",
 		},
 	});
+
+	const user = authData.user;
 
 	const onFormSubmit: SubmitHandler<z.infer<typeof updateEmailSchema>> = async (
 		formData,

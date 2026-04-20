@@ -58,9 +58,7 @@ export function ListsContainer({
 	const emptyList = items.length === 0;
 
 	return (
-		<div className="container flex flex-col gap-4">
-			<h1 className="text-3xl font-bold">{m.lists_page_title()}</h1>
-
+		<div className="flex flex-col gap-4 flex-1">
 			{isOwnProfile ? (
 				<div className="flex items-center justify-between gap-4">
 					<ToggleGroup

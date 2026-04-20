@@ -61,7 +61,7 @@ export function ListDetailsContainer({
 					<div className="flex flex-row justify-between">
 						{hasItem ? (
 							<Link
-								to="/user/$username/lists/$slug"
+								to="/@{$username}/lists/$slug"
 								params={{ username: username, slug: list.slug }}
 								className="text-primary underline hover:text-primary/80 self-end"
 							>
@@ -81,9 +81,10 @@ export function ListDetailsContainer({
 									listId={list.id}
 									listName={list.name}
 									size="icon-lg"
+									username={username}
 									onRedirect={() =>
 										navigate({
-											to: "/user/$username/lists",
+											to: "/@{$username}/lists",
 											params: { username },
 										})
 									}
@@ -100,7 +101,7 @@ export function ListDetailsContainer({
 						<>
 							{m.list_container_empty_own()}{" "}
 							<Link
-								to="/user/$username/lists/$listslug/edit"
+								to="/@{$username}/lists/$listslug/edit"
 								params={{ username, listslug: list.slug }}
 								className="text-primary underline hover:text-primary/80"
 							>

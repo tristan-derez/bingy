@@ -13,13 +13,15 @@ interface RemoveFromWatchlistItemProps {
 		id: number;
 		name: string;
 	};
+	username: string;
 }
 
 export function RemoveFromWatchlistItem({
 	movie,
 	tvShow,
+	username,
 }: RemoveFromWatchlistItemProps) {
-	const removeFromWatchlist = useRemoveFromWatchlist();
+	const removeFromWatchlist = useRemoveFromWatchlist(username);
 
 	const mediaType = movie ? "movie" : "tv";
 	const mediaId = movie?.id ?? tvShow?.id;

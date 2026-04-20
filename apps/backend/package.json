@@ -10,10 +10,12 @@
 		"email:dev": "email dev --dir ./src/emails"
 	},
 	"dependencies": {
+		"@aws-sdk/client-s3": "^3.1019.0",
 		"@hono/zod-validator": "^0.7.2",
 		"@react-email/components": "0.5.3",
 		"better-auth": "^1.4.9",
 		"drizzle-orm": "^0.44.4",
+		"file-type": "^22.0.0",
 		"hono": "^4.9.1",
 		"http-status-codes": "^2.3.0",
 		"nanoid": "^5.1.6",
@@ -26,6 +28,7 @@
 		"react-dom": "^19.1.1",
 		"resend": "^6.1.0",
 		"shared": "workspace:*",
+		"sharp": "^0.34.5",
 		"slugify": "^1.6.6",
 		"zod": "^4.0.17"
 	},

@@ -7,7 +7,6 @@ import { ListPagination } from "../list-pagination";
 import { HistoryEmptyState } from "./history-empty-state";
 
 type HistoryContainerProps = {
-	title: string;
 	username: string;
 	isOwnProfile: boolean;
 	items?: {
@@ -33,7 +32,6 @@ type HistoryContainerProps = {
 };
 
 export function HistoryContainer({
-	title,
 	username,
 	isOwnProfile,
 	items = [],
@@ -44,9 +42,7 @@ export function HistoryContainer({
 	onPageChange,
 }: HistoryContainerProps) {
 	return (
-		<div className="container flex flex-col gap-4">
-			<h1 className="text-3xl font-bold">{title}</h1>
-
+		<div className="flex flex-col gap-4 flex-1">
 			<MediaToggleGroup value={filter} onValueChange={onFilterChange} />
 
 			{items.length === 0 ? (
@@ -57,7 +53,7 @@ export function HistoryContainer({
 				/>
 			) : (
 				<>
-					<div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-5 xl:grid-cols-8 gap-2 sm:gap-4">
+					<div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-4">
 						{items.map((item) => {
 							const type = item.mediaType === "movie" ? "movies" : "tv";
 							return (

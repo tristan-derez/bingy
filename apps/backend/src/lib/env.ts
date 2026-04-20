@@ -16,8 +16,6 @@ const envSchema = z.object({
 	REDIS_URL: z.string().default("redis:/localhost:6379"),
 	GOOGLE_CLIENT_ID: z.string(),
 	GOOGLE_CLIENT_SECRET: z.string(),
-	DISCORD_CLIENT_ID: z.string(),
-	DISCORD_CLIENT_SECRET: z.string(),
 	BASE_URL: z.string(),
 	API_VERSION: z.string(),
 	FRONT_URL: z.string(),
@@ -26,6 +24,11 @@ const envSchema = z.object({
 	TRANSACTIONAL_EMAIL: z.string(),
 	APP_NAME: z.string(),
 	BUCKET_URL: z.string(),
+	R2_PUBLIC_URL: z.string(),
+	R2_BUCKET_NAME: z.string(),
+	CLOUDFLARE_ACCOUNT_ID: z.string(),
+	S3_ACCESS_KEY_ID: z.string(),
+	S3_SECRET_ACCESS_KEY: z.string(),
 	API_URL: z.string(),
 });
 

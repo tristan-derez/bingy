@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
 import type { Schemas } from "shared";
 import {
 	fetchMovie,
@@ -61,10 +61,12 @@ export function useMovieResource<T>(
 	id: number,
 	endpoint: MovieEndpoint,
 	params?: MoviesParams,
+	options?: Omit<UseQueryOptions<T>, "queryKey" | "queryFn">,
 ) {
 	return useQuery<T>({
 		queryKey: ["movie", id, endpoint, params],
 		queryFn: () => fetchMovieResources(id, endpoint, params),
 		staleTime: 1000 * 60 * 10,
+		...options,
 	});
 }

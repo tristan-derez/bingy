@@ -66,7 +66,7 @@ export function ListCard({ item, username, isOwnProfile }: ListCardProps) {
 
 	return (
 		<Link
-			to="/user/$username/lists/$slug"
+			to="/@{$username}/lists/$slug"
 			params={{ username: username, slug: item.slug }}
 			className="hover:cursor-default"
 		>
@@ -110,6 +110,7 @@ export function ListCard({ item, username, isOwnProfile }: ListCardProps) {
 									listId={item.id}
 									listName={item.name}
 									size="icon-sm"
+									username={username}
 								/>
 							</div>
 						</CardAction>

@@ -8,7 +8,6 @@ export type MediaFilter = "all" | "movie" | "tv";
 type WatchlistContainerProps = {
 	username: string;
 	isOwnProfile: boolean;
-	title: string;
 	items?: {
 		id: number;
 		title: string;
@@ -29,7 +28,6 @@ type WatchlistContainerProps = {
 export function WatchlistContainer({
 	username,
 	isOwnProfile,
-	title,
 	items = [],
 	filter,
 	onFilterChange,
@@ -38,9 +36,7 @@ export function WatchlistContainer({
 	onPageChange,
 }: WatchlistContainerProps) {
 	return (
-		<div className="container flex flex-col gap-4">
-			<h1 className="text-3xl font-bold">{title}</h1>
-
+		<div className="flex flex-col gap-4 flex-1">
 			<MediaToggleGroup value={filter} onValueChange={onFilterChange} />
 
 			{items.length === 0 ? (
@@ -51,7 +47,7 @@ export function WatchlistContainer({
 				/>
 			) : (
 				<>
-					<div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-5 xl:grid-cols-8 gap-2 sm:gap-4">
+					<div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-4">
 						{items.map((item) => {
 							const type = item.mediaType === "movie" ? "movies" : "tv";
 							return (

@@ -1,0 +1,52 @@
+import {
+	createFileRoute,
+	useNavigate,
+	useRouteContext,
+} from "@tanstack/react-router";
+import { useAtomValue } from "jotai";
+import { useState } from "react";
+import { ListDetailsContainer } from "@/components/lists/custom-lists/details/list-details-container";
+import { LoadingCentered } from "@/components/loading/loading-centered";
+import { toast } from "@/components/toast/toast";
+import { useListBySlug } from "@/hooks/useLists";
+import { localeRegionAtom } from "@/lib/atoms/region";
+import { m } from "@/paraglide/messages";
+
+export const Route = createFileRoute("/@{$username}/lists_/$slug_/details")({
+	component: ListDetailsPage,
+});
+
+function ListDetailsPage() {
+	const { username, slug } = Route.useParams();
+	const navigate = useNavigate();
+	const localeRegion = useAtomValue(localeRegionAtom);
+	const { authData } = useRouteContext({ from: "__root__" });
+	const userNameFromSession = authData?.user?.name;
+	const isOwnProfile =
+		userNameFromSession?.toLowerCase() === username.toLowerCase();
+
+	const [page, setPage] = useState(1);
+	const {
+		data: list,
+		isLoading,
+		error,
+	} = useListBySlug(username, slug, localeRegion, page);
+
+	if (isLoading) return <LoadingCentered />;
+	if (!list || error) {
+		toast.error({ title: m.toast_error_list_not_found() });
+		navigate({ to: "/@{$username}/lists", params: { username } });
+		return;
+	}
+
+	return (
+		<ListDetailsContainer
+			username={username}
+			list={list}
+			page={page}
+			totalPages={list.total_pages}
+			onPageChange={setPage}
+			isOwnList={isOwnProfile}
+		/>
+	);
+}

@@ -49,6 +49,9 @@ export function useAddToFavorites(username: string) {
 			queryClient.invalidateQueries({
 				queryKey: ["lists", "watchlist"],
 			});
+			queryClient.invalidateQueries({
+				queryKey: ["user-profile", username],
+			});
 
 			toast.success({
 				title: m.toast_add_to_favorites_success({ name: variables.mediaName }),
@@ -56,7 +59,7 @@ export function useAddToFavorites(username: string) {
 					label: m.btn_go_to_favorites(),
 					onClick: () => {
 						navigate({
-							to: "/user/$username/favorites",
+							to: "/@{$username}/favorites",
 							params: { username },
 						});
 					},
@@ -71,7 +74,7 @@ export function useAddToFavorites(username: string) {
 	});
 }
 
-export function useRemoveFromFavorites() {
+export function useRemoveFromFavorites(username: string) {
 	const queryClient = useQueryClient();
 
 	return useMutation({
@@ -86,6 +89,9 @@ export function useRemoveFromFavorites() {
 		onSuccess: (_data, variables) => {
 			queryClient.invalidateQueries({
 				queryKey: ["favorites"],
+			});
+			queryClient.invalidateQueries({
+				queryKey: ["user-profile", username],
 			});
 
 			toast.success({

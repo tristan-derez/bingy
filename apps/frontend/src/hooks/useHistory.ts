@@ -27,6 +27,9 @@ export function useAddMovieToHistory(username: string) {
 			queryClient.invalidateQueries({
 				queryKey: ["lists", "watchlist"],
 			});
+			queryClient.invalidateQueries({
+				queryKey: ["user-profile", username],
+			});
 
 			toast.success({
 				title: m.toast_add_movie_watched_success(),
@@ -34,7 +37,7 @@ export function useAddMovieToHistory(username: string) {
 					label: m.btn_go_to_history_page(),
 					onClick: () => {
 						navigate({
-							to: "/user/$username/history",
+							to: "/@{$username}/history",
 							params: { username },
 						});
 					},
@@ -63,6 +66,9 @@ export function useAddTvToHistory(username: string) {
 			queryClient.invalidateQueries({
 				queryKey: ["lists", "watchlist"],
 			});
+			queryClient.invalidateQueries({
+				queryKey: ["user-profile", username],
+			});
 
 			toast.success({
 				title: m.toast_add_tv_watched_success(),
@@ -70,7 +76,7 @@ export function useAddTvToHistory(username: string) {
 					label: m.btn_go_to_history_page(),
 					onClick: () => {
 						navigate({
-							to: "/user/$username/history",
+							to: "/@{$username}/history",
 							params: { username },
 						});
 					},
@@ -101,6 +107,9 @@ export function useRemoveMovieHistory() {
 			queryClient.invalidateQueries({
 				queryKey: ["favorites"],
 			});
+			queryClient.invalidateQueries({
+				queryKey: ["user-profile"],
+			});
 
 			toast.success({ title: m.toast_remove_movie_history_success() });
 		},
@@ -127,6 +136,9 @@ export function useRemoveTvHistory() {
 			});
 			queryClient.invalidateQueries({
 				queryKey: ["favorites"],
+			});
+			queryClient.invalidateQueries({
+				queryKey: ["user-profile"],
 			});
 
 			toast.success({ title: m.toast_remove_tv_history_success() });

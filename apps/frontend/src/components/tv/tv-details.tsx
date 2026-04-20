@@ -10,6 +10,7 @@ import { ResourceNotFound } from "@/components/errors/resource-not-found";
 import { MediaActionMenu } from "@/components/lists/media-actions/media-action-menu";
 import { LoadingCentered } from "@/components/loading/loading-centered";
 import { MediaBackgroundImage } from "@/components/medias/media-background-image";
+import { MediaCreators } from "@/components/medias/media-creators";
 import { MediaGenresBadge } from "@/components/medias/media-genres-badge";
 import { MediaLearnMoreCard } from "@/components/medias/media-learn-more";
 import { MediaOverview } from "@/components/medias/media-overview";
@@ -73,7 +74,7 @@ export function TvDetailsView({
 				<BackButton />
 
 				<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
-					<div className="flex flex-col gap-2 items-center lg:items-start w-44 md:w-52 lg:w-67 xl:w-80">
+					<div className="flex flex-col gap-2 items-center lg:items-start max-w-[250px] md:max-w-[300px] lg:max-w-[400px]">
 						<MediaPortraitImage
 							imagePath={tv.poster_path}
 							alt={tv.name}
@@ -116,29 +117,12 @@ export function TvDetailsView({
 											<MediaOverview overview={tv.overview} />
 										</div>
 
-										{tv.created_by.length > 0 ? (
-											<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-												{tv.created_by.slice(0, 3).map((creator) => (
-													<div className="flex flex-col" key={creator.id}>
-														<Link
-															to="/person/$personId"
-															params={{ personId: creator.id.toString() }}
-														>
-															<h3 className="font-semibold text-base lg:text-lg whitespace-nowrap">
-																{creator.name}
-															</h3>
-														</Link>
-
-														<p className="text-muted-foreground text-sm">
-															{m.tv_details_creator({
-																gender:
-																	creator.gender === 1 ? "female" : "male",
-															})}
-														</p>
-													</div>
-												))}
-											</div>
-										) : null}
+										<MediaCreators
+											creators={tv.created_by}
+											getRoleLabel={(gender) =>
+												m.tv_details_creator({ gender })
+											}
+										/>
 									</div>
 
 									{authData ? (

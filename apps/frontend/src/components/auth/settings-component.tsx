@@ -1,24 +1,30 @@
 import { IconBrush, IconUserCog } from "@tabler/icons-react";
-import { useRouteContext } from "@tanstack/react-router";
+import { useNavigate, useRouteContext } from "@tanstack/react-router";
 import type { Account } from "better-auth";
+import { DeleteAccountForm } from "@/components/auth/forms/delete-account-form";
+import { DisableTwoFactorForm } from "@/components/auth/forms/disable-two-factor-form";
+import { EnableTwoFactorForm } from "@/components/auth/forms/enable-two-factor-form";
+import { UpdateEmailForm } from "@/components/auth/forms/update-email-form";
 import { UpdatePasswordForm } from "@/components/auth/forms/update-password-form";
+import { LinkAccountComponent } from "@/components/auth/link-account";
+import { ModeToggle } from "@/components/theme/theme-toggle";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { m } from "@/paraglide/messages";
-import { ModeToggle } from "../theme/theme-toggle";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import { DeleteAccountForm } from "./forms/delete-account-form";
-import { DisableTwoFactorForm } from "./forms/disable-two-factor-form";
-import { EnableTwoFactorForm } from "./forms/enable-two-factor-form";
-import { UpdateEmailForm } from "./forms/update-email-form";
-import { LinkAccountComponent } from "./link-account";
+import type { SettingsTab } from "@/routes/_auth/settings";
 
-type SettingsComponentProps = {
+interface SettingsComponentProps {
 	accounts: Account[];
-};
+	currentTab: SettingsTab;
+}
 
-export function SettingsComponent({ accounts }: SettingsComponentProps) {
+export function SettingsComponent({
+	accounts,
+	currentTab,
+}: SettingsComponentProps) {
 	const { authData } = useRouteContext({ from: "__root__" });
+	const navigate = useNavigate();
 
 	if (!authData) return null;
 
@@ -26,11 +32,19 @@ export function SettingsComponent({ accounts }: SettingsComponentProps) {
 	const twoFactorEnabled = authData.user.twoFactorEnabled;
 
 	return (
-		<Tabs defaultValue="account">
-			<TabsList>
+		<Tabs
+			value={currentTab}
+			onValueChange={(value) => {
+				navigate({
+					to: "/settings",
+					search: { tab: value as SettingsTab },
+				});
+			}}
+		>
+			<TabsList className="self-center">
 				<TabsTrigger value="account">
 					<IconUserCog />
-					{m.settings_tabs_trigger_account()}
+					{m.settings_tab_trigger_account()}
 				</TabsTrigger>
 				<TabsTrigger value="display">
 					<IconBrush />
@@ -44,32 +58,31 @@ export function SettingsComponent({ accounts }: SettingsComponentProps) {
 					<Separator />
 					<LinkAccountComponent accounts={accounts} />
 					<Separator />
-					{hasPassword && !twoFactorEnabled && (
+					{hasPassword && !twoFactorEnabled ? (
 						<>
 							<EnableTwoFactorForm />
 							<Separator />
 						</>
-					)}
-					{twoFactorEnabled && (
+					) : null}
+					{twoFactorEnabled ? (
 						<>
 							<DisableTwoFactorForm />
 							<Separator />
 						</>
-					)}
+					) : null}
 					<UpdateEmailForm />
 					<Separator />
 					<UpdatePasswordForm hasPassword={hasPassword} />
 					<Separator />
-					<DeleteAccountForm />
+					<DeleteAccountForm hasPassword={hasPassword} />
 				</Card>
 			</TabsContent>
 			<TabsContent value="display">
-				<Card className="max-w-sm sm:min-w-[320px] md:min-w-[420px] p-4">
+				<Card className="p-4">
 					<CardTitle>{m.settings_card_title_display()}</CardTitle>
 					<CardDescription>{m.settings_card_desc_display()}</CardDescription>
 					<div className="flex flex-col py-2">
 						<ModeToggle />
-						<p></p>
 					</div>
 				</Card>
 			</TabsContent>

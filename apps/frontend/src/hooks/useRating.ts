@@ -65,6 +65,9 @@ export function useRateMovie(username: string) {
 			queryClient.invalidateQueries({
 				queryKey: ["average-rating", "movie", variables.tmdbId],
 			});
+			queryClient.invalidateQueries({
+				queryKey: ["user-profile", username],
+			});
 
 			if (res.rating) {
 				toast.success({
@@ -73,7 +76,7 @@ export function useRateMovie(username: string) {
 						label: m.btn_go_to_history_page(),
 						onClick: () => {
 							navigate({
-								to: "/user/$username/history",
+								to: "/@{$username}/history",
 								params: { username },
 							});
 						},
@@ -108,6 +111,9 @@ export function useRateTvShow(username: string) {
 			queryClient.invalidateQueries({
 				queryKey: ["average-rating", "tv", variables.tmdbId],
 			});
+			queryClient.invalidateQueries({
+				queryKey: ["user-profile", username],
+			});
 
 			if (res.rating) {
 				toast.success({
@@ -116,7 +122,7 @@ export function useRateTvShow(username: string) {
 						label: m.btn_go_to_history_page(),
 						onClick: () => {
 							navigate({
-								to: "/user/$username/history",
+								to: "/@{$username}/history",
 								params: { username },
 							});
 						},
@@ -129,7 +135,7 @@ export function useRateTvShow(username: string) {
 						label: m.btn_go_to_history_page(),
 						onClick: () => {
 							navigate({
-								to: "/user/$username/history",
+								to: "/@{$username}/history",
 								params: { username },
 							});
 						},
@@ -158,6 +164,9 @@ export function useRemoveMovieRating() {
 			queryClient.invalidateQueries({
 				queryKey: ["average-rating", "movie", tmdbId],
 			});
+			queryClient.invalidateQueries({
+				queryKey: ["user-profile"],
+			});
 
 			toast.success({ title: m.toast_remove_movie_rating_success() });
 		},
@@ -181,6 +190,9 @@ export function useRemoveTvRating() {
 			});
 			queryClient.invalidateQueries({
 				queryKey: ["average-rating", "tv", tmdbId],
+			});
+			queryClient.invalidateQueries({
+				queryKey: ["user-profile"],
 			});
 
 			toast.success({ title: m.toast_remove_tv_rating_success() });

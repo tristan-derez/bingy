@@ -7,6 +7,7 @@ import { ResourceNotFound } from "@/components/errors/resource-not-found";
 import { MediaActionMenu } from "@/components/lists/media-actions/media-action-menu";
 import { LoadingCentered } from "@/components/loading/loading-centered";
 import { MediaBackgroundImage } from "@/components/medias/media-background-image";
+import { MediaCreators } from "@/components/medias/media-creators";
 import { MediaGenresBadge } from "@/components/medias/media-genres-badge";
 import { MediaLearnMoreCard } from "@/components/medias/media-learn-more";
 import { MediaOverview } from "@/components/medias/media-overview";
@@ -25,7 +26,7 @@ import { getTmdbImageUrl } from "@/utils/utils";
 
 interface MovieDetailViewProps {
 	movie: Schemas.MovieDetails | undefined;
-	crew: Array<{ id: number; name: string; roles: Set<string> }>;
+	directors: Array<{ id: number; name: string; gender: number | null }>;
 	cast: Schemas.CastMember[];
 	socials: Partial<Record<"instagram" | "twitter", string>>;
 	watchProviders: Schemas.WatchProviders | undefined;
@@ -39,7 +40,7 @@ interface MovieDetailViewProps {
 export function MovieDetailView({
 	movie,
 	cast,
-	crew,
+	directors,
 	socials,
 	watchProviders,
 	collection,
@@ -129,25 +130,12 @@ export function MovieDetailView({
 											<MediaOverview overview={movie.overview} />
 										</div>
 
-										{crew.length > 0 && (
-											<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-												{crew.slice(0, 3).map((person) => (
-													<div className="flex flex-col" key={person.id}>
-														<Link
-															to="/person/$personId"
-															params={{ personId: person.id.toString() }}
-														>
-															<h3 className="font-semibold text-base lg:text-lg whitespace-nowrap">
-																{person.name}
-															</h3>
-														</Link>
-														<p className="text-muted-foreground text-sm">
-															{Array.from(person.roles).join(", ")}
-														</p>
-													</div>
-												))}
-											</div>
-										)}
+										<MediaCreators
+											creators={directors}
+											getRoleLabel={(gender) =>
+												m.movie_details_director({ gender })
+											}
+										/>
 									</div>
 									{authData ? (
 										<div className="lg:self-start mt-3">

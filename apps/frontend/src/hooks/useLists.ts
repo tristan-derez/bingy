@@ -81,6 +81,11 @@ export function useAddMediaToWatchlist(username: string) {
 			queryClient.invalidateQueries({
 				queryKey: ["lists", "watchlist"],
 			});
+			queryClient.invalidateQueries({
+				queryKey: ["user-profile"],
+				exact: false,
+			});
+
 			const title = variables.title || variables.name;
 			toast.success({
 				title: m.toast_watchlist_media_success({ media: `"${title}"` }),
@@ -88,7 +93,7 @@ export function useAddMediaToWatchlist(username: string) {
 					label: m.btn_go_to_watchlist(),
 					onClick: () => {
 						navigate({
-							to: "/user/$username/watchlist",
+							to: "/@{$username}/watchlist",
 							params: { username },
 						});
 					},
@@ -104,7 +109,7 @@ export function useAddMediaToWatchlist(username: string) {
 	});
 }
 
-export function useRemoveFromWatchlist() {
+export function useRemoveFromWatchlist(username: string) {
 	const queryClient = useQueryClient();
 
 	return useMutation({
@@ -115,6 +120,10 @@ export function useRemoveFromWatchlist() {
 			queryClient.invalidateQueries({
 				queryKey: ["lists", "watchlist"],
 			});
+			queryClient.invalidateQueries({
+				queryKey: ["user-profile", username],
+			});
+
 			const title = variables.title || variables.name;
 			toast.success({
 				title: m.toast_remove_watchlist_success({ media: `"${title}"` }),
@@ -164,7 +173,7 @@ export function useListBySlug(
 	});
 }
 
-export function useCreateList() {
+export function useCreateList(username: string) {
 	const queryClient = useQueryClient();
 
 	return useMutation({
@@ -176,11 +185,14 @@ export function useCreateList() {
 				queryKey: ["lists", "custom-list"],
 				exact: false,
 			});
+			queryClient.invalidateQueries({
+				queryKey: ["user-profile", username],
+			});
 		},
 	});
 }
 
-export function useUpdateList() {
+export function useUpdateList(username: string) {
 	const queryClient = useQueryClient();
 
 	return useMutation({
@@ -198,11 +210,14 @@ export function useUpdateList() {
 				queryKey: ["lists", "custom-list"],
 				exact: false,
 			});
+			queryClient.invalidateQueries({
+				queryKey: ["user-profile", username],
+			});
 		},
 	});
 }
 
-export function useDeleteList() {
+export function useDeleteList(username: string) {
 	const queryClient = useQueryClient();
 
 	return useMutation({
@@ -214,6 +229,10 @@ export function useDeleteList() {
 				queryKey: ["lists", "custom-list"],
 				exact: false,
 			});
+			queryClient.invalidateQueries({
+				queryKey: ["user-profile", username],
+			});
+
 			toast.success({ title: m.toast_delete_list_success() });
 		},
 		onError: () => {
@@ -240,6 +259,10 @@ export function useAddMediaToList() {
 					variables.listSlug,
 				],
 			});
+			queryClient.invalidateQueries({
+				queryKey: ["user-profile", variables.username],
+			});
+
 			const mediaTitle = variables.title || variables.name;
 			toast.success({
 				title: m.toast_add_to_list_media_success({
@@ -250,7 +273,7 @@ export function useAddMediaToList() {
 					label: m.item_added_to_list_success_cta(),
 					onClick: () => {
 						navigate({
-							to: "/user/$username/lists/$slug",
+							to: "/@{$username}/lists/$slug",
 							params: {
 								username: variables.username,
 								slug: variables.listSlug,
@@ -271,7 +294,7 @@ export function useAddMediaToList() {
 		},
 	});
 }
-export function useRemoveFromList() {
+export function useRemoveFromList(username: string) {
 	const queryClient = useQueryClient();
 
 	return useMutation({
@@ -283,6 +306,10 @@ export function useRemoveFromList() {
 			queryClient.invalidateQueries({
 				queryKey: ["lists", "custom-list", variables.listSlug],
 			});
+			queryClient.invalidateQueries({
+				queryKey: ["user-profile", username],
+			});
+
 			const title = variables.title || variables.name;
 			toast.success({
 				title: m.toast_remove_from_list_media_success({

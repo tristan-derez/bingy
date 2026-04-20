@@ -27,27 +27,15 @@ export function MediaToggleGroup({
 			className="justify-start"
 			spacing={2}
 		>
-			<ToggleGroupItem
-				value="all"
-				aria-label={m.toggle_aria_label_all()}
-				className="hover:cursor-pointer"
-			>
+			<ToggleGroupItem value="all" aria-label={m.toggle_aria_label_all()}>
 				<IconLayoutGrid className="h-4 w-4" />
 				{m.toggle_group_item_all()}
 			</ToggleGroupItem>
-			<ToggleGroupItem
-				value="movie"
-				aria-label={m.toggle_aria_label_movies()}
-				className="hover:cursor-pointer"
-			>
+			<ToggleGroupItem value="movie" aria-label={m.toggle_aria_label_movies()}>
 				<IconMovie className="h-4 w-4" />
 				{m.toggle_group_item_movies()}
 			</ToggleGroupItem>
-			<ToggleGroupItem
-				value="tv"
-				aria-label={m.toggle_aria_label_tv()}
-				className="hover:cursor-pointer"
-			>
+			<ToggleGroupItem value="tv" aria-label={m.toggle_aria_label_tv()}>
 				<IconDeviceTv className="h-4 w-4" />
 				{m.toggle_group_item_tv()}
 			</ToggleGroupItem>

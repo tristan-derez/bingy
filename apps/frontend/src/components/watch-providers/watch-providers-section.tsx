@@ -1,5 +1,6 @@
 import type { Schemas } from "shared";
 import { m } from "@/paraglide/messages";
+import { getProviderName } from "@/utils/utils";
 
 interface WatchProvidersSectionProps {
 	watchProviders: Schemas.WatchProviders | undefined;
@@ -33,10 +34,7 @@ export function WatchProvidersSection({
 			) : null}
 			<div className="flex flex-row justify-center">
 				{displayedProviders.map((provider) => {
-					const providerName =
-						provider.provider_name === "Amazon Prime Video"
-							? "Prime Video"
-							: provider.provider_name;
+					const providerName = getProviderName(provider.provider_name);
 
 					return (
 						<a
@@ -61,7 +59,12 @@ export function WatchProvidersSection({
 								<span className="text-sm leading-relaxed">
 									{m.watch_providers_text()}
 								</span>
-								<span className="text-base font-bold leading-relaxed">
+								<span className="text-base font-bold leading-relaxed md:hidden">
+									{providerName.length > 12
+										? `${providerName.slice(0, 12)}...`
+										: providerName}
+								</span>
+								<span className="text-base font-bold leading-relaxed hidden md:inline">
 									{providerName}
 								</span>
 							</div>

@@ -36,7 +36,7 @@ export function FavoriteToggleButton({
 }: FavoriteToggleButtonProps) {
 	const [showTvConfirmDialog, setShowTvConfirmDialog] = useState(false);
 	const addToFavorites = useAddToFavorites(username);
-	const removeFromFavorites = useRemoveFromFavorites();
+	const removeFromFavorites = useRemoveFromFavorites(username);
 	const tmdbId = movie?.id ?? tvShow?.id ?? 0;
 	const mediaType = movie ? "movie" : "tv";
 	const { data: favoriteData } = useFavorite(
@@ -96,7 +96,7 @@ export function FavoriteToggleButton({
 							type="button"
 							onClick={handleToggle}
 							disabled={isPending}
-							className={`group flex flex-col items-center gap-1 transition-colors hover:cursor-pointer ${
+							className={`group flex flex-col items-center gap-1 transition-colors hover:text-red-400 ${
 								isFavorited ? "text-red-500" : `text-${color}`
 							}`}
 						>
