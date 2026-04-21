@@ -5,7 +5,6 @@ import { serveStatic } from "hono/bun";
 import { cors } from "hono/cors";
 import { logger as httpLogger } from "hono/logger";
 import { trimTrailingSlash } from "hono/trailing-slash";
-import userProfileRoutes from "#web/routes/user";
 import type { auth } from "./lib/auth";
 import { cacheClient } from "./lib/cache-client";
 import { connection } from "./lib/database";
@@ -30,9 +29,11 @@ import ratingRoutes from "./web/routes/rating";
 import searchRoutes from "./web/routes/search";
 import trendingRoutes from "./web/routes/trending";
 import tvRoutes from "./web/routes/tv";
+import userProfileRoutes from "./web/routes/user";
 import userFavoriteRoutes from "./web/routes/user-favorites";
 import userHistoryRoutes from "./web/routes/user-history";
 import userListRoutes from "./web/routes/user-list";
+import userProgressRoutes from "./web/routes/user-progress";
 import watchProvidersRoutes from "./web/routes/watch-providers";
 
 declare global {
@@ -79,6 +80,7 @@ api.route("/auth", authRoutes);
 api.route("/health", healthRoutes);
 api.route("/lists", userListRoutes);
 api.route("/history", userHistoryRoutes);
+api.route("/progress", userProgressRoutes);
 api.route("/favorites", userFavoriteRoutes);
 api.route("/rating", ratingRoutes);
 api.route("/user", userProfileRoutes);
