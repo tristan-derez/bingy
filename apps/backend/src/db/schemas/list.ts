@@ -38,23 +38,6 @@ export const media = pgTable(
 	],
 );
 
-export const tvSeasons = pgTable(
-	"tv_seasons",
-	{
-		id: uuid("id").primaryKey().default(sql`uuidv7()`),
-		mediaId: uuid("media_id")
-			.notNull()
-			.references(() => media.id, { onDelete: "cascade" }),
-		seasonNumber: integer("season_number").notNull(),
-		episodeCount: integer("episode_count").notNull(),
-		...timestamps,
-	},
-	(table) => [
-		unique().on(table.mediaId, table.seasonNumber),
-		index("idx_tv_seasons_media").on(table.mediaId),
-	],
-);
-
 export const movieWatchHistory = pgTable(
 	"movie_watch_history",
 	{
@@ -257,17 +240,9 @@ export const mediaRelations = relations(media, ({ many }) => ({
 	movieWatchHistory: many(movieWatchHistory),
 	tvShowWatchHistory: many(tvShowWatchHistory),
 	tvShowProgress: many(tvShowProgress),
-	tvSeasons: many(tvSeasons),
 	watchlistEntries: many(watchlist),
 	listItems: many(listItems),
 	favorites: many(favorites),
-}));
-
-export const tvSeasonsRelations = relations(tvSeasons, ({ one }) => ({
-	media: one(media, {
-		fields: [tvSeasons.mediaId],
-		references: [media.id],
-	}),
 }));
 
 export const usersRelations = relations(users, ({ many }) => ({
@@ -380,9 +355,6 @@ export const favoritesRelations = relations(favorites, ({ one }) => ({
 // Media types
 export type Media = InferSelectModel<typeof media>;
 export type NewMedia = InferInsertModel<typeof media>;
-
-export type TvSeason = InferSelectModel<typeof tvSeasons>;
-export type NewTvSeason = InferInsertModel<typeof tvSeasons>;
 
 // Watch history types
 export type MovieWatchHistory = InferSelectModel<typeof movieWatchHistory>;
