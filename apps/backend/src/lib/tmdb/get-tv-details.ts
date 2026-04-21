@@ -1,5 +1,5 @@
-import { cacheClient } from "../../lib/cache-client";
-import { logger } from "../../lib/logger";
+import { cacheClient } from "../cache-client";
+import { logger } from "../logger";
 import { tmdbClient } from "./tmdb.client";
 
 export type TvDetails = {
