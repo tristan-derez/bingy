@@ -16,9 +16,9 @@ import { activity, users } from "../../db/schemas/user";
 import { db } from "../../lib/database";
 import { getMediaDetails } from "../../lib/tmdb/get-media-details";
 import { sessionMiddleware } from "../../web/middlewares/session";
-import { convertAbsoluteToSeasonEpisode } from "../../web/utils/absolute-to-season-episode";
 import { getOrCreateMedia } from "../../web/utils/create-update-media";
 import { updateMediaRating } from "../../web/utils/media-rating";
+import { convertAbsoluteToSeasonEpisode } from "../utils/tv-helper";
 
 type Variables = {
 	user: User | null;
