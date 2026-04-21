@@ -6,7 +6,7 @@ interface Season {
 /**
  *
  * @param seasons
- * @returns seasons without the special season (season 0) and order them by season number
+ * @returns
  */
 export function getValidSeason(seasons: Season[]): Season[] {
 	return seasons
@@ -17,7 +17,7 @@ export function getValidSeason(seasons: Season[]): Season[] {
 export function convertAbsoluteToSeasonEpisode(
 	absoluteEpisode: number,
 	seasons: Season[],
-): Season {
+): { season: number; episode: number } {
 	const validSeasons = getValidSeason(seasons);
 
 	let remaining = absoluteEpisode;
@@ -25,8 +25,8 @@ export function convertAbsoluteToSeasonEpisode(
 	for (const season of validSeasons) {
 		if (remaining <= season.episode_count) {
 			return {
-				season_number: season.season_number,
-				episode_count: remaining,
+				season: season.season_number,
+				episode: remaining,
 			};
 		}
 		remaining -= season.episode_count;

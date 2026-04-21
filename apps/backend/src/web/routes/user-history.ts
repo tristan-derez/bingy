@@ -130,8 +130,8 @@ userHistoryRoutes.post(
 				tvDetails.seasons,
 			);
 
-			lastWatchedSeason = result.season_number;
-			lastWatchedEpisode = result.episode_count;
+			lastWatchedSeason = result.season;
+			lastWatchedEpisode = result.episode;
 		}
 
 		const entry = await db.transaction(async (tx) => {
@@ -425,33 +425,6 @@ userHistoryRoutes.get("/:username", async (c) => {
 		total_results: totalResults,
 	});
 });
-
-// get all tv shows with pending episodes for a user
-userHistoryRoutes.get("/:username/tv/progress", async (c) => {});
-
-// get a tv show progress from an user by username
-// @todo: get every tv shows progress
-userHistoryRoutes.get("/:username/tv/progress/:tmdbId", async (c) => {});
-
-// create entry in progress for tv - seasonNumber and episodeNumber are the last episode the user watched
-// user must be logged in
-userHistoryRoutes.post(
-	"/tv/progress",
-	zValidator(
-		"json",
-		z.object({
-			tmdbId: z.number(),
-			rating: z.number().min(0.5).max(5.0).optional(),
-			review: z.string().optional(),
-			watchedAt: z.iso.datetime().optional(),
-			seasonNumber: z.number().min(1).optional(),
-			episodeNumber: z.number().min(1).optional(),
-			absoluteEpisode: z.number().optional(),
-			trackingMode: z.enum(["season", "absolute"]).optional(),
-		}),
-	),
-	async (c) => {},
-);
 
 // delete movie from history and delete rating/favorites associated to it
 // user must be logged in
