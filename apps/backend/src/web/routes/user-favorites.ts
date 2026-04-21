@@ -110,6 +110,7 @@ userFavoriteRoutes.post(
 							lastWatchedSeason: lastSeason.season_number,
 							lastWatchedEpisode: lastSeason.episode_count ?? 0,
 							trackingMode: "season",
+							status: "completed",
 						})
 						.onConflictDoUpdate({
 							target: [tvShowProgress.userId, tvShowProgress.mediaId],

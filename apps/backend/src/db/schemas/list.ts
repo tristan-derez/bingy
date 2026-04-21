@@ -123,6 +123,10 @@ export const tvShowProgress = pgTable(
 		lastWatchedEpisode: integer("last_watched_episode").notNull(),
 		absoluteEpisode: integer("absolute_episode"),
 		trackingMode: text("tracking_mode").notNull().default("season"),
+		status: varchar("status", { length: 20 })
+			.notNull()
+			.default("watching")
+			.$type<"watching" | "completed" | "on_hold" | "dropped">(),
 		...timestamps,
 	},
 	(table) => [
