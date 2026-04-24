@@ -5,6 +5,7 @@
 		"module": "ESNext",
 
 		"declaration": true,
+		"rootDir": "./src",
 		"outDir": "./dist",
 		"noEmit": false,
 
