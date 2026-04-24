@@ -1,6 +1,6 @@
 import type { Context, Next } from "hono";
-import { logger } from "../../lib/logger";
 import { cacheClient } from "../../lib/cache-client";
+import { logger } from "../../lib/logger";
 
 const MAX_CACHE_SIZE = 5 * 1024 * 1024;
 const DEFAULT_TTL = 28800;

@@ -1,9 +1,12 @@
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { logger } from "../../lib/logger";
-import { serveInternalServerError, serveNotFound } from "../../lib/responses/error";
+import {
+	serveInternalServerError,
+	serveNotFound,
+} from "../../lib/responses/error";
 import { serveData } from "../../lib/responses/resp";
-import { TmdbError, tmdbClient } from "../../lib/tmdb/tmdb.client";
+import { TmdbError, tmdbClient } from "../../lib/tmdb/tmdb-client";
 import {
 	countryQuerySchema,
 	idParamSchema,
@@ -86,9 +89,11 @@ movieRoutes.get(
 		const { language, page, region } = c.req.valid("query");
 
 		try {
-			const movieUpcoming = await tmdbClient.get("/movie/upcoming", {
-				query: { language, region, page },
-			});
+			const movieUpcoming = await tmdbClient.get(
+				"/movie/upcoming",
+				{ query: { language, region, page } },
+				0,
+			);
 			return serveData(c, movieUpcoming);
 		} catch (error) {
 			logger.error(error);

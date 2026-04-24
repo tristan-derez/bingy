@@ -7,7 +7,7 @@ import {
 	serveNotFound,
 } from "../../lib/responses/error";
 import { serveData } from "../../lib/responses/resp";
-import { TmdbError, tmdbClient } from "../../lib/tmdb/tmdb.client";
+import { TmdbError, tmdbClient } from "../../lib/tmdb/tmdb-client";
 import {
 	idParamSchema,
 	idWithSeasonNumberAndEpisodeNumber,

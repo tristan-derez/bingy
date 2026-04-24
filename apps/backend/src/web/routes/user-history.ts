@@ -2,7 +2,7 @@ import { zValidator } from "@hono/zod-validator";
 import { and, desc, eq, inArray, sql } from "drizzle-orm";
 import { Hono } from "hono";
 import { z } from "zod";
-import { tmdbClient } from "#lib/tmdb/tmdb.client";
+import { tmdbClient } from "#lib/tmdb/tmdb-client";
 import {
 	favorites,
 	media,

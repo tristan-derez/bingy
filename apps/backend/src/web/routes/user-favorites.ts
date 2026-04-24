@@ -14,7 +14,7 @@ import type { User } from "../../db/schemas/user";
 import { activity, users } from "../../db/schemas/user";
 import { db } from "../../lib/database";
 import { getMediaDetails } from "../../lib/tmdb/get-media-details";
-import { tmdbClient } from "../../lib/tmdb/tmdb.client";
+import { tmdbClient } from "../../lib/tmdb/tmdb-client";
 import { sessionMiddleware } from "../../web/middlewares/session";
 import { getOrCreateMedia } from "../../web/utils/create-update-media";
 
