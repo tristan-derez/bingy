@@ -36,7 +36,7 @@ personRoutes.get(
 
 personRoutes.get("/latest", async (c) => {
 	try {
-		const person = await tmdbClient.get("/person/latest");
+		const person = await tmdbClient.get("/person/latest", undefined, 0);
 		return serveData(c, person);
 	} catch (error) {
 		logger.error(error);
