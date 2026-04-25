@@ -121,7 +121,10 @@ export function SearchCommand({
 				<Button
 					variant="ghost"
 					onClick={() => setOpen(true)}
-					className={cn("items-center justify-between gap-2", className)}
+					className={cn(
+						"items-center justify-between gap-2 hover:cursor-default",
+						className,
+					)}
 				>
 					<div className="flex items-center gap-2">
 						<IconSearch className="h-4 w-4" />
