@@ -11,7 +11,7 @@ import { hash, verify } from "./password-processing";
 import {
 	assertUsernameAvailable,
 	generateUniqueUsername,
-	validateUsernameOrThrow,
+	validateUsername,
 } from "./username";
 
 const options = {
@@ -217,7 +217,7 @@ const options = {
 						};
 					}
 
-					const { normalized, displayName } = validateUsernameOrThrow(
+					const { normalized, displayName } = validateUsername(
 						user.name,
 					);
 
