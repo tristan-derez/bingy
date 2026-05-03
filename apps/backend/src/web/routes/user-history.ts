@@ -69,6 +69,10 @@ userHistoryRoutes.post(
 				})
 				.returning();
 
+			if (!watchEntry) {
+				throw new Error("FAILED_INSERT_WATCH_ENTRY");
+			}
+
 			await updateMediaRating(tx, mediaId);
 
 			// Remove from watchlist if exists
@@ -155,6 +159,10 @@ userHistoryRoutes.post(
 					},
 				})
 				.returning();
+
+			if (!watchEntry) {
+				throw new Error("FAILED_INSERT_WATCH_ENTRY");
+			}
 
 			// add to tv show progress
 			if (lastWatchedSeason && lastWatchedEpisode) {
@@ -375,7 +383,8 @@ userHistoryRoutes.get("/:username", async (c) => {
 			: [{ count: 0 }],
 	]);
 
-	const totalResults = Number(movieCount[0].count) + Number(tvCount[0].count);
+	const totalResults =
+		Number(movieCount[0]?.count ?? 0) + Number(tvCount[0]?.count ?? 0);
 
 	const tvMediaIds = entries
 		.filter((e) => e.mediaType === "tv")

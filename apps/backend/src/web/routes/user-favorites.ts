@@ -331,7 +331,7 @@ userFavoriteRoutes.get("/:username", async (c) => {
 		]);
 	}
 
-	const totalResults = Number(totalCount[0].count);
+	const totalResults = Number(totalCount[0]?.count ?? 0);
 
 	// get TV show progress if needed
 	const tvMediaIds = entries
