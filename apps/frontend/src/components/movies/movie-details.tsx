@@ -67,7 +67,7 @@ export function MovieDetailView({
 		);
 	}
 
-	const hasDifferentTitle =
+	const hasDifferentTitleInVO =
 		movie.original_title.toLowerCase() !== movie.title.toLowerCase();
 
 	const backgroundImage = getTmdbImageUrl(movie.backdrop_path, "original");
@@ -100,14 +100,15 @@ export function MovieDetailView({
 								<div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2 px-0.5 py-0.5">
 									<div className="flex flex-col gap-2">
 										<div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-											<h1 className="text-2xl lg:text-4xl font-bold leading-relaxed">
+											<h1 className="text-2xl lg:text-4xl font-bold leading-tight">
 												{movie.title}
+												{hasDifferentTitleInVO ? (
+													<span className="text-foreground text-base lg:text-xl font-bold italic">
+														{" "}
+														— {movie.original_title}
+													</span>
+												) : null}
 											</h1>
-											{hasDifferentTitle ? (
-												<p className="text-foreground text-base lg:text-xl font-bold italic">
-													— {movie.original_title}
-												</p>
-											) : null}
 										</div>
 
 										<div className="flex flex-wrap gap-2">

@@ -62,7 +62,7 @@ export function TvDetailsView({
 		);
 	}
 
-	const hasDifferentName =
+	const hasDifferentNameInVO =
 		tv.original_name.toLowerCase() !== tv.name.toLowerCase();
 
 	const backgroundImage = getTmdbImageUrl(tv.backdrop_path);
@@ -95,15 +95,15 @@ export function TvDetailsView({
 								<div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2 px-0.5 py-0.5">
 									<div className="flex flex-col gap-4">
 										<div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-											<h1 className="text-2xl lg:text-4xl font-bold leading-relaxed">
+											<h1 className="text-2xl lg:text-4xl font-bold leading-tight">
 												{tv.name}
+												{hasDifferentNameInVO ? (
+													<span className="text-foreground text-base lg:text-xl font-bold italic">
+														{" "}
+														— {tv.original_name}
+													</span>
+												) : null}
 											</h1>
-
-											{hasDifferentName ? (
-												<p className="text-foreground text-base lg:text-xl font-bold italic">
-													— {tv.original_name}
-												</p>
-											) : null}
 										</div>
 
 										<MediaGenresBadge genres={tv.genres} />
