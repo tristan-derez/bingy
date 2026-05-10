@@ -17,7 +17,6 @@ import { MediaOverview } from "@/components/medias/media-overview";
 import { MediaPortraitImage } from "@/components/medias/media-portrait-image";
 import { MediaRatingDisplayCard } from "@/components/medias/media-rating-display-card";
 import { CastList } from "@/components/person/cast-list";
-import { SocialLinks } from "@/components/social-links";
 import { TVStatusCard } from "@/components/tv/tv-details/status-card";
 import { BackButton } from "@/components/ui/back-button";
 import { Badge } from "@/components/ui/badge";
@@ -31,7 +30,6 @@ import { getTmdbImageUrl } from "@/utils/utils";
 interface TvDetailViewProps {
 	tv: Schemas.TvDetails | undefined;
 	watchProviders: Schemas.WatchProviders | undefined;
-	socials: Partial<Record<"instagram" | "twitter", string>>;
 	cast: Schemas.CastMember[];
 	isLoading: boolean;
 	isError: boolean;
@@ -40,7 +38,6 @@ interface TvDetailViewProps {
 export function TvDetailsView({
 	tv,
 	watchProviders,
-	socials,
 	cast,
 	isLoading,
 	isError,
@@ -90,12 +87,6 @@ export function TvDetailsView({
 								className="w-full"
 							/>
 						) : null}
-
-						{Object.keys(socials).length > 0 ? (
-							<div className="flex flex-row items-center mx-auto">
-								<SocialLinks socials={socials} />
-							</div>
-						) : null}
 					</div>
 
 					<div className="w-full flex flex-col gap-4 overflow-hidden">
@@ -103,16 +94,18 @@ export function TvDetailsView({
 							<CardContent className="p-0">
 								<div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2 px-0.5 py-0.5">
 									<div className="flex flex-col gap-4">
-										<div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-											<h1 className="text-2xl lg:text-4xl font-bold leading-tight">
-												{tv.name}
-												{hasDifferentNameInVO ? (
-													<span className="text-foreground text-base lg:text-xl font-bold italic">
-														{" "}
-														— {tv.original_name}
-													</span>
-												) : null}
-											</h1>
+										<div className="flex items-start justify-between gap-4 xl:w-6/7">
+											<div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 min-w-0">
+												<h1 className="text-2xl lg:text-4xl font-bold leading-tight">
+													{tv.name}
+													{hasDifferentNameInVO ? (
+														<span className="text-foreground text-base lg:text-xl font-bold italic">
+															{" "}
+															— {tv.original_name}
+														</span>
+													) : null}
+												</h1>
+											</div>
 										</div>
 
 										<MediaGenresBadge genres={tv.genres} />
