@@ -2,7 +2,7 @@ import { IconCheck, IconLanguage } from "@tabler/icons-react";
 import { useAtomValue, useSetAtom } from "jotai";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
+import { Drawer, DrawerBody, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -105,9 +105,11 @@ export const LocaleRegionDropdown = () => {
 					)}
 				/>
 				<DrawerContent>
-					<div className="p-4">
-						<LocaleRegionContent />
-					</div>
+					<DrawerBody>
+						<div className="p-4">
+							<LocaleRegionContent />
+						</div>
+					</DrawerBody>
 				</DrawerContent>
 			</Drawer>
 		);

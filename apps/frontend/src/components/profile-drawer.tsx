@@ -22,6 +22,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
 	Drawer,
+	DrawerBody,
 	DrawerContent,
 	DrawerDescription,
 	DrawerFooter,
@@ -86,111 +87,113 @@ export function ProfileDrawer() {
 						{authData.user.email}
 					</DrawerDescription>
 				</DrawerHeader>
-				<Separator />
-				<div className="no-scrollbar overflow-y-auto flex flex-col items-center my-4 gap-4 flex-1 px-3">
-					<Button
-						className="w-full justify-start"
-						variant="ghost"
-						onClick={() => {
-							setIsOpen(false);
-							navigate({
-								to: "/@{$username}",
-								params: { username },
-							});
-						}}
-					>
-						<IconUser />
-						{m.dropdown_profile_text()}
-					</Button>
-					<Button
-						className="w-full justify-start"
-						variant="ghost"
-						onClick={() => {
-							setIsOpen(false);
-							navigate({
-								to: "/@{$username}/watchlist",
-								params: { username },
-							});
-						}}
-					>
-						<IconClockBolt />
-						{m.dropdown_watchlist_text()}
-					</Button>
-					<Button
-						className="w-full justify-start"
-						variant="ghost"
-						onClick={() => {
-							setIsOpen(false);
-							navigate({
-								to: "/@{$username}/lists",
-								params: { username },
-							});
-						}}
-					>
-						<IconList />
-						{m.dropdown_lists_text()}
-					</Button>
-					<Button
-						className="w-full justify-start"
-						variant="ghost"
-						onClick={() => {
-							setIsOpen(false);
-							navigate({
-								to: "/@{$username}/favorites",
-								params: { username },
-							});
-						}}
-					>
-						<IconHeart />
-						{m.dropdown_favorites_text()}
-					</Button>
-					<Button
-						className="w-full justify-start"
-						variant="ghost"
-						onClick={() => {
-							setIsOpen(false);
-							navigate({
-								to: "/@{$username}/history",
-								params: { username },
-							});
-						}}
-					>
-						<IconHistory />
-						{m.dropdown_history_text()}
-					</Button>
-					<Button
-						className="w-full justify-start"
-						variant="ghost"
-						onClick={() => {
-							setIsOpen(false);
-							navigate({
-								to: "/settings",
-							});
-						}}
-					>
-						<IconAdjustmentsHorizontal />
-						{m.dropdown_settings_text()}
-					</Button>
-					<Button className="w-full" variant="ghost">
-						<a
-							href="https://github.com/tristan-derez/bingy"
-							target="_blank"
-							rel="noopener noreferrer"
-							className="flex items-center justify-between w-full"
+				<DrawerBody>
+					<Separator />
+					<div className="flex flex-col items-center my-4 gap-4 px-3">
+						<Button
+							className="w-full justify-start"
+							variant="ghost"
+							onClick={() => {
+								setIsOpen(false);
+								navigate({
+									to: "/@{$username}",
+									params: { username },
+								});
+							}}
 						>
-							<div className="flex items-center gap-2">
-								<IconBrandGithub className="w-4 h-4" />
-								<span>GitHub</span>
-							</div>
-							<IconExternalLink className="w-4 h-4 text-muted-foreground" />
-						</a>
-					</Button>
-					<Button disabled className="w-full justify-start" variant="ghost">
-						<IconLifebuoy className="w-4 h-4" />
-						<span>{m.dropdown_support_text()}</span>
-					</Button>
-				</div>
-				<Separator />
+							<IconUser />
+							{m.dropdown_profile_text()}
+						</Button>
+						<Button
+							className="w-full justify-start"
+							variant="ghost"
+							onClick={() => {
+								setIsOpen(false);
+								navigate({
+									to: "/@{$username}/watchlist",
+									params: { username },
+								});
+							}}
+						>
+							<IconClockBolt />
+							{m.dropdown_watchlist_text()}
+						</Button>
+						<Button
+							className="w-full justify-start"
+							variant="ghost"
+							onClick={() => {
+								setIsOpen(false);
+								navigate({
+									to: "/@{$username}/lists",
+									params: { username },
+								});
+							}}
+						>
+							<IconList />
+							{m.dropdown_lists_text()}
+						</Button>
+						<Button
+							className="w-full justify-start"
+							variant="ghost"
+							onClick={() => {
+								setIsOpen(false);
+								navigate({
+									to: "/@{$username}/favorites",
+									params: { username },
+								});
+							}}
+						>
+							<IconHeart />
+							{m.dropdown_favorites_text()}
+						</Button>
+						<Button
+							className="w-full justify-start"
+							variant="ghost"
+							onClick={() => {
+								setIsOpen(false);
+								navigate({
+									to: "/@{$username}/history",
+									params: { username },
+								});
+							}}
+						>
+							<IconHistory />
+							{m.dropdown_history_text()}
+						</Button>
+						<Button
+							className="w-full justify-start"
+							variant="ghost"
+							onClick={() => {
+								setIsOpen(false);
+								navigate({
+									to: "/settings",
+								});
+							}}
+						>
+							<IconAdjustmentsHorizontal />
+							{m.dropdown_settings_text()}
+						</Button>
+						<Button className="w-full" variant="ghost">
+							<a
+								href="https://github.com/tristan-derez/bingy"
+								target="_blank"
+								rel="noopener noreferrer"
+								className="flex items-center justify-between w-full"
+							>
+								<div className="flex items-center gap-2">
+									<IconBrandGithub className="w-4 h-4" />
+									<span>GitHub</span>
+								</div>
+								<IconExternalLink className="w-4 h-4 text-muted-foreground" />
+							</a>
+						</Button>
+						<Button disabled className="w-full justify-start" variant="ghost">
+							<IconLifebuoy className="w-4 h-4" />
+							<span>{m.dropdown_support_text()}</span>
+						</Button>
+					</div>
+					<Separator />
+				</DrawerBody>
 				<DrawerFooter>
 					<Button onClick={logout} variant="destructive" className="w-full">
 						<IconLogout className="w-4 h-4" />
