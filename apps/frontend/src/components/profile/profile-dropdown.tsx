@@ -188,25 +188,23 @@ export const ProfileDropdown = ({
 								href="https://github.com/tristan-derez/bingy"
 								target="_blank"
 								rel="noopener noreferrer"
-								className="flex items-center justify-between"
+								className="flex items-center gap-1.5"
 							>
-								<div className="flex items-center gap-2">
-									<IconBrandGithub className="w-4 h-4" />
-									<span>GitHub</span>
-								</div>
+								<IconBrandGithub size={4} />
+								GitHub
 							</a>
 							<DropdownMenuShortcut>
 								<IconExternalLink className="text-muted-foreground" />
 							</DropdownMenuShortcut>
 						</DropdownMenuItem>
 						<DropdownMenuItem disabled>
-							<IconLifebuoy className="w-4 h-4" />
-							<span>{m.dropdown_support_text()}</span>
+							<IconLifebuoy />
+							{m.dropdown_support_text()}
 						</DropdownMenuItem>
 						<DropdownMenuSeparator className="bg-border" />
 						<DropdownMenuItem onClick={logout} variant="destructive">
-							<IconLogout className="w-4 h-4" />
-							<span>{m.dropdown_logout_text()}</span>
+							<IconLogout />
+							{m.dropdown_logout_text()}
 						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</div>
