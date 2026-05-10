@@ -56,9 +56,7 @@ export const CastCardTv = ({ person }: CastCardTvProps) => {
 						to="/person/$personId"
 						params={{ personId: person.id.toString() }}
 					>
-						<Button className="w-full hover:cursor-pointer">
-							{m.btn_show_more()}
-						</Button>
+						<Button className="w-full">{m.btn_show_more()}</Button>
 					</Link>
 				</CardContent>
 			</Card>

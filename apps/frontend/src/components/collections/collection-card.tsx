@@ -59,7 +59,7 @@ export function CollectionCard({ collection }: CollectionCardProps) {
 				>
 					<Button
 						variant="secondary"
-						className="w-full md:w-xs text-foreground hover:cursor-pointer"
+						className="w-full md:w-xs text-foreground"
 					>
 						{m.btn_view_collection()}
 					</Button>

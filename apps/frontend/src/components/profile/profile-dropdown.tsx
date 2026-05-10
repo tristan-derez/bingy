@@ -124,7 +124,6 @@ export const ProfileDropdown = ({
 									params: { username },
 								})
 							}
-							className="hover:cursor-pointer"
 						>
 							<IconUser />
 							{m.dropdown_profile_text()}
@@ -136,7 +135,6 @@ export const ProfileDropdown = ({
 									params: { username },
 								})
 							}
-							className="hover:cursor-pointer"
 						>
 							<IconClockBolt />
 							{m.dropdown_watchlist_text()}
@@ -148,7 +146,6 @@ export const ProfileDropdown = ({
 									params: { username },
 								})
 							}
-							className="hover:cursor-pointer"
 						>
 							<IconList />
 							{m.dropdown_lists_text()}
@@ -160,7 +157,6 @@ export const ProfileDropdown = ({
 									params: { username },
 								})
 							}
-							className="hover:cursor-pointer"
 						>
 							<IconHeart />
 							{m.dropdown_favorites_text()}
@@ -172,7 +168,6 @@ export const ProfileDropdown = ({
 									params: { username },
 								})
 							}
-							className="hover:cursor-pointer"
 						>
 							<IconHistory />
 							{m.dropdown_history_text()}
@@ -183,13 +178,12 @@ export const ProfileDropdown = ({
 									to: "/settings",
 								})
 							}
-							className="hover:cursor-pointer"
 						>
 							<IconAdjustmentsHorizontal />
 							{m.dropdown_settings_text()}
 						</DropdownMenuItem>
 						<DropdownMenuSeparator className="bg-border" />
-						<DropdownMenuItem className="hover:cursor-pointer">
+						<DropdownMenuItem>
 							<a
 								href="https://github.com/tristan-derez/bingy"
 								target="_blank"

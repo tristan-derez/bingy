@@ -57,7 +57,6 @@ export default function Header() {
 			name: m.header_link_search(),
 			icon: <IconSearch className="h-4 w-4" />,
 			onClick: () => setSearchOpen(true),
-			cursorClass: "hover:cursor-default",
 		},
 	] as const;
 

@@ -20,7 +20,7 @@ export const ScrollToCrewButton = ({
 						block: "start",
 					});
 				}}
-				className="hover:cursor-default flex flex-row gap-1"
+				className="flex flex-row gap-1"
 			>
 				{m.btn_jump_to_crew()}
 				<IconArrowDown className="h-4 w-4 self-center" />
