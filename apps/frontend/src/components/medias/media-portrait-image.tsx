@@ -33,7 +33,7 @@ export function MediaPortraitImage({
 					<img
 						src={imageUrl}
 						alt={alt}
-						className="aspect-2/3 w-44 h-65 md:w-52 md:h-80 xl:w-80 xl:h-120 rounded-lg shadow-lg flex items-center justify-center ring-accent ring-1 cursor-pointer"
+						className="w-44 md:w-52 lg:w-56 xl:w-64 2xl:w-80 aspect-2/3 rounded-lg shadow-lg flex items-center justify-center ring-accent ring-1 cursor-pointer"
 						onClick={() => setOpen(true)}
 					/>
 				) : null}
