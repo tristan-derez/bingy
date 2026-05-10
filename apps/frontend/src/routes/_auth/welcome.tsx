@@ -20,16 +20,16 @@ export const Route = createFileRoute("/_auth/welcome")({
 export function WelcomePage() {
 	const { authData } = useRouteContext({ from: "__root__" });
 
-	if(!authData) return null;
+	if (!authData) return null;
 
-	if (!authData.user?.emailVerified) {
-		return null;
-	}
+	if (!authData.user?.emailVerified) return null;
 
 	return (
 		<div className="flex flex-col gap-6">
 			<h1 className="text-3xl font-bold mt-2">
-				{m.welcome_page_greetings({ username: authData.user.displayName })}
+				{m.welcome_page_greetings({
+					username: authData.user.displayName ?? authData.user.name,
+				})}
 			</h1>
 			<Card>
 				<CardHeader>
