@@ -22,7 +22,8 @@ import { TVStatusCard } from "@/components/tv/tv-details/status-card";
 import { BackButton } from "@/components/ui/back-button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { localeRegionAtom } from "@/lib/atoms/region";
+import { WatchProvidersSection } from "@/components/watch-providers/watch-providers-section";
+import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { getTmdbImageUrl } from "@/utils/utils";
@@ -48,6 +49,7 @@ export function TvDetailsView({
 	const currentUrl = routerState.location.url;
 	const { authData } = useRouteContext({ from: "__root__" });
 	const localeRegion = useAtomValue(localeRegionAtom);
+	const region = useAtomValue(regionAtom);
 
 	if (isLoading) {
 		return <LoadingCentered />;
@@ -79,8 +81,15 @@ export function TvDetailsView({
 							imagePath={tv.poster_path}
 							alt={tv.name}
 							imageSize="w500"
-							watchProviders={watchProviders}
 						/>
+
+						{watchProviders ? (
+							<WatchProvidersSection
+								watchProviders={watchProviders}
+								region={region}
+								className="w-full"
+							/>
+						) : null}
 
 						{Object.keys(socials).length > 0 ? (
 							<div className="flex flex-row items-center mx-auto">
