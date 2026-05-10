@@ -76,7 +76,7 @@ export function ProfileDrawer() {
 					>
 						<AvatarImage src={image || ""} alt={displayName ?? username} />
 						<AvatarFallback className="rounded-full">
-							{username ? username[0].toUpperCase() : "U"}
+							{username ? username.charAt(0) : "U"}
 						</AvatarFallback>
 					</Avatar>
 					<DrawerTitle className="line-clamp-1 leading-relaxed">
