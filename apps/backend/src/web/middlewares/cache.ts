@@ -1,6 +1,6 @@
 import type { Context, Next } from "hono";
-import { logger } from "../../lib/logger";
 import { cacheClient } from "../../lib/cache-client";
+import { logger } from "../../lib/logger";
 
 const MAX_CACHE_SIZE = 5 * 1024 * 1024;
 const DEFAULT_TTL = 28800;
@@ -12,7 +12,7 @@ const parseCacheControlMaxAge = (
 
 	const maxAgeMatch = cacheControl.match(/max-age=(\d+)/);
 	if (maxAgeMatch) {
-		return Number.parseInt(maxAgeMatch[1], 10);
+		return Number.parseInt(maxAgeMatch[1]!, 10);
 	}
 
 	return null;

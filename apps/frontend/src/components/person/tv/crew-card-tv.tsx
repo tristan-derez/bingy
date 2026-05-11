@@ -51,15 +51,12 @@ export const CrewCardTv = ({ person }: CrewCardTvProps) => {
 					</CardDescription>
 				</CardHeader>
 				<CardContent className="text-center pt-0 gap-4 flex flex-col">
-					<Button>
-						<Link
-							to="/person/$personId"
-							params={{ personId: person.id.toString() }}
-							className="hover:cursor-default"
-						>
-							{m.btn_show_more()}
-						</Link>
-					</Button>
+					<Link
+						to="/person/$personId"
+						params={{ personId: person.id.toString() }}
+					>
+						<Button className="w-full">{m.btn_show_more()}</Button>
+					</Link>
 				</CardContent>
 			</Card>
 		</div>

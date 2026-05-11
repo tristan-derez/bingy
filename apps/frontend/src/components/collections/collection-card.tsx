@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,6 +10,7 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { useCollection } from "@/hooks/useCollection";
+import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 
 interface CollectionCardProps {
@@ -16,9 +18,13 @@ interface CollectionCardProps {
 }
 
 export function CollectionCard({ collection }: CollectionCardProps) {
+	const localeRegion = useAtomValue(localeRegionAtom);
 	if (!collection) return null;
 
-	const { data: collectionData } = useCollection(collection.id);
+	const { data: collectionData } = useCollection(collection.id, {
+		language: localeRegion,
+	});
+
 	if (!collectionData?.parts?.length) return null;
 
 	const backgroundImage = collection.backdrop_path

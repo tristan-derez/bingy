@@ -14,7 +14,7 @@ import type { User } from "../../db/schemas/user";
 import { activity, users } from "../../db/schemas/user";
 import { db } from "../../lib/database";
 import { getMediaDetails } from "../../lib/tmdb/get-media-details";
-import { tmdbClient } from "../../lib/tmdb/tmdb.client";
+import { tmdbClient } from "../../lib/tmdb/tmdb-client";
 import { sessionMiddleware } from "../../web/middlewares/session";
 import { getOrCreateMedia } from "../../web/utils/create-update-media";
 
@@ -110,6 +110,7 @@ userFavoriteRoutes.post(
 							lastWatchedSeason: lastSeason.season_number,
 							lastWatchedEpisode: lastSeason.episode_count ?? 0,
 							trackingMode: "season",
+							status: "completed",
 						})
 						.onConflictDoUpdate({
 							target: [tvShowProgress.userId, tvShowProgress.mediaId],
@@ -330,7 +331,7 @@ userFavoriteRoutes.get("/:username", async (c) => {
 		]);
 	}
 
-	const totalResults = Number(totalCount[0].count);
+	const totalResults = Number(totalCount[0]?.count ?? 0);
 
 	// get TV show progress if needed
 	const tvMediaIds = entries

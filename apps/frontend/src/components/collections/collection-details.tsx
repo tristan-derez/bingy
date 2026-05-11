@@ -119,7 +119,7 @@ export function CollectionDetailsView({
 					</div>
 
 					<div className="w-full flex flex-col gap-4 overflow-hidden">
-						<Card className="shadow-none bg-transparent border-none ring-0 lg:p-0">
+						<Card className="shadow-none bg-transparent border-none p-0 ring-0 gap-0">
 							<CardContent className="p-0">
 								<div className="flex flex-col gap-2 px-0.5 py-0.5">
 									<h1 className="text-2xl lg:text-4xl font-bold leading-relaxed">

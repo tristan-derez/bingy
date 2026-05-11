@@ -37,7 +37,7 @@ export function ResourceNotFound({
 					<Button variant="outline" className="w-full">
 						<Link
 							to="/"
-							className="hover:cursor-default flex items-center gap-2 flex-1 justify-center"
+							className="flex items-center gap-2 flex-1 justify-center"
 						>
 							<IconSmartHome className="h-4 w-4" /> Home
 						</Link>

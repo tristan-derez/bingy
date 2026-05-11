@@ -68,11 +68,11 @@ function DrawerContent({
 				<DrawerPrimitive.Popup
 					data-slot="drawer-content"
 					className={cn(
-						"group/drawer-content fixed z-50 flex h-auto flex-col bg-background text-sm transition-transform duration-450 ease-[cubic-bezier(0.32,0.72,0,1)]",
-						"data-[swipe-direction=down]:inset-x-0 data-[swipe-direction=down]:bottom-0 data-[swipe-direction=down]:mt-24 data-[swipe-direction=down]:max-h-[80vh] data-[swipe-direction=down]:rounded-t-xl data-[swipe-direction=down]:border-t data-[swipe-direction=down]:[transform:translateY(var(--drawer-swipe-movement-y))]",
+						"group/drawer-content fixed z-50 flex h-auto flex-col overflow-hidden bg-background text-sm transition-transform duration-450 ease-[cubic-bezier(0.32,0.72,0,1)]",
+						"data-[swipe-direction=down]:inset-x-0 data-[swipe-direction=down]:bottom-0 data-[swipe-direction=down]:mt-24 data-[swipe-direction=down]:max-h-[80vh] data-[swipe-direction=down]:rounded-t-xl data-[swipe-direction=down]:border-t data-[swipe-direction=down]:[transform:translateY(calc(var(--drawer-snap-point-offset, 0px) + var(--drawer-swipe-movement-y)))]",
 						"data-[swipe-direction=left]:inset-y-0 data-[swipe-direction=left]:left-0 data-[swipe-direction=left]:w-3/4 data-[swipe-direction=left]:rounded-r-xl data-[swipe-direction=left]:border-r data-[swipe-direction=left]:[transform:translateX(var(--drawer-swipe-movement-x))]",
 						"data-[swipe-direction=right]:inset-y-0 data-[swipe-direction=right]:right-0 data-[swipe-direction=right]:w-3/4 data-[swipe-direction=right]:rounded-l-xl data-[swipe-direction=right]:border-l data-[swipe-direction=right]:[transform:translateX(var(--drawer-swipe-movement-x))]",
-						"data-[swipe-direction=up]:inset-x-0 data-[swipe-direction=up]:top-0 data-[swipe-direction=up]:mb-24 data-[swipe-direction=up]:max-h-[80vh] data-[swipe-direction=up]:rounded-b-xl data-[swipe-direction=up]:border-b data-[swipe-direction=up]:[transform:translateY(var(--drawer-swipe-movement-y))]",
+						"data-[swipe-direction=up]:inset-x-0 data-[swipe-direction=up]:top-0 data-[swipe-direction=up]:mb-24 data-[swipe-direction=up]:max-h-[80vh] data-[swipe-direction=up]:rounded-b-xl data-[swipe-direction=up]:border-b data-[swipe-direction=up]:[transform:translateY(calc(var(--drawer-snap-point-offset, 0px) + var(--drawer-swipe-movement-y)))]",
 						"data-[swipe-direction=left]:sm:max-w-sm data-[swipe-direction=right]:sm:max-w-sm",
 						"data-[starting-style]:data-[swipe-direction=left]:-translate-x-full data-[ending-style]:data-[swipe-direction=left]:-translate-x-full",
 						"data-[starting-style]:data-[swipe-direction=right]:translate-x-full data-[ending-style]:data-[swipe-direction=right]:translate-x-full",
@@ -87,6 +87,19 @@ function DrawerContent({
 				</DrawerPrimitive.Popup>
 			</DrawerViewport>
 		</DrawerPortal>
+	);
+}
+
+function DrawerBody({
+	className,
+	...props
+}: React.ComponentProps<typeof DrawerPrimitive.Content>) {
+	return (
+		<DrawerPrimitive.Content
+			data-slot="drawer-body"
+			className={cn("overflow-y-auto no-scrollbar flex-1 min-h-0", className)}
+			{...props}
+		/>
 	);
 }
 
@@ -107,7 +120,10 @@ function DrawerFooter({ className, ...props }: React.ComponentProps<"div">) {
 	return (
 		<div
 			data-slot="drawer-footer"
-			className={cn("mt-auto flex flex-col gap-2 p-4", className)}
+			className={cn(
+				"sticky bottom-0 z-10 mt-auto flex flex-col gap-2 bg-background p-4",
+				className,
+			)}
 			{...props}
 		/>
 	);
@@ -147,6 +163,7 @@ export {
 	DrawerTrigger,
 	DrawerClose,
 	DrawerContent,
+	DrawerBody,
 	DrawerHeader,
 	DrawerFooter,
 	DrawerTitle,

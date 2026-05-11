@@ -24,6 +24,7 @@ interface NavItemsProps {
 		link?: string;
 		icon?: React.ReactNode;
 		onClick?: () => void;
+		cursorClass?: string;
 	}[];
 	className?: string;
 	onItemClick?: () => void;
@@ -108,7 +109,9 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
 						type="button"
 						onMouseEnter={() => setHovered(idx)}
 						onClick={item.onClick}
-						className="relative px-2 py-2 flex items-center gap-1 hover:cursor-pointer"
+						className={cn(
+							"relative px-2 py-2 flex items-center gap-1 hover:cursor-pointer",
+						)}
 					>
 						{hovered === idx && (
 							<motion.div
@@ -176,11 +179,7 @@ export const NavbarButton = ({
 	React.ComponentPropsWithoutRef<typeof Link>) => {
 	return (
 		<Link to={to} {...props}>
-			<Button
-				variant={variant}
-				size={size}
-				className={cn("cursor-pointer", className)}
-			>
+			<Button variant={variant} size={size} className={className}>
 				{children}
 			</Button>
 		</Link>

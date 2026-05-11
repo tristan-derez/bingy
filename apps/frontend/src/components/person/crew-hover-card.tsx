@@ -1,9 +1,10 @@
-import { IconExternalLink } from "@tabler/icons-react"; // or whichever icon you want
+import { IconExternalLink } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
 import type { Schemas } from "shared";
 import { Badge } from "@/components/ui/badge";
 import {
 	Drawer,
+	DrawerBody,
 	DrawerContent,
 	DrawerDescription,
 	DrawerFooter,
@@ -45,25 +46,27 @@ export const CrewHoverCard = ({ person }: CrewHoverCardProps) => {
 				<DrawerTrigger>
 					<Badge>{personName}</Badge>
 				</DrawerTrigger>
-				<DrawerContent className="items-center">
-					<div className="flex gap-4 pt-6 pb-2 px-4">
-						{imageUrl ? (
-							<img
-								src={imageUrl}
-								alt={personName}
-								onError={handleImageError}
-								className="w-20 h-auto aspect-2/3 object-cover rounded-lg shrink-0"
-							/>
-						) : null}
-						<div className="flex flex-col justify-center gap-1 flex-1">
-							<DrawerTitle className="wrap-break-words">
-								{personName}
-							</DrawerTitle>
-							<DrawerDescription className="wrap-break-words">
-								{jobsText}
-							</DrawerDescription>
+				<DrawerContent>
+					<DrawerBody className="items-center">
+						<div className="flex flex-col items-center gap-4 pt-6 pb-2 px-4">
+							{imageUrl ? (
+								<img
+									src={imageUrl}
+									alt={personName}
+									onError={handleImageError}
+									className="w-32 h-auto aspect-2/3 object-cover rounded-lg shrink-0"
+								/>
+							) : null}
+							<div className="flex flex-col items-center gap-1">
+								<DrawerTitle className="wrap-break-words text-center">
+									{personName}
+								</DrawerTitle>
+								<DrawerDescription className="wrap-break-words text-center">
+									{jobsText}
+								</DrawerDescription>
+							</div>
 						</div>
-					</div>
+					</DrawerBody>
 					<DrawerFooter className="w-full mb-2">
 						<Link
 							to="/person/$personId"

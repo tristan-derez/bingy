@@ -68,7 +68,6 @@ export function ListCard({ item, username, isOwnProfile }: ListCardProps) {
 		<Link
 			to="/@{$username}/lists/$slug"
 			params={{ username: username, slug: item.slug }}
-			className="hover:cursor-default"
 		>
 			<Card className="hover:bg-accent transition-colors h-full">
 				<CardHeader>

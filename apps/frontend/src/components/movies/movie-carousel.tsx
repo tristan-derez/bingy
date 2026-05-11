@@ -41,7 +41,7 @@ export const MovieCarousel = ({ movies, title }: MovieCarouselProps) => {
 	const showButtons = !prevBtnDisabled || !nextBtnDisabled;
 
 	return (
-		<section className="flex flex-col gap-4">
+		<section className="flex flex-col gap-2">
 			<h2 className="text-xl font-semibold">{title}</h2>
 			<div className="relative">
 				<div className="overflow-hidden hover:cursor-grab" ref={emblaRef}>

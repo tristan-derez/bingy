@@ -59,8 +59,8 @@ function App() {
 						</Button>
 
 						<HoverBorderGradient
-							containerClassName="rounded-md"
-							className="flex items-center gap-2 hover:cursor-pointer"
+							containerClassName="rounded-md hover:cursor-pointer"
+							className="flex items-center gap-2"
 							onClick={() => {
 								navigate({ to: "/signup" });
 							}}
@@ -137,7 +137,7 @@ function App() {
 						{m.landing_page_cta_description()}
 					</p>
 					<HoverBorderGradient
-						containerClassName="rounded-lg self-center"
+						containerClassName="rounded-lg self-center hover:cursor-pointer"
 						className="flex items-center gap-2"
 						onClick={() => {
 							navigate({ to: "/signup" });

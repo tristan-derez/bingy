@@ -3,13 +3,22 @@ interface Season {
 	episode_count: number;
 }
 
+/**
+ *
+ * @param seasons
+ * @returns
+ */
+export function getValidSeason(seasons: Season[]): Season[] {
+	return seasons
+		.filter((s) => s.season_number > 0)
+		.sort((a, b) => a.season_number - b.season_number);
+}
+
 export function convertAbsoluteToSeasonEpisode(
 	absoluteEpisode: number,
 	seasons: Season[],
 ): { season: number; episode: number } {
-	const validSeasons = seasons
-		.filter((s) => s.season_number > 0)
-		.sort((a, b) => a.season_number - b.season_number);
+	const validSeasons = getValidSeason(seasons);
 
 	let remaining = absoluteEpisode;
 

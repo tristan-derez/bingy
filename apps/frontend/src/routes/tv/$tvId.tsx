@@ -4,7 +4,6 @@ import type { Schemas } from "shared";
 import { TvDetailsView } from "@/components/tv/tv-details";
 import { useTv } from "@/hooks/useTv";
 import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
-import { getSocialUrls } from "@/utils/social-urls";
 
 export const Route = createFileRoute("/tv/$tvId")({
 	component: TvDetailsContainer,
@@ -41,14 +40,12 @@ function TvDetailsContainer() {
 			order: member.order,
 		})) || [];
 
-	const socialUrls = tv?.external_ids ? getSocialUrls(tv.external_ids) : {};
 	const watchProviders = tv?.["watch/providers"];
 
 	return (
 		<TvDetailsView
 			tv={tv}
 			watchProviders={watchProviders}
-			socials={socialUrls}
 			cast={cast}
 			isLoading={isLoading}
 			isError={isError}

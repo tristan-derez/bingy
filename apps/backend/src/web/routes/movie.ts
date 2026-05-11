@@ -1,9 +1,12 @@
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { logger } from "../../lib/logger";
-import { serveInternalServerError, serveNotFound } from "../../lib/responses/error";
+import {
+	serveInternalServerError,
+	serveNotFound,
+} from "../../lib/responses/error";
 import { serveData } from "../../lib/responses/resp";
-import { TmdbError, tmdbClient } from "../../lib/tmdb/tmdb.client";
+import { TmdbError, tmdbClient } from "../../lib/tmdb/tmdb-client";
 import {
 	countryQuerySchema,
 	idParamSchema,
@@ -17,7 +20,7 @@ const movieRoutes = new Hono();
 
 movieRoutes.get("/latest", async (c) => {
 	try {
-		const movie = await tmdbClient.get("/movie/latest");
+		const movie = await tmdbClient.get("/movie/latest", undefined, 0);
 		return serveData(c, movie);
 	} catch (error) {
 		logger.error(error);
@@ -32,9 +35,13 @@ movieRoutes.get(
 		const { language, page, region } = c.req.valid("query");
 
 		try {
-			const movieNowPlaying = await tmdbClient.get("/movie/now_playing", {
-				query: { language, region, page },
-			});
+			const movieNowPlaying = await tmdbClient.get(
+				"/movie/now_playing",
+				{
+					query: { language, region, page },
+				},
+				2 * 60 * 60,
+			);
 			return serveData(c, movieNowPlaying);
 		} catch (error) {
 			logger.error(error);
@@ -50,9 +57,13 @@ movieRoutes.get(
 		const { language, page, region } = c.req.valid("query");
 
 		try {
-			const moviePopular = await tmdbClient.get("/movie/popular", {
-				query: { language, region, page },
-			});
+			const moviePopular = await tmdbClient.get(
+				"/movie/popular",
+				{
+					query: { language, region, page },
+				},
+				2 * 60 * 60,
+			);
 			return serveData(c, moviePopular);
 		} catch (error) {
 			logger.error(error);
@@ -68,9 +79,13 @@ movieRoutes.get(
 		const { language, page, region } = c.req.valid("query");
 
 		try {
-			const movieTopRated = await tmdbClient.get("/movie/top_rated", {
-				query: { language, region, page },
-			});
+			const movieTopRated = await tmdbClient.get(
+				"/movie/top_rated",
+				{
+					query: { language, region, page },
+				},
+				2 * 60 * 60,
+			);
 			return serveData(c, movieTopRated);
 		} catch (error) {
 			logger.error(error);
@@ -86,9 +101,11 @@ movieRoutes.get(
 		const { language, page, region } = c.req.valid("query");
 
 		try {
-			const movieUpcoming = await tmdbClient.get("/movie/upcoming", {
-				query: { language, region, page },
-			});
+			const movieUpcoming = await tmdbClient.get(
+				"/movie/upcoming",
+				{ query: { language, region, page } },
+				2 * 60 * 60,
+			);
 			return serveData(c, movieUpcoming);
 		} catch (error) {
 			logger.error(error);

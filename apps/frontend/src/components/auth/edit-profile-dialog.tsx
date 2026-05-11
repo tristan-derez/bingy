@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/dialog";
 import {
 	Drawer,
+	DrawerBody,
 	DrawerContent,
 	DrawerFooter,
 	DrawerHeader,
@@ -100,17 +101,19 @@ export function EditProfileDialog({
 				<DrawerHeader className="justify-start items-start">
 					<DrawerTitle>{m.edit_profile_title()}</DrawerTitle>
 				</DrawerHeader>
-				<div className="overflow-y-auto px-4 pb-4">
-					<div className="flex flex-col gap-4">
-						<EditProfileBanner bannerUrl={bannerUrl} />
-						<EditProfilePicture
-							avatar={avatar}
-							displayName={displayName ?? ""}
-						/>
-						<Separator />
-						{formContent}
+				<DrawerBody>
+					<div className="px-4 pb-4">
+						<div className="flex flex-col gap-4">
+							<EditProfileBanner bannerUrl={bannerUrl} />
+							<EditProfilePicture
+								avatar={avatar}
+								displayName={displayName ?? ""}
+							/>
+							<Separator />
+							{formContent}
+						</div>
 					</div>
-				</div>
+				</DrawerBody>
 				<DrawerFooter>{footer}</DrawerFooter>
 			</DrawerContent>
 		</Drawer>

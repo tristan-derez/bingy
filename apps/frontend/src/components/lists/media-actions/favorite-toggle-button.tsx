@@ -96,7 +96,7 @@ export function FavoriteToggleButton({
 							type="button"
 							onClick={handleToggle}
 							disabled={isPending}
-							className={`group flex flex-col items-center gap-1 transition-colors hover:text-red-400 ${
+							className={`group flex flex-col items-center gap-1 cursor-pointer transition-colors hover:text-red-400 ${
 								isFavorited ? "text-red-500" : `text-${color}`
 							}`}
 						>

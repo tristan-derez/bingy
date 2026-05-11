@@ -166,7 +166,7 @@ userListRoutes.get("/:username/watchlist", async (c) => {
 			.where(filters),
 	]);
 
-	const totalResults = totalCountResult[0].count;
+	const totalResults = totalCountResult[0]?.count ?? 0;
 
 	const hydratedData = (
 		await Promise.all(
@@ -305,6 +305,10 @@ userListRoutes.post(
 					})
 					.returning();
 
+				if (!newList) {
+					throw new Error("LIST_NOT_CREATED");
+				}
+
 				if (items && items.length > 0) {
 					// validate positions for ranked lists
 					if (type === "ranked") {
@@ -335,6 +339,10 @@ userListRoutes.post(
 									set: { updatedAt: sql`now()` },
 								})
 								.returning({ id: media.id });
+
+							if (!mediaRecord) {
+								throw new Error("FAILED_UPSERT_MEDIA");
+							}
 
 							return {
 								mediaId: mediaRecord.id,
@@ -446,6 +454,10 @@ userListRoutes.post(
 					})
 					.returning({ id: media.id });
 
+				if (!mediaRecord) {
+					throw new Error("FAILED_UPSERT_MEDIA");
+				}
+
 				// add to list
 				await tx
 					.insert(listItems)
@@ -519,7 +531,7 @@ userListRoutes.get("/:username", async (c) => {
 			.where(filters),
 	]);
 
-	const totalResults = totalCountResult[0].count;
+	const totalResults = totalCountResult[0]?.count ?? 0;
 
 	return c.json({
 		data: lists,
@@ -626,11 +638,12 @@ userListRoutes.patch(
 				// update list metadata if there are changes
 				let updatedListData = existingList;
 				if (Object.keys(updates).length > 0) {
-					[updatedListData] = await tx
+					const result = await tx
 						.update(customLists)
 						.set(updates)
 						.where(eq(customLists.id, listId))
 						.returning();
+					updatedListData = result[0] ?? existingList;
 				}
 
 				// handle items replacement if provided
@@ -669,6 +682,10 @@ userListRoutes.patch(
 										set: { updatedAt: sql`now()` },
 									})
 									.returning({ id: media.id });
+
+								if (!mediaRecord) {
+									throw new Error("FAILED_UPSERT_MEDIA");
+								}
 
 								return {
 									mediaId: mediaRecord.id,
@@ -811,7 +828,7 @@ userListRoutes.get("/:username/lists/:slug", async (c) => {
 		db.select({ count: sql<number>`count(*)` }).from(listItems).where(filters),
 	]);
 
-	const totalResults = totalCountResult[0].count;
+	const totalResults = totalCountResult[0]?.count ?? 0;
 
 	const hydratedItems = (
 		await Promise.all(

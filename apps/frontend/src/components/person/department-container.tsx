@@ -27,8 +27,8 @@ export const DepartmentContainer = ({
 	const id = useId();
 	const itemsByYear = items.reduce<Record<string, TimelineItem[]>>(
 		(acc, item) => {
-			if (!acc[item.year]) acc[item.year] = [];
-			acc[item.year].push(item);
+			const yearItems = (acc[item.year] ??= []);
+			yearItems.push(item);
 			return acc;
 		},
 		{},
@@ -46,7 +46,10 @@ export const DepartmentContainer = ({
 
 			<div className="flex flex-col gap-4">
 				{sortedYears.map((year) => {
-					const sortedItems = itemsByYear[year].sort((a, b) => {
+					const yearItems = itemsByYear[year];
+					if (!yearItems) return null;
+
+					const sortedItems = yearItems.sort((a, b) => {
 						if (!a.fullDate && !b.fullDate) return 0;
 						if (!a.fullDate) return 1;
 						if (!b.fullDate) return -1;

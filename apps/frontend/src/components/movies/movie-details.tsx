@@ -14,11 +14,11 @@ import { MediaOverview } from "@/components/medias/media-overview";
 import { MediaPortraitImage } from "@/components/medias/media-portrait-image";
 import { MediaRatingDisplayCard } from "@/components/medias/media-rating-display-card";
 import { CastList } from "@/components/person/cast-list";
-import { SocialLinks } from "@/components/social-links";
 import { BackButton } from "@/components/ui/back-button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { localeRegionAtom } from "@/lib/atoms/region";
+import { WatchProvidersSection } from "@/components/watch-providers/watch-providers-section";
+import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { formatRuntime } from "@/utils/format-runtime";
@@ -28,7 +28,6 @@ interface MovieDetailViewProps {
 	movie: Schemas.MovieDetails | undefined;
 	directors: Array<{ id: number; name: string; gender: number | null }>;
 	cast: Schemas.CastMember[];
-	socials: Partial<Record<"instagram" | "twitter", string>>;
 	watchProviders: Schemas.WatchProviders | undefined;
 	collection: Schemas.MovieDetails["belongs_to_collection"] | undefined;
 	releaseDate: string | undefined;
@@ -41,7 +40,6 @@ export function MovieDetailView({
 	movie,
 	cast,
 	directors,
-	socials,
 	watchProviders,
 	collection,
 	releaseDate,
@@ -53,6 +51,7 @@ export function MovieDetailView({
 	const currentUrl = routerState.location.url;
 	const { authData } = useRouteContext({ from: "__root__" });
 	const localeRegion = useAtomValue(localeRegionAtom);
+	const region = useAtomValue(regionAtom);
 
 	if (isLoading) {
 		return <LoadingCentered />;
@@ -67,7 +66,7 @@ export function MovieDetailView({
 		);
 	}
 
-	const hasDifferentTitle =
+	const hasDifferentTitleInVO =
 		movie.original_title.toLowerCase() !== movie.title.toLowerCase();
 
 	const backgroundImage = getTmdbImageUrl(movie.backdrop_path, "original");
@@ -84,13 +83,14 @@ export function MovieDetailView({
 							imagePath={movie.poster_path}
 							alt={movie.title}
 							imageSize="w500"
-							watchProviders={watchProviders}
 						/>
 
-						{Object.keys(socials).length > 0 ? (
-							<div className="flex flex-row items-center mx-auto">
-								<SocialLinks socials={socials} />
-							</div>
+						{watchProviders ? (
+							<WatchProvidersSection
+								watchProviders={watchProviders}
+								region={region}
+								className="w-full"
+							/>
 						) : null}
 					</div>
 
@@ -99,15 +99,18 @@ export function MovieDetailView({
 							<CardContent className="p-0">
 								<div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2 px-0.5 py-0.5">
 									<div className="flex flex-col gap-2">
-										<div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-											<h1 className="text-2xl lg:text-4xl font-bold leading-relaxed">
-												{movie.title}
-											</h1>
-											{hasDifferentTitle ? (
-												<p className="text-foreground text-base lg:text-xl font-bold italic">
-													— {movie.original_title}
-												</p>
-											) : null}
+										<div className="flex items-start justify-between gap-4 xl:w-6/7">
+											<div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 min-w-0">
+												<h1 className="text-2xl lg:text-4xl font-bold leading-tight">
+													{movie.title}
+													{hasDifferentTitleInVO ? (
+														<span className="text-foreground text-base lg:text-xl font-bold italic leading-tight">
+															{" "}
+															— {movie.original_title}
+														</span>
+													) : null}
+												</h1>
+											</div>
 										</div>
 
 										<div className="flex flex-wrap gap-2">
@@ -152,9 +155,7 @@ export function MovieDetailView({
 												currentUrl={currentUrl}
 											/>
 										</div>
-									) : (
-										<div className="min-w-3xs"></div>
-									)}
+									) : null}
 								</div>
 							</CardContent>
 						</Card>

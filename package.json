@@ -8,7 +8,8 @@
 	"private": true,
 	"scripts": {
 		"dev": "bun run db:start && concurrently -k --kill-others-on-fail -c \"blue,yellow,red\" -n \"server,studio,client\" \"cd apps/backend && bun dev\" \"cd apps/backend && bun db:studio\" \"cd apps/frontend && bun dev\"",
-		"db:start": "docker compose up -d"
+		"db:start": "docker compose up -d",
+		"typecheck": "bunx tsc --build"
 	},
 	"workspaces": [
 		"apps/*"
