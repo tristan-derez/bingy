@@ -142,9 +142,7 @@ export function TvDetailsView({
 												currentUrl={currentUrl}
 											/>
 										</div>
-									) : (
-										<div className="min-w-3xs"></div>
-									)}
+									) : null}
 								</div>
 							</CardContent>
 						</Card>
