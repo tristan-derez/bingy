@@ -266,6 +266,7 @@ userListRoutes.get("/:username/watchlist/rss", async (c) => {
 			.replace(/'/g, "&apos;");
 
 	const profileUrl = `${env.FRONT_URL}/${username}/watchlist`;
+	const rssLanguage = language.split("-")[0];
 
 	const itemsXml = hydratedData
 		.map((item) => {
@@ -298,7 +299,7 @@ userListRoutes.get("/:username/watchlist/rss", async (c) => {
 		`  <title>${escapeXml(`${username}'s Watchlist`)}</title>`,
 		`  <link>${profileUrl}</link>`,
 		`  <description>${escapeXml(`Movies and TV shows in ${username}'s watchlist`)}</description>`,
-		"  <language>en</language>",
+		`  <language>${rssLanguage}</language>`,
 		`  <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>`,
 		`  <atom:link href="${c.req.url}" rel="self" type="application/rss+xml" />`,
 		itemsXml,
