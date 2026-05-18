@@ -12,6 +12,7 @@ import {
 import type { User } from "../../db/schemas/user";
 import { activity, users } from "../../db/schemas/user";
 import { db } from "../../lib/database";
+import env from "../../lib/env";
 import { serveNotFound } from "../../lib/responses/error";
 import {
 	serveCreated,
@@ -193,6 +194,120 @@ userListRoutes.get("/:username/watchlist", async (c) => {
 		page,
 		total_pages: Math.ceil(totalResults / limit),
 		total_results: totalResults,
+	});
+});
+
+// get watchlist RSS feed by username
+userListRoutes.get("/:username/watchlist/rss", async (c) => {
+	const { username } = c.req.param();
+	const language = c.req.query("language") ?? "en-US";
+	const mediaTypeFilter = c.req.query("mediaType") as
+		| "movie"
+		| "tv"
+		| undefined;
+
+	const targetUser = await db.query.users.findFirst({
+		where: eq(users.name, username),
+	});
+
+	if (!targetUser)
+		return c.text(
+			[
+				'<?xml version="1.0" encoding="UTF-8"?>',
+				'<rss version="2.0">',
+				"<channel>",
+				"  <title>Error</title>",
+				"  <description>User not found</description>",
+				"</channel>",
+				"</rss>",
+			].join("\n"),
+			404,
+			{ "Content-Type": "application/rss+xml; charset=utf-8" },
+		);
+
+	const dbItems = await db
+		.select({ watchlist, media })
+		.from(watchlist)
+		.innerJoin(media, eq(watchlist.mediaId, media.id))
+		.where(
+			and(
+				eq(watchlist.userId, targetUser.id),
+				mediaTypeFilter ? eq(media.mediaType, mediaTypeFilter) : undefined,
+			),
+		)
+		.orderBy(desc(watchlist.addedAt));
+
+	const hydratedData = (
+		await Promise.all(
+			dbItems.map(async (item) => {
+				const details = await getMediaDetails(
+					item.media.tmdbId,
+					item.media.mediaType,
+					language,
+				);
+				if (!details) return null;
+				return {
+					...details,
+					mediaType: item.media.mediaType,
+					addedAt: item.watchlist.addedAt,
+				};
+			}),
+		)
+	).filter(
+		(item): item is NormalizedMedia & { addedAt: Date } => item !== null,
+	);
+
+	const escapeXml = (str: string) =>
+		str
+			.replace(/&/g, "&amp;")
+			.replace(/</g, "&lt;")
+			.replace(/>/g, "&gt;")
+			.replace(/"/g, "&quot;")
+			.replace(/'/g, "&apos;");
+
+	const profileUrl = `${env.FRONT_URL}/${username}/watchlist`;
+
+	const itemsXml = hydratedData
+		.map((item) => {
+			const tmdbUrl =
+				item.mediaType === "movie"
+					? `https://www.themoviedb.org/movie/${item.id}`
+					: `https://www.themoviedb.org/tv/${item.id}`;
+			const year = item.releaseDate
+				? new Date(item.releaseDate).getFullYear()
+				: "";
+			const title = year ? `${item.title} (${year})` : item.title;
+
+			return [
+				"<item>",
+				`  <title>${escapeXml(title)}</title>`,
+				`  <link>${tmdbUrl}</link>`,
+				`  <guid isPermaLink="false">tmdb:${item.id}</guid>`,
+				`  <pubDate>${new Date(item.addedAt).toUTCString()}</pubDate>`,
+				`  <description>${escapeXml(`${item.title} (${item.mediaType}, TMDB: ${item.id})`)}</description>`,
+				`  <category>${item.mediaType}</category>`,
+				"</item>",
+			].join("\n");
+		})
+		.join("\n");
+
+	const rss = [
+		'<?xml version="1.0" encoding="UTF-8"?>',
+		'<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">',
+		"<channel>",
+		`  <title>${escapeXml(`${username}'s Watchlist`)}</title>`,
+		`  <link>${profileUrl}</link>`,
+		`  <description>${escapeXml(`Movies and TV shows in ${username}'s watchlist`)}</description>`,
+		"  <language>en</language>",
+		`  <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>`,
+		`  <atom:link href="${c.req.url}" rel="self" type="application/rss+xml" />`,
+		itemsXml,
+		"</channel>",
+		"</rss>",
+	].join("\n");
+
+	return c.text(rss, 200, {
+		"Content-Type": "application/rss+xml; charset=utf-8",
 	});
 });
 
