@@ -44,21 +44,23 @@ export const rateTvShow = async (payload: RateTvPayload) => {
 	return res;
 };
 
+// only remove the rating, not history
 export const removeMovieRating = async (tmdbId: number) => {
 	const res = await apiFetch<PostMovieRatingResponse>(
 		`/history/movie/${tmdbId}`,
 		{
 			method: "PATCH",
-			body: { rating: null, review: null, watchedAt: null },
+			body: { rating: null, review: null },
 		},
 	);
 	return res;
 };
 
+// only remove the rating, not history
 export const removeTvRating = async (tmdbId: number) => {
 	const res = await apiFetch<PostTvRatingResponse>(`/history/tv/${tmdbId}`, {
 		method: "PATCH",
-		body: { rating: null, review: null, watchedAt: null },
+		body: { rating: null, review: null },
 	});
 	return res;
 };
