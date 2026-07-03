@@ -41,7 +41,7 @@ export function WatchToggleButton({
 	const addMovieToHistory = useAddMovieToHistory(username);
 	const addTvToHistory = useAddTvToHistory(username);
 	const removeMovieHistory = useRemoveMovieHistory();
-	const removeTvHistory = useRemoveTvHistory();
+	const removeTvHistory = useRemoveTvHistory(username);
 
 	const { data: tvDetails } = useTv(
 		tvShow?.id ?? 0,

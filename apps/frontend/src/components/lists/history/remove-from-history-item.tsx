@@ -23,7 +23,7 @@ export function RemoveFromHistoryItem({
 	onRequestRemove,
 }: RemoveFromHistoryItemProps) {
 	const removeMovieHistory = useRemoveMovieHistory();
-	const removeTvHistory = useRemoveTvHistory();
+	const removeTvHistory = useRemoveTvHistory(username);
 
 	const movieRating = useMovieRating(username, movie?.id ?? 0);
 	const tvRating = useTvRating(username, tvShow?.id ?? 0);
