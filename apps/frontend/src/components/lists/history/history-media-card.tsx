@@ -44,11 +44,13 @@ export const HistoryMediaCard = ({ item, linkTo }: HistoryMediaCardProps) => {
 		<div key={`${item.mediaType}-${item.id}`} className="group">
 			<Link to={linkTo}>
 				<MediaPosterContainer {...item} />
-				<div className="mt-2">
-					{item.rating ? (
-						<div>
-							<RatingStars rating={item.rating} />
-						</div>
+				<div className="mt-2 flex items-center justify-between">
+					{item.rating ? <RatingStars rating={item.rating} /> : <span />}
+					{item.mediaType === "tv" && item.progress ? (
+						<span className="text-xs text-muted-foreground">
+							S{item.progress.lastWatchedSeason}E
+							{item.progress.lastWatchedEpisode}
+						</span>
 					) : null}
 				</div>
 			</Link>
