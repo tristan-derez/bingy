@@ -1,6 +1,4 @@
 import { IconHeart, IconHeartFilled, IconHeartOff } from "@tabler/icons-react";
-import { useState } from "react";
-import { FavoriteTvConfirmDialog } from "@/components/lists/media-actions/favorite-tv-confirm-dialog";
 import {
 	Tooltip,
 	TooltipContent,
@@ -34,7 +32,6 @@ export function FavoriteToggleButton({
 	color = "foreground",
 	username,
 }: FavoriteToggleButtonProps) {
-	const [showTvConfirmDialog, setShowTvConfirmDialog] = useState(false);
 	const addToFavorites = useAddToFavorites(username);
 	const removeFromFavorites = useRemoveFromFavorites(username);
 	const tmdbId = movie?.id ?? tvShow?.id ?? 0;
@@ -61,28 +58,12 @@ export function FavoriteToggleButton({
 				mediaName,
 			});
 		} else {
-			if (tvShow) {
-				setShowTvConfirmDialog(true);
-			} else {
-				addToFavorites.mutate({
-					tmdbId,
-					mediaType: mediaType as "movie" | "tv",
-					mediaName,
-				});
-			}
+			addToFavorites.mutate({
+				tmdbId,
+				mediaType: mediaType as "movie" | "tv",
+				mediaName,
+			});
 		}
-	};
-
-	const handleConfirmTvFavorite = () => {
-		const mediaName = tvShow?.name;
-		if (!mediaName) return;
-
-		addToFavorites.mutate({
-			tmdbId,
-			mediaType: "tv",
-			mediaName,
-		});
-		setShowTvConfirmDialog(false);
 	};
 
 	const isPending = addToFavorites.isPending || removeFromFavorites.isPending;
@@ -117,12 +98,6 @@ export function FavoriteToggleButton({
 					</p>
 				</TooltipContent>
 			</Tooltip>
-
-			<FavoriteTvConfirmDialog
-				open={showTvConfirmDialog}
-				onOpenChange={setShowTvConfirmDialog}
-				onConfirm={handleConfirmTvFavorite}
-			/>
 		</>
 	);
 }
