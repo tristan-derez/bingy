@@ -106,8 +106,8 @@ userHistoryRoutes.post(
 			tmdbId: z.number(),
 			rating: z.number().min(0.5).max(5).nullable(),
 			review: z.string().nullable(),
-			lastWatchedSeason: z.number().nullable(),
-			lastWatchedEpisode: z.number().nullable(),
+			lastWatchedSeason: z.coerce.number().nullable(),
+			lastWatchedEpisode: z.coerce.number().nullable(),
 			absoluteEpisode: z.number().nullable(),
 			trackingMode: z.enum(["absolute", "season"]).nullable(),
 			watchedAt: z.coerce.date().nullable(),
@@ -460,20 +460,11 @@ userHistoryRoutes.delete("/movie/:tmdbId", async (c) => {
 		return c.json({ error: "Watch history entry not found" }, 404);
 	}
 
-	// delete movie watch history/rating/favorites
+	// delete movie watch history/rating
 	await db.transaction(async (tx) => {
 		await tx
 			.delete(movieWatchHistory)
 			.where(eq(movieWatchHistory.id, watchEntry.id));
-
-		await tx
-			.delete(favorites)
-			.where(
-				and(
-					eq(favorites.userId, user.id),
-					eq(favorites.mediaId, mediaEntry.id),
-				),
-			);
 
 		await updateMediaRating(tx, mediaEntry.id);
 	});
@@ -515,22 +506,19 @@ userHistoryRoutes.delete("/tv/:tmdbId", async (c) => {
 		return c.json({ error: "Entry not found" }, 404);
 	}
 
-	// delete tv show watch history/show progress/rating/favorite
+	// delete tv show watch history/show progress/rating
 	await db.transaction(async (tx) => {
-		await tx
-			.delete(tvShowWatchHistory)
-			.where(eq(tvShowWatchHistory.id, entry.id));
+		if (watchEntry) {
+			await tx
+				.delete(tvShowWatchHistory)
+				.where(eq(tvShowWatchHistory.id, watchEntry.id));
+		}
 
-		await tx.delete(tvShowProgress).where(eq(tvShowProgress.id, entry.id));
-
-		await tx
-			.delete(favorites)
-			.where(
-				and(
-					eq(favorites.userId, user.id),
-					eq(favorites.mediaId, mediaEntry.id),
-				),
-			);
+		if (showProgress) {
+			await tx
+				.delete(tvShowProgress)
+				.where(eq(tvShowProgress.id, showProgress.id));
+		}
 
 		await updateMediaRating(tx, mediaEntry.id);
 	});
