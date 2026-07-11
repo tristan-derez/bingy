@@ -4,7 +4,6 @@
 		"composite": true,
 		"noEmit": false,
 		"emitDeclarationOnly": true,
-		"ignoreDeprecations": "6.0",
 		"verbatimModuleSyntax": false,
 		"module": "esnext",
 		"moduleResolution": "bundler",
@@ -13,7 +12,6 @@
 		"jsxImportSource": "react",
 		"esModuleInterop": true,
 		"allowSyntheticDefaultImports": true,
-		"baseUrl": ".",
 		"outDir": "./dist",
 		"types": ["bun"],
 		"paths": {
@@ -29,7 +27,5 @@
 		}
 	},
 	"include": ["src/**/*"],
-	"references": [
-		{ "path": "../shared" }
-	]
+	"references": [{ "path": "../shared" }]
 }

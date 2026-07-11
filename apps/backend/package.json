@@ -38,8 +38,7 @@
 		"@types/react": "^19.1.13",
 		"@types/react-dom": "^19.1.9",
 		"drizzle-kit": "^0.31.4",
-		"react-email": "4.2.11",
-		"typescript": "^5"
+		"react-email": "4.2.11"
 	},
 	"imports": {
 		"#web/": "./src/web/*",
@@ -48,8 +47,5 @@
 		"#emails/": "./src/emails/*",
 		"#types/": ".src/types/*",
 		"#validators/": "./src/web/validators/*"
-	},
-	"peerDependencies": {
-		"typescript": "^5"
 	}
 }
