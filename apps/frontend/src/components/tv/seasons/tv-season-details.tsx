@@ -19,7 +19,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { WatchProvidersSection } from "@/components/watch-providers/watch-providers-section";
 import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
-import { getTmdbImageUrl } from "@/utils/utils";
 
 interface TvSeasonDetailsViewProps {
 	tvSeason: Schemas.TvSeasonDetails | undefined;
@@ -113,15 +112,13 @@ export function TvSeasonDetailsView({
 			.slice(0, 10);
 	}
 
-	const imageUrl = getTmdbImageUrl(tvSeason.poster_path, "w500");
-
 	return (
 		<div className="container">
 			<BackButton />
 
 			<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
 				<div className="flex flex-col gap-2 items-center lg:items-start max-w-[250px] md:max-w-[300px] lg:max-w-[400px]">
-					<PortraitImage imagePath={imageUrl} alt={tvSeason.name} />
+					<PortraitImage imagePath={tvSeason.poster_path} alt={tvSeason.name} />
 					<WatchProvidersSection
 						watchProviders={watchProviders}
 						region="FR"
