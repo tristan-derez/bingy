@@ -3,7 +3,6 @@ import { ResourceNotFound } from "@/components/errors/resource-not-found";
 import { LoadingCentered } from "@/components/loading/loading-centered";
 import { MediaBackgroundImage } from "@/components/medias/media-background-image";
 import { MediaOverview } from "@/components/medias/media-overview";
-import { MediaPortraitImage } from "@/components/medias/media-portrait-image";
 import { MovieCarousel } from "@/components/movies/movie-carousel";
 import { BackButton } from "@/components/ui/back-button";
 import { Badge } from "@/components/ui/badge";
@@ -15,6 +14,7 @@ import {
 	mergeCrewMemberJobs,
 } from "@/utils/utils";
 import { CastCrewTabs } from "../person/cast-crew-tabs";
+import { PortraitImage } from "../portrait-image";
 
 interface CollectionDetailsViewProps {
 	collectionData: Schemas.CollectionDetails | undefined;
@@ -111,10 +111,9 @@ export function CollectionDetailsView({
 
 				<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
 					<div className="flex flex-col gap-2 items-center lg:items-start max-w-[250px] md:max-w-[300px] lg:max-w-[400px]">
-						<MediaPortraitImage
+						<PortraitImage
 							imagePath={collectionData.poster_path}
 							alt={collectionData.name}
-							imageSize="w500"
 						/>
 					</div>
 

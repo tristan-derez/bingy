@@ -1,11 +1,12 @@
+import { IconUser } from "@tabler/icons-react";
 import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
 import { LoadingCentered } from "@/components/loading/loading-centered";
 import { MediasCarousel } from "@/components/medias/medias-carousel";
 import { PersonBiography } from "@/components/person/person-biography";
-import { PersonProfilePortraitImage } from "@/components/person/person-profile-portrait-image";
 import { PersonTimeline } from "@/components/person/person-timeline";
+import { PortraitImage } from "@/components/portrait-image";
 import { SocialLinks } from "@/components/social-links";
 import { BackButton } from "@/components/ui/back-button";
 import { Badge } from "@/components/ui/badge";
@@ -55,10 +56,12 @@ export const PersonDetailsView = ({
 
 			<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
 				<div className="flex flex-col gap-2 items-center lg:items-start max-w-[250px] md:max-w-[300px] lg:max-w-[400px]">
-					<PersonProfilePortraitImage
+					<PortraitImage
 						imagePath={person.profile_path}
 						alt={person.name}
-						imageSize="w500"
+						fallback={
+							<IconUser className="w-1/3 h-1/3 text-muted-foreground" />
+						}
 					/>
 
 					{person.also_known_as && person.also_known_as.length > 0 ? (

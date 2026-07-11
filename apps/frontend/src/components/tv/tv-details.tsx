@@ -14,7 +14,6 @@ import { MediaCreators } from "@/components/medias/media-creators";
 import { MediaGenresBadge } from "@/components/medias/media-genres-badge";
 import { MediaLearnMoreCard } from "@/components/medias/media-learn-more";
 import { MediaOverview } from "@/components/medias/media-overview";
-import { MediaPortraitImage } from "@/components/medias/media-portrait-image";
 import { MediaRatingDisplayCard } from "@/components/medias/media-rating-display-card";
 import { CastList } from "@/components/person/cast-list";
 import { TVStatusCard } from "@/components/tv/tv-details/status-card";
@@ -26,6 +25,7 @@ import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { getTmdbImageUrl } from "@/utils/utils";
+import { PortraitImage } from "../portrait-image";
 
 interface TvDetailViewProps {
 	tv: Schemas.TvDetails | undefined;
@@ -74,10 +74,13 @@ export function TvDetailsView({
 
 				<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
 					<div className="flex flex-col gap-2 items-center lg:items-start max-w-[250px] md:max-w-[300px] lg:max-w-[400px]">
-						<MediaPortraitImage
+						<PortraitImage
 							imagePath={tv.poster_path}
 							alt={tv.name}
 							imageSize="w500"
+							fallback={
+								<IconDeviceTv className="w-1/3 h-1/3 text-muted-foreground" />
+							}
 						/>
 
 						{watchProviders ? (

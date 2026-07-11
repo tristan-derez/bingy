@@ -1,4 +1,8 @@
-import { IconCalendarWeekFilled, IconStopwatch } from "@tabler/icons-react";
+import {
+	IconCalendarWeekFilled,
+	IconMovie,
+	IconStopwatch,
+} from "@tabler/icons-react";
 import { Link, useRouteContext, useRouterState } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
@@ -11,9 +15,9 @@ import { MediaCreators } from "@/components/medias/media-creators";
 import { MediaGenresBadge } from "@/components/medias/media-genres-badge";
 import { MediaLearnMoreCard } from "@/components/medias/media-learn-more";
 import { MediaOverview } from "@/components/medias/media-overview";
-import { MediaPortraitImage } from "@/components/medias/media-portrait-image";
 import { MediaRatingDisplayCard } from "@/components/medias/media-rating-display-card";
 import { CastList } from "@/components/person/cast-list";
+import { PortraitImage } from "@/components/portrait-image";
 import { BackButton } from "@/components/ui/back-button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -79,10 +83,13 @@ export function MovieDetailView({
 
 				<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
 					<div className="flex flex-col gap-2 items-center lg:items-start max-w-[250px] md:max-w-[300px] lg:max-w-[400px]">
-						<MediaPortraitImage
+						<PortraitImage
 							imagePath={movie.poster_path}
 							alt={movie.title}
 							imageSize="w500"
+							fallback={
+								<IconMovie className="w-1/3 h-1/3 text-muted-foreground" />
+							}
 						/>
 
 						{watchProviders ? (
