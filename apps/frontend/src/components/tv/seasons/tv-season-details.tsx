@@ -112,12 +112,17 @@ export function TvSeasonDetailsView({
 			.slice(0, 10);
 	}
 
+	const hasRuntime = tvSeason.episodes.some((ep) => ep.runtime);
+	const totalRuntimeHours = (
+		tvSeason.episodes.reduce((total, ep) => total + (ep.runtime || 0), 0) / 60
+	).toFixed(1);
+
 	return (
 		<div className="container">
 			<BackButton />
 
 			<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
-				<div className="flex flex-col gap-2 items-center lg:items-start max-w-[250px] md:max-w-[300px] lg:max-w-[400px]">
+				<div className="flex flex-col gap-2 items-center lg:items-start max-w-62.5 md:max-w-75 lg:max-w-100">
 					<PortraitImage imagePath={tvSeason.poster_path} alt={tvSeason.name} />
 					<WatchProvidersSection
 						watchProviders={watchProviders}
@@ -127,53 +132,35 @@ export function TvSeasonDetailsView({
 				</div>
 
 				<div className="w-full flex flex-col gap-4 overflow-hidden">
-					<Card className="shadow-none bg-transparent ring-0">
-						<CardContent className="lg:p-0">
-							<div className="flex flex-col gap-2">
-								<div className="flex justify-between gap-3">
-									<h1 className="text-4xl font-bold leading-relaxed">
-										{tvSeason.name}
-									</h1>
-									{tvSeason.episodes.some((ep) => ep.runtime) && (
-										<Badge
-											variant="default"
-											className="w-fit gap-1 self-center"
-										>
-											<IconStopwatch className="h-4 w-4" />
-											<span>
-												{(
-													tvSeason.episodes.reduce(
-														(total, ep) => total + (ep.runtime || 0),
-														0,
-													) / 60
-												).toFixed(1)}
-												h
-											</span>
-										</Badge>
-									)}
-								</div>
-								{tvSeason.name.toLowerCase() !==
-								m.season_details_season_badge({
+					<div className="flex flex-col gap-2">
+						<div className="flex justify-between gap-3">
+							<h1 className="text-4xl font-bold leading-relaxed">
+								{tvSeason.name}
+							</h1>
+							{hasRuntime ? (
+								<Badge variant="default" className="w-fit gap-1 self-center">
+									<IconStopwatch className="h-4 w-4" />
+									<span>{totalRuntimeHours}"h</span>
+								</Badge>
+							) : null}
+						</div>
+						{tvSeason.name.toLowerCase() !==
+						m
+							.season_details_season_badge({
+								seasonNumber: tvSeason.season_number,
+							})
+							.toLowerCase() ? (
+							<Badge variant="secondary" className="w-fit">
+								{m.season_details_season_badge({
 									seasonNumber: tvSeason.season_number,
-								}) ? (
-									<Badge variant="secondary" className="w-fit">
-										{m.season_details_season_badge({
-											seasonNumber: tvSeason.season_number,
-										})}
-									</Badge>
-								) : null}
-							</div>
-						</CardContent>
-					</Card>
+								})}
+							</Badge>
+						) : null}
+					</div>
 
-					<Card>
-						<CardHeader>
-							<CardTitle>{m.season_details_overview_title()}</CardTitle>
-						</CardHeader>
-						<CardContent>
-							<MediaOverview overview={tvSeason.overview} />
-						</CardContent>
-					</Card>
+					{tvSeason.overview ? (
+						<MediaOverview overview={tvSeason.overview} />
+					) : null}
 
 					<div className="grid lg:grid-cols-3 gap-3">
 						<Card>
@@ -236,7 +223,7 @@ export function TvSeasonDetailsView({
 						<EpisodesContainer episodes={tvSeason.episodes} />
 					) : null}
 
-					{mergedCast.length > 0 && (
+					{mergedCast.length > 0 ? (
 						<div className="flex flex-col gap-2">
 							<CastList people={mergedCast} />
 							<Link
@@ -249,7 +236,7 @@ export function TvSeasonDetailsView({
 								{m.link_text_full_credits()}
 							</Link>
 						</div>
-					)}
+					) : null}
 
 					{tvSeason.networks.length > 0 ? (
 						<Card>

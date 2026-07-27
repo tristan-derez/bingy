@@ -1,16 +1,13 @@
-import {
-	IconStarFilled,
-	IconStopwatch,
-	IconUserStar,
-	IconUsers,
-} from "@tabler/icons-react";
+import { IconStopwatch } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
+import { isFuture } from "date-fns";
 import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { localeRegionAtom } from "@/lib/atoms/region";
+import { cn } from "@/lib/utils";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { formatRuntime } from "@/utils/format-runtime";
@@ -21,16 +18,14 @@ interface EpisodesContainerProps {
 
 export function EpisodesContainer({ episodes }: EpisodesContainerProps) {
 	const localeRegion = useAtomValue(localeRegionAtom);
+
 	return (
 		<Card>
-			<CardHeader>
-				<CardTitle>{m.episodes_container_title()}</CardTitle>
-			</CardHeader>
 			<CardContent className="flex flex-col gap-4">
 				{episodes.map((episode, index) => (
 					<div key={episode.id}>
-						{index > 0 ? <Separator className="my-4" /> : null}
-						<div className="space-y-2">
+						{index > 0 ? <Separator className="mb-4" /> : null}
+						<div className="flex flex-col gap-2">
 							<div className="flex items-start justify-between gap-4">
 								<div className="flex-1">
 									<h3 className="font-semibold text-lg">
@@ -47,6 +42,9 @@ export function EpisodesContainer({ episodes }: EpisodesContainerProps) {
 									</h3>
 									{episode.air_date ? (
 										<p className="text-sm text-muted-foreground">
+											{isFuture(new Date(episode.air_date))
+												? m.airs_on()
+												: m.aired_on()}
 											{formatDate(episode.air_date, localeRegion, {
 												year: "numeric",
 												month: "short",
@@ -62,35 +60,16 @@ export function EpisodesContainer({ episodes }: EpisodesContainerProps) {
 											{formatRuntime(episode.runtime)}
 										</Badge>
 									) : null}
-									{episode.vote_average > 0 ? (
-										<Badge
-											variant="secondary"
-											className="flex items-center gap-1 self-center"
-										>
-											<IconStarFilled className="h-4 w-4 text-yellow-500" />
-											{episode.vote_average.toFixed(1)}
-										</Badge>
-									) : null}
 								</div>
 							</div>
-							<p className="text-sm text-muted-foreground whitespace-pre-line">
-								{episode.overview || "No overview available."}
+							<p
+								className={cn(
+									"text-sm whitespace-pre-line max-w-5/6 text-pretty",
+									!episode.overview && "italic",
+								)}
+							>
+								{episode.overview || m.overview_none()}
 							</p>
-							<div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
-								{episode.crew?.length > 0 ? (
-									<span className="flex items-center gap-1">
-										<IconUsers className="h-4 w-4" />
-										{episode.crew.length} {m.episodes_container_crew_text()}
-									</span>
-								) : null}
-								{episode.guest_stars?.length > 0 ? (
-									<span className="flex items-center gap-1">
-										<IconUserStar className="h-4 w-4" />
-										{episode.guest_stars.length}{" "}
-										{m.episodes_container_guest_stars()}
-									</span>
-								) : null}
-							</div>
 						</div>
 					</div>
 				))}

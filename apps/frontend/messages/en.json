@@ -124,7 +124,7 @@
 	"collection_details_revenue": "Revenue:",
 	"btn_show_less": "Show less",
 	"btn_show_more": "Show more",
-	"overview_none": "No overview available",
+	"overview_none": "No overview",
 	"error_page_not_found": "The page you're looking for doesn't exist or has been moved",
 	"btn_go_home": "Go home",
 	"form_search_placeholder": "Search...",
@@ -282,7 +282,6 @@
 	"episode_details_overview_title": "Overview",
 	"episode_details_runtime_text": "Runtime",
 	"episode_details_air_date": "Air Date",
-	"episodes_container_title": "Episodes",
 	"episodes_container_crew_text": "crew",
 	"episodes_container_guest_stars": "guest stars",
 	"season_card_episode_badge": [
@@ -305,7 +304,6 @@
 	"season_details_not_found_title": "Season not found",
 	"season_details_not_found_desc": "The season you're looking for could not be found",
 	"season_details_season_badge": "Season {seasonNumber}",
-	"season_details_overview_title": "Overview",
 	"season_details_rating": "Rating",
 	"season_details_air_date": "Air Date",
 	"season_details_episodes": [
@@ -896,5 +894,7 @@
 	"banner_image_select_loading": "Loading images...",
 	"banner_image_select_empty_title": "No backdrop images",
 	"banner_image_select_empty_desc": "No backdrop images are available for this title",
-	"toast_error_signin_invalid_code": "Code seems to be invalid, try again!"
+	"toast_error_signin_invalid_code": "Code seems to be invalid, try again!",
+	"aired_on": "Aired on ",
+	"airs_on": "Airs on "
 }
