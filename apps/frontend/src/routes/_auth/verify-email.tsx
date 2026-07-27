@@ -47,7 +47,7 @@ export const Route = createFileRoute("/_auth/verify-email")({
 	},
 });
 
-export function VerifyEmailPage() {
+function VerifyEmailPage() {
 	const { authData } = useRouteContext({ from: "__root__" });
 	const { verified } = Route.useSearch();
 	const [isResending, setIsResending] = useState(false);

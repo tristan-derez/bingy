@@ -17,7 +17,7 @@ export const Route = createFileRoute("/_auth/welcome")({
 	},
 });
 
-export function WelcomePage() {
+function WelcomePage() {
 	const { authData } = useRouteContext({ from: "__root__" });
 
 	if (!authData) return null;
