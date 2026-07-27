@@ -14,7 +14,7 @@ export function ShareButton({ text }: { text: string }) {
 	const handleCopy = async () => {
 		await navigator.clipboard.writeText(url);
 		setCopied(true);
-
+		setIsHovered(false);
 		setTimeout(() => setCopied(false), 2000);
 	};
 
