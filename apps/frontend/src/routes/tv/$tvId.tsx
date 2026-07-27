@@ -24,7 +24,7 @@ function TvDetailsContainer() {
 		region,
 	});
 
-	const cast: Schemas.CastMember[] =
+	const cast: Array<Schemas.CastMember & { characters?: string[] }> =
 		tv?.aggregate_credits?.cast?.slice(0, 20).map((member) => ({
 			id: member.id,
 			name: member.name,
@@ -35,9 +35,27 @@ function TvDetailsContainer() {
 			popularity: member.popularity,
 			profile_path: member.profile_path,
 			cast_id: member.id,
-			character: member.roles?.[0]?.character || "Unknown",
+			character: member.roles?.[0]?.character || "",
 			credit_id: member.roles?.[0]?.credit_id || "",
 			order: member.order,
+			characters:
+				member.roles?.map((r) => r.character).filter(Boolean) || [],
+		})) || [];
+
+	const crew: Array<Schemas.CrewMember & { jobs?: string[] }> =
+		tv?.aggregate_credits?.crew?.slice(0, 20).map((member) => ({
+			id: member.id,
+			name: member.name,
+			adult: member.adult,
+			gender: member.gender,
+			known_for_department: member.known_for_department,
+			department: member.department,
+			original_name: member.original_name,
+			popularity: member.popularity,
+			profile_path: member.profile_path,
+			credit_id: member.jobs?.[0]?.credit_id || "",
+			job: member.jobs?.[0]?.job || "",
+			jobs: member.jobs?.map((j) => j.job).filter(Boolean) || [],
 		})) || [];
 
 	const watchProviders = tv?.["watch/providers"];
@@ -47,6 +65,7 @@ function TvDetailsContainer() {
 			tv={tv}
 			watchProviders={watchProviders}
 			cast={cast}
+			crew={crew}
 			isLoading={isLoading}
 			isError={isError}
 		/>

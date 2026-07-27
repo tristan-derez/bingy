@@ -51,6 +51,11 @@ function MovieDetailsPage() {
 				gender: person.gender,
 			})) ?? [];
 	const cast = movie?.credits?.cast?.slice(0, 10) || [];
+	const crew = Array.from(
+		new Map(
+			movie?.credits?.crew?.map((member) => [member.id, member]),
+		).values(),
+	).slice(0, 10);
 	const collection = movie ? movie.belongs_to_collection : undefined;
 	const watchProviders = movie?.["watch/providers"];
 
@@ -59,6 +64,7 @@ function MovieDetailsPage() {
 			movie={movie}
 			directors={directors}
 			cast={cast}
+			crew={crew}
 			watchProviders={watchProviders}
 			collection={collection}
 			isLoading={isLoading}

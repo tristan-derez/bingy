@@ -16,22 +16,22 @@ import { MediaGenresBadge } from "@/components/medias/media-genres-badge";
 import { MediaLearnMoreCard } from "@/components/medias/media-learn-more";
 import { MediaOverview } from "@/components/medias/media-overview";
 import { MediaRatingDisplayCard } from "@/components/medias/media-rating-display-card";
-import { CastList } from "@/components/person/cast-list";
 import { PortraitImage } from "@/components/portrait-image";
 import { BackButton } from "@/components/ui/back-button";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { WatchProvidersSection } from "@/components/watch-providers/watch-providers-section";
 import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { formatRuntime } from "@/utils/format-runtime";
 import { getTmdbImageUrl, normalizeTitle } from "@/utils/utils";
+import { CastCrewTabs } from "../person/cast-crew-tabs";
 
 interface MovieDetailViewProps {
 	movie: Schemas.MovieDetails | undefined;
 	directors: Array<{ id: number; name: string; gender: number | null }>;
 	cast: Schemas.CastMember[];
+	crew: Schemas.CrewMember[];
 	watchProviders: Schemas.WatchProviders | undefined;
 	collection: Schemas.MovieDetails["belongs_to_collection"] | undefined;
 	releaseDate: string | undefined;
@@ -43,6 +43,7 @@ interface MovieDetailViewProps {
 export function MovieDetailView({
 	movie,
 	cast,
+	crew,
 	directors,
 	watchProviders,
 	collection,
@@ -198,9 +199,11 @@ export function MovieDetailView({
 							) : null}
 						</div>
 
+						{collection ? <CollectionCard collection={collection} /> : null}
+
 						{cast && cast.length > 0 ? (
 							<div className="flex flex-col gap-2">
-								<CastList people={cast} />
+								<CastCrewTabs cast={cast} crew={crew} />
 								<Link
 									to="/movies/$movieId/credits"
 									params={{ movieId: movie.id.toString() }}
@@ -209,41 +212,6 @@ export function MovieDetailView({
 									{m.link_text_full_credits()}
 								</Link>
 							</div>
-						) : null}
-
-						{collection ? <CollectionCard collection={collection} /> : null}
-
-						{movie.production_companies &&
-						movie.production_companies.length > 0 ? (
-							<Card className="border ring-0">
-								<CardHeader>
-									<CardTitle>
-										{m.movie_details_production_companies({
-											count: movie.production_companies.length,
-										})}
-									</CardTitle>
-								</CardHeader>
-
-								<CardContent className="flex flex-wrap gap-4">
-									{movie.production_companies.map(
-										(company: Schemas.ProductionCompany) => (
-											<Badge
-												key={company.id}
-												className="flex items-center gap-2"
-												variant="outline"
-											>
-												{company.origin_country ? (
-													<span
-														className={`fi fi-${company.origin_country.toLocaleLowerCase()}`}
-														style={{ width: 18, height: 14 }}
-													/>
-												) : null}
-												<span className="font-medium">{company.name}</span>
-											</Badge>
-										),
-									)}
-								</CardContent>
-							</Card>
 						) : null}
 					</div>
 				</div>

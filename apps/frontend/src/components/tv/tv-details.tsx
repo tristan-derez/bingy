@@ -15,11 +15,10 @@ import { MediaGenresBadge } from "@/components/medias/media-genres-badge";
 import { MediaLearnMoreCard } from "@/components/medias/media-learn-more";
 import { MediaOverview } from "@/components/medias/media-overview";
 import { MediaRatingDisplayCard } from "@/components/medias/media-rating-display-card";
-import { CastList } from "@/components/person/cast-list";
+import { CastCrewTabs } from "@/components/person/cast-crew-tabs";
 import { TVStatusCard } from "@/components/tv/tv-details/status-card";
 import { BackButton } from "@/components/ui/back-button";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { WatchProvidersSection } from "@/components/watch-providers/watch-providers-section";
 import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
@@ -30,7 +29,8 @@ import { PortraitImage } from "../portrait-image";
 interface TvDetailViewProps {
 	tv: Schemas.TvDetails | undefined;
 	watchProviders: Schemas.WatchProviders | undefined;
-	cast: Schemas.CastMember[];
+	cast: Array<Schemas.CastMember & { characters?: string[] }>;
+	crew: Array<Schemas.CrewMember & { jobs?: string[] }>;
 	isLoading: boolean;
 	isError: boolean;
 }
@@ -39,6 +39,7 @@ export function TvDetailsView({
 	tv,
 	watchProviders,
 	cast,
+	crew,
 	isLoading,
 	isError,
 }: TvDetailViewProps) {
@@ -207,7 +208,7 @@ export function TvDetailsView({
 
 						{cast && cast.length > 0 ? (
 							<div className="flex flex-col gap-2">
-								<CastList people={cast} />
+								<CastCrewTabs cast={cast} crew={crew} />
 								<Link
 									to="/tv/$tvId/credits"
 									params={{ tvId: tv.id.toString() }}
@@ -216,61 +217,6 @@ export function TvDetailsView({
 									{m.link_text_full_credits()}
 								</Link>
 							</div>
-						) : null}
-
-						{tv.networks.length > 0 ? (
-							<Card className="border ring-0">
-								<CardHeader>
-									<CardTitle>
-										{m.tv_details_networks({
-											count: tv.networks.length,
-										})}
-									</CardTitle>
-								</CardHeader>
-
-								<CardContent className="flex flex-wrap gap-4">
-									{tv.networks.map(
-										(
-											network: Omit<
-												Schemas.NetworkDetails,
-												"homepage" | "headquarters"
-											>,
-										) => (
-											<Badge
-												key={network.id}
-												className="flex items-center gap-3"
-												variant="outline"
-											>
-												<span className="font-medium">{network.name}</span>
-											</Badge>
-										),
-									)}
-								</CardContent>
-							</Card>
-						) : null}
-
-						{tv.production_companies.length > 0 ? (
-							<Card className="border ring-0">
-								<CardHeader>
-									<CardTitle>
-										{m.tv_details_companies({
-											count: tv.production_companies.length,
-										})}
-									</CardTitle>
-								</CardHeader>
-
-								<CardContent className="flex flex-wrap gap-4">
-									{tv.production_companies.map((company) => (
-										<Badge
-											key={company.id}
-											className="flex items-center gap-3"
-											variant="outline"
-										>
-											<span className="font-medium">{company.name}</span>
-										</Badge>
-									))}
-								</CardContent>
-							</Card>
 						) : null}
 					</div>
 				</div>
