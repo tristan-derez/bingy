@@ -24,7 +24,7 @@ import { WatchProvidersSection } from "@/components/watch-providers/watch-provid
 import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
-import { getTmdbImageUrl } from "@/utils/utils";
+import { getTmdbImageUrl, normalizeTitle } from "@/utils/utils";
 import { PortraitImage } from "../portrait-image";
 
 interface TvDetailViewProps {
@@ -62,7 +62,7 @@ export function TvDetailsView({
 	}
 
 	const hasDifferentNameInVO =
-		tv.original_name.toLowerCase() !== tv.name.toLowerCase();
+		normalizeTitle(tv.original_name) !== normalizeTitle(tv.name);
 
 	const backgroundImage = getTmdbImageUrl(tv.backdrop_path);
 

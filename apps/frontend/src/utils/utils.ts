@@ -106,6 +106,9 @@ export function getProviderName(name: string | null | undefined): string {
 	if (name === "Amazon Prime Video") {
 		return "Prime Video";
 	}
+	if (name === "Paramount Plus") {
+		return "Paramount+";
+	}
 	return name;
 }
 
@@ -154,3 +157,10 @@ export const getListLink = (username: string, slug?: string): string | null => {
 
 	return `/@${username.toLowerCase()}/lists/${slug}`;
 };
+
+export const normalizeTitle = (str: string): string =>
+	str
+		.toLowerCase()
+		.normalize("NFKC")
+		.replace(/[^\p{L}\p{N}]+/gu, " ")
+		.trim();

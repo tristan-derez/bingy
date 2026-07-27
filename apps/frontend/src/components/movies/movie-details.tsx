@@ -26,7 +26,7 @@ import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { formatRuntime } from "@/utils/format-runtime";
-import { getTmdbImageUrl } from "@/utils/utils";
+import { getTmdbImageUrl, normalizeTitle } from "@/utils/utils";
 
 interface MovieDetailViewProps {
 	movie: Schemas.MovieDetails | undefined;
@@ -71,7 +71,7 @@ export function MovieDetailView({
 	}
 
 	const hasDifferentTitleInVO =
-		movie.original_title.toLowerCase() !== movie.title.toLowerCase();
+		normalizeTitle(movie.original_title) !== normalizeTitle(movie.title);
 
 	const backgroundImage = getTmdbImageUrl(movie.backdrop_path, "original");
 
