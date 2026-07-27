@@ -145,6 +145,19 @@ export function MovieDetailView({
 												m.movie_details_director({ gender })
 											}
 										/>
+
+										{cast && cast.length > 0 ? (
+											<div className="flex flex-col gap-2">
+												<CastCrewTabs cast={cast} crew={crew} />
+												<Link
+													to="/movies/$movieId/credits"
+													params={{ movieId: movie.id.toString() }}
+													className="text-sm"
+												>
+													{m.link_text_full_credits()}
+												</Link>
+											</div>
+										) : null}
 									</div>
 									{authData ? (
 										<div className="lg:self-start mt-3">
@@ -200,19 +213,6 @@ export function MovieDetailView({
 						</div>
 
 						{collection ? <CollectionCard collection={collection} /> : null}
-
-						{cast && cast.length > 0 ? (
-							<div className="flex flex-col gap-2">
-								<CastCrewTabs cast={cast} crew={crew} />
-								<Link
-									to="/movies/$movieId/credits"
-									params={{ movieId: movie.id.toString() }}
-									className="text-sm"
-								>
-									{m.link_text_full_credits()}
-								</Link>
-							</div>
-						) : null}
 					</div>
 				</div>
 			</div>

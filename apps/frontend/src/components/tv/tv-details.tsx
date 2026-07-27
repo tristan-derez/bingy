@@ -127,6 +127,19 @@ export function TvDetailsView({
 												m.tv_details_creator({ gender })
 											}
 										/>
+
+										{cast && cast.length > 0 ? (
+											<div className="flex flex-col gap-2">
+												<CastCrewTabs cast={cast} crew={crew} />
+												<Link
+													to="/tv/$tvId/credits"
+													params={{ tvId: tv.id.toString() }}
+													className="text-sm"
+												>
+													{m.link_text_full_credits()}
+												</Link>
+											</div>
+										) : null}
 									</div>
 
 									{authData ? (
