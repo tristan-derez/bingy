@@ -11,10 +11,14 @@ interface CastCrewTabsProps {
 
 export function CastCrewTabs({ cast, crew }: CastCrewTabsProps) {
 	return (
-		<Tabs defaultValue="cast" className="w-full">
-			<TabsList>
-				<TabsTrigger value="cast">{m.cast_text()}</TabsTrigger>
-				<TabsTrigger value="crew">{m.crew_text()}</TabsTrigger>
+		<Tabs defaultValue="cast" className="w-full m-0">
+			<TabsList variant="line">
+				<TabsTrigger value="cast" className="px-0">
+					{m.cast_text()}
+				</TabsTrigger>
+				<TabsTrigger value="crew" className="px-0">
+					{m.crew_text()}
+				</TabsTrigger>
 			</TabsList>
 			<TabsContent value="cast">
 				<CastList people={cast} />
