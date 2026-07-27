@@ -3,7 +3,7 @@ import {
 	IconMovie,
 	IconStopwatch,
 } from "@tabler/icons-react";
-import { Link, useRouteContext, useRouterState } from "@tanstack/react-router";
+import { Link, useRouteContext } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
 import { CollectionCard } from "@/components/collections/collection-card";
@@ -51,8 +51,6 @@ export function MovieDetailView({
 	isLoading,
 	isError,
 }: MovieDetailViewProps) {
-	const routerState = useRouterState();
-	const currentUrl = routerState.location.url;
 	const { authData } = useRouteContext({ from: "__root__" });
 	const localeRegion = useAtomValue(localeRegionAtom);
 	const region = useAtomValue(regionAtom);
@@ -82,7 +80,7 @@ export function MovieDetailView({
 				<BackButton />
 
 				<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
-					<div className="flex flex-col gap-2 items-center lg:items-start max-w-[250px] md:max-w-[300px] lg:max-w-[400px]">
+					<div className="flex flex-col gap-2 items-center lg:items-start max-w-62.5 md:max-w-75 lg:max-w-100">
 						<PortraitImage
 							imagePath={movie.poster_path}
 							alt={movie.title}
@@ -159,7 +157,6 @@ export function MovieDetailView({
 													mediaType: "movie",
 												}}
 												posterPath={movie.poster_path}
-												currentUrl={currentUrl}
 											/>
 										</div>
 									) : null}

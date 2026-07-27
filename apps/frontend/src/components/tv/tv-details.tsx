@@ -3,7 +3,7 @@ import {
 	IconDeviceTv,
 	IconStack2,
 } from "@tabler/icons-react";
-import { Link, useRouteContext, useRouterState } from "@tanstack/react-router";
+import { Link, useRouteContext } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
@@ -42,8 +42,6 @@ export function TvDetailsView({
 	isLoading,
 	isError,
 }: TvDetailViewProps) {
-	const routerState = useRouterState();
-	const currentUrl = routerState.location.url;
 	const { authData } = useRouteContext({ from: "__root__" });
 	const localeRegion = useAtomValue(localeRegionAtom);
 	const region = useAtomValue(regionAtom);
@@ -73,7 +71,7 @@ export function TvDetailsView({
 				<BackButton />
 
 				<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
-					<div className="flex flex-col gap-2 items-center lg:items-start max-w-[250px] md:max-w-[300px] lg:max-w-[400px]">
+					<div className="flex flex-col gap-2 items-center lg:items-start max-w-62.5 md:max-w-75 lg:max-w-100">
 						<PortraitImage
 							imagePath={tv.poster_path}
 							alt={tv.name}
@@ -142,7 +140,6 @@ export function TvDetailsView({
 													mediaType: "tv",
 												}}
 												posterPath={tv.poster_path}
-												currentUrl={currentUrl}
 											/>
 										</div>
 									) : null}
