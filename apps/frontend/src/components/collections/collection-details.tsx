@@ -110,7 +110,7 @@ export function CollectionDetailsView({
 				<BackButton />
 
 				<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
-					<div className="flex flex-col gap-2 items-center lg:items-start max-w-[250px] md:max-w-[300px] lg:max-w-[400px]">
+					<div className="flex flex-col gap-2 items-center lg:items-start max-w-62.5 md:max-w-75 lg:max-w-100">
 						<PortraitImage
 							imagePath={collectionData.poster_path}
 							alt={collectionData.name}

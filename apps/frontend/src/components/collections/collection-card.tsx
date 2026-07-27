@@ -33,7 +33,7 @@ export function CollectionCard({ collection }: CollectionCardProps) {
 
 	return (
 		<Card
-			className="relative overflow-hidden min-h-[200px] ring-0 justify-center text-dark-card-foreground"
+			className="relative overflow-hidden min-h-50 ring-0 justify-center text-dark-card-foreground"
 			style={
 				backgroundImage
 					? {
