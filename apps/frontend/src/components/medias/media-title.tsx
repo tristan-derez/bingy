@@ -14,11 +14,11 @@ export function MediaTitle({
 	hasDifferentTitle,
 }: MediaTitleProps) {
 	return (
-		<h1 className="flex flex-wrap items-end gap-x-2 min-w-0 xl:w-6/7 text-2xl lg:text-4xl font-bold">
-			<span>{title}</span>
+		<h1 className="flex flex-wrap items-end gap-x-2 min-w-0 text-2xl lg:text-4xl font-bold leading-none">
+			{title}
 			{releaseDate ? (
-				<span className="text-lg lg:text-2xl font-normal">
-					({getYear(releaseDate)})
+				<span className="text-lg lg:text-2xl font-normal underline">
+					{getYear(releaseDate)}
 				</span>
 			) : null}
 			{hasDifferentTitle ? (
