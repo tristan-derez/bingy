@@ -15,7 +15,9 @@ import { MediaGenresBadge } from "@/components/medias/media-genres-badge";
 import { MediaLearnMoreCard } from "@/components/medias/media-learn-more";
 import { MediaOverview } from "@/components/medias/media-overview";
 import { MediaRatingDisplayCard } from "@/components/medias/media-rating-display-card";
+import { MediaTitle } from "@/components/medias/media-title";
 import { CastCrewTabs } from "@/components/person/cast-crew-tabs";
+import { PortraitImage } from "@/components/portrait-image";
 import { TVStatusCard } from "@/components/tv/tv-details/status-card";
 import { BackButton } from "@/components/ui/back-button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -24,7 +26,6 @@ import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { getTmdbImageUrl, normalizeTitle } from "@/utils/utils";
-import { PortraitImage } from "../portrait-image";
 
 interface TvDetailViewProps {
 	tv: Schemas.TvDetails | undefined;
@@ -96,19 +97,12 @@ export function TvDetailsView({
 							<CardContent className="p-0">
 								<div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2 px-0.5 py-0.5">
 									<div className="flex flex-col gap-4">
-										<div className="flex items-start justify-between gap-4 xl:w-6/7">
-											<div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 min-w-0">
-												<h1 className="text-2xl lg:text-4xl font-bold leading-tight">
-													{tv.name}
-													{hasDifferentNameInVO ? (
-														<span className="text-foreground text-base lg:text-xl font-bold italic">
-															{" "}
-															— {tv.original_name}
-														</span>
-													) : null}
-												</h1>
-											</div>
-										</div>
+										<MediaTitle
+											title={tv.name}
+											releaseDate={tv.first_air_date}
+											originalTitle={tv.original_name}
+											hasDifferentTitle={hasDifferentNameInVO}
+										/>
 
 										<MediaGenresBadge genres={tv.genres} />
 
@@ -127,19 +121,6 @@ export function TvDetailsView({
 												m.tv_details_creator({ gender })
 											}
 										/>
-
-										{cast && cast.length > 0 ? (
-											<div className="flex flex-col gap-2">
-												<CastCrewTabs cast={cast} crew={crew} />
-												<Link
-													to="/tv/$tvId/credits"
-													params={{ tvId: tv.id.toString() }}
-													className="text-sm"
-												>
-													{m.link_text_full_credits()}
-												</Link>
-											</div>
-										) : null}
 									</div>
 
 									{authData ? (

@@ -16,6 +16,8 @@ import { MediaGenresBadge } from "@/components/medias/media-genres-badge";
 import { MediaLearnMoreCard } from "@/components/medias/media-learn-more";
 import { MediaOverview } from "@/components/medias/media-overview";
 import { MediaRatingDisplayCard } from "@/components/medias/media-rating-display-card";
+import { MediaTitle } from "@/components/medias/media-title";
+import { CastCrewTabs } from "@/components/person/cast-crew-tabs";
 import { PortraitImage } from "@/components/portrait-image";
 import { BackButton } from "@/components/ui/back-button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -25,7 +27,6 @@ import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { formatRuntime } from "@/utils/format-runtime";
 import { getTmdbImageUrl, normalizeTitle } from "@/utils/utils";
-import { CastCrewTabs } from "../person/cast-crew-tabs";
 
 interface MovieDetailViewProps {
 	movie: Schemas.MovieDetails | undefined;
@@ -105,19 +106,12 @@ export function MovieDetailView({
 							<CardContent className="p-0">
 								<div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2 px-0.5 py-0.5">
 									<div className="flex flex-col gap-2">
-										<div className="flex items-start justify-between gap-4 xl:w-6/7">
-											<div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 min-w-0">
-												<h1 className="text-2xl lg:text-4xl font-bold leading-tight">
-													{movie.title}
-													{hasDifferentTitleInVO ? (
-														<span className="text-foreground text-base lg:text-xl font-bold italic leading-tight">
-															{" "}
-															— {movie.original_title}
-														</span>
-													) : null}
-												</h1>
-											</div>
-										</div>
+										<MediaTitle
+											title={movie.title}
+											releaseDate={movie.release_date}
+											originalTitle={movie.original_title}
+											hasDifferentTitle={hasDifferentTitleInVO}
+										/>
 
 										<div className="flex flex-wrap gap-2">
 											<div className="flex gap-0.5 items-center font-bold">
@@ -145,19 +139,6 @@ export function MovieDetailView({
 												m.movie_details_director({ gender })
 											}
 										/>
-
-										{cast && cast.length > 0 ? (
-											<div className="flex flex-col gap-2">
-												<CastCrewTabs cast={cast} crew={crew} />
-												<Link
-													to="/movies/$movieId/credits"
-													params={{ movieId: movie.id.toString() }}
-													className="text-sm"
-												>
-													{m.link_text_full_credits()}
-												</Link>
-											</div>
-										) : null}
 									</div>
 									{authData ? (
 										<div className="lg:self-start mt-3">
@@ -211,6 +192,18 @@ export function MovieDetailView({
 								<MediaLearnMoreCard id={movie.id} mediaType="movie" />
 							) : null}
 						</div>
+						{cast && cast.length > 0 ? (
+							<div className="flex flex-col gap-2">
+								<CastCrewTabs cast={cast} crew={crew} />
+								<Link
+									to="/movies/$movieId/credits"
+									params={{ movieId: movie.id.toString() }}
+									className="text-sm"
+								>
+									{m.link_text_full_credits()}
+								</Link>
+							</div>
+						) : null}
 
 						{collection ? <CollectionCard collection={collection} /> : null}
 					</div>
