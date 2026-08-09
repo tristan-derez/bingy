@@ -1,5 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "@fontsource-variable/roboto";
+@import "@fontsource-variable/merriweather";
 
 @custom-variant dark (&:is(.dark *));
 @custom-variant data-horizontal (&[data-orientation="horizontal"]);
@@ -50,6 +52,8 @@
 	--color-shadow-pointer: var(--shadow-pointer);
 	--color-particles: var(--particles-color);
 	--color-brand: var(--brand);
+	--font-sans: 'Roboto Variable', sans-serif;
+	--font-heading: 'Merriweather Variable', serif;
 }
 
 :root {
@@ -158,6 +162,7 @@
 		touch-action: pan-x pan-y;
 		height: 100svh;
 		scrollbar-gutter: stable;
+    @apply font-sans;
 	}
 	body {
 		@apply bg-background text-foreground;

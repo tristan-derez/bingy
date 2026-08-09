@@ -20,6 +20,8 @@
 		"@dnd-kit/modifiers": "^9.0.0",
 		"@dnd-kit/sortable": "^10.0.0",
 		"@dnd-kit/utilities": "^3.2.2",
+		"@fontsource-variable/merriweather": "^5.3.0",
+		"@fontsource-variable/roboto": "^5.3.0",
 		"@hookform/resolvers": "^5.4.3",
 		"@tabler/icons-react": "^3.45.0",
 		"@tailwindcss/postcss": "^4.3.3",
