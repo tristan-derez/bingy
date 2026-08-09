@@ -23,7 +23,7 @@ import { Route as AtChar123usernameChar125FavoritesRouteImport } from './routes/
 import { Route as AtChar123usernameChar125HistoryRouteImport } from './routes/@{$username}/history'
 import { Route as AtChar123usernameChar125InProgressRouteImport } from './routes/@{$username}/in-progress'
 import { Route as AtChar123usernameChar125WatchlistRouteImport } from './routes/@{$username}/watchlist'
-import { Route as AuthDashboardRouteImport } from './routes/_auth/dashboard'
+import { Route as AuthHomeRouteImport } from './routes/_auth/home'
 import { Route as AuthSettingsRouteImport } from './routes/_auth/settings'
 import { Route as AuthVerifyEmailRouteImport } from './routes/_auth/verify-email'
 import { Route as AuthWelcomeRouteImport } from './routes/_auth/welcome'
@@ -122,9 +122,9 @@ const AtChar123usernameChar125WatchlistRoute =
     path: '/watchlist',
     getParentRoute: () => AtChar123usernameChar125RouteRoute,
   } as any)
-const AuthDashboardRoute = AuthDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
+const AuthHomeRoute = AuthHomeRouteImport.update({
+  id: '/home',
+  path: '/home',
   getParentRoute: () => AuthRoute,
 } as any)
 const AuthSettingsRoute = AuthSettingsRouteImport.update({
@@ -259,7 +259,7 @@ export interface FileRoutesByFullPath {
   '/@{$username}/history': typeof AtChar123usernameChar125HistoryRoute
   '/@{$username}/in-progress': typeof AtChar123usernameChar125InProgressRoute
   '/@{$username}/watchlist': typeof AtChar123usernameChar125WatchlistRoute
-  '/dashboard': typeof AuthDashboardRoute
+  '/home': typeof AuthHomeRoute
   '/settings': typeof AuthSettingsRoute
   '/verify-email': typeof AuthVerifyEmailRoute
   '/welcome': typeof AuthWelcomeRoute
@@ -296,7 +296,7 @@ export interface FileRoutesByTo {
   '/@{$username}/history': typeof AtChar123usernameChar125HistoryRoute
   '/@{$username}/in-progress': typeof AtChar123usernameChar125InProgressRoute
   '/@{$username}/watchlist': typeof AtChar123usernameChar125WatchlistRoute
-  '/dashboard': typeof AuthDashboardRoute
+  '/home': typeof AuthHomeRoute
   '/settings': typeof AuthSettingsRoute
   '/verify-email': typeof AuthVerifyEmailRoute
   '/welcome': typeof AuthWelcomeRoute
@@ -336,7 +336,7 @@ export interface FileRoutesById {
   '/@{$username}/history': typeof AtChar123usernameChar125HistoryRoute
   '/@{$username}/in-progress': typeof AtChar123usernameChar125InProgressRoute
   '/@{$username}/watchlist': typeof AtChar123usernameChar125WatchlistRoute
-  '/_auth/dashboard': typeof AuthDashboardRoute
+  '/_auth/home': typeof AuthHomeRoute
   '/_auth/settings': typeof AuthSettingsRoute
   '/_auth/verify-email': typeof AuthVerifyEmailRoute
   '/_auth/welcome': typeof AuthWelcomeRoute
@@ -376,7 +376,7 @@ export interface FileRouteTypes {
     | '/@{$username}/history'
     | '/@{$username}/in-progress'
     | '/@{$username}/watchlist'
-    | '/dashboard'
+    | '/home'
     | '/settings'
     | '/verify-email'
     | '/welcome'
@@ -413,7 +413,7 @@ export interface FileRouteTypes {
     | '/@{$username}/history'
     | '/@{$username}/in-progress'
     | '/@{$username}/watchlist'
-    | '/dashboard'
+    | '/home'
     | '/settings'
     | '/verify-email'
     | '/welcome'
@@ -452,7 +452,7 @@ export interface FileRouteTypes {
     | '/@{$username}/history'
     | '/@{$username}/in-progress'
     | '/@{$username}/watchlist'
-    | '/_auth/dashboard'
+    | '/_auth/home'
     | '/_auth/settings'
     | '/_auth/verify-email'
     | '/_auth/welcome'
@@ -604,11 +604,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AtChar123usernameChar125WatchlistRouteImport
       parentRoute: typeof AtChar123usernameChar125RouteRoute
     }
-    '/_auth/dashboard': {
-      id: '/_auth/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AuthDashboardRouteImport
+    '/_auth/home': {
+      id: '/_auth/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof AuthHomeRouteImport
       parentRoute: typeof AuthRoute
     }
     '/_auth/settings': {
@@ -803,7 +803,7 @@ const AtChar123usernameChar125RouteRouteWithChildren =
   )
 
 interface AuthRouteChildren {
-  AuthDashboardRoute: typeof AuthDashboardRoute
+  AuthHomeRoute: typeof AuthHomeRoute
   AuthSettingsRoute: typeof AuthSettingsRoute
   AuthVerifyEmailRoute: typeof AuthVerifyEmailRoute
   AuthWelcomeRoute: typeof AuthWelcomeRoute
@@ -812,7 +812,7 @@ interface AuthRouteChildren {
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
-  AuthDashboardRoute: AuthDashboardRoute,
+  AuthHomeRoute: AuthHomeRoute,
   AuthSettingsRoute: AuthSettingsRoute,
   AuthVerifyEmailRoute: AuthVerifyEmailRoute,
   AuthWelcomeRoute: AuthWelcomeRoute,

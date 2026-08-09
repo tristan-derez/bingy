@@ -12,7 +12,7 @@ export const Route = createFileRoute("/signin")({
 	}),
 	beforeLoad: async ({ context }) => {
 		if (context.authData?.user) {
-			throw redirect({ to: "/dashboard" });
+			throw redirect({ to: "/home" });
 		}
 	},
 	component: SigninPage,

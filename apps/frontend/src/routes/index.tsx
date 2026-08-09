@@ -15,7 +15,7 @@ export const Route = createFileRoute("/")({
 	component: App,
 	beforeLoad: async ({ context }) => {
 		if (context.authData?.user) {
-			throw redirect({ to: "/dashboard" });
+			throw redirect({ to: "/home" });
 		}
 	},
 });

@@ -80,7 +80,7 @@ export function SignInForm() {
 					return;
 				}
 
-				await router.navigate({ to: "/dashboard" });
+				await router.navigate({ to: "/home" });
 			}
 
 			if (error) {
@@ -104,7 +104,7 @@ export function SignInForm() {
 		try {
 			await authClient.signIn.social({
 				provider,
-				callbackURL: `${config.appUrl}/dashboard`,
+				callbackURL: `${config.appUrl}/home`,
 				errorCallbackURL: `${config.appUrl}/signup`,
 				newUserCallbackURL: `${config.appUrl}/welcome`,
 			});
@@ -145,7 +145,7 @@ export function SignInForm() {
 				});
 				setShowDialog(false);
 				form.reset();
-				await router.navigate({ to: "/dashboard" });
+				await router.navigate({ to: "/home" });
 			}
 		} catch (err) {
 			toast.error({ title: m.toast_error_signin_invalid_code() });

@@ -31,14 +31,8 @@ export default function Header() {
 	const allNavItems = [
 		{
 			name: m.header_link_home(),
-			link: "/",
+			link: authData ? "/home" : "/",
 			requiresAuth: false,
-			hideWhenAuth: true,
-		},
-		{
-			name: m.header_link_dashboard(),
-			link: "/dashboard",
-			requiresAuth: true,
 			hideWhenAuth: false,
 		},
 		{
@@ -69,7 +63,7 @@ export default function Header() {
 	const allMobileBottomItems = [
 		{
 			name: m.header_link_home(),
-			link: authData ? "/dashboard" : "/",
+			link: authData ? "/home" : "/",
 			icon: <IconSmartHome className="h-6 w-6" />,
 			requiresAuth: false,
 		},
