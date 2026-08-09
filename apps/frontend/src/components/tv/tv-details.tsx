@@ -25,7 +25,7 @@ import { WatchProvidersSection } from "@/components/watch-providers/watch-provid
 import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
-import { getTmdbImageUrl, normalizeTitle } from "@/utils/utils";
+import { getTmdbImageUrl } from "@/utils/utils";
 
 interface TvDetailViewProps {
 	tv: Schemas.TvDetails | undefined;
@@ -60,9 +60,6 @@ export function TvDetailsView({
 			/>
 		);
 	}
-
-	const hasDifferentNameInVO =
-		normalizeTitle(tv.original_name) !== normalizeTitle(tv.name);
 
 	const backgroundImage = getTmdbImageUrl(tv.backdrop_path);
 
@@ -101,7 +98,6 @@ export function TvDetailsView({
 											title={tv.name}
 											releaseDate={tv.first_air_date}
 											originalTitle={tv.original_name}
-											hasDifferentTitle={hasDifferentNameInVO}
 										/>
 
 										<MediaGenresBadge genres={tv.genres} />

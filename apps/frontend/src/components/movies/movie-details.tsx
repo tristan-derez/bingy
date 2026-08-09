@@ -26,7 +26,7 @@ import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { formatRuntime } from "@/utils/format-runtime";
-import { getTmdbImageUrl, normalizeTitle } from "@/utils/utils";
+import { getTmdbImageUrl } from "@/utils/utils";
 
 interface MovieDetailViewProps {
 	movie: Schemas.MovieDetails | undefined;
@@ -70,9 +70,6 @@ export function MovieDetailView({
 		);
 	}
 
-	const hasDifferentTitleInVO =
-		normalizeTitle(movie.original_title) !== normalizeTitle(movie.title);
-
 	const backgroundImage = getTmdbImageUrl(movie.backdrop_path, "original");
 
 	return (
@@ -110,7 +107,6 @@ export function MovieDetailView({
 											title={movie.title}
 											releaseDate={movie.release_date}
 											originalTitle={movie.original_title}
-											hasDifferentTitle={hasDifferentTitleInVO}
 										/>
 
 										<div className="flex flex-wrap gap-2">
