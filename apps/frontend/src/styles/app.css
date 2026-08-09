@@ -9,6 +9,7 @@
 
 @theme {
 	--breakpoint-xs: 34rem;
+	--breakpoint-3xl: 120rem;
 }
 
 @theme inline {
