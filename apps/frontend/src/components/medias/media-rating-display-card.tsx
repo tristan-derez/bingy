@@ -37,7 +37,7 @@ export function MediaRatingDisplayCard({
 			<CardContent className="flex items-center gap-4">
 				<IconStarFilled className="h-5 w-5 text-yellow-500" />
 				<div>
-					<p className="text-xl xl:text-2xl font-bold">
+					<p className="text-lg font-bold">
 						{averageRating
 							? `${averageRating % 1 ? averageRating.toFixed(1) : averageRating}/5`
 							: "—"}

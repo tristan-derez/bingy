@@ -66,11 +66,11 @@ export function TvDetailsView({
 	return (
 		<>
 			<MediaBackgroundImage backgroundImage={backgroundImage} />
-			<div className="container pt-3 md:pt-10 lg:pt-50">
+			<div className="w-full pt-3 md:pt-10 lg:pt-50">
 				<BackButton />
 
 				<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
-					<div className="flex flex-col gap-2 items-center lg:items-start max-w-62.5 md:max-w-75 lg:max-w-100">
+					<div className="flex flex-col gap-2 items-center lg:items-start max-w-62.5 md:max-w-75 lg:max-w-100 2xl:max-w-60">
 						<PortraitImage
 							imagePath={tv.poster_path}
 							alt={tv.name}
@@ -145,7 +145,7 @@ export function TvDetailsView({
 								<CardContent className="flex items-center gap-4">
 									<IconCalendarWeekFilled />
 									<div>
-										<p className="text-xl xl:text-2xl font-bold">
+										<p className="text-lg font-bold">
 											{tv.first_air_date
 												? formatDate(tv.first_air_date, localeRegion, {
 														year: "numeric",
@@ -168,7 +168,7 @@ export function TvDetailsView({
 									<CardContent className="flex items-center gap-4">
 										<IconDeviceTv />
 										<div>
-											<p className="text-xl xl:text-2xl font-bold">
+											<p className="text-lg font-bold">
 												{tv.number_of_seasons}
 											</p>
 											<p className="text-sm text-muted-foreground">
@@ -183,9 +183,7 @@ export function TvDetailsView({
 								<CardContent className="flex items-center gap-4">
 									<IconStack2 />
 									<div>
-										<p className="text-xl xl:text-2xl font-bold">
-											{tv.number_of_episodes}
-										</p>
+										<p className="text-lg font-bold">{tv.number_of_episodes}</p>
 										<p className="text-sm text-muted-foreground">
 											{m.tv_details_episodes({ count: tv.number_of_episodes })}
 										</p>

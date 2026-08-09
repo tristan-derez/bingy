@@ -79,7 +79,7 @@ export function MovieDetailView({
 				<BackButton />
 
 				<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
-					<div className="flex flex-col gap-2 items-center lg:items-start max-w-62.5 md:max-w-75 lg:max-w-100">
+					<div className="flex flex-col gap-2 items-center lg:items-start max-w-62.5 md:max-w-75 lg:max-w-100 2xl:max-w-60">
 						<PortraitImage
 							imagePath={movie.poster_path}
 							alt={movie.title}
@@ -162,7 +162,7 @@ export function MovieDetailView({
 								<CardContent className="flex items-center gap-4">
 									<IconCalendarWeekFilled />
 									<div>
-										<p className="text-xl xl:text-2xl font-bold">
+										<p className="text-lg font-bold">
 											{releaseDate
 												? formatDate(releaseDate, localeRegion, {
 														day: "numeric",

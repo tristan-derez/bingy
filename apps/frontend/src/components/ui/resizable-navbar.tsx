@@ -46,7 +46,7 @@ export const Navbar = ({ children, className }: NavbarProps) => {
 			animate={{ top: 30 }}
 			transition={{ type: "tween", stiffness: 350 }}
 			className={cn(
-				"fixed top-0 left-1/2 -translate-x-1/2 z-99 w-full px-5 md:px-6 lg:px-28 xl:px-30 2xl:px-140 3xl:px-160",
+				"fixed top-0 left-1/2 -translate-x-1/2 z-99 w-full px-5 md:px-6 lg:px-10 xl:px-20 2xl:px-80 3xl:px-120",
 				visible && "",
 				className,
 			)}
