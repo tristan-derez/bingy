@@ -17,7 +17,7 @@ export function MediaTitle({
 		normalizeTitle(originalTitle) !== normalizeTitle(title);
 
 	return (
-		<h1 className="w-full text-2xl lg:text-4xl font-bold leading-tight">
+		<h1 className="w-full text-2xl lg:text-4xl font-bold leading-none">
 			{title} <ReleaseYear year={year} />
 			<OriginalTitle title={originalTitle} visible={hasDifferentTitleInVO} />
 		</h1>
