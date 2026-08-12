@@ -1,4 +1,3 @@
-import { IconUser } from "@tabler/icons-react";
 import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
@@ -51,17 +50,15 @@ export const PersonDetailsView = ({
 	const sortedCredits = sortKnownForCredits(person);
 
 	return (
-		<div className="container">
+		<div className="w-full">
 			<BackButton />
 
 			<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
-				<div className="flex flex-col gap-2 items-center lg:items-start max-w-[250px] md:max-w-[300px] lg:max-w-[400px]">
+				<div className="flex flex-col gap-2 items-center lg:items-start max-w-62.5 md:max-w-60 2xl:max-w-75">
 					<PortraitImage
 						imagePath={person.profile_path}
 						alt={person.name}
-						fallback={
-							<IconUser className="w-1/3 h-1/3 text-muted-foreground" />
-						}
+						category="person"
 					/>
 
 					{person.also_known_as && person.also_known_as.length > 0 ? (

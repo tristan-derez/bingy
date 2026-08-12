@@ -70,14 +70,12 @@ export function TvDetailsView({
 				<BackButton />
 
 				<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
-					<div className="flex flex-col gap-2 items-center lg:items-start max-w-62.5 md:max-w-75 lg:max-w-100 2xl:max-w-60">
+					<div className="flex flex-col gap-2 items-center lg:items-start max-w-62.5 md:max-w-60 2xl:max-w-75">
 						<PortraitImage
 							imagePath={tv.poster_path}
 							alt={tv.name}
 							imageSize="w500"
-							fallback={
-								<IconDeviceTv className="w-1/3 h-1/3 text-muted-foreground" />
-							}
+							category="tv"
 						/>
 
 						{watchProviders ? (

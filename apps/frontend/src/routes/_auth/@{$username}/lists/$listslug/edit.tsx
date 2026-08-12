@@ -194,7 +194,7 @@ function EditListPage() {
 	}
 
 	return (
-		<div className="container flex flex-col max-w-3xl gap-6">
+		<div className="flex flex-col w-full gap-6">
 			<Card>
 				<CardHeader>
 					<CardTitle>{m.edit_list_page_title()}</CardTitle>

@@ -106,14 +106,15 @@ export function CollectionDetailsView({
 	return (
 		<>
 			<MediaBackgroundImage backgroundImage={backgroundImage} />
-			<div className="container pt-3 md:pt-10 lg:pt-50">
+			<div className="w-full pt-3 md:pt-10 lg:pt-50">
 				<BackButton />
 
 				<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
-					<div className="flex flex-col gap-2 items-center lg:items-start max-w-62.5 md:max-w-75 lg:max-w-100">
+					<div className="flex flex-col gap-2 items-center lg:items-start max-w-62.5 md:max-w-60 2xl:max-w-75">
 						<PortraitImage
 							imagePath={collectionData.poster_path}
 							alt={collectionData.name}
+							category="movie"
 						/>
 					</div>
 

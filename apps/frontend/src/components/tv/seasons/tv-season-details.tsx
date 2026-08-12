@@ -118,12 +118,16 @@ export function TvSeasonDetailsView({
 	).toFixed(1);
 
 	return (
-		<div className="container">
+		<div className="w-full">
 			<BackButton />
 
 			<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
-				<div className="flex flex-col gap-2 items-center lg:items-start max-w-62.5 md:max-w-75 lg:max-w-100">
-					<PortraitImage imagePath={tvSeason.poster_path} alt={tvSeason.name} />
+				<div className="flex flex-col gap-2 items-center lg:items-start max-w-62.5 md:max-w-60 2xl:max-w-75">
+					<PortraitImage
+						imagePath={tvSeason.poster_path}
+						alt={tvSeason.name}
+						category="tv"
+					/>
 					<WatchProvidersSection
 						watchProviders={watchProviders}
 						region="FR"

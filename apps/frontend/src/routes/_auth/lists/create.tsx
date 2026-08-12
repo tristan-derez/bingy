@@ -125,7 +125,7 @@ function CreateListPage() {
 	};
 
 	return (
-		<div className="container flex flex-col max-w-3xl gap-6">
+		<div className="flex flex-col gap-6 w-full">
 			<Card>
 				<CardHeader>
 					<CardTitle>{m.create_list_title()}</CardTitle>

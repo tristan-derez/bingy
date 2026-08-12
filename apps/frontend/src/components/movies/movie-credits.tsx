@@ -35,6 +35,7 @@ export function MovieCreditsView({
 		<div className="scroll-smooth w-full">
 			<div className="flex justify-between w-full">
 				<BackButton />
+
 				{credits.crew.length > 0 && credits.cast.length > 0 ? (
 					<ScrollToCrewButton crewSectionId={crewSectionId} />
 				) : null}

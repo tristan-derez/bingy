@@ -36,7 +36,7 @@ export function TvSeasonsDetailsView({
 	const specialSeason = tv.seasons.find((season) => season.season_number === 0);
 
 	return (
-		<div className="container">
+		<div className="w-full">
 			<BackButton />
 
 			<div className="grid gris-cols-1 gap-4 pt-2">

@@ -51,7 +51,7 @@ export function ListDetailsContainer({
 	const hasItem = list.items.length > 0;
 
 	return (
-		<div className="container flex flex-col gap-6">
+		<div className="flex flex-col gap-6 w-full">
 			<div className="flex flex-col gap-2">
 				<ListName listName={list.name} />
 
