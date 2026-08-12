@@ -22,8 +22,8 @@ export const ScrollToCrewButton = ({
 				}}
 				className="flex flex-row gap-1"
 			>
-				{m.btn_jump_to_crew()}
 				<IconArrowDown className="h-4 w-4 self-center" />
+				{m.btn_jump_to_crew()}
 			</a>
 		</Button>
 	);

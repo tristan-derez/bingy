@@ -19,7 +19,7 @@ export function RootComponent() {
 		<div>
 			<HeadContent />
 			<Header />
-			<div className="flex flex-col min-h-dvh py-20 lg:py-30 px-5 md:px-6 lg:px-10 xl:px-20 2xl:px-80 3xl:px-120">
+			<div className="flex flex-col min-h-dvh py-20 lg:py-30 w-full px-4 md:px-6 lg:px-0 lg:max-w-200 xl:max-w-240 2xl:max-w-280 3xl:max-w-300 lg:mx-auto">
 				<Outlet />
 				<GlobalLoadingIndicator />
 			</div>

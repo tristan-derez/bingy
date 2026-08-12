@@ -21,7 +21,7 @@ export const CrewCardMovie = ({ person }: CrewCardMovieProps) => {
 	const imageUrl = getTmdbImageUrl(person.profile_path, "w200");
 
 	return (
-		<div className="relative pt-8">
+		<div className="relative pt-8 w-full max-w-xs mx-auto md:max-w-none">
 			<Avatar className="absolute -top-1 left-1/2 -translate-x-1/2 w-16 h-16 z-10">
 				<AvatarImage
 					src={imageUrl ?? fallbackPoster}

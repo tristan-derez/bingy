@@ -13,7 +13,8 @@ interface PortraitImageProps {
 	fallback?: ReactNode;
 }
 
-const DEFAULT_SIZE_CLASSES = "w-44 md:w-52 lg:w-56 xl:w-64 2xl:w-80 aspect-2/3";
+const DEFAULT_SIZE_CLASSES =
+	"w-44 md:w-52 lg:w-56 xl:w-64 2xl:max-w-60 aspect-2/3";
 
 const DEFAULT_FALLBACK = (
 	<div className="w-full h-full flex items-center justify-center bg-muted text-muted-foreground text-sm">
