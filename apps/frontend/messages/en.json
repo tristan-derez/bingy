@@ -895,5 +895,6 @@
 	"banner_image_select_empty_desc": "No backdrop images are available for this title",
 	"toast_error_signin_invalid_code": "Code seems to be invalid, try again!",
 	"aired_on": "Aired on ",
-	"airs_on": "Airs on "
+	"airs_on": "Airs on ",
+	"image_empty_state_message": "No image available"
 }

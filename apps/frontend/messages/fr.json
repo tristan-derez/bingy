@@ -886,5 +886,6 @@
 	"banner_image_select_empty_title": "Pas d'images d'arrière-plan",
 	"banner_image_select_empty_desc": "Aucune image d'arrière-plan n'est disponible pour ce titre",
 	"aired_on": "Diffusé le ",
-	"airs_on": "Diffusion le "
+	"airs_on": "Diffusion le ",
+	"image_empty_state_message": "Pas d'image disponible"
 }

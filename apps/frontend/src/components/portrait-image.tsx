@@ -1,33 +1,56 @@
-import { type ReactNode, useState } from "react";
+import {
+	IconCameraOff,
+	IconDeviceTv,
+	IconMovie,
+	IconUser,
+} from "@tabler/icons-react";
+import { useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Drawer, DrawerBody, DrawerContent } from "@/components/ui/drawer";
 import { useMediaQuery } from "@/integrations/media-query";
 import { cn } from "@/lib/utils";
+import { m } from "@/paraglide/messages";
 import { getTmdbImageUrl, type ImageSize } from "@/utils/utils";
+
+type PortraitImageCategory = "movie" | "tv" | "person";
 
 interface PortraitImageProps {
 	imagePath: string | null;
 	alt: string;
+	category?: PortraitImageCategory;
 	imageSize?: ImageSize;
 	className?: string;
-	fallback?: ReactNode;
 }
 
-const DEFAULT_SIZE_CLASSES =
-	"w-44 md:w-52 lg:w-56 xl:w-64 2xl:max-w-60 aspect-2/3";
+const DEFAULT_SIZE_CLASSES = "w-62.5 md:w-60 2xl:w-75 aspect-2/3";
 
-const DEFAULT_FALLBACK = (
-	<div className="w-full h-full flex items-center justify-center bg-muted text-muted-foreground text-sm">
-		No image
-	</div>
-);
+const CATEGORY_ICONS: Record<PortraitImageCategory, typeof IconMovie> = {
+	movie: IconMovie,
+	tv: IconDeviceTv,
+	person: IconUser,
+};
+
+function PortraitImageEmptyState({
+	category,
+}: {
+	category?: PortraitImageCategory;
+}) {
+	const Icon = category ? CATEGORY_ICONS[category] : IconCameraOff;
+
+	return (
+		<div className="w-full h-full flex flex-col items-center justify-center gap-2 bg-muted text-muted-foreground">
+			<Icon className="size-6 w-1/4 h-1/4 text-muted-foreground" />
+			<span className="text-sm">{m.image_empty_state_message()}</span>
+		</div>
+	);
+}
 
 export function PortraitImage({
 	imagePath,
 	alt,
+	category,
 	imageSize = "original",
 	className,
-	fallback = DEFAULT_FALLBACK,
 }: PortraitImageProps) {
 	const imageUrl = getTmdbImageUrl(imagePath, imageSize);
 	const fullImageUrl = getTmdbImageUrl(imagePath, "original");
@@ -56,7 +79,9 @@ export function PortraitImage({
 					onClick={() => setOpen(true)}
 				/>
 			) : (
-				<div className={containerClasses}>{fallback}</div>
+				<div className={containerClasses}>
+					<PortraitImageEmptyState category={category} />
+				</div>
 			)}
 
 			{isMobile ? (
