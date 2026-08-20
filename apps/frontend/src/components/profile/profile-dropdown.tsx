@@ -8,6 +8,7 @@ import {
 	IconLifebuoy,
 	IconList,
 	IconLogout,
+	IconPlayerPlay,
 	IconUser,
 } from "@tabler/icons-react";
 import {
@@ -171,6 +172,17 @@ export const ProfileDropdown = ({
 						>
 							<IconHistory />
 							{m.dropdown_history_text()}
+						</DropdownMenuItem>
+						<DropdownMenuItem
+							onClick={() =>
+								navigate({
+									to: "/@{$username}/in-progress",
+									params: { username },
+								})
+							}
+						>
+							<IconPlayerPlay />
+							{m.dropdown_inprogress_text()}
 						</DropdownMenuItem>
 						<DropdownMenuItem
 							onClick={() =>

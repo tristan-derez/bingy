@@ -469,6 +469,7 @@
 	"dropdown_lists_text": "Lists",
 	"dropdown_favorites_text": "Favorites",
 	"dropdown_history_text": "History",
+	"dropdown_inprogress_text": "Watching",
 	"dropdown_support_text": "Support",
 	"dropdown_logout_text": "Log out",
 	"header_btn_sign_in": "Sign In",
