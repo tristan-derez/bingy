@@ -15,8 +15,8 @@ export function MediaBackgroundImage({
 				className="absolute inset-0"
 				style={{
 					backgroundImage: `url(${backgroundImage ?? backgroundPlaceholder})`,
-					backgroundSize: "cover",
-					backgroundPosition: "center",
+					backgroundSize: "100% auto",
+					backgroundPosition: "top center",
 					backgroundRepeat: "no-repeat",
 				}}
 			/>
