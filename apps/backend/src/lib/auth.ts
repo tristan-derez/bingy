@@ -16,6 +16,7 @@ import {
 
 const options = {
 	appName: "Bingy",
+	baseURL: env.BASE_URL,
 	database: drizzleAdapter(db, {
 		provider: "pg",
 		schema: {
@@ -217,9 +218,7 @@ const options = {
 						};
 					}
 
-					const { normalized, displayName } = validateUsername(
-						user.name,
-					);
+					const { normalized, displayName } = validateUsername(user.name);
 
 					await assertUsernameAvailable(normalized);
 
