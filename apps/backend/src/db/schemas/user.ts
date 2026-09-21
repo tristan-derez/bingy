@@ -2,6 +2,7 @@ import { type InferInsertModel, type InferSelectModel, sql } from "drizzle-orm";
 import {
 	boolean,
 	index,
+	integer,
 	pgTable,
 	text,
 	timestamp,
@@ -74,6 +75,11 @@ export const two_factor = pgTable("two_factor", {
 		.references(() => users.id, { onDelete: "cascade" }),
 	secret: text(),
 	backupCodes: text("backup_codes"),
+	verified: boolean("verified").default(false).notNull(),
+	failedVerificationCount: integer("failed_verification_count")
+		.default(0)
+		.notNull(),
+	lockedUntil: timestamp("locked_until"),
 });
 
 export const sessions = pgTable(
