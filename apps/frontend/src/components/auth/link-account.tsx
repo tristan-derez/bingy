@@ -42,7 +42,14 @@ export function LinkAccountComponent({ accounts }: LinkAccountComponentProps) {
 					return;
 				}
 
-				await authClient.unlinkAccount({ providerId: provider });
+				const account = accounts?.find(
+					(account) => account.providerId === "google",
+				);
+
+				if (account) {
+					await authClient.unlinkAccount({ accountId: account.id });
+				}
+
 				toast.success({
 					title: m.toast_success_unlink_account({ provider: "Google" }),
 				});
