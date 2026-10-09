@@ -35,7 +35,7 @@ export const SearchResultsContainer = ({
 	};
 
 	return (
-		<div className="container flex flex-col gap-4">
+		<div className="flex flex-col gap-4 w-full">
 			<h1>
 				{m.search_container_results_for()}{" "}
 				<span className="font-bold text-muted-foreground">"{query}"</span>

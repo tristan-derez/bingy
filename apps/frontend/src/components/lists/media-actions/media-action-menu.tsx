@@ -38,7 +38,6 @@ interface MediaActionMenuProps {
 	};
 	username: string;
 	posterPath: string | null;
-	currentUrl: string;
 }
 
 export const MediaActionMenu = ({
@@ -46,7 +45,6 @@ export const MediaActionMenu = ({
 	tvShow,
 	username,
 	posterPath,
-	currentUrl,
 }: MediaActionMenuProps) => {
 	const passProps = { movie, tvShow, username };
 	const imageUrl = getTmdbImageUrl(posterPath, "w500");
@@ -129,7 +127,6 @@ export const MediaActionMenu = ({
 					/>
 					<AddToListButton onClick={() => setShowAddToListDialog(true)} />
 					<ShareButton
-						url={currentUrl}
 						text={m.btn_share_link_media_text({
 							media_name: title,
 							year: year,

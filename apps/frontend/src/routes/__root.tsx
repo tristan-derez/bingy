@@ -8,7 +8,7 @@ import { sessionQueryOptions } from "@/lib/queries/session";
 import { m } from "@/paraglide/messages";
 import appCss from "@/styles/app.css?url";
 
-interface MyRouterContext {
+export interface MyRouterContext {
 	queryClient: QueryClient;
 	authData?: ReturnType<typeof authClient.useSession>["data"];
 }

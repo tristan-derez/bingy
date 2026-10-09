@@ -114,6 +114,9 @@ export function useRateTvShow(username: string) {
 			queryClient.invalidateQueries({
 				queryKey: ["user-profile", username],
 			});
+			queryClient.invalidateQueries({
+				queryKey: ["in-progress", username],
+			});
 
 			if (res.rating) {
 				toast.success({
@@ -176,7 +179,7 @@ export function useRemoveMovieRating() {
 	});
 }
 
-export function useRemoveTvRating() {
+export function useRemoveTvRating(username: string) {
 	const queryClient = useQueryClient();
 
 	return useMutation({
@@ -193,6 +196,9 @@ export function useRemoveTvRating() {
 			});
 			queryClient.invalidateQueries({
 				queryKey: ["user-profile"],
+			});
+			queryClient.invalidateQueries({
+				queryKey: ["in-progress", username],
 			});
 
 			toast.success({ title: m.toast_remove_tv_rating_success() });

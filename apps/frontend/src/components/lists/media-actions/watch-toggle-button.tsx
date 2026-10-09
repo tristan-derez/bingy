@@ -41,7 +41,7 @@ export function WatchToggleButton({
 	const addMovieToHistory = useAddMovieToHistory(username);
 	const addTvToHistory = useAddTvToHistory(username);
 	const removeMovieHistory = useRemoveMovieHistory();
-	const removeTvHistory = useRemoveTvHistory();
+	const removeTvHistory = useRemoveTvHistory(username);
 
 	const { data: tvDetails } = useTv(
 		tvShow?.id ?? 0,
@@ -126,7 +126,7 @@ export function WatchToggleButton({
 							type="button"
 							onClick={handleToggle}
 							disabled={isPending}
-							className={`group flex flex-col items-center gap-1 transition-colors hover:text-green-400 ${
+							className={`group flex flex-col items-center gap-1 cursor-pointer transition-colors hover:text-green-400 ${
 								isWatched ? "text-green-500" : `text-${color}`
 							}`}
 						>

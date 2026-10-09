@@ -64,7 +64,7 @@ export const removeMovieHistory = async (tmdbId: number) => {
 	return res;
 };
 
-// delete the movie history / including rating/review
+// delete the tv history / including rating/review
 export const removeTvHistory = async (tmdbId: number) => {
 	const res = await apiFetch(`/history/tv/${tmdbId}`, {
 		method: "DELETE",

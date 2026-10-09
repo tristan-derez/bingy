@@ -85,8 +85,8 @@ export const MobileTopBar = ({
 	return (
 		<div
 			className={cn(
-				"absolute top-0 left-0 right-0 z-40 lg:hidden",
-				"px-5 md:px-6 py-2",
+				"absolute top-0 left-0 right-0 z-40 lg:hidden w-full",
+				"p-4 md:p-6",
 				className,
 			)}
 		>

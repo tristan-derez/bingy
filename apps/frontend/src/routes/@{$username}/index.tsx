@@ -45,7 +45,7 @@ function ProfilePage() {
 	}
 
 	return (
-		<div className="flex flex-col gap-6 lg:flex-row flex-1">
+		<div className="flex flex-col gap-6 lg:flex-row w-full">
 			<div className="flex flex-col gap-6 flex-1 lg:max-w-6/9">
 				<ProfileFavoritesSection
 					favorites={favorites}

@@ -97,7 +97,7 @@ export function TvEpisodeDetailsView({
 	}
 
 	return (
-		<div className="container">
+		<div className="w-full">
 			<BackButton />
 
 			<div className="flex flex-col gap-4 pt-4">
@@ -115,7 +115,7 @@ export function TvEpisodeDetailsView({
 				<Card
 					className={`relative overflow-hidden justify-between ${
 						backgroundImage
-							? "text-dark-card-foreground min-h-[300px] border-none p-8"
+							? "text-dark-card-foreground min-h-75 border-none p-6"
 							: "text-foreground border"
 					}`}
 					style={
@@ -128,7 +128,7 @@ export function TvEpisodeDetailsView({
 							: undefined
 					}
 				>
-					<CardHeader className="w-full">
+					<CardHeader className="w-full p-0">
 						<CardTitle>{m.episode_details_overview_title()}</CardTitle>
 						<MediaOverview overview={episode.overview} />
 					</CardHeader>

@@ -7,7 +7,7 @@ import {
 	serveNotFound,
 } from "../../lib/responses/error";
 import { serveData } from "../../lib/responses/resp";
-import { TmdbError, tmdbClient } from "../../lib/tmdb/tmdb.client";
+import { TmdbError, tmdbClient } from "../../lib/tmdb/tmdb-client";
 import {
 	idParamSchema,
 	idWithSeasonNumberAndEpisodeNumber,
@@ -22,7 +22,7 @@ const tvRoutes = new Hono();
 
 tvRoutes.get("/latest", async (c) => {
 	try {
-		const tvLatest = await tmdbClient.get("/tv/latest");
+		const tvLatest = await tmdbClient.get("/tv/latest", undefined, 0);
 		return serveData(c, tvLatest);
 	} catch (error) {
 		logger.error(error);
@@ -37,9 +37,13 @@ tvRoutes.get(
 		const { language, page } = c.req.valid("query");
 
 		try {
-			const tvTopRated = await tmdbClient.get("/tv/top_rated", {
-				query: { language, page },
-			});
+			const tvTopRated = await tmdbClient.get(
+				"/tv/top_rated",
+				{
+					query: { language, page },
+				},
+				2 * 60 * 60,
+			);
 			return serveData(c, tvTopRated);
 		} catch (error) {
 			if (error instanceof TmdbError && error.status === 404) {
@@ -58,9 +62,13 @@ tvRoutes.get(
 		const { language, page } = c.req.valid("query");
 
 		try {
-			const tvPopular = await tmdbClient.get("/tv/popular", {
-				query: { language, page },
-			});
+			const tvPopular = await tmdbClient.get(
+				"/tv/popular",
+				{
+					query: { language, page },
+				},
+				2 * 60 * 60,
+			);
 			return serveData(c, tvPopular);
 		} catch (error) {
 			if (error instanceof TmdbError && error.status === 404) {

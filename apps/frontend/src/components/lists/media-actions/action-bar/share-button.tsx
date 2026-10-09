@@ -1,15 +1,20 @@
 import { IconBrandX, IconCopy, IconShare } from "@tabler/icons-react";
+import { useRouterState } from "@tanstack/react-router";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { config } from "@/lib/env";
 import { m } from "@/paraglide/messages";
 
-export function ShareButton({ url, text }: { url: string; text: string }) {
+export function ShareButton({ text }: { text: string }) {
+	const routerState = useRouterState();
+	const url = `${config.appUrl}${routerState.location.pathname}`;
 	const [isHovered, setIsHovered] = useState(false);
 	const [copied, setCopied] = useState(false);
 
 	const handleCopy = async () => {
 		await navigator.clipboard.writeText(url);
 		setCopied(true);
+		setIsHovered(false);
 		setTimeout(() => setCopied(false), 2000);
 	};
 
@@ -29,7 +34,7 @@ export function ShareButton({ url, text }: { url: string; text: string }) {
 				<IconShare className="ml-auto" />
 			</Button>
 
-			{isHovered && (
+			{isHovered ? (
 				<div className="absolute inset-0 flex items-center justify-between bg-background px-3 border rounded-lg shadow-sm">
 					<span className="text-xs truncate text-muted-foreground flex-1 mr-2">
 						{url}
@@ -43,7 +48,7 @@ export function ShareButton({ url, text }: { url: string; text: string }) {
 						</Button>
 					</div>
 				</div>
-			)}
+			) : null}
 		</div>
 	);
 }

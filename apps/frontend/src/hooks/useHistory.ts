@@ -69,6 +69,9 @@ export function useAddTvToHistory(username: string) {
 			queryClient.invalidateQueries({
 				queryKey: ["user-profile", username],
 			});
+			queryClient.invalidateQueries({
+				queryKey: ["in-progress", username],
+			});
 
 			toast.success({
 				title: m.toast_add_tv_watched_success(),
@@ -119,7 +122,7 @@ export function useRemoveMovieHistory() {
 	});
 }
 
-export function useRemoveTvHistory() {
+export function useRemoveTvHistory(username: string) {
 	const queryClient = useQueryClient();
 
 	return useMutation({
@@ -139,6 +142,9 @@ export function useRemoveTvHistory() {
 			});
 			queryClient.invalidateQueries({
 				queryKey: ["user-profile"],
+			});
+			queryClient.invalidateQueries({
+				queryKey: ["in-progress", username],
 			});
 
 			toast.success({ title: m.toast_remove_tv_history_success() });

@@ -55,7 +55,7 @@ export function TVStatusCard({ status }: TVStatusCardProps) {
 			<CardContent className="flex items-center gap-4">
 				<Icon />
 				<div>
-					<p className="text-xl xl:text-2xl font-bold">{statusMessage()}</p>
+					<p className="text-lg font-bold">{statusMessage()}</p>
 					<p className="text-sm text-muted-foreground">
 						{m.tv_details_status()}
 					</p>

@@ -106,10 +106,7 @@ export function ListsContainer({
 					</ToggleGroup>
 
 					<Button>
-						<Link
-							to="/lists/create"
-							className="hover:cursor-default flex items-center gap-2"
-						>
+						<Link to="/lists/create" className="flex items-center gap-2">
 							<IconPlus className="h-4 w-4 font-bold" />
 							<span className="font-semibold hidden xs:inline">
 								{m.btn_create_list()}

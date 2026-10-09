@@ -1,9 +1,12 @@
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { logger } from "../../lib/logger";
-import { serveInternalServerError, serveNotFound } from "../../lib/responses/error";
+import {
+	serveInternalServerError,
+	serveNotFound,
+} from "../../lib/responses/error";
 import { serveData } from "../../lib/responses/resp";
-import { TmdbError, tmdbClient } from "../../lib/tmdb/tmdb.client";
+import { TmdbError, tmdbClient } from "../../lib/tmdb/tmdb-client";
 import {
 	idParamSchema,
 	languageQuerySchema,
@@ -33,7 +36,7 @@ personRoutes.get(
 
 personRoutes.get("/latest", async (c) => {
 	try {
-		const person = await tmdbClient.get("/person/latest");
+		const person = await tmdbClient.get("/person/latest", undefined, 0);
 		return serveData(c, person);
 	} catch (error) {
 		logger.error(error);

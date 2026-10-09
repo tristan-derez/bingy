@@ -35,7 +35,7 @@ export function TvEpisodeCreditsView({
 	}
 
 	return (
-		<div className="container scroll-smooth">
+		<div className="w-full scroll-smooth">
 			<div className="mb-4 flex justify-between">
 				<BackButton />
 

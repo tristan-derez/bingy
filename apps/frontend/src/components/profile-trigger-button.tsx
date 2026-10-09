@@ -40,7 +40,7 @@ export function ProfileTriggerButton({
 						<Avatar className="w-full h-full object-cover rounded-full">
 							<AvatarImage src={image || ""} alt={displayName} />
 							<AvatarFallback className="rounded-lg">
-								{username ? username[0].toUpperCase() : "U"}
+								{username ? username.charAt(0) : "U"}
 							</AvatarFallback>
 						</Avatar>
 					</div>

@@ -123,7 +123,7 @@ export function AddToListDialog({
 						<div
 							ref={scrollContainerRef}
 							onScroll={handleScroll}
-							className="max-h-[400px] overflow-x-hidden overflow-y-auto no-scrollbar space-y-2"
+							className="max-h-100 overflow-x-hidden overflow-y-auto no-scrollbar space-y-2"
 						>
 							{data.pages.map((page) => (
 								<div key={page.page} className="space-y-2">

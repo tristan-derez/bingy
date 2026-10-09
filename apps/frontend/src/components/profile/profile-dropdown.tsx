@@ -8,6 +8,7 @@ import {
 	IconLifebuoy,
 	IconList,
 	IconLogout,
+	IconPlayerPlay,
 	IconUser,
 } from "@tabler/icons-react";
 import {
@@ -124,7 +125,6 @@ export const ProfileDropdown = ({
 									params: { username },
 								})
 							}
-							className="hover:cursor-pointer"
 						>
 							<IconUser />
 							{m.dropdown_profile_text()}
@@ -136,7 +136,6 @@ export const ProfileDropdown = ({
 									params: { username },
 								})
 							}
-							className="hover:cursor-pointer"
 						>
 							<IconClockBolt />
 							{m.dropdown_watchlist_text()}
@@ -148,7 +147,6 @@ export const ProfileDropdown = ({
 									params: { username },
 								})
 							}
-							className="hover:cursor-pointer"
 						>
 							<IconList />
 							{m.dropdown_lists_text()}
@@ -160,7 +158,6 @@ export const ProfileDropdown = ({
 									params: { username },
 								})
 							}
-							className="hover:cursor-pointer"
 						>
 							<IconHeart />
 							{m.dropdown_favorites_text()}
@@ -172,7 +169,6 @@ export const ProfileDropdown = ({
 									params: { username },
 								})
 							}
-							className="hover:cursor-pointer"
 						>
 							<IconHistory />
 							{m.dropdown_history_text()}
@@ -180,39 +176,47 @@ export const ProfileDropdown = ({
 						<DropdownMenuItem
 							onClick={() =>
 								navigate({
+									to: "/@{$username}/in-progress",
+									params: { username },
+								})
+							}
+						>
+							<IconPlayerPlay />
+							{m.dropdown_inprogress_text()}
+						</DropdownMenuItem>
+						<DropdownMenuItem
+							onClick={() =>
+								navigate({
 									to: "/settings",
 								})
 							}
-							className="hover:cursor-pointer"
 						>
 							<IconAdjustmentsHorizontal />
 							{m.dropdown_settings_text()}
 						</DropdownMenuItem>
 						<DropdownMenuSeparator className="bg-border" />
-						<DropdownMenuItem className="hover:cursor-pointer">
+						<DropdownMenuItem>
 							<a
 								href="https://github.com/tristan-derez/bingy"
 								target="_blank"
 								rel="noopener noreferrer"
-								className="flex items-center justify-between"
+								className="flex items-center gap-1.5"
 							>
-								<div className="flex items-center gap-2">
-									<IconBrandGithub className="w-4 h-4" />
-									<span>GitHub</span>
-								</div>
+								<IconBrandGithub size={4} />
+								GitHub
 							</a>
 							<DropdownMenuShortcut>
 								<IconExternalLink className="text-muted-foreground" />
 							</DropdownMenuShortcut>
 						</DropdownMenuItem>
 						<DropdownMenuItem disabled>
-							<IconLifebuoy className="w-4 h-4" />
-							<span>{m.dropdown_support_text()}</span>
+							<IconLifebuoy />
+							{m.dropdown_support_text()}
 						</DropdownMenuItem>
 						<DropdownMenuSeparator className="bg-border" />
 						<DropdownMenuItem onClick={logout} variant="destructive">
-							<IconLogout className="w-4 h-4" />
-							<span>{m.dropdown_logout_text()}</span>
+							<IconLogout />
+							{m.dropdown_logout_text()}
 						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</div>

@@ -55,9 +55,5 @@ function SettingsPage() {
 
 	if (!data) return null;
 
-	return (
-		<div className="flex w-full max-w-md flex-col gap-6">
-			<SettingsComponent accounts={data} currentTab={currentTab} />
-		</div>
-	);
+	return <SettingsComponent accounts={data} currentTab={currentTab} />;
 }

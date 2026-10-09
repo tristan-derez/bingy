@@ -63,7 +63,7 @@ export function ListDropdown({ movie, tvShow, imageUrl }: ListDropdownProps) {
 	const rateMovieMutation = useRateMovie(username);
 	const rateTvMutation = useRateTvShow(username);
 	const removeMovieHistory = useRemoveMovieHistory();
-	const removeTvHistory = useRemoveTvHistory();
+	const removeTvHistory = useRemoveTvHistory(username);
 
 	const [showLogReviewDialog, setShowLogReviewDialog] = useState(false);
 	const [showAddToListDialog, setShowAddToListDialog] = useState(false);

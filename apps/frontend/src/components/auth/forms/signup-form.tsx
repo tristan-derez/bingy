@@ -121,7 +121,7 @@ export function SignUpForm() {
 
 			await authClient.signIn.social({
 				provider,
-				callbackURL: `${config.appUrl}/dashboard`,
+				callbackURL: `${config.appUrl}/home`,
 				errorCallbackURL: `${config.appUrl}/signup`,
 				newUserCallbackURL: `${config.appUrl}/welcome`,
 			});

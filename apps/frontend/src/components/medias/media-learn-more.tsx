@@ -15,7 +15,7 @@ export function MediaLearnMoreCard({ id, mediaType }: MediaLearnMoreProps) {
 			<CardContent className=" flex items-center gap-4">
 				<IconExternalLink />
 				<div>
-					<p className="text-xl xl:text-2xl font-bold">
+					<p className="text-lg font-bold">
 						<a
 							href={tmdbUrl}
 							target="_blank"

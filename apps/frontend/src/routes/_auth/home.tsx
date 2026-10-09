@@ -1,20 +1,20 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/_auth/dashboard")({
+export const Route = createFileRoute("/_auth/home")({
 	head: () => ({
 		meta: [
 			{
-				title: "Bingy - Dashboard",
+				title: "Bingy - Home",
 			},
 		],
 	}),
-	component: DashboardPage,
+	component: HomePage,
 });
 
-function DashboardPage() {
+function HomePage() {
 	return (
 		<div className="flex flex-col w-full p-4 space-y-4">
-			<p>Hello /dashboard !</p>
+			<p>Hello /home !</p>
 		</div>
 	);
 }

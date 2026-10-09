@@ -46,7 +46,7 @@ export function formatDate(
  * formatDistanceToNow(new Date(Date.now() - 1000 * 60 * 60 * 2)) // "2 hours ago"
  */
 export function formatDistanceToNow(date: Date, locale = "en-US"): string {
-	const lang = locale.split("-")[0];
+	const lang = locale.split("-")[0] ?? "en";
 	const dateLocale = localeMap[lang] ?? enUSLocale;
 	return dfnsFormatDistanceToNow(date, {
 		addSuffix: true,

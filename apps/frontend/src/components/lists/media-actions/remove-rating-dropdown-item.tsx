@@ -23,7 +23,7 @@ export function RemoveRatingDropdownItem({
 	username,
 }: RemoveRatingDropdownItemProps) {
 	const removeMovieRating = useRemoveMovieRating();
-	const removeTvRating = useRemoveTvRating();
+	const removeTvRating = useRemoveTvRating(username);
 
 	const mediaType = movie ? "movie" : "tv";
 	const mediaId = movie?.id ?? tvShow?.id;

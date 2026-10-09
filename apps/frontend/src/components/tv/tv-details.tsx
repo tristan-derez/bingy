@@ -3,7 +3,7 @@ import {
 	IconDeviceTv,
 	IconStack2,
 } from "@tabler/icons-react";
-import { Link, useRouteContext, useRouterState } from "@tanstack/react-router";
+import { Link, useRouteContext } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
@@ -14,15 +14,15 @@ import { MediaCreators } from "@/components/medias/media-creators";
 import { MediaGenresBadge } from "@/components/medias/media-genres-badge";
 import { MediaLearnMoreCard } from "@/components/medias/media-learn-more";
 import { MediaOverview } from "@/components/medias/media-overview";
-import { MediaPortraitImage } from "@/components/medias/media-portrait-image";
 import { MediaRatingDisplayCard } from "@/components/medias/media-rating-display-card";
-import { CastList } from "@/components/person/cast-list";
-import { SocialLinks } from "@/components/social-links";
+import { MediaTitle } from "@/components/medias/media-title";
+import { CastCrewTabs } from "@/components/person/cast-crew-tabs";
+import { PortraitImage } from "@/components/portrait-image";
 import { TVStatusCard } from "@/components/tv/tv-details/status-card";
 import { BackButton } from "@/components/ui/back-button";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { localeRegionAtom } from "@/lib/atoms/region";
+import { Card, CardContent } from "@/components/ui/card";
+import { WatchProvidersSection } from "@/components/watch-providers/watch-providers-section";
+import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { getTmdbImageUrl } from "@/utils/utils";
@@ -30,8 +30,8 @@ import { getTmdbImageUrl } from "@/utils/utils";
 interface TvDetailViewProps {
 	tv: Schemas.TvDetails | undefined;
 	watchProviders: Schemas.WatchProviders | undefined;
-	socials: Partial<Record<"instagram" | "twitter", string>>;
-	cast: Schemas.CastMember[];
+	cast: Array<Schemas.CastMember & { characters?: string[] }>;
+	crew: Array<Schemas.CrewMember & { jobs?: string[] }>;
 	isLoading: boolean;
 	isError: boolean;
 }
@@ -39,15 +39,14 @@ interface TvDetailViewProps {
 export function TvDetailsView({
 	tv,
 	watchProviders,
-	socials,
 	cast,
+	crew,
 	isLoading,
 	isError,
 }: TvDetailViewProps) {
-	const routerState = useRouterState();
-	const currentUrl = routerState.location.url;
 	const { authData } = useRouteContext({ from: "__root__" });
 	const localeRegion = useAtomValue(localeRegionAtom);
+	const region = useAtomValue(regionAtom);
 
 	if (isLoading) {
 		return <LoadingCentered />;
@@ -62,30 +61,29 @@ export function TvDetailsView({
 		);
 	}
 
-	const hasDifferentName =
-		tv.original_name.toLowerCase() !== tv.name.toLowerCase();
-
 	const backgroundImage = getTmdbImageUrl(tv.backdrop_path);
 
 	return (
 		<>
 			<MediaBackgroundImage backgroundImage={backgroundImage} />
-			<div className="container pt-3 md:pt-10 lg:pt-50">
+			<div className="w-full pt-3 md:pt-10 lg:pt-60">
 				<BackButton />
 
 				<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
-					<div className="flex flex-col gap-2 items-center lg:items-start max-w-[250px] md:max-w-[300px] lg:max-w-[400px]">
-						<MediaPortraitImage
+					<div className="flex flex-col gap-2 items-center lg:items-start max-w-62.5 md:max-w-60 2xl:max-w-75">
+						<PortraitImage
 							imagePath={tv.poster_path}
 							alt={tv.name}
 							imageSize="w500"
-							watchProviders={watchProviders}
+							category="tv"
 						/>
 
-						{Object.keys(socials).length > 0 ? (
-							<div className="flex flex-row items-center mx-auto">
-								<SocialLinks socials={socials} />
-							</div>
+						{watchProviders ? (
+							<WatchProvidersSection
+								watchProviders={watchProviders}
+								region={region}
+								className="w-full"
+							/>
 						) : null}
 					</div>
 
@@ -94,17 +92,11 @@ export function TvDetailsView({
 							<CardContent className="p-0">
 								<div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2 px-0.5 py-0.5">
 									<div className="flex flex-col gap-4">
-										<div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-											<h1 className="text-2xl lg:text-4xl font-bold leading-relaxed">
-												{tv.name}
-											</h1>
-
-											{hasDifferentName ? (
-												<p className="text-foreground text-base lg:text-xl font-bold italic">
-													— {tv.original_name}
-												</p>
-											) : null}
-										</div>
+										<MediaTitle
+											title={tv.name}
+											releaseDate={tv.first_air_date}
+											originalTitle={tv.original_name}
+										/>
 
 										<MediaGenresBadge genres={tv.genres} />
 
@@ -137,12 +129,9 @@ export function TvDetailsView({
 													mediaType: "tv",
 												}}
 												posterPath={tv.poster_path}
-												currentUrl={currentUrl}
 											/>
 										</div>
-									) : (
-										<div className="min-w-3xs"></div>
-									)}
+									) : null}
 								</div>
 							</CardContent>
 						</Card>
@@ -154,7 +143,7 @@ export function TvDetailsView({
 								<CardContent className="flex items-center gap-4">
 									<IconCalendarWeekFilled />
 									<div>
-										<p className="text-xl xl:text-2xl font-bold">
+										<p className="text-lg font-bold">
 											{tv.first_air_date
 												? formatDate(tv.first_air_date, localeRegion, {
 														year: "numeric",
@@ -177,7 +166,7 @@ export function TvDetailsView({
 									<CardContent className="flex items-center gap-4">
 										<IconDeviceTv />
 										<div>
-											<p className="text-xl xl:text-2xl font-bold">
+											<p className="text-lg font-bold">
 												{tv.number_of_seasons}
 											</p>
 											<p className="text-sm text-muted-foreground">
@@ -192,9 +181,7 @@ export function TvDetailsView({
 								<CardContent className="flex items-center gap-4">
 									<IconStack2 />
 									<div>
-										<p className="text-xl xl:text-2xl font-bold">
-											{tv.number_of_episodes}
-										</p>
+										<p className="text-lg font-bold">{tv.number_of_episodes}</p>
 										<p className="text-sm text-muted-foreground">
 											{m.tv_details_episodes({ count: tv.number_of_episodes })}
 										</p>
@@ -207,7 +194,7 @@ export function TvDetailsView({
 
 						{cast && cast.length > 0 ? (
 							<div className="flex flex-col gap-2">
-								<CastList people={cast} />
+								<CastCrewTabs cast={cast} crew={crew} />
 								<Link
 									to="/tv/$tvId/credits"
 									params={{ tvId: tv.id.toString() }}
@@ -216,61 +203,6 @@ export function TvDetailsView({
 									{m.link_text_full_credits()}
 								</Link>
 							</div>
-						) : null}
-
-						{tv.networks.length > 0 ? (
-							<Card className="border ring-0">
-								<CardHeader>
-									<CardTitle>
-										{m.tv_details_networks({
-											count: tv.networks.length,
-										})}
-									</CardTitle>
-								</CardHeader>
-
-								<CardContent className="flex flex-wrap gap-4">
-									{tv.networks.map(
-										(
-											network: Omit<
-												Schemas.NetworkDetails,
-												"homepage" | "headquarters"
-											>,
-										) => (
-											<Badge
-												key={network.id}
-												className="flex items-center gap-3"
-												variant="outline"
-											>
-												<span className="font-medium">{network.name}</span>
-											</Badge>
-										),
-									)}
-								</CardContent>
-							</Card>
-						) : null}
-
-						{tv.production_companies.length > 0 ? (
-							<Card className="border ring-0">
-								<CardHeader>
-									<CardTitle>
-										{m.tv_details_companies({
-											count: tv.production_companies.length,
-										})}
-									</CardTitle>
-								</CardHeader>
-
-								<CardContent className="flex flex-wrap gap-4">
-									{tv.production_companies.map((company) => (
-										<Badge
-											key={company.id}
-											className="flex items-center gap-3"
-											variant="outline"
-										>
-											<span className="font-medium">{company.name}</span>
-										</Badge>
-									))}
-								</CardContent>
-							</Card>
 						) : null}
 					</div>
 				</div>

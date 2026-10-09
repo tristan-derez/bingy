@@ -7,11 +7,11 @@ import {
 import { Link } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
-import fallbackPoster from "@/assets/media-image-placeholder.jpg";
 import { ResourceNotFound } from "@/components/errors/resource-not-found";
 import { LoadingCentered } from "@/components/loading/loading-centered";
 import { MediaOverview } from "@/components/medias/media-overview";
 import { CastList } from "@/components/person/cast-list";
+import { PortraitImage } from "@/components/portrait-image";
 import { EpisodesContainer } from "@/components/tv/episodes/episodes-container";
 import { BackButton } from "@/components/ui/back-button";
 import { Badge } from "@/components/ui/badge";
@@ -19,7 +19,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { WatchProvidersSection } from "@/components/watch-providers/watch-providers-section";
 import { localeRegionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
-import { getTmdbImageUrl } from "@/utils/utils";
 
 interface TvSeasonDetailsViewProps {
 	tvSeason: Schemas.TvSeasonDetails | undefined;
@@ -113,24 +112,21 @@ export function TvSeasonDetailsView({
 			.slice(0, 10);
 	}
 
-	const imageUrl = getTmdbImageUrl(tvSeason.poster_path, "w500");
+	const hasRuntime = tvSeason.episodes.some((ep) => ep.runtime);
+	const totalRuntimeHours = (
+		tvSeason.episodes.reduce((total, ep) => total + (ep.runtime || 0), 0) / 60
+	).toFixed(1);
 
 	return (
-		<div className="container">
+		<div className="w-full">
 			<BackButton />
 
 			<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
-				<div className="flex flex-col gap-2 items-center lg:items-start max-w-[250px] md:max-w-[300px] lg:max-w-[400px]">
-					<img
-						src={imageUrl ?? fallbackPoster}
+				<div className="flex flex-col gap-2 items-center lg:items-start max-w-62.5 md:max-w-60 2xl:max-w-75">
+					<PortraitImage
+						imagePath={tvSeason.poster_path}
 						alt={tvSeason.name}
-						className="rounded-lg shadow-lg w-full aspect-2/3 max-h-90 xl:max-h-[600px]"
-						onError={(e) => {
-							const target = e.currentTarget;
-							if (target.src !== fallbackPoster) {
-								target.src = fallbackPoster;
-							}
-						}}
+						category="tv"
 					/>
 					<WatchProvidersSection
 						watchProviders={watchProviders}
@@ -140,53 +136,35 @@ export function TvSeasonDetailsView({
 				</div>
 
 				<div className="w-full flex flex-col gap-4 overflow-hidden">
-					<Card className="shadow-none bg-transparent ring-0">
-						<CardContent className="lg:p-0">
-							<div className="flex flex-col gap-2">
-								<div className="flex justify-between gap-3">
-									<h1 className="text-4xl font-bold leading-relaxed">
-										{tvSeason.name}
-									</h1>
-									{tvSeason.episodes.some((ep) => ep.runtime) && (
-										<Badge
-											variant="default"
-											className="w-fit gap-1 self-center"
-										>
-											<IconStopwatch className="h-4 w-4" />
-											<span>
-												{(
-													tvSeason.episodes.reduce(
-														(total, ep) => total + (ep.runtime || 0),
-														0,
-													) / 60
-												).toFixed(1)}
-												h
-											</span>
-										</Badge>
-									)}
-								</div>
-								{tvSeason.name.toLowerCase() !==
-								m.season_details_season_badge({
+					<div className="flex flex-col gap-2">
+						<div className="flex justify-between gap-3">
+							<h1 className="text-4xl font-bold leading-relaxed">
+								{tvSeason.name}
+							</h1>
+							{hasRuntime ? (
+								<Badge variant="default" className="w-fit gap-1 self-center">
+									<IconStopwatch className="h-4 w-4" />
+									<span>{totalRuntimeHours}"h</span>
+								</Badge>
+							) : null}
+						</div>
+						{tvSeason.name.toLowerCase() !==
+						m
+							.season_details_season_badge({
+								seasonNumber: tvSeason.season_number,
+							})
+							.toLowerCase() ? (
+							<Badge variant="secondary" className="w-fit">
+								{m.season_details_season_badge({
 									seasonNumber: tvSeason.season_number,
-								}) ? (
-									<Badge variant="secondary" className="w-fit">
-										{m.season_details_season_badge({
-											seasonNumber: tvSeason.season_number,
-										})}
-									</Badge>
-								) : null}
-							</div>
-						</CardContent>
-					</Card>
+								})}
+							</Badge>
+						) : null}
+					</div>
 
-					<Card>
-						<CardHeader>
-							<CardTitle>{m.season_details_overview_title()}</CardTitle>
-						</CardHeader>
-						<CardContent>
-							<MediaOverview overview={tvSeason.overview} />
-						</CardContent>
-					</Card>
+					{tvSeason.overview ? (
+						<MediaOverview overview={tvSeason.overview} />
+					) : null}
 
 					<div className="grid lg:grid-cols-3 gap-3">
 						<Card>
@@ -249,7 +227,7 @@ export function TvSeasonDetailsView({
 						<EpisodesContainer episodes={tvSeason.episodes} />
 					) : null}
 
-					{mergedCast.length > 0 && (
+					{mergedCast.length > 0 ? (
 						<div className="flex flex-col gap-2">
 							<CastList people={mergedCast} />
 							<Link
@@ -262,7 +240,7 @@ export function TvSeasonDetailsView({
 								{m.link_text_full_credits()}
 							</Link>
 						</div>
-					)}
+					) : null}
 
 					{tvSeason.networks.length > 0 ? (
 						<Card>

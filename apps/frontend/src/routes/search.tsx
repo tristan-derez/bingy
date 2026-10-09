@@ -68,7 +68,7 @@ function SearchRoute() {
 		: null;
 
 	return (
-		<div className="container flex flex-col gap-4">
+		<div className="flex flex-col gap-4 w-full">
 			<Button
 				onClick={() => router.history.back()}
 				className="mb-4 max-w-20"

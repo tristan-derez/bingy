@@ -1,12 +1,8 @@
-import {
-	type InferInsertModel,
-	type InferSelectModel,
-	relations,
-	sql,
-} from "drizzle-orm";
+import { type InferInsertModel, type InferSelectModel, sql } from "drizzle-orm";
 import {
 	boolean,
 	index,
+	integer,
 	pgTable,
 	text,
 	timestamp,
@@ -79,6 +75,11 @@ export const two_factor = pgTable("two_factor", {
 		.references(() => users.id, { onDelete: "cascade" }),
 	secret: text(),
 	backupCodes: text("backup_codes"),
+	verified: boolean("verified").default(false).notNull(),
+	failedVerificationCount: integer("failed_verification_count")
+		.default(0)
+		.notNull(),
+	lockedUntil: timestamp("locked_until"),
 });
 
 export const sessions = pgTable(
@@ -142,48 +143,6 @@ export const verifications = pgTable("verifications", {
 	expiresAt: timestamp("expires_at").notNull(),
 	...timestamps,
 });
-
-export const userRelations = relations(users, ({ many }) => ({
-	accounts: many(accounts),
-}));
-
-export const accountsRelations = relations(accounts, ({ one }) => ({
-	user: one(users, {
-		fields: [accounts.userId],
-		references: [users.id],
-	}),
-}));
-
-export const activityRelations = relations(activity, ({ one }) => ({
-	user: one(users, {
-		fields: [activity.userId],
-		references: [users.id],
-	}),
-	movieWatchHistory: one(movieWatchHistory, {
-		fields: [activity.movieWatchHistoryId],
-		references: [movieWatchHistory.id],
-	}),
-	tvShowWatchHistory: one(tvShowWatchHistory, {
-		fields: [activity.tvShowWatchHistoryId],
-		references: [tvShowWatchHistory.id],
-	}),
-	tvShowProgress: one(tvShowProgress, {
-		fields: [activity.tvShowProgressId],
-		references: [tvShowProgress.id],
-	}),
-	reviewComment: one(reviewComments, {
-		fields: [activity.reviewCommentId],
-		references: [reviewComments.id],
-	}),
-	customList: one(customLists, {
-		fields: [activity.customListId],
-		references: [customLists.id],
-	}),
-	watchlist: one(watchlist, {
-		fields: [activity.watchlistId],
-		references: [watchlist.id],
-	}),
-}));
 
 export type User = InferSelectModel<typeof users>;
 export type NewUser = InferInsertModel<typeof users>;

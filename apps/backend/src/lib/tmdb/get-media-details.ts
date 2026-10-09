@@ -1,6 +1,6 @@
 import { logger } from "../../lib/logger";
 import { cacheClient } from "../cache-client";
-import { tmdbClient } from "./tmdb.client";
+import { tmdbClient } from "./tmdb-client";
 
 export type NormalizedMedia = {
 	id: number;

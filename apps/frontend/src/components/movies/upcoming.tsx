@@ -26,23 +26,21 @@ export const UpcomingMovies = ({
 		return null;
 	}
 
-	const today = new Date().toISOString().split("T")[0];
+	const today = new Date().toISOString().slice(0, 10);
 	const seenIds = new Set<number>();
 
-	const filteredMovies =
-		movies?.results
-			.filter((movie: Schemas.Movie) => {
-				if (seenIds.has(movie.id) || movie.release_date <= today) {
-					return false;
-				}
-				seenIds.add(movie.id);
-				return true;
-			})
-			.sort(
-				(a, b) =>
-					new Date(a.release_date).getTime() -
-					new Date(b.release_date).getTime(),
-			) ?? [];
+	const filteredMovies = movies.results
+		.filter((movie: Schemas.Movie) => {
+			if (seenIds.has(movie.id) || movie.release_date <= today) {
+				return false;
+			}
+			seenIds.add(movie.id);
+			return true;
+		})
+		.sort(
+			(a, b) =>
+				new Date(a.release_date).getTime() - new Date(b.release_date).getTime(),
+		);
 
 	return <MovieCarousel movies={filteredMovies} title={title} />;
 };

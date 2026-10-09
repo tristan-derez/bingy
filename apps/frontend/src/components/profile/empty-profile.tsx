@@ -14,7 +14,7 @@ interface EmptyProfileProps {
 
 export function EmptyProfile({ ownProfile }: EmptyProfileProps) {
 	return (
-		<Empty className="min-h-[400px]">
+		<Empty className="min-h-100">
 			<EmptyHeader>
 				<EmptyMedia variant="icon">
 					<IconMoodWrrrFilled />

@@ -4,7 +4,6 @@ import { MovieDetailView } from "@/components/movies/movie-details";
 import { useMovie, useMovieResource } from "@/hooks/useMovies";
 import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
 import { getReleaseDate } from "@/utils/release-dates";
-import { getSocialUrls } from "@/utils/social-urls";
 
 export const Route = createFileRoute("/movies/$movieId")({
 	component: MovieDetailsPage,
@@ -52,18 +51,20 @@ function MovieDetailsPage() {
 				gender: person.gender,
 			})) ?? [];
 	const cast = movie?.credits?.cast?.slice(0, 10) || [];
-	const socialUrls = movie?.external_ids
-		? getSocialUrls(movie.external_ids)
-		: {};
+	const crew = Array.from(
+		new Map(
+			movie?.credits?.crew?.map((member) => [member.id, member]),
+		).values(),
+	).slice(0, 10);
 	const collection = movie ? movie.belongs_to_collection : undefined;
 	const watchProviders = movie?.["watch/providers"];
 
 	return (
 		<MovieDetailView
 			movie={movie}
-			socials={socialUrls}
 			directors={directors}
 			cast={cast}
+			crew={crew}
 			watchProviders={watchProviders}
 			collection={collection}
 			isLoading={isLoading}

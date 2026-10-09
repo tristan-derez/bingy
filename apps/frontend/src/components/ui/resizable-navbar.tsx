@@ -24,6 +24,7 @@ interface NavItemsProps {
 		link?: string;
 		icon?: React.ReactNode;
 		onClick?: () => void;
+		cursorClass?: string;
 	}[];
 	className?: string;
 	onItemClick?: () => void;
@@ -45,7 +46,7 @@ export const Navbar = ({ children, className }: NavbarProps) => {
 			animate={{ top: 30 }}
 			transition={{ type: "tween", stiffness: 350 }}
 			className={cn(
-				"fixed top-0 left-1/2 -translate-x-1/2 z-99 w-full px-5 md:px-6 lg:px-28 xl:px-30 2xl:px-80",
+				"fixed top-0 left-1/2 -translate-x-1/2 z-99 w-full lg:max-w-240 xl:max-w-280 3xl:max-w-300 mx-auto",
 				visible && "",
 				className,
 			)}
@@ -70,7 +71,7 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => {
 				boxShadow: visible
 					? "0 0 24px rgba(34, 42, 53, 0.06), 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(34, 42, 53, 0.04), 0 0 4px rgba(34, 42, 53, 0.08), 0 16px 68px rgba(47, 48, 55, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1) inset"
 					: "none",
-				width: visible ? "70%" : "100%",
+				width: visible ? "68%" : "100%",
 			}}
 			transition={{
 				type: "tween",
@@ -108,7 +109,9 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
 						type="button"
 						onMouseEnter={() => setHovered(idx)}
 						onClick={item.onClick}
-						className="relative px-2 py-2 flex items-center gap-1 hover:cursor-pointer"
+						className={cn(
+							"relative px-2 py-2 flex items-center gap-1 hover:cursor-pointer",
+						)}
 					>
 						{hovered === idx && (
 							<motion.div
@@ -176,11 +179,7 @@ export const NavbarButton = ({
 	React.ComponentPropsWithoutRef<typeof Link>) => {
 	return (
 		<Link to={to} {...props}>
-			<Button
-				variant={variant}
-				size={size}
-				className={cn("cursor-pointer", className)}
-			>
+			<Button variant={variant} size={size} className={className}>
 				{children}
 			</Button>
 		</Link>

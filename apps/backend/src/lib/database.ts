@@ -2,6 +2,7 @@ import type { Logger as drizzleLogger } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import * as listSchema from "../db/schemas/list";
+import * as relationsSchema from "../db/schemas/relations";
 import * as userSchema from "../db/schemas/user";
 import env from "./env";
 import { logger } from "./logger";
@@ -15,6 +16,7 @@ const dbLogger: drizzleLogger = {
 const schema = {
 	...userSchema,
 	...listSchema,
+	...relationsSchema,
 };
 
 export const connection = postgres({

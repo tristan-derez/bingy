@@ -98,15 +98,18 @@ export function mergeCrewMemberJobs(
 
 // temporary solution until we call the real justwatch api
 // @todo: rework that
-export function getProviderName(name: string): string {
-	switch (name) {
-		case "Amazon Prime Video":
-			return "Prime Video";
-		case "Crunchyroll Amazon Channel":
-			return "Crunchyroll";
-		default:
-			return name;
+export function getProviderName(name: string | null | undefined): string {
+	if (!name) return "";
+	if (name.endsWith(" Amazon Channel")) {
+		return name.slice(0, -" Amazon Channel".length);
 	}
+	if (name === "Amazon Prime Video") {
+		return "Prime Video";
+	}
+	if (name === "Paramount Plus") {
+		return "Paramount+";
+	}
+	return name;
 }
 
 /**
@@ -154,3 +157,10 @@ export const getListLink = (username: string, slug?: string): string | null => {
 
 	return `/@${username.toLowerCase()}/lists/${slug}`;
 };
+
+export const normalizeTitle = (str: string): string =>
+	str
+		.toLowerCase()
+		.normalize("NFKC")
+		.replace(/[^\p{L}\p{N}]+/gu, " ")
+		.trim();

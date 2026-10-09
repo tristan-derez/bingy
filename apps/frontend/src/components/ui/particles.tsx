@@ -315,7 +315,7 @@ export const Particles: React.FC<ParticlesProps> = ({
 	const [shouldRender, setShouldRender] = useState(() => {
 		if (!hideBelow || typeof window === "undefined") return true;
 
-		const breakpoints: Record<string, string> = {
+		const breakpoints: Record<NonNullable<typeof hideBelow>, string> = {
 			sm: "(min-width: 640px)",
 			md: "(min-width: 768px)",
 			lg: "(min-width: 1024px)",
@@ -329,7 +329,7 @@ export const Particles: React.FC<ParticlesProps> = ({
 	useEffect(() => {
 		if (!hideBelow) return;
 
-		const breakpoints: Record<string, string> = {
+		const breakpoints: Record<NonNullable<typeof hideBelow>, string> = {
 			sm: "(min-width: 640px)",
 			md: "(min-width: 768px)",
 			lg: "(min-width: 1024px)",

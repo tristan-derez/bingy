@@ -9,76 +9,47 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SignupRouteImport } from './routes/signup'
-import { Route as SigninRouteImport } from './routes/signin'
-import { Route as SearchRouteImport } from './routes/search'
-import { Route as ResetPasswordRouteImport } from './routes/reset-password'
-import { Route as GoodbyeRouteImport } from './routes/goodbye'
-import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
-import { Route as AuthRouteImport } from './routes/_auth'
-import { Route as AtChar123usernameChar125RouteRouteImport } from './routes/@{$username}/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as TvIndexRouteImport } from './routes/tv/index'
-import { Route as MoviesIndexRouteImport } from './routes/movies/index'
+import { Route as AtChar123usernameChar125RouteRouteImport } from './routes/@{$username}/route'
+import { Route as AuthRouteImport } from './routes/_auth'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
+import { Route as GoodbyeRouteImport } from './routes/goodbye'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as SearchRouteImport } from './routes/search'
+import { Route as SigninRouteImport } from './routes/signin'
+import { Route as SignupRouteImport } from './routes/signup'
 import { Route as AtChar123usernameChar125IndexRouteImport } from './routes/@{$username}/index'
-import { Route as TvTvIdRouteImport } from './routes/tv/$tvId'
-import { Route as PersonPersonIdRouteImport } from './routes/person/$personId'
-import { Route as MoviesMovieIdRouteImport } from './routes/movies/$movieId'
-import { Route as CollectionsCollectionIdRouteImport } from './routes/collections/$collectionId'
-import { Route as AuthWelcomeRouteImport } from './routes/_auth/welcome'
-import { Route as AuthVerifyEmailRouteImport } from './routes/_auth/verify-email'
-import { Route as AuthSettingsRouteImport } from './routes/_auth/settings'
-import { Route as AuthDashboardRouteImport } from './routes/_auth/dashboard'
-import { Route as AtChar123usernameChar125WatchlistRouteImport } from './routes/@{$username}/watchlist'
-import { Route as AtChar123usernameChar125InProgressRouteImport } from './routes/@{$username}/in-progress'
-import { Route as AtChar123usernameChar125HistoryRouteImport } from './routes/@{$username}/history'
 import { Route as AtChar123usernameChar125FavoritesRouteImport } from './routes/@{$username}/favorites'
+import { Route as AtChar123usernameChar125HistoryRouteImport } from './routes/@{$username}/history'
+import { Route as AtChar123usernameChar125InProgressRouteImport } from './routes/@{$username}/in-progress'
+import { Route as AtChar123usernameChar125WatchlistRouteImport } from './routes/@{$username}/watchlist'
+import { Route as AuthHomeRouteImport } from './routes/_auth/home'
+import { Route as AuthSettingsRouteImport } from './routes/_auth/settings'
+import { Route as AuthVerifyEmailRouteImport } from './routes/_auth/verify-email'
+import { Route as AuthWelcomeRouteImport } from './routes/_auth/welcome'
+import { Route as CollectionsCollectionIdRouteImport } from './routes/collections/$collectionId'
+import { Route as MoviesIndexRouteImport } from './routes/movies/index'
+import { Route as MoviesMovieIdRouteImport } from './routes/movies/$movieId'
+import { Route as PersonPersonIdRouteImport } from './routes/person/$personId'
+import { Route as TvIndexRouteImport } from './routes/tv/index'
+import { Route as TvTvIdRouteImport } from './routes/tv/$tvId'
 import { Route as AtChar123usernameChar125ListsIndexRouteImport } from './routes/@{$username}/lists_/index'
-import { Route as TvTvIdSeasonsRouteImport } from './routes/tv/$tvId_/seasons'
-import { Route as TvTvIdEpisodesRouteImport } from './routes/tv/$tvId_/episodes'
-import { Route as TvTvIdCreditsRouteImport } from './routes/tv/$tvId_/credits'
-import { Route as MoviesMovieIdCreditsRouteImport } from './routes/movies/$movieId_/credits'
-import { Route as AuthListsCreateRouteImport } from './routes/_auth/lists/create'
 import { Route as AtChar123usernameChar125ListsSlugRouteImport } from './routes/@{$username}/lists_/$slug'
-import { Route as TvTvIdSeasonSeasonNumberRouteImport } from './routes/tv/$tvId_/season_/$seasonNumber'
+import { Route as AuthListsCreateRouteImport } from './routes/_auth/lists/create'
+import { Route as MoviesMovieIdCreditsRouteImport } from './routes/movies/$movieId_/credits'
+import { Route as TvTvIdCreditsRouteImport } from './routes/tv/$tvId_/credits'
+import { Route as TvTvIdEpisodesRouteImport } from './routes/tv/$tvId_/episodes'
+import { Route as TvTvIdSeasonsRouteImport } from './routes/tv/$tvId_/seasons'
 import { Route as AtChar123usernameChar125ListsSlugDetailsRouteImport } from './routes/@{$username}/lists_/$slug_/details'
-import { Route as TvTvIdSeasonSeasonNumberCreditsRouteImport } from './routes/tv/$tvId_/season_/$seasonNumber_/credits'
+import { Route as TvTvIdSeasonSeasonNumberRouteImport } from './routes/tv/$tvId_/season_/$seasonNumber'
 import { Route as AuthAtChar123usernameChar125ListsListslugEditRouteImport } from './routes/_auth/@{$username}/lists/$listslug/edit'
+import { Route as TvTvIdSeasonSeasonNumberCreditsRouteImport } from './routes/tv/$tvId_/season_/$seasonNumber_/credits'
 import { Route as TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberRouteImport } from './routes/tv/$tvId_/season_/$seasonNumber_/episode_/$episodeNumber'
 import { Route as TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberCreditsRouteImport } from './routes/tv/$tvId_/season_/$seasonNumber_/episode_/$episodeNumber_/credits'
 
-const SignupRoute = SignupRouteImport.update({
-  id: '/signup',
-  path: '/signup',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SigninRoute = SigninRouteImport.update({
-  id: '/signin',
-  path: '/signin',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SearchRoute = SearchRouteImport.update({
-  id: '/search',
-  path: '/search',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ResetPasswordRoute = ResetPasswordRouteImport.update({
-  id: '/reset-password',
-  path: '/reset-password',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GoodbyeRoute = GoodbyeRouteImport.update({
-  id: '/goodbye',
-  path: '/goodbye',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
-  id: '/forgot-password',
-  path: '/forgot-password',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthRoute = AuthRouteImport.update({
-  id: '/_auth',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AtChar123usernameChar125RouteRoute =
@@ -87,19 +58,38 @@ const AtChar123usernameChar125RouteRoute =
     path: '/@{$username}',
     getParentRoute: () => rootRouteImport,
   } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const AuthRoute = AuthRouteImport.update({
+  id: '/_auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TvIndexRoute = TvIndexRouteImport.update({
-  id: '/tv/',
-  path: '/tv/',
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
   getParentRoute: () => rootRouteImport,
 } as any)
-const MoviesIndexRoute = MoviesIndexRouteImport.update({
-  id: '/movies/',
-  path: '/movies/',
+const GoodbyeRoute = GoodbyeRouteImport.update({
+  id: '/goodbye',
+  path: '/goodbye',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SearchRoute = SearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SigninRoute = SigninRouteImport.update({
+  id: '/signin',
+  path: '/signin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AtChar123usernameChar125IndexRoute =
@@ -108,56 +98,10 @@ const AtChar123usernameChar125IndexRoute =
     path: '/',
     getParentRoute: () => AtChar123usernameChar125RouteRoute,
   } as any)
-const TvTvIdRoute = TvTvIdRouteImport.update({
-  id: '/tv/$tvId',
-  path: '/tv/$tvId',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PersonPersonIdRoute = PersonPersonIdRouteImport.update({
-  id: '/person/$personId',
-  path: '/person/$personId',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MoviesMovieIdRoute = MoviesMovieIdRouteImport.update({
-  id: '/movies/$movieId',
-  path: '/movies/$movieId',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CollectionsCollectionIdRoute = CollectionsCollectionIdRouteImport.update({
-  id: '/collections/$collectionId',
-  path: '/collections/$collectionId',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthWelcomeRoute = AuthWelcomeRouteImport.update({
-  id: '/welcome',
-  path: '/welcome',
-  getParentRoute: () => AuthRoute,
-} as any)
-const AuthVerifyEmailRoute = AuthVerifyEmailRouteImport.update({
-  id: '/verify-email',
-  path: '/verify-email',
-  getParentRoute: () => AuthRoute,
-} as any)
-const AuthSettingsRoute = AuthSettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
-  getParentRoute: () => AuthRoute,
-} as any)
-const AuthDashboardRoute = AuthDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => AuthRoute,
-} as any)
-const AtChar123usernameChar125WatchlistRoute =
-  AtChar123usernameChar125WatchlistRouteImport.update({
-    id: '/watchlist',
-    path: '/watchlist',
-    getParentRoute: () => AtChar123usernameChar125RouteRoute,
-  } as any)
-const AtChar123usernameChar125InProgressRoute =
-  AtChar123usernameChar125InProgressRouteImport.update({
-    id: '/in-progress',
-    path: '/in-progress',
+const AtChar123usernameChar125FavoritesRoute =
+  AtChar123usernameChar125FavoritesRouteImport.update({
+    id: '/favorites',
+    path: '/favorites',
     getParentRoute: () => AtChar123usernameChar125RouteRoute,
   } as any)
 const AtChar123usernameChar125HistoryRoute =
@@ -166,26 +110,88 @@ const AtChar123usernameChar125HistoryRoute =
     path: '/history',
     getParentRoute: () => AtChar123usernameChar125RouteRoute,
   } as any)
-const AtChar123usernameChar125FavoritesRoute =
-  AtChar123usernameChar125FavoritesRouteImport.update({
-    id: '/favorites',
-    path: '/favorites',
+const AtChar123usernameChar125InProgressRoute =
+  AtChar123usernameChar125InProgressRouteImport.update({
+    id: '/in-progress',
+    path: '/in-progress',
     getParentRoute: () => AtChar123usernameChar125RouteRoute,
   } as any)
+const AtChar123usernameChar125WatchlistRoute =
+  AtChar123usernameChar125WatchlistRouteImport.update({
+    id: '/watchlist',
+    path: '/watchlist',
+    getParentRoute: () => AtChar123usernameChar125RouteRoute,
+  } as any)
+const AuthHomeRoute = AuthHomeRouteImport.update({
+  id: '/home',
+  path: '/home',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthSettingsRoute = AuthSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthVerifyEmailRoute = AuthVerifyEmailRouteImport.update({
+  id: '/verify-email',
+  path: '/verify-email',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthWelcomeRoute = AuthWelcomeRouteImport.update({
+  id: '/welcome',
+  path: '/welcome',
+  getParentRoute: () => AuthRoute,
+} as any)
+const CollectionsCollectionIdRoute = CollectionsCollectionIdRouteImport.update({
+  id: '/collections/$collectionId',
+  path: '/collections/$collectionId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MoviesIndexRoute = MoviesIndexRouteImport.update({
+  id: '/movies/',
+  path: '/movies/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MoviesMovieIdRoute = MoviesMovieIdRouteImport.update({
+  id: '/movies/$movieId',
+  path: '/movies/$movieId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PersonPersonIdRoute = PersonPersonIdRouteImport.update({
+  id: '/person/$personId',
+  path: '/person/$personId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TvIndexRoute = TvIndexRouteImport.update({
+  id: '/tv/',
+  path: '/tv/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TvTvIdRoute = TvTvIdRouteImport.update({
+  id: '/tv/$tvId',
+  path: '/tv/$tvId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AtChar123usernameChar125ListsIndexRoute =
   AtChar123usernameChar125ListsIndexRouteImport.update({
     id: '/lists_/',
     path: '/lists/',
     getParentRoute: () => AtChar123usernameChar125RouteRoute,
   } as any)
-const TvTvIdSeasonsRoute = TvTvIdSeasonsRouteImport.update({
-  id: '/tv/$tvId_/seasons',
-  path: '/tv/$tvId/seasons',
-  getParentRoute: () => rootRouteImport,
+const AtChar123usernameChar125ListsSlugRoute =
+  AtChar123usernameChar125ListsSlugRouteImport.update({
+    id: '/lists_/$slug',
+    path: '/lists/$slug',
+    getParentRoute: () => AtChar123usernameChar125RouteRoute,
+  } as any)
+const AuthListsCreateRoute = AuthListsCreateRouteImport.update({
+  id: '/lists/create',
+  path: '/lists/create',
+  getParentRoute: () => AuthRoute,
 } as any)
-const TvTvIdEpisodesRoute = TvTvIdEpisodesRouteImport.update({
-  id: '/tv/$tvId_/episodes',
-  path: '/tv/$tvId/episodes',
+const MoviesMovieIdCreditsRoute = MoviesMovieIdCreditsRouteImport.update({
+  id: '/movies/$movieId_/credits',
+  path: '/movies/$movieId/credits',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TvTvIdCreditsRoute = TvTvIdCreditsRouteImport.update({
@@ -193,20 +199,20 @@ const TvTvIdCreditsRoute = TvTvIdCreditsRouteImport.update({
   path: '/tv/$tvId/credits',
   getParentRoute: () => rootRouteImport,
 } as any)
-const MoviesMovieIdCreditsRoute = MoviesMovieIdCreditsRouteImport.update({
-  id: '/movies/$movieId_/credits',
-  path: '/movies/$movieId/credits',
+const TvTvIdEpisodesRoute = TvTvIdEpisodesRouteImport.update({
+  id: '/tv/$tvId_/episodes',
+  path: '/tv/$tvId/episodes',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthListsCreateRoute = AuthListsCreateRouteImport.update({
-  id: '/lists/create',
-  path: '/lists/create',
-  getParentRoute: () => AuthRoute,
+const TvTvIdSeasonsRoute = TvTvIdSeasonsRouteImport.update({
+  id: '/tv/$tvId_/seasons',
+  path: '/tv/$tvId/seasons',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const AtChar123usernameChar125ListsSlugRoute =
-  AtChar123usernameChar125ListsSlugRouteImport.update({
-    id: '/lists_/$slug',
-    path: '/lists/$slug',
+const AtChar123usernameChar125ListsSlugDetailsRoute =
+  AtChar123usernameChar125ListsSlugDetailsRouteImport.update({
+    id: '/lists_/$slug_/details',
+    path: '/lists/$slug/details',
     getParentRoute: () => AtChar123usernameChar125RouteRoute,
   } as any)
 const TvTvIdSeasonSeasonNumberRoute =
@@ -215,23 +221,17 @@ const TvTvIdSeasonSeasonNumberRoute =
     path: '/tv/$tvId/season/$seasonNumber',
     getParentRoute: () => rootRouteImport,
   } as any)
-const AtChar123usernameChar125ListsSlugDetailsRoute =
-  AtChar123usernameChar125ListsSlugDetailsRouteImport.update({
-    id: '/lists_/$slug_/details',
-    path: '/lists/$slug/details',
-    getParentRoute: () => AtChar123usernameChar125RouteRoute,
+const AuthAtChar123usernameChar125ListsListslugEditRoute =
+  AuthAtChar123usernameChar125ListsListslugEditRouteImport.update({
+    id: '/@{$username}/lists/$listslug/edit',
+    path: '/@{$username}/lists/$listslug/edit',
+    getParentRoute: () => AuthRoute,
   } as any)
 const TvTvIdSeasonSeasonNumberCreditsRoute =
   TvTvIdSeasonSeasonNumberCreditsRouteImport.update({
     id: '/tv/$tvId_/season_/$seasonNumber_/credits',
     path: '/tv/$tvId/season/$seasonNumber/credits',
     getParentRoute: () => rootRouteImport,
-  } as any)
-const AuthAtChar123usernameChar125ListsListslugEditRoute =
-  AuthAtChar123usernameChar125ListsListslugEditRouteImport.update({
-    id: '/@{$username}/lists/$listslug/edit',
-    path: '/@{$username}/lists/$listslug/edit',
-    getParentRoute: () => AuthRoute,
   } as any)
 const TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberRoute =
   TvTvIdSeasonSeasonNumberEpisodeEpisodeNumberRouteImport.update({
@@ -259,7 +259,7 @@ export interface FileRoutesByFullPath {
   '/@{$username}/history': typeof AtChar123usernameChar125HistoryRoute
   '/@{$username}/in-progress': typeof AtChar123usernameChar125InProgressRoute
   '/@{$username}/watchlist': typeof AtChar123usernameChar125WatchlistRoute
-  '/dashboard': typeof AuthDashboardRoute
+  '/home': typeof AuthHomeRoute
   '/settings': typeof AuthSettingsRoute
   '/verify-email': typeof AuthVerifyEmailRoute
   '/welcome': typeof AuthWelcomeRoute
@@ -268,15 +268,15 @@ export interface FileRoutesByFullPath {
   '/person/$personId': typeof PersonPersonIdRoute
   '/tv/$tvId': typeof TvTvIdRoute
   '/@{$username}/': typeof AtChar123usernameChar125IndexRoute
-  '/movies': typeof MoviesIndexRoute
-  '/tv': typeof TvIndexRoute
+  '/movies/': typeof MoviesIndexRoute
+  '/tv/': typeof TvIndexRoute
   '/@{$username}/lists/$slug': typeof AtChar123usernameChar125ListsSlugRoute
   '/lists/create': typeof AuthListsCreateRoute
   '/movies/$movieId/credits': typeof MoviesMovieIdCreditsRoute
   '/tv/$tvId/credits': typeof TvTvIdCreditsRoute
   '/tv/$tvId/episodes': typeof TvTvIdEpisodesRoute
   '/tv/$tvId/seasons': typeof TvTvIdSeasonsRoute
-  '/@{$username}/lists': typeof AtChar123usernameChar125ListsIndexRoute
+  '/@{$username}/lists/': typeof AtChar123usernameChar125ListsIndexRoute
   '/@{$username}/lists/$slug/details': typeof AtChar123usernameChar125ListsSlugDetailsRoute
   '/tv/$tvId/season/$seasonNumber': typeof TvTvIdSeasonSeasonNumberRoute
   '/@{$username}/lists/$listslug/edit': typeof AuthAtChar123usernameChar125ListsListslugEditRoute
@@ -296,7 +296,7 @@ export interface FileRoutesByTo {
   '/@{$username}/history': typeof AtChar123usernameChar125HistoryRoute
   '/@{$username}/in-progress': typeof AtChar123usernameChar125InProgressRoute
   '/@{$username}/watchlist': typeof AtChar123usernameChar125WatchlistRoute
-  '/dashboard': typeof AuthDashboardRoute
+  '/home': typeof AuthHomeRoute
   '/settings': typeof AuthSettingsRoute
   '/verify-email': typeof AuthVerifyEmailRoute
   '/welcome': typeof AuthWelcomeRoute
@@ -336,7 +336,7 @@ export interface FileRoutesById {
   '/@{$username}/history': typeof AtChar123usernameChar125HistoryRoute
   '/@{$username}/in-progress': typeof AtChar123usernameChar125InProgressRoute
   '/@{$username}/watchlist': typeof AtChar123usernameChar125WatchlistRoute
-  '/_auth/dashboard': typeof AuthDashboardRoute
+  '/_auth/home': typeof AuthHomeRoute
   '/_auth/settings': typeof AuthSettingsRoute
   '/_auth/verify-email': typeof AuthVerifyEmailRoute
   '/_auth/welcome': typeof AuthWelcomeRoute
@@ -376,7 +376,7 @@ export interface FileRouteTypes {
     | '/@{$username}/history'
     | '/@{$username}/in-progress'
     | '/@{$username}/watchlist'
-    | '/dashboard'
+    | '/home'
     | '/settings'
     | '/verify-email'
     | '/welcome'
@@ -385,15 +385,15 @@ export interface FileRouteTypes {
     | '/person/$personId'
     | '/tv/$tvId'
     | '/@{$username}/'
-    | '/movies'
-    | '/tv'
+    | '/movies/'
+    | '/tv/'
     | '/@{$username}/lists/$slug'
     | '/lists/create'
     | '/movies/$movieId/credits'
     | '/tv/$tvId/credits'
     | '/tv/$tvId/episodes'
     | '/tv/$tvId/seasons'
-    | '/@{$username}/lists'
+    | '/@{$username}/lists/'
     | '/@{$username}/lists/$slug/details'
     | '/tv/$tvId/season/$seasonNumber'
     | '/@{$username}/lists/$listslug/edit'
@@ -413,7 +413,7 @@ export interface FileRouteTypes {
     | '/@{$username}/history'
     | '/@{$username}/in-progress'
     | '/@{$username}/watchlist'
-    | '/dashboard'
+    | '/home'
     | '/settings'
     | '/verify-email'
     | '/welcome'
@@ -452,7 +452,7 @@ export interface FileRouteTypes {
     | '/@{$username}/history'
     | '/@{$username}/in-progress'
     | '/@{$username}/watchlist'
-    | '/_auth/dashboard'
+    | '/_auth/home'
     | '/_auth/settings'
     | '/_auth/verify-email'
     | '/_auth/welcome'
@@ -506,53 +506,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/signup': {
-      id: '/signup'
-      path: '/signup'
-      fullPath: '/signup'
-      preLoaderRoute: typeof SignupRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/signin': {
-      id: '/signin'
-      path: '/signin'
-      fullPath: '/signin'
-      preLoaderRoute: typeof SigninRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/search': {
-      id: '/search'
-      path: '/search'
-      fullPath: '/search'
-      preLoaderRoute: typeof SearchRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/reset-password': {
-      id: '/reset-password'
-      path: '/reset-password'
-      fullPath: '/reset-password'
-      preLoaderRoute: typeof ResetPasswordRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/goodbye': {
-      id: '/goodbye'
-      path: '/goodbye'
-      fullPath: '/goodbye'
-      preLoaderRoute: typeof GoodbyeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/forgot-password': {
-      id: '/forgot-password'
-      path: '/forgot-password'
-      fullPath: '/forgot-password'
-      preLoaderRoute: typeof ForgotPasswordRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_auth': {
-      id: '/_auth'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof AuthRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/@{$username}': {
@@ -562,25 +520,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AtChar123usernameChar125RouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
+    '/_auth': {
+      id: '/_auth'
+      path: ''
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/tv/': {
-      id: '/tv/'
-      path: '/tv'
-      fullPath: '/tv'
-      preLoaderRoute: typeof TvIndexRouteImport
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/movies/': {
-      id: '/movies/'
-      path: '/movies'
-      fullPath: '/movies'
-      preLoaderRoute: typeof MoviesIndexRouteImport
+    '/goodbye': {
+      id: '/goodbye'
+      path: '/goodbye'
+      fullPath: '/goodbye'
+      preLoaderRoute: typeof GoodbyeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/search': {
+      id: '/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signin': {
+      id: '/signin'
+      path: '/signin'
+      fullPath: '/signin'
+      preLoaderRoute: typeof SigninRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/@{$username}/': {
@@ -590,74 +576,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AtChar123usernameChar125IndexRouteImport
       parentRoute: typeof AtChar123usernameChar125RouteRoute
     }
-    '/tv/$tvId': {
-      id: '/tv/$tvId'
-      path: '/tv/$tvId'
-      fullPath: '/tv/$tvId'
-      preLoaderRoute: typeof TvTvIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/person/$personId': {
-      id: '/person/$personId'
-      path: '/person/$personId'
-      fullPath: '/person/$personId'
-      preLoaderRoute: typeof PersonPersonIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/movies/$movieId': {
-      id: '/movies/$movieId'
-      path: '/movies/$movieId'
-      fullPath: '/movies/$movieId'
-      preLoaderRoute: typeof MoviesMovieIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/collections/$collectionId': {
-      id: '/collections/$collectionId'
-      path: '/collections/$collectionId'
-      fullPath: '/collections/$collectionId'
-      preLoaderRoute: typeof CollectionsCollectionIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_auth/welcome': {
-      id: '/_auth/welcome'
-      path: '/welcome'
-      fullPath: '/welcome'
-      preLoaderRoute: typeof AuthWelcomeRouteImport
-      parentRoute: typeof AuthRoute
-    }
-    '/_auth/verify-email': {
-      id: '/_auth/verify-email'
-      path: '/verify-email'
-      fullPath: '/verify-email'
-      preLoaderRoute: typeof AuthVerifyEmailRouteImport
-      parentRoute: typeof AuthRoute
-    }
-    '/_auth/settings': {
-      id: '/_auth/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof AuthSettingsRouteImport
-      parentRoute: typeof AuthRoute
-    }
-    '/_auth/dashboard': {
-      id: '/_auth/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AuthDashboardRouteImport
-      parentRoute: typeof AuthRoute
-    }
-    '/@{$username}/watchlist': {
-      id: '/@{$username}/watchlist'
-      path: '/watchlist'
-      fullPath: '/@{$username}/watchlist'
-      preLoaderRoute: typeof AtChar123usernameChar125WatchlistRouteImport
-      parentRoute: typeof AtChar123usernameChar125RouteRoute
-    }
-    '/@{$username}/in-progress': {
-      id: '/@{$username}/in-progress'
-      path: '/in-progress'
-      fullPath: '/@{$username}/in-progress'
-      preLoaderRoute: typeof AtChar123usernameChar125InProgressRouteImport
+    '/@{$username}/favorites': {
+      id: '/@{$username}/favorites'
+      path: '/favorites'
+      fullPath: '/@{$username}/favorites'
+      preLoaderRoute: typeof AtChar123usernameChar125FavoritesRouteImport
       parentRoute: typeof AtChar123usernameChar125RouteRoute
     }
     '/@{$username}/history': {
@@ -667,32 +590,116 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AtChar123usernameChar125HistoryRouteImport
       parentRoute: typeof AtChar123usernameChar125RouteRoute
     }
-    '/@{$username}/favorites': {
-      id: '/@{$username}/favorites'
-      path: '/favorites'
-      fullPath: '/@{$username}/favorites'
-      preLoaderRoute: typeof AtChar123usernameChar125FavoritesRouteImport
+    '/@{$username}/in-progress': {
+      id: '/@{$username}/in-progress'
+      path: '/in-progress'
+      fullPath: '/@{$username}/in-progress'
+      preLoaderRoute: typeof AtChar123usernameChar125InProgressRouteImport
       parentRoute: typeof AtChar123usernameChar125RouteRoute
+    }
+    '/@{$username}/watchlist': {
+      id: '/@{$username}/watchlist'
+      path: '/watchlist'
+      fullPath: '/@{$username}/watchlist'
+      preLoaderRoute: typeof AtChar123usernameChar125WatchlistRouteImport
+      parentRoute: typeof AtChar123usernameChar125RouteRoute
+    }
+    '/_auth/home': {
+      id: '/_auth/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof AuthHomeRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/settings': {
+      id: '/_auth/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthSettingsRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/verify-email': {
+      id: '/_auth/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof AuthVerifyEmailRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/welcome': {
+      id: '/_auth/welcome'
+      path: '/welcome'
+      fullPath: '/welcome'
+      preLoaderRoute: typeof AuthWelcomeRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/collections/$collectionId': {
+      id: '/collections/$collectionId'
+      path: '/collections/$collectionId'
+      fullPath: '/collections/$collectionId'
+      preLoaderRoute: typeof CollectionsCollectionIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/movies/': {
+      id: '/movies/'
+      path: '/movies'
+      fullPath: '/movies/'
+      preLoaderRoute: typeof MoviesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/movies/$movieId': {
+      id: '/movies/$movieId'
+      path: '/movies/$movieId'
+      fullPath: '/movies/$movieId'
+      preLoaderRoute: typeof MoviesMovieIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/person/$personId': {
+      id: '/person/$personId'
+      path: '/person/$personId'
+      fullPath: '/person/$personId'
+      preLoaderRoute: typeof PersonPersonIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tv/': {
+      id: '/tv/'
+      path: '/tv'
+      fullPath: '/tv/'
+      preLoaderRoute: typeof TvIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tv/$tvId': {
+      id: '/tv/$tvId'
+      path: '/tv/$tvId'
+      fullPath: '/tv/$tvId'
+      preLoaderRoute: typeof TvTvIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/@{$username}/lists_/': {
       id: '/@{$username}/lists_/'
       path: '/lists'
-      fullPath: '/@{$username}/lists'
+      fullPath: '/@{$username}/lists/'
       preLoaderRoute: typeof AtChar123usernameChar125ListsIndexRouteImport
       parentRoute: typeof AtChar123usernameChar125RouteRoute
     }
-    '/tv/$tvId_/seasons': {
-      id: '/tv/$tvId_/seasons'
-      path: '/tv/$tvId/seasons'
-      fullPath: '/tv/$tvId/seasons'
-      preLoaderRoute: typeof TvTvIdSeasonsRouteImport
-      parentRoute: typeof rootRouteImport
+    '/@{$username}/lists_/$slug': {
+      id: '/@{$username}/lists_/$slug'
+      path: '/lists/$slug'
+      fullPath: '/@{$username}/lists/$slug'
+      preLoaderRoute: typeof AtChar123usernameChar125ListsSlugRouteImport
+      parentRoute: typeof AtChar123usernameChar125RouteRoute
     }
-    '/tv/$tvId_/episodes': {
-      id: '/tv/$tvId_/episodes'
-      path: '/tv/$tvId/episodes'
-      fullPath: '/tv/$tvId/episodes'
-      preLoaderRoute: typeof TvTvIdEpisodesRouteImport
+    '/_auth/lists/create': {
+      id: '/_auth/lists/create'
+      path: '/lists/create'
+      fullPath: '/lists/create'
+      preLoaderRoute: typeof AuthListsCreateRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/movies/$movieId_/credits': {
+      id: '/movies/$movieId_/credits'
+      path: '/movies/$movieId/credits'
+      fullPath: '/movies/$movieId/credits'
+      preLoaderRoute: typeof MoviesMovieIdCreditsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/tv/$tvId_/credits': {
@@ -702,32 +709,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TvTvIdCreditsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/movies/$movieId_/credits': {
-      id: '/movies/$movieId_/credits'
-      path: '/movies/$movieId/credits'
-      fullPath: '/movies/$movieId/credits'
-      preLoaderRoute: typeof MoviesMovieIdCreditsRouteImport
+    '/tv/$tvId_/episodes': {
+      id: '/tv/$tvId_/episodes'
+      path: '/tv/$tvId/episodes'
+      fullPath: '/tv/$tvId/episodes'
+      preLoaderRoute: typeof TvTvIdEpisodesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_auth/lists/create': {
-      id: '/_auth/lists/create'
-      path: '/lists/create'
-      fullPath: '/lists/create'
-      preLoaderRoute: typeof AuthListsCreateRouteImport
-      parentRoute: typeof AuthRoute
-    }
-    '/@{$username}/lists_/$slug': {
-      id: '/@{$username}/lists_/$slug'
-      path: '/lists/$slug'
-      fullPath: '/@{$username}/lists/$slug'
-      preLoaderRoute: typeof AtChar123usernameChar125ListsSlugRouteImport
-      parentRoute: typeof AtChar123usernameChar125RouteRoute
-    }
-    '/tv/$tvId_/season_/$seasonNumber': {
-      id: '/tv/$tvId_/season_/$seasonNumber'
-      path: '/tv/$tvId/season/$seasonNumber'
-      fullPath: '/tv/$tvId/season/$seasonNumber'
-      preLoaderRoute: typeof TvTvIdSeasonSeasonNumberRouteImport
+    '/tv/$tvId_/seasons': {
+      id: '/tv/$tvId_/seasons'
+      path: '/tv/$tvId/seasons'
+      fullPath: '/tv/$tvId/seasons'
+      preLoaderRoute: typeof TvTvIdSeasonsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/@{$username}/lists_/$slug_/details': {
@@ -737,11 +730,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AtChar123usernameChar125ListsSlugDetailsRouteImport
       parentRoute: typeof AtChar123usernameChar125RouteRoute
     }
-    '/tv/$tvId_/season_/$seasonNumber_/credits': {
-      id: '/tv/$tvId_/season_/$seasonNumber_/credits'
-      path: '/tv/$tvId/season/$seasonNumber/credits'
-      fullPath: '/tv/$tvId/season/$seasonNumber/credits'
-      preLoaderRoute: typeof TvTvIdSeasonSeasonNumberCreditsRouteImport
+    '/tv/$tvId_/season_/$seasonNumber': {
+      id: '/tv/$tvId_/season_/$seasonNumber'
+      path: '/tv/$tvId/season/$seasonNumber'
+      fullPath: '/tv/$tvId/season/$seasonNumber'
+      preLoaderRoute: typeof TvTvIdSeasonSeasonNumberRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_auth/@{$username}/lists/$listslug/edit': {
@@ -750,6 +743,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/@{$username}/lists/$listslug/edit'
       preLoaderRoute: typeof AuthAtChar123usernameChar125ListsListslugEditRouteImport
       parentRoute: typeof AuthRoute
+    }
+    '/tv/$tvId_/season_/$seasonNumber_/credits': {
+      id: '/tv/$tvId_/season_/$seasonNumber_/credits'
+      path: '/tv/$tvId/season/$seasonNumber/credits'
+      fullPath: '/tv/$tvId/season/$seasonNumber/credits'
+      preLoaderRoute: typeof TvTvIdSeasonSeasonNumberCreditsRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/tv/$tvId_/season_/$seasonNumber_/episode_/$episodeNumber': {
       id: '/tv/$tvId_/season_/$seasonNumber_/episode_/$episodeNumber'
@@ -803,7 +803,7 @@ const AtChar123usernameChar125RouteRouteWithChildren =
   )
 
 interface AuthRouteChildren {
-  AuthDashboardRoute: typeof AuthDashboardRoute
+  AuthHomeRoute: typeof AuthHomeRoute
   AuthSettingsRoute: typeof AuthSettingsRoute
   AuthVerifyEmailRoute: typeof AuthVerifyEmailRoute
   AuthWelcomeRoute: typeof AuthWelcomeRoute
@@ -812,7 +812,7 @@ interface AuthRouteChildren {
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
-  AuthDashboardRoute: AuthDashboardRoute,
+  AuthHomeRoute: AuthHomeRoute,
   AuthSettingsRoute: AuthSettingsRoute,
   AuthVerifyEmailRoute: AuthVerifyEmailRoute,
   AuthWelcomeRoute: AuthWelcomeRoute,

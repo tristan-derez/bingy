@@ -1,10 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import type { Schemas } from "shared";
-import fallbackPoster from "@/assets/media-image-placeholder.jpg";
+import { PortraitImage } from "@/components/portrait-image";
 import { BackButton } from "@/components/ui/back-button";
 import { Card, CardContent } from "@/components/ui/card";
 import { m } from "@/paraglide/messages";
-import { getTmdbImageUrl } from "@/utils/utils";
 import { CreditEpisodeCard } from "./credit-episode-card";
 
 interface CreditEpisodesListProps {
@@ -29,24 +28,18 @@ export const CreditEpisodesList = ({
 	episodes,
 }: CreditEpisodesListProps) => {
 	const role = character || job || m.credit_episodes_list_unknown_role();
-	const imageUrl = getTmdbImageUrl(posterPath, "w500");
 
 	return (
-		<div className="container">
+		<div className="w-full">
 			<BackButton />
 
 			<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
-				<div className="flex flex-col gap-2 items-center lg:items-start max-w-[250px] md:max-w-[300px] lg:max-w-[400px]">
-					<img
-						src={imageUrl ?? fallbackPoster}
+				<div className="flex flex-col gap-2 items-center lg:items-start max-w-62.5 md:max-w-60 2xl:max-w-75">
+					<PortraitImage
 						alt={showName}
-						className="rounded-md shadow-lg w-full aspect-2/3 max-h-90 xl:max-h-[600px]"
-						onError={(e) => {
-							const target = e.currentTarget;
-							if (target.src !== fallbackPoster) {
-								target.src = fallbackPoster;
-							}
-						}}
+						imagePath={posterPath}
+						imageSize="w500"
+						category="tv"
 					/>
 				</div>
 

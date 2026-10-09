@@ -21,7 +21,7 @@ export const CrewCardMovie = ({ person }: CrewCardMovieProps) => {
 	const imageUrl = getTmdbImageUrl(person.profile_path, "w200");
 
 	return (
-		<div className="relative pt-8">
+		<div className="relative pt-8 w-full max-w-xs mx-auto md:max-w-none">
 			<Avatar className="absolute -top-1 left-1/2 -translate-x-1/2 w-16 h-16 z-10">
 				<AvatarImage
 					src={imageUrl ?? fallbackPoster}
@@ -51,15 +51,12 @@ export const CrewCardMovie = ({ person }: CrewCardMovieProps) => {
 					</CardDescription>
 				</CardHeader>
 				<CardContent className="text-center pt-0 gap-4 flex flex-col">
-					<Button>
-						<Link
-							to="/person/$personId"
-							params={{ personId: person.id.toString() }}
-							className="hover:cursor-default"
-						>
-							{m.btn_show_more()}
-						</Link>
-					</Button>
+					<Link
+						to="/person/$personId"
+						params={{ personId: person.id.toString() }}
+					>
+						<Button className="w-full">{m.btn_show_more()}</Button>
+					</Link>
 				</CardContent>
 			</Card>
 		</div>

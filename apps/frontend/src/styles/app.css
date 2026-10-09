@@ -1,5 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "@fontsource-variable/roboto";
+@import "@fontsource-variable/merriweather";
 
 @custom-variant dark (&:is(.dark *));
 @custom-variant data-horizontal (&[data-orientation="horizontal"]);
@@ -7,6 +9,7 @@
 
 @theme {
 	--breakpoint-xs: 34rem;
+	--breakpoint-3xl: 120rem;
 }
 
 @theme inline {
@@ -50,6 +53,8 @@
 	--color-shadow-pointer: var(--shadow-pointer);
 	--color-particles: var(--particles-color);
 	--color-brand: var(--brand);
+	--font-sans: "Roboto Variable", sans-serif;
+	--font-heading: "Merriweather Variable", serif;
 }
 
 :root {
@@ -152,12 +157,17 @@
 	* {
 		@apply border-border outline-ring/50;
 	}
+	button:not(:disabled),
+	[role="button"]:not(:disabled) {
+		cursor: pointer;
+	}
 	html {
 		overscroll-behavior-x: none;
 		-webkit-overflow-scrolling: touch;
 		touch-action: pan-x pan-y;
 		height: 100svh;
 		scrollbar-gutter: stable;
+		@apply font-sans;
 	}
 	body {
 		@apply bg-background text-foreground;

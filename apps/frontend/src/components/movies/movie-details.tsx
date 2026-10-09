@@ -1,5 +1,5 @@
 import { IconCalendarWeekFilled, IconStopwatch } from "@tabler/icons-react";
-import { Link, useRouteContext, useRouterState } from "@tanstack/react-router";
+import { Link, useRouteContext } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import type { Schemas } from "shared";
 import { CollectionCard } from "@/components/collections/collection-card";
@@ -11,14 +11,14 @@ import { MediaCreators } from "@/components/medias/media-creators";
 import { MediaGenresBadge } from "@/components/medias/media-genres-badge";
 import { MediaLearnMoreCard } from "@/components/medias/media-learn-more";
 import { MediaOverview } from "@/components/medias/media-overview";
-import { MediaPortraitImage } from "@/components/medias/media-portrait-image";
 import { MediaRatingDisplayCard } from "@/components/medias/media-rating-display-card";
-import { CastList } from "@/components/person/cast-list";
-import { SocialLinks } from "@/components/social-links";
+import { MediaTitle } from "@/components/medias/media-title";
+import { CastCrewTabs } from "@/components/person/cast-crew-tabs";
+import { PortraitImage } from "@/components/portrait-image";
 import { BackButton } from "@/components/ui/back-button";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { localeRegionAtom } from "@/lib/atoms/region";
+import { Card, CardContent } from "@/components/ui/card";
+import { WatchProvidersSection } from "@/components/watch-providers/watch-providers-section";
+import { localeRegionAtom, regionAtom } from "@/lib/atoms/region";
 import { m } from "@/paraglide/messages";
 import { formatDate } from "@/utils/format-date";
 import { formatRuntime } from "@/utils/format-runtime";
@@ -28,7 +28,7 @@ interface MovieDetailViewProps {
 	movie: Schemas.MovieDetails | undefined;
 	directors: Array<{ id: number; name: string; gender: number | null }>;
 	cast: Schemas.CastMember[];
-	socials: Partial<Record<"instagram" | "twitter", string>>;
+	crew: Schemas.CrewMember[];
 	watchProviders: Schemas.WatchProviders | undefined;
 	collection: Schemas.MovieDetails["belongs_to_collection"] | undefined;
 	releaseDate: string | undefined;
@@ -40,8 +40,8 @@ interface MovieDetailViewProps {
 export function MovieDetailView({
 	movie,
 	cast,
+	crew,
 	directors,
-	socials,
 	watchProviders,
 	collection,
 	releaseDate,
@@ -49,10 +49,9 @@ export function MovieDetailView({
 	isLoading,
 	isError,
 }: MovieDetailViewProps) {
-	const routerState = useRouterState();
-	const currentUrl = routerState.location.url;
 	const { authData } = useRouteContext({ from: "__root__" });
 	const localeRegion = useAtomValue(localeRegionAtom);
+	const region = useAtomValue(regionAtom);
 
 	if (isLoading) {
 		return <LoadingCentered />;
@@ -67,30 +66,29 @@ export function MovieDetailView({
 		);
 	}
 
-	const hasDifferentTitle =
-		movie.original_title.toLowerCase() !== movie.title.toLowerCase();
-
 	const backgroundImage = getTmdbImageUrl(movie.backdrop_path, "original");
 
 	return (
 		<>
 			<MediaBackgroundImage backgroundImage={backgroundImage} />
-			<div className="container pt-3 md:pt-10 lg:pt-50">
+			<div className="pt-3 md:pt-10 lg:pt-60 w-full">
 				<BackButton />
 
 				<div className="grid lg:grid-cols-[auto_1fr] gap-2 lg:gap-4 pt-2 justify-items-center">
-					<div className="flex flex-col gap-2 items-center lg:items-start max-w-[250px] md:max-w-[300px] lg:max-w-[400px]">
-						<MediaPortraitImage
+					<div className="flex flex-col gap-2 items-center lg:items-start max-w-62.5 md:max-w-60 2xl:max-w-75">
+						<PortraitImage
 							imagePath={movie.poster_path}
 							alt={movie.title}
 							imageSize="w500"
-							watchProviders={watchProviders}
+							category="movie"
 						/>
 
-						{Object.keys(socials).length > 0 ? (
-							<div className="flex flex-row items-center mx-auto">
-								<SocialLinks socials={socials} />
-							</div>
+						{watchProviders ? (
+							<WatchProvidersSection
+								watchProviders={watchProviders}
+								region={region}
+								className="w-full"
+							/>
 						) : null}
 					</div>
 
@@ -99,16 +97,11 @@ export function MovieDetailView({
 							<CardContent className="p-0">
 								<div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2 px-0.5 py-0.5">
 									<div className="flex flex-col gap-2">
-										<div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-											<h1 className="text-2xl lg:text-4xl font-bold leading-relaxed">
-												{movie.title}
-											</h1>
-											{hasDifferentTitle ? (
-												<p className="text-foreground text-base lg:text-xl font-bold italic">
-													— {movie.original_title}
-												</p>
-											) : null}
-										</div>
+										<MediaTitle
+											title={movie.title}
+											releaseDate={movie.release_date}
+											originalTitle={movie.original_title}
+										/>
 
 										<div className="flex flex-wrap gap-2">
 											<div className="flex gap-0.5 items-center font-bold">
@@ -149,12 +142,9 @@ export function MovieDetailView({
 													mediaType: "movie",
 												}}
 												posterPath={movie.poster_path}
-												currentUrl={currentUrl}
 											/>
 										</div>
-									) : (
-										<div className="min-w-3xs"></div>
-									)}
+									) : null}
 								</div>
 							</CardContent>
 						</Card>
@@ -166,7 +156,7 @@ export function MovieDetailView({
 								<CardContent className="flex items-center gap-4">
 									<IconCalendarWeekFilled />
 									<div>
-										<p className="text-xl xl:text-2xl font-bold">
+										<p className="text-lg font-bold">
 											{releaseDate
 												? formatDate(releaseDate, localeRegion, {
 														day: "numeric",
@@ -192,10 +182,9 @@ export function MovieDetailView({
 								<MediaLearnMoreCard id={movie.id} mediaType="movie" />
 							) : null}
 						</div>
-
 						{cast && cast.length > 0 ? (
 							<div className="flex flex-col gap-2">
-								<CastList people={cast} />
+								<CastCrewTabs cast={cast} crew={crew} />
 								<Link
 									to="/movies/$movieId/credits"
 									params={{ movieId: movie.id.toString() }}
@@ -207,39 +196,6 @@ export function MovieDetailView({
 						) : null}
 
 						{collection ? <CollectionCard collection={collection} /> : null}
-
-						{movie.production_companies &&
-						movie.production_companies.length > 0 ? (
-							<Card className="border ring-0">
-								<CardHeader>
-									<CardTitle>
-										{m.movie_details_production_companies({
-											count: movie.production_companies.length,
-										})}
-									</CardTitle>
-								</CardHeader>
-
-								<CardContent className="flex flex-wrap gap-4">
-									{movie.production_companies.map(
-										(company: Schemas.ProductionCompany) => (
-											<Badge
-												key={company.id}
-												className="flex items-center gap-2"
-												variant="outline"
-											>
-												{company.origin_country ? (
-													<span
-														className={`fi fi-${company.origin_country.toLocaleLowerCase()}`}
-														style={{ width: 18, height: 14 }}
-													/>
-												) : null}
-												<span className="font-medium">{company.name}</span>
-											</Badge>
-										),
-									)}
-								</CardContent>
-							</Card>
-						) : null}
 					</div>
 				</div>
 			</div>

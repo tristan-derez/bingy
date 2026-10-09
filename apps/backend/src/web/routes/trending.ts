@@ -5,7 +5,7 @@ import {
 	serveInternalServerError,
 } from "../../lib/responses/error";
 import { serveData } from "../../lib/responses/resp";
-import { tmdbClient } from "../../lib/tmdb/tmdb.client";
+import { tmdbClient } from "../../lib/tmdb/tmdb-client";
 
 const trendingRoutes = new Hono();
 
