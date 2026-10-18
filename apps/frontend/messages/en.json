@@ -148,8 +148,13 @@
 	"btn_media_learn_more": "Learn more",
 	"movie_details_production_companies": [
 		{
-			"declarations": ["input count", "local countPlural = count: plural"],
-			"selectors": ["countPlural"],
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
 			"match": {
 				"countPlural=one": "Company",
 				"countPlural=other": "Companies"
@@ -158,8 +163,12 @@
 	],
 	"movie_details_director": [
 		{
-			"declarations": ["input gender"],
-			"selectors": ["gender"],
+			"declarations": [
+				"input gender"
+			],
+			"selectors": [
+				"gender"
+			],
 			"match": {
 				"gender=male": "Director",
 				"gender=female": "Director",
@@ -189,8 +198,12 @@
 	"person_death_age": "aged {age}",
 	"person_actor": [
 		{
-			"declarations": ["input gender"],
-			"selectors": ["gender"],
+			"declarations": [
+				"input gender"
+			],
+			"selectors": [
+				"gender"
+			],
 			"match": {
 				"gender=male": "Actor",
 				"gender=female": "Actress",
@@ -200,8 +213,12 @@
 	],
 	"person_writer": [
 		{
-			"declarations": ["input gender"],
-			"selectors": ["gender"],
+			"declarations": [
+				"input gender"
+			],
+			"selectors": [
+				"gender"
+			],
 			"match": {
 				"gender=male": "Writer",
 				"gender=female": "Writer",
@@ -211,8 +228,12 @@
 	],
 	"person_director": [
 		{
-			"declarations": ["input gender"],
-			"selectors": ["gender"],
+			"declarations": [
+				"input gender"
+			],
+			"selectors": [
+				"gender"
+			],
 			"match": {
 				"gender=male": "Director",
 				"gender=female": "Director",
@@ -223,8 +244,13 @@
 	"person_biography": "Biography",
 	"person_place_of_birth": [
 		{
-			"declarations": ["input gender", "input place"],
-			"selectors": ["gender"],
+			"declarations": [
+				"input gender",
+				"input place"
+			],
+			"selectors": [
+				"gender"
+			],
 			"match": {
 				"gender=male": "Born in {place}",
 				"gender=female": "Born in {place}",
@@ -234,8 +260,12 @@
 	],
 	"person_known_for": [
 		{
-			"declarations": ["input gender"],
-			"selectors": ["gender"],
+			"declarations": [
+				"input gender"
+			],
+			"selectors": [
+				"gender"
+			],
 			"match": {
 				"gender=male": "Known for",
 				"gender=female": "Known for",
@@ -258,6 +288,21 @@
 	"search_pagination_next": "Next",
 	"search_container_results_for": "Search results for:",
 	"toggle_group_item_all": "All",
+	"in_progress_no_next_episode": "No upcoming episode",
+	"in_progress_toggle_group_item_all": "All",
+	"in_progress_toggle_group_item_watching": "Watching",
+	"in_progress_toggle_group_item_on_hold": "On hold",
+	"in_progress_toggle_group_item_dropped": "Dropped",
+	"in_progress_toggle_aria_label_all": "All statuses",
+	"in_progress_toggle_aria_label_watching": "Watching only",
+	"in_progress_toggle_aria_label_on_hold": "On hold only",
+	"in_progress_toggle_aria_label_dropped": "Dropped only",
+	"in_progress_toggle_group_item_completed": "Completed",
+	"in_progress_toggle_aria_label_completed": "Completed only",
+	"in_progress_no_result_completed_own": "No completed shows",
+	"in_progress_no_result_completed_other": "{username} has no completed shows",
+	"in_progress_no_result_completed_desc_own": "Shows you've finished will appear here.",
+	"in_progress_no_result_completed_desc_other": "Check back later to see what {username} has finished.",
 	"toggle_group_item_movies": "Movies",
 	"toggle_group_item_tv": "TV Shows",
 	"toggle_group_item_person": "People",
@@ -286,8 +331,13 @@
 	"episodes_container_guest_stars": "guest stars",
 	"season_card_episode_badge": [
 		{
-			"declarations": ["input count", "local countPlural = count: plural"],
-			"selectors": ["countPlural"],
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
 			"match": {
 				"countPlural=one": "Episode",
 				"countPlural=other": "Episodes"
@@ -308,8 +358,13 @@
 	"season_details_air_date": "Air Date",
 	"season_details_episodes": [
 		{
-			"declarations": ["input count", "local countPlural = count: plural"],
-			"selectors": ["countPlural"],
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
 			"match": {
 				"countPlural=one": "Episode",
 				"countPlural=other": "Episodes"
@@ -318,8 +373,13 @@
 	],
 	"season_details_networks": [
 		{
-			"declarations": ["input count", "local countPlural = count: plural"],
-			"selectors": ["countPlural"],
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
 			"match": {
 				"countPlural=one": "Network",
 				"countPlural=other": "Networks"
@@ -347,8 +407,12 @@
 	"tv_details_overview": "Overview",
 	"tv_details_creator": [
 		{
-			"declarations": ["input gender"],
-			"selectors": ["gender"],
+			"declarations": [
+				"input gender"
+			],
+			"selectors": [
+				"gender"
+			],
 			"match": {
 				"gender=male": "Creator",
 				"gender=female": "Creator",
@@ -365,7 +429,9 @@
 				"input voteCount",
 				"local countPlural = count: plural"
 			],
-			"selectors": ["countPlural"],
+			"selectors": [
+				"countPlural"
+			],
 			"match": {
 				"countPlural=one": "{voteCount} vote",
 				"countPlural=other": "{voteCount} votes"
@@ -375,8 +441,13 @@
 	"media_details_no_votes": "Be the first to rate!",
 	"tv_details_seasons": [
 		{
-			"declarations": ["input count", "local countPlural = count: plural"],
-			"selectors": ["countPlural"],
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
 			"match": {
 				"countPlural=one": "Season",
 				"countPlural=other": "Seasons"
@@ -385,8 +456,13 @@
 	],
 	"tv_details_episodes": [
 		{
-			"declarations": ["input count", "local countPlural = count: plural"],
-			"selectors": ["countPlural"],
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
 			"match": {
 				"countPlural=one": "Total Episode",
 				"countPlural=other": "Total Episodes"
@@ -401,8 +477,13 @@
 	"tv_details_status_planned": "Planned",
 	"tv_details_networks": [
 		{
-			"declarations": ["input count", "local countPlural = count: plural"],
-			"selectors": ["countPlural"],
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
 			"match": {
 				"countPlural=one": "Network",
 				"countPlural=other": "Networks"
@@ -411,8 +492,13 @@
 	],
 	"tv_details_companies": [
 		{
-			"declarations": ["input count", "local countPlural = count: plural"],
-			"selectors": ["countPlural"],
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
 			"match": {
 				"countPlural=one": "Production Company",
 				"countPlural=other": "Production Companies"
@@ -645,7 +731,9 @@
 				"input total_items",
 				"local countPlural = count: plural"
 			],
-			"selectors": ["countPlural"],
+			"selectors": [
+				"countPlural"
+			],
 			"match": {
 				"countPlural=one": "Added item ({total_items})",
 				"countPlural=other": "Added items ({total_items})"
@@ -692,6 +780,19 @@
 	"btn_log_review_text": "Log or review",
 	"btn_log_review_existing_rating": "Edit review",
 	"btn_add_to_list_text": "Add to list",
+	"btn_add_to_currently_watching_text": "Add to currently watching",
+	"btn_update_currently_watching_text": "Update progress",
+	"dialog_currently_watching_title": "Currently watching",
+	"dialog_currently_watching_desc": "Select the season and episode you are currently on for \"{media_name}\"",
+	"dialog_currently_watching_cancel_btn": "Cancel",
+	"dialog_currently_watching_submit_btn": "Add",
+	"dialog_currently_watching_submitting_btn": "Adding...",
+	"toast_add_currently_watching_success": "Progress saved",
+	"toast_add_currently_watching_error": "Failed to add to currently watching",
+	"dialog_currently_watching_status_label": "Status",
+	"dialog_currently_watching_status_watching": "Watching",
+	"dialog_currently_watching_status_on_hold": "On hold",
+	"dialog_currently_watching_status_dropped": "Dropped",
 	"btn_share_link_media_text": "{media_name} ({year}) on @bingy_app —",
 	"btn_share_text": "Share",
 	"btn_copied_text": "Copied!",
@@ -778,8 +879,13 @@
 	"profile_ratings_title": "Ratings",
 	"profile_ratings_total": [
 		{
-			"declarations": ["input count", "local countPlural = count: plural"],
-			"selectors": ["countPlural"],
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"countPlural"
+			],
 			"match": {
 				"countPlural=one": "{count} rating",
 				"countPlural=other": "{count} ratings"
@@ -794,8 +900,12 @@
 	"profile_activity_empty": "No recent activity",
 	"profile_activity_action_added_to_watchlist": [
 		{
-			"declarations": ["input isOwnProfile"],
-			"selectors": ["isOwnProfile"],
+			"declarations": [
+				"input isOwnProfile"
+			],
+			"selectors": [
+				"isOwnProfile"
+			],
 			"match": {
 				"isOwnProfile=true": " added ",
 				"isOwnProfile=false": " added "
@@ -804,8 +914,12 @@
 	],
 	"profile_activity_action_added_to_favorites": [
 		{
-			"declarations": ["input isOwnProfile"],
-			"selectors": ["isOwnProfile"],
+			"declarations": [
+				"input isOwnProfile"
+			],
+			"selectors": [
+				"isOwnProfile"
+			],
 			"match": {
 				"isOwnProfile=true": " added ",
 				"isOwnProfile=false": " added "
@@ -814,8 +928,12 @@
 	],
 	"profile_activity_added_to_watchlist": [
 		{
-			"declarations": ["input isOwnProfile"],
-			"selectors": ["isOwnProfile"],
+			"declarations": [
+				"input isOwnProfile"
+			],
+			"selectors": [
+				"isOwnProfile"
+			],
 			"match": {
 				"isOwnProfile=true": " to your watchlist",
 				"isOwnProfile=false": " to their watchlist"
@@ -824,8 +942,12 @@
 	],
 	"profile_activity_added_to_favorites": [
 		{
-			"declarations": ["input isOwnProfile"],
-			"selectors": ["isOwnProfile"],
+			"declarations": [
+				"input isOwnProfile"
+			],
+			"selectors": [
+				"isOwnProfile"
+			],
 			"match": {
 				"isOwnProfile=true": " to your favorites",
 				"isOwnProfile=false": " to their favorites"
@@ -834,8 +956,12 @@
 	],
 	"profile_activity_action_watched": [
 		{
-			"declarations": ["input isOwnProfile"],
-			"selectors": ["isOwnProfile"],
+			"declarations": [
+				"input isOwnProfile"
+			],
+			"selectors": [
+				"isOwnProfile"
+			],
 			"match": {
 				"isOwnProfile=true": " watched ",
 				"isOwnProfile=false": " watched "
@@ -844,8 +970,12 @@
 	],
 	"profile_activity_action_followed": [
 		{
-			"declarations": ["input isOwnProfile"],
-			"selectors": ["isOwnProfile"],
+			"declarations": [
+				"input isOwnProfile"
+			],
+			"selectors": [
+				"isOwnProfile"
+			],
 			"match": {
 				"isOwnProfile=true": " followed ",
 				"isOwnProfile=false": " followed "
@@ -854,8 +984,12 @@
 	],
 	"profile_activity_action_rated": [
 		{
-			"declarations": ["input isOwnProfile"],
-			"selectors": ["isOwnProfile"],
+			"declarations": [
+				"input isOwnProfile"
+			],
+			"selectors": [
+				"isOwnProfile"
+			],
 			"match": {
 				"isOwnProfile=true": " rated ",
 				"isOwnProfile=false": " rated "
@@ -864,8 +998,12 @@
 	],
 	"profile_activity_action_created_list": [
 		{
-			"declarations": ["input isOwnProfile"],
-			"selectors": ["isOwnProfile"],
+			"declarations": [
+				"input isOwnProfile"
+			],
+			"selectors": [
+				"isOwnProfile"
+			],
 			"match": {
 				"isOwnProfile=true": " created a list: ",
 				"isOwnProfile=false": " created a list: "
@@ -900,6 +1038,19 @@
 	"emtpy_inprogress_own_profile_title": "No shows in progress",
 	"empty_inprogress_other_profile_title": "{username} has no shows in progress",
 	"empty_inprogress_own_profile_desc": "You’re not tracking any TV shows right now. Add a show to your watchlist and start tracking your progress to see it here",
-	"empty_inprogress_other_profile_desc": "Check back later to see what ${username} is watching",
-	"empty_inprogress_cta": "Explore TV shows"
+	"empty_inprogress_other_profile_desc": "Check back later to see what {username} is watching",
+	"empty_inprogress_cta": "Explore TV shows",
+	"in_progress_no_result_watching_own": "No shows being watched",
+	"in_progress_no_result_on_hold_own": "No shows on hold",
+	"in_progress_no_result_dropped_own": "No dropped shows",
+	"in_progress_no_result_watching_other": "{username} isn't watching any shows",
+	"in_progress_no_result_on_hold_other": "{username} has no shows on hold",
+	"in_progress_no_result_dropped_other": "{username} has no dropped shows",
+	"in_progress_no_result_watching_desc_own": "Shows you're currently watching will appear here.",
+	"in_progress_no_result_on_hold_desc_own": "Shows you've paused will appear here.",
+	"in_progress_no_result_dropped_desc_own": "Shows you've dropped will appear here.",
+	"in_progress_no_result_watching_desc_other": "Check back later to see what {username} is watching.",
+	"in_progress_no_result_on_hold_desc_other": "Check back later to see what {username} has on hold.",
+	"in_progress_no_result_dropped_desc_other": "Check back later to see what {username} has dropped.",
+	"log_review_dialog_absolute_episode_label": "Use absolute episode number"
 }

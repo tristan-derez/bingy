@@ -1,6 +1,7 @@
 import { createFileRoute, useRouteContext } from "@tanstack/react-router";
 import { useAtomValue } from "jotai";
 import { useState } from "react";
+import type { InProgressFilter } from "@/api/in-progress";
 import { InProgressContainer } from "@/components/lists/in-progress/in-progress-container";
 import { GlobalLoadingIndicator } from "@/components/loading/loading-global";
 import { useInProgress } from "@/hooks/useInProgress";
@@ -16,12 +17,20 @@ function InProgressPage() {
 	const { authData } = useRouteContext({ from: "__root__" });
 	const isOwnProfileFlag = isOwnProfile(authData?.user?.name, username);
 	const localeRegion = useAtomValue(localeRegionAtom);
+	const [filter, setFilter] = useState<InProgressFilter>("all");
 	const [page, setPage] = useState(1);
+
+	const handleFilterChange = (newFilter: InProgressFilter) => {
+		setFilter(newFilter);
+		setPage(1);
+	};
 
 	const { data, isLoading, isError } = useInProgress(
 		username,
 		page,
 		localeRegion,
+		24,
+		filter,
 	);
 
 	if (isLoading) {
@@ -37,6 +46,8 @@ function InProgressPage() {
 			username={username}
 			isOwnProfile={isOwnProfileFlag}
 			items={data?.data}
+			filter={filter}
+			onFilterChange={handleFilterChange}
 			page={page}
 			totalPages={data?.total_pages ?? 1}
 			onPageChange={setPage}

@@ -50,6 +50,59 @@ export function convertAbsoluteToSeasonEpisode(
 	throw new Error(`Absolute episode ${absoluteEpisode} exceeds total episodes`);
 }
 
+export function convertSeasonEpisodeToAbsolute(
+	seasonNumber: number,
+	episodeNumber: number,
+	seasons: Season[],
+): number {
+	let offset = 0;
+
+	for (const season of getValidSeason(seasons)) {
+		if (season.season_number === seasonNumber) {
+			if (episodeNumber < 1 || episodeNumber > season.episode_count) {
+				throw new Error(
+					`Episode ${episodeNumber} does not exist in season ${seasonNumber}`,
+				);
+			}
+			return offset + episodeNumber;
+		}
+		offset += season.episode_count;
+	}
+
+	throw new Error(`Season ${seasonNumber} does not exist`);
+}
+
+export async function getSeasonEpisodeFromAbsolute(
+	tmdbId: number,
+	absoluteEpisode: number,
+	language: string,
+): Promise<{ season: number; episode: number }> {
+	const tvDetails = await tmdbClient.get("/tv/{series_id}", {
+		query: { language },
+		path: { series_id: tmdbId },
+	});
+
+	return convertAbsoluteToSeasonEpisode(absoluteEpisode, tvDetails.seasons);
+}
+
+export async function getAbsoluteFromSeasonEpisode(
+	tmdbId: number,
+	seasonNumber: number,
+	episodeNumber: number,
+	language: string,
+): Promise<number> {
+	const tvDetails = await tmdbClient.get("/tv/{series_id}", {
+		query: { language },
+		path: { series_id: tmdbId },
+	});
+
+	return convertSeasonEpisodeToAbsolute(
+		seasonNumber,
+		episodeNumber,
+		tvDetails.seasons,
+	);
+}
+
 export function getSeasonsAfterEpisode(
 	seasons: Season[],
 	lastWatchedSeason: number,

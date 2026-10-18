@@ -1,18 +1,50 @@
 import type { Pretty } from "shared";
 import { apiFetch } from "./fetcher";
 
+export type TvProgressStatus = "watching" | "on_hold" | "dropped";
+
+export type InProgressFilter = "all" | TvProgressStatus | "completed";
+
 export const getInProgress = async (
 	username: string,
 	page = 1,
 	language = "en-US",
 	limit = 24,
+	status: InProgressFilter = "all",
 ) => {
 	const res = await apiFetch<GetInProgressResponse>(
 		`/progress/${username}/tv`,
 		{
 			method: "GET",
-			query: { page, language, limit },
+			query: { page, language, limit, status },
 		},
+	);
+	return res;
+};
+
+export type MarkEpisodeWatchedPayload = {
+	tmdbId: number;
+	seasonNumber: number;
+	episodeNumber: number;
+	absoluteEpisode?: number | null;
+	trackingMode?: "season" | "absolute";
+	status?: TvProgressStatus;
+};
+
+export const markTvEpisodeWatched = async (
+	payload: MarkEpisodeWatchedPayload,
+) => {
+	const res = await apiFetch<WatchProgress>(`/progress/tv`, {
+		method: "POST",
+		body: payload,
+	});
+	return res;
+};
+
+// returns null when the user has no progress for this show
+export const getUserTvProgress = async (username: string, tmdbId: number) => {
+	const res = await apiFetch<WatchProgress | null>(
+		`/progress/${username}/tv/${tmdbId}`,
 	);
 	return res;
 };

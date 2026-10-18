@@ -1,6 +1,9 @@
+import { IconPlayerPlay } from "@tabler/icons-react";
 import { useMemo, useState } from "react";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { useUserTvProgress } from "@/hooks/useInProgress";
 import {
 	useMovieRating,
 	useRateMovie,
@@ -15,6 +18,7 @@ import { WatchlistToggleButton } from "../watchlist/watchlist-toggle-button";
 import { AddToListButton } from "./action-bar/add-to-list-button";
 import { LogReviewButton } from "./action-bar/log-review-button";
 import { ShareButton } from "./action-bar/share-button";
+import { AddToCurrentlyWatchingDialog } from "./add-to-currently-watching-dialog";
 import { AddToListDialog } from "./add-to-list-dialog";
 import { FavoriteToggleButton } from "./favorite-toggle-button";
 import { LogReviewDialog } from "./log-review-dialog";
@@ -56,6 +60,12 @@ export const MediaActionMenu = ({
 
 	const tvProgress = useMemo(() => getTvShowProgress(tvDetails), [tvDetails]);
 
+	const { data: userTvProgress } = useUserTvProgress(
+		username,
+		tmdbId,
+		isTvShow,
+	);
+
 	const { data: movieRating } = useMovieRating(username, tmdbId);
 	const { data: tvRating } = useTvRating(username, tmdbId);
 
@@ -88,6 +98,8 @@ export const MediaActionMenu = ({
 
 	const [showAddToListDialog, setShowAddToListDialog] = useState(false);
 	const [showLogReviewDialog, setShowLogReviewDialog] = useState(false);
+	const [showCurrentlyWatchingDialog, setShowCurrentlyWatchingDialog] =
+		useState(false);
 
 	const existingRating = isTvShow ? tvRating : movieRating;
 
@@ -125,6 +137,20 @@ export const MediaActionMenu = ({
 						existingRating={!!existingRating}
 						onClick={() => setShowLogReviewDialog(true)}
 					/>
+					{tvShow ? (
+						<Button
+							variant="ghost"
+							onClick={() => setShowCurrentlyWatchingDialog(true)}
+							className="flex gap-2"
+						>
+							<span>
+								{userTvProgress
+									? m.btn_update_currently_watching_text()
+									: m.btn_add_to_currently_watching_text()}
+							</span>
+							<IconPlayerPlay className="ml-auto" />
+						</Button>
+					) : null}
 					<AddToListButton onClick={() => setShowAddToListDialog(true)} />
 					<ShareButton
 						text={m.btn_share_link_media_text({
@@ -144,6 +170,15 @@ export const MediaActionMenu = ({
 				imageUrl={imageUrl}
 				existingData={existingRating}
 			/>
+			{tvShow ? (
+				<AddToCurrentlyWatchingDialog
+					open={showCurrentlyWatchingDialog}
+					onOpenChange={setShowCurrentlyWatchingDialog}
+					tvShow={tvShow}
+					username={username}
+					existingProgress={userTvProgress ?? null}
+				/>
+			) : null}
 			<AddToListDialog
 				open={showAddToListDialog}
 				onOpenChange={setShowAddToListDialog}
