@@ -17,7 +17,7 @@ function InProgressPage() {
 	const { authData } = useRouteContext({ from: "__root__" });
 	const isOwnProfileFlag = isOwnProfile(authData?.user?.name, username);
 	const localeRegion = useAtomValue(localeRegionAtom);
-	const [filter, setFilter] = useState<InProgressFilter>("all");
+	const [filter, setFilter] = useState<InProgressFilter>("watching");
 	const [page, setPage] = useState(1);
 
 	const handleFilterChange = (newFilter: InProgressFilter) => {

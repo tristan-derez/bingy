@@ -1,9 +1,7 @@
-import { IconCheck } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
-import type { MouseEvent } from "react";
 import type { InProgressItem } from "@/api/in-progress";
-import { Button } from "@/components/ui/button";
-import { useMarkEpisodeWatched } from "@/hooks/useInProgress";
+import { InProgressMediaCardActions } from "@/components/lists/in-progress/in-progress-media-card-actions";
+import { Badge } from "@/components/ui/badge";
 import { m } from "@/paraglide/messages";
 import { getTmdbImageUrl } from "@/utils/utils";
 
@@ -12,28 +10,44 @@ interface InProgressMediaCardProps {
 	item: InProgressItem;
 }
 
+const statusBadgeClassName: Record<string, string> = {
+	watching: "bg-secondary text-secondary-foreground",
+	on_hold: "bg-amber-500/15 text-amber-600 dark:text-amber-400",
+	dropped: "bg-red-500/15 text-red-600 dark:text-red-400",
+	completed: "bg-green-500/15 text-green-600 dark:text-green-400",
+};
+
+const getStatusLabel = (status: string) => {
+	switch (status) {
+		case "watching":
+			return m.in_progress_status_badge_watching();
+		case "on_hold":
+			return m.in_progress_status_badge_on_hold();
+		case "dropped":
+			return m.in_progress_status_badge_dropped();
+		case "completed":
+			return m.in_progress_status_badge_completed();
+		default:
+			return null;
+	}
+};
+
 export const InProgressMediaCard = ({
 	username,
 	item,
 }: InProgressMediaCardProps) => {
 	const nextEpisode = item.nextEpisodes[0] ?? null;
-	const markWatched = useMarkEpisodeWatched(username);
+	const { lastWatchedSeason, lastWatchedEpisode } = item.progress;
+	const lastSeen =
+		lastWatchedSeason > 0 && lastWatchedEpisode > 0
+			? { season: lastWatchedSeason, episode: lastWatchedEpisode }
+			: null;
+	const statusLabel = getStatusLabel(item.progress.status);
+	const canMarkWatched = item.progress.status === "watching";
 
 	const imageUrl = nextEpisode
 		? getTmdbImageUrl(nextEpisode.still_path, "w500")
 		: getTmdbImageUrl(item.poster_path, "w500");
-
-	const handleMarkWatched = (e: MouseEvent<HTMLButtonElement>) => {
-		e.preventDefault();
-		e.stopPropagation();
-		if (!nextEpisode) return;
-		markWatched.mutate({
-			tmdbId: item.id,
-			seasonNumber: nextEpisode.season_number,
-			episodeNumber: nextEpisode.episode_number,
-			trackingMode: item.progress.trackingMode,
-		});
-	};
 
 	const content = (
 		<>
@@ -50,13 +64,24 @@ export const InProgressMediaCard = ({
 			</div>
 			<div className="flex flex-1 flex-col gap-2 p-3 min-w-0">
 				<div className="flex flex-1 flex-col gap-1 min-w-0">
-					<span className="truncate text-sm font-medium">{item.name}</span>
+					<span className="truncate pr-8 text-sm font-medium">{item.name}</span>
 
-					<div className="flex flex-col gap-0.5">
+					<div className="flex flex-col gap-0.5 min-w-0">
+						{lastSeen ? (
+							<span className="truncate text-xs text-muted-foreground">
+								{m.in_progress_last_seen({
+									season: lastSeen.season,
+									episode: lastSeen.episode,
+								})}
+							</span>
+						) : null}
 						{nextEpisode ? (
-							<span className="text-xs font-medium text-muted-foreground">
-								S{nextEpisode.season_number} E{nextEpisode.episode_number} ·{" "}
-								{nextEpisode.name}
+							<span className="truncate text-xs font-medium text-foreground">
+								{m.in_progress_next_episode({
+									season: nextEpisode.season_number,
+									episode: nextEpisode.episode_number,
+									name: nextEpisode.name,
+								})}
 							</span>
 						) : (
 							<span className="text-xs font-medium text-muted-foreground">
@@ -65,45 +90,51 @@ export const InProgressMediaCard = ({
 						)}
 					</div>
 				</div>
-				<Button
-					variant="outline"
-					size="sm"
-					aria-label="Mark as watched"
-					aria-hidden={!nextEpisode}
-					tabIndex={nextEpisode ? undefined : -1}
-					disabled={!nextEpisode || markWatched.isPending}
-					onClick={handleMarkWatched}
-					className={`mt-auto self-end ${nextEpisode ? "" : "invisible"}`}
-				>
-					<IconCheck className="size-4" />
-					{m.cta_in_progress_card()}
-				</Button>
+				{statusLabel ? (
+					<Badge
+						variant="outline"
+						className={`mt-auto self-end border-transparent ${statusBadgeClassName[item.progress.status] ?? ""}`}
+					>
+						{statusLabel}
+					</Badge>
+				) : null}
 			</div>
 		</>
 	);
 
-	const cardClassName =
-		"group flex w-full flex-col min-[500px]:flex-row min-[500px]:items-stretch overflow-hidden rounded-lg border border-border bg-card hover:border-primary/50 transition-colors";
+	const linkClassName =
+		"flex flex-1 flex-col min-[500px]:flex-row min-[500px]:items-stretch min-w-0";
 
-	return nextEpisode ? (
-		<Link
-			to="/tv/$tvId/season/$seasonNumber/episode/$episodeNumber"
-			params={{
-				tvId: item.id.toString(),
-				seasonNumber: nextEpisode.season_number.toString(),
-				episodeNumber: nextEpisode.episode_number.toString(),
-			}}
-			className={cardClassName}
-		>
-			{content}
-		</Link>
-	) : (
-		<Link
-			to="/tv/$tvId"
-			params={{ tvId: item.id.toString() }}
-			className={cardClassName}
-		>
-			{content}
-		</Link>
+	return (
+		<div className="group relative flex w-full flex-col min-[500px]:flex-row min-[500px]:items-stretch overflow-hidden rounded-lg bg-card transition-colors">
+			{nextEpisode ? (
+				<Link
+					to="/tv/$tvId/season/$seasonNumber/episode/$episodeNumber"
+					params={{
+						tvId: item.id.toString(),
+						seasonNumber: nextEpisode.season_number.toString(),
+						episodeNumber: nextEpisode.episode_number.toString(),
+					}}
+					className={linkClassName}
+				>
+					{content}
+				</Link>
+			) : (
+				<Link
+					to="/tv/$tvId"
+					params={{ tvId: item.id.toString() }}
+					className={linkClassName}
+				>
+					{content}
+				</Link>
+			)}
+			{nextEpisode && canMarkWatched ? (
+				<InProgressMediaCardActions
+					username={username}
+					item={item}
+					nextEpisode={nextEpisode}
+				/>
+			) : null}
+		</div>
 	);
 };
