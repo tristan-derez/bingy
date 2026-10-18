@@ -24,7 +24,6 @@ import {
 	getMediaDetails,
 	NormalizedMedia,
 } from "../../lib/tmdb/get-media-details";
-import { sessionMiddleware } from "../../web/middlewares/session";
 
 type Variables = {
 	user: User | null;
@@ -32,8 +31,6 @@ type Variables = {
 };
 
 const userListRoutes = new Hono<{ Variables: Variables }>();
-
-userListRoutes.use("*", sessionMiddleware);
 
 // add item to watchlist
 userListRoutes.post(
@@ -46,7 +43,8 @@ userListRoutes.post(
 		}),
 	),
 	async (c) => {
-		const user = c.get("user")!;
+		const user = c.get("user");
+		if (!user) return c.json({ error: "UNAUTHORIZED" }, 401);
 		const data = c.req.valid("json");
 
 		const result = await db.transaction(async (tx) => {
@@ -99,222 +97,251 @@ userListRoutes.post(
 );
 
 // delete item from watchlist
-userListRoutes.delete("/watchlist/:mediaType/:tmdbId", async (c) => {
-	const user = c.get("user")!;
-	const tmdbId = Number(c.req.param("tmdbId"));
-	const mediaType = c.req.param("mediaType");
+userListRoutes.delete(
+	"/watchlist/:mediaType/:tmdbId",
+	zValidator(
+		"param",
+		z.object({
+			mediaType: z.enum(["movie", "tv"]),
+			tmdbId: z.coerce.number().int(),
+		}),
+	),
+	async (c) => {
+		const user = c.get("user");
+		if (!user) return c.json({ error: "UNAUTHORIZED" }, 401);
+		const { tmdbId, mediaType } = c.req.valid("param");
 
-	const mediaEntry = await db.query.media.findFirst({
-		where: and(eq(media.tmdbId, tmdbId), eq(media.mediaType, mediaType)),
-	});
+		const mediaEntry = await db.query.media.findFirst({
+			where: and(eq(media.tmdbId, tmdbId), eq(media.mediaType, mediaType)),
+		});
 
-	if (!mediaEntry) {
+		if (!mediaEntry) {
+			return serveNoContent(c);
+		}
+
+		await db
+			.delete(watchlist)
+			.where(
+				and(
+					eq(watchlist.userId, user.id),
+					eq(watchlist.mediaId, mediaEntry.id),
+				),
+			);
+
 		return serveNoContent(c);
-	}
-
-	await db
-		.delete(watchlist)
-		.where(
-			and(eq(watchlist.userId, user.id), eq(watchlist.mediaId, mediaEntry.id)),
-		);
-
-	return serveNoContent(c);
-});
+	},
+);
 
 // get watchlist by username
-userListRoutes.get("/:username/watchlist", async (c) => {
-	const { username } = c.req.param();
-	const language = c.req.query("language") || "en-US";
-	const limitQuery = c.req.query("limit") || 24;
-	const page = Math.max(1, parseInt(c.req.query("page") || "1"));
+userListRoutes.get(
+	"/:username/watchlist",
+	zValidator(
+		"query",
+		z.object({
+			language: z.string().default("en-US"),
+			limit: z.coerce.number().int().min(1).max(100).default(24),
+			page: z.coerce.number().int().min(1).default(1),
+			mediaType: z.enum(["movie", "tv"]).optional(),
+		}),
+	),
+	async (c) => {
+		const { username } = c.req.param();
+		const {
+			language,
+			limit,
+			page,
+			mediaType: mediaTypeFilter,
+		} = c.req.valid("query");
 
-	const targetUser = await db.query.users.findFirst({
-		where: eq(users.name, username),
-	});
+		const targetUser = await db.query.users.findFirst({
+			where: eq(users.name, username),
+		});
 
-	if (!targetUser) return c.json("User not found", 404);
+		if (!targetUser) return c.json({ error: "USER_NOT_FOUND" }, 404);
 
-	const mediaTypeFilter = c.req.query("mediaType") as
-		| "movie"
-		| "tv"
-		| undefined;
+		const offset = (page - 1) * limit;
 
-	const limit = Number(limitQuery);
-	const offset = (page - 1) * limit;
-
-	const filters = and(
-		eq(watchlist.userId, targetUser.id),
-		mediaTypeFilter ? eq(media.mediaType, mediaTypeFilter) : undefined,
-	);
-
-	const [dbItems, totalCountResult] = await Promise.all([
-		db
-			.select({
-				watchlist: watchlist,
-				media: media,
-			})
-			.from(watchlist)
-			.innerJoin(media, eq(watchlist.mediaId, media.id))
-			.where(filters)
-			.orderBy(desc(watchlist.addedAt))
-			.limit(limit)
-			.offset(offset),
-
-		db
-			.select({ count: sql<number>`count(*)` })
-			.from(watchlist)
-			.innerJoin(media, eq(watchlist.mediaId, media.id))
-			.where(filters),
-	]);
-
-	const totalResults = totalCountResult[0]?.count ?? 0;
-
-	const hydratedData = (
-		await Promise.all(
-			dbItems.map(async (item) => {
-				const details = await getMediaDetails(
-					item.media.tmdbId,
-					item.media.mediaType,
-					language,
-				);
-
-				if (!details) return null;
-
-				return {
-					...details,
-					mediaType: item.media.mediaType,
-					addedAt: item.watchlist.addedAt,
-				};
-			}),
-		)
-	).filter((item): item is NormalizedMedia => item !== null);
-
-	return c.json({
-		data: hydratedData,
-		page,
-		total_pages: Math.ceil(totalResults / limit),
-		total_results: totalResults,
-	});
-});
-
-// get watchlist RSS feed by username
-userListRoutes.get("/:username/watchlist/rss", async (c) => {
-	const { username } = c.req.param();
-	const language = c.req.query("language") ?? "en-US";
-	const mediaTypeFilter = c.req.query("mediaType") as
-		| "movie"
-		| "tv"
-		| undefined;
-
-	const targetUser = await db.query.users.findFirst({
-		where: eq(users.name, username),
-	});
-
-	if (!targetUser)
-		return c.text(
-			[
-				'<?xml version="1.0" encoding="UTF-8"?>',
-				'<rss version="2.0">',
-				"<channel>",
-				"  <title>Error</title>",
-				"  <description>User not found</description>",
-				"</channel>",
-				"</rss>",
-			].join("\n"),
-			404,
-			{ "Content-Type": "application/rss+xml; charset=utf-8" },
+		const filters = and(
+			eq(watchlist.userId, targetUser.id),
+			mediaTypeFilter ? eq(media.mediaType, mediaTypeFilter) : undefined,
 		);
 
-	const dbItems = await db
-		.select({ watchlist, media })
-		.from(watchlist)
-		.innerJoin(media, eq(watchlist.mediaId, media.id))
-		.where(
-			and(
-				eq(watchlist.userId, targetUser.id),
-				mediaTypeFilter ? eq(media.mediaType, mediaTypeFilter) : undefined,
-			),
-		)
-		.orderBy(desc(watchlist.addedAt));
+		const [dbItems, totalCountResult] = await Promise.all([
+			db
+				.select({
+					watchlist: watchlist,
+					media: media,
+				})
+				.from(watchlist)
+				.innerJoin(media, eq(watchlist.mediaId, media.id))
+				.where(filters)
+				.orderBy(desc(watchlist.addedAt))
+				.limit(limit)
+				.offset(offset),
 
-	const hydratedData = (
-		await Promise.all(
-			dbItems.map(async (item) => {
-				const details = await getMediaDetails(
-					item.media.tmdbId,
-					item.media.mediaType,
-					language,
-				);
-				if (!details) return null;
-				return {
-					...details,
-					mediaType: item.media.mediaType,
-					addedAt: item.watchlist.addedAt,
-				};
-			}),
-		)
-	).filter(
-		(item): item is NormalizedMedia & { addedAt: Date } => item !== null,
-	);
+			db
+				.select({ count: sql<number>`count(*)` })
+				.from(watchlist)
+				.innerJoin(media, eq(watchlist.mediaId, media.id))
+				.where(filters),
+		]);
 
-	const escapeXml = (str: string) =>
-		str
-			.replace(/&/g, "&amp;")
-			.replace(/</g, "&lt;")
-			.replace(/>/g, "&gt;")
-			.replace(/"/g, "&quot;")
-			.replace(/'/g, "&apos;");
+		const totalResults = totalCountResult[0]?.count ?? 0;
 
-	const profileUrl = `${env.FRONT_URL}/${username}/watchlist`;
-	const rssLanguage = language.split("-")[0];
+		const hydratedData = (
+			await Promise.all(
+				dbItems.map(async (item) => {
+					const details = await getMediaDetails(
+						item.media.tmdbId,
+						item.media.mediaType,
+						language,
+					);
 
-	const itemsXml = hydratedData
-		.map((item) => {
-			const tmdbUrl =
-				item.mediaType === "movie"
-					? `https://www.themoviedb.org/movie/${item.id}`
-					: `https://www.themoviedb.org/tv/${item.id}`;
-			const year = item.releaseDate
-				? new Date(item.releaseDate).getFullYear()
-				: "";
-			const title = year ? `${item.title} (${year})` : item.title;
+					if (!details) return null;
 
-			return [
-				"<item>",
-				`  <title>${escapeXml(title)}</title>`,
-				`  <link>${tmdbUrl}</link>`,
-				`  <guid isPermaLink="false">tmdb:${item.id}</guid>`,
-				`  <pubDate>${new Date(item.addedAt).toUTCString()}</pubDate>`,
-				`  <description>${escapeXml(`${item.title} (${item.mediaType}, TMDB: ${item.id})`)}</description>`,
-				`  <category>${item.mediaType}</category>`,
-				"</item>",
-			].join("\n");
-		})
-		.join("\n");
+					return {
+						...details,
+						mediaType: item.media.mediaType,
+						addedAt: item.watchlist.addedAt,
+					};
+				}),
+			)
+		).filter((item): item is NormalizedMedia => item !== null);
 
-	const rss = [
-		'<?xml version="1.0" encoding="UTF-8"?>',
-		'<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">',
-		"<channel>",
-		`  <title>${escapeXml(`${username}'s Watchlist`)}</title>`,
-		`  <link>${profileUrl}</link>`,
-		`  <description>${escapeXml(`Movies and TV shows in ${username}'s watchlist`)}</description>`,
-		`  <language>${rssLanguage}</language>`,
-		`  <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>`,
-		`  <atom:link href="${c.req.url}" rel="self" type="application/rss+xml" />`,
-		itemsXml,
-		"</channel>",
-		"</rss>",
-	].join("\n");
+		return c.json({
+			data: hydratedData,
+			page,
+			total_pages: Math.ceil(totalResults / limit),
+			total_results: totalResults,
+		});
+	},
+);
 
-	return c.text(rss, 200, {
-		"Content-Type": "application/rss+xml; charset=utf-8",
-	});
-});
+// get watchlist RSS feed by username
+userListRoutes.get(
+	"/:username/watchlist/rss",
+	zValidator(
+		"query",
+		z.object({
+			language: z.string().default("en-US"),
+			mediaType: z.enum(["movie", "tv"]).optional(),
+		}),
+	),
+	async (c) => {
+		const { username } = c.req.param();
+		const { language, mediaType: mediaTypeFilter } = c.req.valid("query");
+
+		const targetUser = await db.query.users.findFirst({
+			where: eq(users.name, username),
+		});
+
+		if (!targetUser)
+			return c.text(
+				[
+					'<?xml version="1.0" encoding="UTF-8"?>',
+					'<rss version="2.0">',
+					"<channel>",
+					"  <title>Error</title>",
+					"  <description>User not found</description>",
+					"</channel>",
+					"</rss>",
+				].join("\n"),
+				404,
+				{ "Content-Type": "application/rss+xml; charset=utf-8" },
+			);
+
+		const dbItems = await db
+			.select({ watchlist, media })
+			.from(watchlist)
+			.innerJoin(media, eq(watchlist.mediaId, media.id))
+			.where(
+				and(
+					eq(watchlist.userId, targetUser.id),
+					mediaTypeFilter ? eq(media.mediaType, mediaTypeFilter) : undefined,
+				),
+			)
+			.orderBy(desc(watchlist.addedAt));
+
+		const hydratedData = (
+			await Promise.all(
+				dbItems.map(async (item) => {
+					const details = await getMediaDetails(
+						item.media.tmdbId,
+						item.media.mediaType,
+						language,
+					);
+					if (!details) return null;
+					return {
+						...details,
+						mediaType: item.media.mediaType,
+						addedAt: item.watchlist.addedAt,
+					};
+				}),
+			)
+		).filter(
+			(item): item is NormalizedMedia & { addedAt: Date } => item !== null,
+		);
+
+		const escapeXml = (str: string) =>
+			str
+				.replace(/&/g, "&amp;")
+				.replace(/</g, "&lt;")
+				.replace(/>/g, "&gt;")
+				.replace(/"/g, "&quot;")
+				.replace(/'/g, "&apos;");
+
+		const profileUrl = `${env.FRONT_URL}/${username}/watchlist`;
+		const rssLanguage = language.split("-")[0];
+
+		const itemsXml = hydratedData
+			.map((item) => {
+				const tmdbUrl =
+					item.mediaType === "movie"
+						? `https://www.themoviedb.org/movie/${item.id}`
+						: `https://www.themoviedb.org/tv/${item.id}`;
+				const year = item.releaseDate
+					? new Date(item.releaseDate).getFullYear()
+					: "";
+				const title = year ? `${item.title} (${year})` : item.title;
+
+				return [
+					"<item>",
+					`  <title>${escapeXml(title)}</title>`,
+					`  <link>${tmdbUrl}</link>`,
+					`  <guid isPermaLink="false">tmdb:${item.id}</guid>`,
+					`  <pubDate>${new Date(item.addedAt).toUTCString()}</pubDate>`,
+					`  <description>${escapeXml(`${item.title} (${item.mediaType}, TMDB: ${item.id})`)}</description>`,
+					`  <category>${item.mediaType}</category>`,
+					"</item>",
+				].join("\n");
+			})
+			.join("\n");
+
+		const rss = [
+			'<?xml version="1.0" encoding="UTF-8"?>',
+			'<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">',
+			"<channel>",
+			`  <title>${escapeXml(`${username}'s Watchlist`)}</title>`,
+			`  <link>${profileUrl}</link>`,
+			`  <description>${escapeXml(`Movies and TV shows in ${username}'s watchlist`)}</description>`,
+			`  <language>${rssLanguage}</language>`,
+			`  <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>`,
+			`  <atom:link href="${c.req.url}" rel="self" type="application/rss+xml" />`,
+			itemsXml,
+			"</channel>",
+			"</rss>",
+		].join("\n");
+
+		return c.text(rss, 200, {
+			"Content-Type": "application/rss+xml; charset=utf-8",
+		});
+	},
+);
 
 // check if an item is in watchlist (authenticated user only)
 userListRoutes.get("/watchlist/check/:mediaType/:tmdbId", async (c) => {
-	const user = c.get("user")!;
+	const user = c.get("user");
+	if (!user) return c.json({ error: "UNAUTHORIZED" }, 401);
 	const mediaType = c.req.param("mediaType");
 	const tmdbId = parseInt(c.req.param("tmdbId"));
 
@@ -377,7 +404,8 @@ userListRoutes.post(
 	),
 	async (c) => {
 		try {
-			const user = c.get("user")!;
+			const user = c.get("user");
+			if (!user) return c.json({ error: "UNAUTHORIZED" }, 401);
 			const { name, description, visibility, type, items } =
 				c.req.valid("json");
 			let slug = createSlug(name, "list");
@@ -528,7 +556,8 @@ userListRoutes.post(
 	),
 	async (c) => {
 		try {
-			const user = c.get("user")!;
+			const user = c.get("user");
+			if (!user) return c.json({ error: "UNAUTHORIZED" }, 401);
 			const { tmdbId, mediaType, listId, note } = c.req.valid("json");
 
 			await db.transaction(async (tx) => {
@@ -599,63 +628,70 @@ userListRoutes.post(
 );
 
 // get lists from a user by username
-userListRoutes.get("/:username", async (c) => {
-	const { username } = c.req.param();
-	const currentUser = c.get("user");
-	const limitQuery = c.req.query("limit") || 24;
-	const page = Math.max(1, parseInt(c.req.query("page") || "1"));
-	const filter = c.req.query("filter") || "all";
+userListRoutes.get(
+	"/:username",
+	zValidator(
+		"query",
+		z.object({
+			limit: z.coerce.number().int().min(1).max(100).default(24),
+			page: z.coerce.number().int().min(1).default(1),
+			filter: z.enum(["all", "public", "private", "limited"]).default("all"),
+		}),
+	),
+	async (c) => {
+		const { username } = c.req.param();
+		const currentUser = c.get("user");
+		const { limit, page, filter } = c.req.valid("query");
 
-	const targetUser = await db.query.users.findFirst({
-		where: eq(users.name, username.toLocaleLowerCase()),
-	});
+		const targetUser = await db.query.users.findFirst({
+			where: eq(users.name, username.toLocaleLowerCase()),
+		});
 
-	if (!targetUser) return c.json("User not found", 404);
+		if (!targetUser) return c.json({ error: "USER_NOT_FOUND" }, 404);
 
-	const isOwnProfile = currentUser?.id === targetUser.id;
+		const isOwnProfile = currentUser?.id === targetUser.id;
+		const offset = (page - 1) * limit;
 
-	const limit = Number(limitQuery);
-	const offset = (page - 1) * limit;
+		let filters = isOwnProfile
+			? eq(customLists.userId, targetUser.id)
+			: and(
+					eq(customLists.userId, targetUser.id),
+					eq(customLists.visibility, "public"),
+				);
 
-	let filters = isOwnProfile
-		? eq(customLists.userId, targetUser.id)
-		: and(
+		// apply visibility filter if user is viewing their own profile
+		if (isOwnProfile && filter !== "all") {
+			filters = and(
 				eq(customLists.userId, targetUser.id),
-				eq(customLists.visibility, "public"),
+				eq(customLists.visibility, filter),
 			);
+		}
 
-	// apply visibility filter if user is viewing their own profile
-	if (isOwnProfile && filter !== "all") {
-		filters = and(
-			eq(customLists.userId, targetUser.id),
-			eq(customLists.visibility, filter as "public" | "private" | "limited"),
-		);
-	}
+		const [lists, totalCountResult] = await Promise.all([
+			db
+				.select()
+				.from(customLists)
+				.where(filters)
+				.orderBy(desc(customLists.createdAt))
+				.limit(limit)
+				.offset(offset),
 
-	const [lists, totalCountResult] = await Promise.all([
-		db
-			.select()
-			.from(customLists)
-			.where(filters)
-			.orderBy(desc(customLists.createdAt))
-			.limit(limit)
-			.offset(offset),
+			db
+				.select({ count: sql<number>`count(*)` })
+				.from(customLists)
+				.where(filters),
+		]);
 
-		db
-			.select({ count: sql<number>`count(*)` })
-			.from(customLists)
-			.where(filters),
-	]);
+		const totalResults = totalCountResult[0]?.count ?? 0;
 
-	const totalResults = totalCountResult[0]?.count ?? 0;
-
-	return c.json({
-		data: lists,
-		page,
-		total_pages: Math.ceil(totalResults / limit),
-		total_results: totalResults,
-	});
-});
+		return c.json({
+			data: lists,
+			page,
+			total_pages: Math.ceil(totalResults / limit),
+			total_results: totalResults,
+		});
+	},
+);
 
 // update list
 userListRoutes.patch(
@@ -681,7 +717,8 @@ userListRoutes.patch(
 	),
 	async (c) => {
 		try {
-			const user = c.get("user")!;
+			const user = c.get("user");
+			if (!user) return c.json({ error: "UNAUTHORIZED" }, 401);
 			const listId = c.req.param("listId");
 			const { name, description, visibility, type, items } =
 				c.req.valid("json");
@@ -847,7 +884,8 @@ userListRoutes.patch(
 
 // delete list
 userListRoutes.delete("/:listId", async (c) => {
-	const user = c.get("user")!;
+	const user = c.get("user");
+	if (!user) return c.json({ error: "UNAUTHORIZED" }, 401);
 	const listId = c.req.param("listId");
 
 	const list = await db.query.customLists.findFirst({
@@ -864,126 +902,147 @@ userListRoutes.delete("/:listId", async (c) => {
 });
 
 // delete an item from a list
-userListRoutes.delete("/:listId/items/:mediaType/:tmdbId", async (c) => {
-	const user = c.get("user")!;
-	const listId = c.req.param("listId");
-	const tmdbId = Number(c.req.param("tmdbId"));
-	const mediaType = c.req.param("mediaType");
+userListRoutes.delete(
+	"/:listId/items/:mediaType/:tmdbId",
+	zValidator(
+		"param",
+		z.object({
+			listId: z.string(),
+			mediaType: z.enum(["movie", "tv"]),
+			tmdbId: z.coerce.number().int(),
+		}),
+	),
+	async (c) => {
+		const user = c.get("user");
+		if (!user) return c.json({ error: "UNAUTHORIZED" }, 401);
+		const { listId, tmdbId, mediaType } = c.req.valid("param");
 
-	const list = await db.query.customLists.findFirst({
-		where: and(eq(customLists.id, listId), eq(customLists.userId, user.id)),
-	});
+		const list = await db.query.customLists.findFirst({
+			where: and(eq(customLists.id, listId), eq(customLists.userId, user.id)),
+		});
 
-	if (!list) {
-		return serveNotFound(c, "List not found");
-	}
+		if (!list) {
+			return serveNotFound(c, "List not found");
+		}
 
-	const mediaEntry = await db.query.media.findFirst({
-		where: and(eq(media.tmdbId, tmdbId), eq(media.mediaType, mediaType)),
-	});
+		const mediaEntry = await db.query.media.findFirst({
+			where: and(eq(media.tmdbId, tmdbId), eq(media.mediaType, mediaType)),
+		});
 
-	if (!mediaEntry) {
+		if (!mediaEntry) {
+			return serveNoContent(c);
+		}
+
+		await db
+			.delete(listItems)
+			.where(
+				and(eq(listItems.listId, listId), eq(listItems.mediaId, mediaEntry.id)),
+			);
+
 		return serveNoContent(c);
-	}
-
-	await db
-		.delete(listItems)
-		.where(
-			and(eq(listItems.listId, listId), eq(listItems.mediaId, mediaEntry.id)),
-		);
-
-	return serveNoContent(c);
-});
+	},
+);
 
 // get list with items by username and slug
-userListRoutes.get("/:username/lists/:slug", async (c) => {
-	const { username, slug } = c.req.param();
-	const language = c.req.query("language") || "en-US";
-	const limitQuery = c.req.query("limit") || 24;
-	const page = Math.max(1, parseInt(c.req.query("page") || "1"));
-	const currentUser = c.get("user");
+userListRoutes.get(
+	"/:username/lists/:slug",
+	zValidator(
+		"query",
+		z.object({
+			language: z.string().default("en-US"),
+			limit: z.coerce.number().int().min(1).max(100).default(24),
+			page: z.coerce.number().int().min(1).default(1),
+		}),
+	),
+	async (c) => {
+		const { username, slug } = c.req.param();
+		const { language, limit, page } = c.req.valid("query");
+		const currentUser = c.get("user");
 
-	const targetUser = await db.query.users.findFirst({
-		where: eq(users.name, username),
-	});
+		const targetUser = await db.query.users.findFirst({
+			where: eq(users.name, username),
+		});
 
-	if (!targetUser) return c.json("User not found", 404);
+		if (!targetUser) return c.json({ error: "USER_NOT_FOUND" }, 404);
 
-	const isOwner = currentUser?.id === targetUser.id;
+		const isOwner = currentUser?.id === targetUser.id;
 
-	const list = await db.query.customLists.findFirst({
-		where: and(
-			eq(customLists.slug, slug),
-			eq(customLists.userId, targetUser.id),
-			isOwner ? undefined : sql`${customLists.visibility} != 'private'`,
-		),
-	});
+		const list = await db.query.customLists.findFirst({
+			where: and(
+				eq(customLists.slug, slug),
+				eq(customLists.userId, targetUser.id),
+				isOwner ? undefined : sql`${customLists.visibility} != 'private'`,
+			),
+		});
 
-	if (!list) {
-		return serveNotFound(c, "List not found");
-	}
+		if (!list) {
+			return serveNotFound(c, "List not found");
+		}
 
-	const limit = Number(limitQuery);
-	const offset = (page - 1) * limit;
+		const offset = (page - 1) * limit;
 
-	const filters = and(eq(listItems.listId, list.id));
+		const filters = and(eq(listItems.listId, list.id));
 
-	const [dbItems, totalCountResult] = await Promise.all([
-		db
-			.select({
-				listItem: listItems,
-				media: media,
-			})
-			.from(listItems)
-			.innerJoin(media, eq(listItems.mediaId, media.id))
-			.where(filters)
-			.orderBy(desc(listItems.addedAt))
-			.limit(limit)
-			.offset(offset),
+		const [dbItems, totalCountResult] = await Promise.all([
+			db
+				.select({
+					listItem: listItems,
+					media: media,
+				})
+				.from(listItems)
+				.innerJoin(media, eq(listItems.mediaId, media.id))
+				.where(filters)
+				.orderBy(desc(listItems.addedAt))
+				.limit(limit)
+				.offset(offset),
 
-		db.select({ count: sql<number>`count(*)` }).from(listItems).where(filters),
-	]);
+			db
+				.select({ count: sql<number>`count(*)` })
+				.from(listItems)
+				.where(filters),
+		]);
 
-	const totalResults = totalCountResult[0]?.count ?? 0;
+		const totalResults = totalCountResult[0]?.count ?? 0;
 
-	const hydratedItems = (
-		await Promise.all(
-			dbItems.map(async (item) => {
-				const details = await getMediaDetails(
-					item.media.tmdbId,
-					item.media.mediaType,
-					language,
-				);
+		const hydratedItems = (
+			await Promise.all(
+				dbItems.map(async (item) => {
+					const details = await getMediaDetails(
+						item.media.tmdbId,
+						item.media.mediaType,
+						language,
+					);
 
-				if (!details) return null;
+					if (!details) return null;
 
-				return {
-					...details,
-					mediaType: item.media.mediaType,
-					addedAt: item.listItem.addedAt,
-					note: item.listItem.note,
-					position: item.listItem.position,
-				};
-			}),
-		)
-	).filter(
-		(
-			item,
-		): item is NormalizedMedia & {
-			note: string | null;
-			position: number | null;
-			addedAt: Date;
-			mediaType: string;
-		} => item !== null,
-	);
+					return {
+						...details,
+						mediaType: item.media.mediaType,
+						addedAt: item.listItem.addedAt,
+						note: item.listItem.note,
+						position: item.listItem.position,
+					};
+				}),
+			)
+		).filter(
+			(
+				item,
+			): item is NormalizedMedia & {
+				note: string | null;
+				position: number | null;
+				addedAt: Date;
+				mediaType: string;
+			} => item !== null,
+		);
 
-	return c.json({
-		...list,
-		items: hydratedItems,
-		page,
-		total_pages: Math.ceil(totalResults / limit),
-		total_results: totalResults,
-	});
-});
+		return c.json({
+			...list,
+			items: hydratedItems,
+			page,
+			total_pages: Math.ceil(totalResults / limit),
+			total_results: totalResults,
+		});
+	},
+);
 
 export default userListRoutes;
